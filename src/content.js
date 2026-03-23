@@ -75,7 +75,7 @@ export const content = {
           { type: 'lunar', text: '(19 tháng 2 năm Bính Ngọ)' },
           {
             type: 'place',
-            primary: 'Nhà Văn Hóa phố 1',
+            primary: 'Nhà Văn Hóa Phố 1',
             secondary: 'P. Nguyệt Viên, TP. Thanh Hóa',
           },
         ],

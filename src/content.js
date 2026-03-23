@@ -114,4 +114,11 @@ export const content = {
     quote:
       '"Yêu không phải là nhìn nhau, mà là cùng nhau nhìn về một hướng."',
   },
+
+  /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */
+  music: {
+    src: '/music/music.mp3',
+    /** 0–1 */
+    volume: 0.45,
+  },
 };

@@ -1,15 +1,24 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { createRoot } from 'react-dom/client';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { createRoot } from "react-dom/client";
 import {
   CalendarHeart,
   Clock,
   Gift,
   Heart,
   MapPin,
-} from 'lucide-react';
-import { content } from './content.js';
-import { images } from './image.js';
-import './index.css';
+  Music,
+  Pause,
+} from "lucide-react";
+import { content } from "./content.js";
+import { images } from "./image.js";
+import "./index.css";
 
 function useCountdown(target) {
   const targetTime = useMemo(() => new Date(target).getTime(), [target]);
@@ -56,10 +65,238 @@ function Divider() {
   );
 }
 
+function publicAssetUrl(path) {
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  const base = import.meta.env.BASE_URL || "/";
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${String(base).replace(/\/$/, "")}${p}`;
+}
+
+const BackgroundMusic = memo(function BackgroundMusic({ src, volume }) {
+  const resolvedSrc = publicAssetUrl(src);
+  const audioRef = useRef(null);
+  const volumeRef = useRef(volume);
+  volumeRef.current = volume;
+
+  /** true = user đã bấm Tạm dừng — không resume khi đổi tab. */
+  const userPausedRef = useRef(false);
+
+  const [playing, setPlaying] = useState(false);
+  const [loadError, setLoadError] = useState(null);
+
+  useEffect(() => {
+    const el = audioRef.current;
+    if (!el) return;
+    el.volume = Math.min(1, Math.max(0, volume ?? 0.5));
+  }, [volume]);
+
+  useEffect(() => {
+    const el = audioRef.current;
+    if (!el) return;
+    const onPlay = () => setPlaying(true);
+    /** Tab ẩn: không đổi state (còn resume). Tab mở: đồng bộ UI. Không gọi play() lại ở đây — tránh giật. */
+    const onPause = () => {
+      if (document.visibilityState === "hidden") return;
+      setPlaying(false);
+    };
+    el.addEventListener("play", onPlay);
+    el.addEventListener("pause", onPause);
+    return () => {
+      el.removeEventListener("play", onPlay);
+      el.removeEventListener("pause", onPause);
+    };
+  }, []);
+
+  useEffect(() => {
+    function onVisibility() {
+      if (document.visibilityState !== "visible") return;
+      const el = audioRef.current;
+      if (!el || userPausedRef.current) return;
+      if (el.paused) {
+        void el.play().catch(() => {});
+      }
+    }
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  const tryPlay = useCallback(() => {
+    const el = audioRef.current;
+    if (!el) return;
+    userPausedRef.current = false;
+    setLoadError(null);
+    el.muted = false;
+    const p = el.play();
+    if (p !== undefined) {
+      p.catch((err) => {
+        console.warn("Phát nhạc thất bại:", err);
+        setLoadError("Không phát được nhạc. Chạm màn hình hoặc bấm Bật nhạc.");
+      });
+    }
+  }, []);
+
+  /**
+   * Autoplay chỉ chạy một lần khi mount — tránh effect [resolvedSrc, volume] cleanup
+   * làm cancelled / gọi play() lại trong lúc đang phát (dễ bị tắt sau vài giây).
+   */
+  useEffect(() => {
+    const el = audioRef.current;
+    if (!el) return;
+
+    let cancelled = false;
+
+    async function autoplayChain() {
+      const vol = Math.min(1, Math.max(0, volumeRef.current ?? 0.5));
+      el.volume = vol;
+
+      try {
+        el.muted = false;
+        await el.play();
+        return;
+      } catch {
+        /* Autoplay có tiếng bị chặn — bình thường */
+      }
+
+      try {
+        el.muted = true;
+        await el.play();
+      } catch (err) {
+        console.warn(err);
+        setLoadError(
+          "Trình duyệt không cho phát nhạc tự động. Chạm màn hình hoặc bấm Bật nhạc.",
+        );
+        return;
+      }
+
+      if (cancelled) return;
+
+      try {
+        el.muted = false;
+        await el.play();
+      } catch {
+        /* Vẫn câm — lần chạm đầu sẽ bỏ câm */
+      }
+    }
+
+    function whenReady() {
+      if (cancelled) return;
+      void autoplayChain();
+    }
+
+    if (el.readyState >= 2) whenReady();
+    else el.addEventListener("canplay", whenReady, { once: true });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /**
+   * Chạm / cuộn: mở khóa phát nhạc (user gesture).
+   * Trước đây chỉ xử lý khi `muted` — nếu autoplay fail hoàn toàn thì `paused` nhưng không muted → chạm không tác dụng.
+   */
+  useEffect(() => {
+    const gesturePlayLockRef = { current: false };
+    let lockTimer = 0;
+
+    function onGesture(e) {
+      if (e && "isTrusted" in e && !e.isTrusted) return;
+      if (
+        e?.type === "pointerdown" &&
+        e.target?.closest?.("[data-music-control]")
+      ) {
+        return;
+      }
+      const el = audioRef.current;
+      if (!el || userPausedRef.current) return;
+      /** Đã phát có tiếng rồi thì không gọi play() lặp (tránh giật). */
+      if (!el.paused && !el.muted) return;
+      /** Đang gọi play() từ gesture khác — tránh chồng. */
+      if (gesturePlayLockRef.current) return;
+      gesturePlayLockRef.current = true;
+      userPausedRef.current = false;
+      tryPlay();
+      window.clearTimeout(lockTimer);
+      lockTimer = window.setTimeout(() => {
+        gesturePlayLockRef.current = false;
+      }, 400);
+    }
+
+    const opts = { capture: true, passive: true };
+    document.addEventListener("pointerdown", onGesture, opts);
+    document.addEventListener("wheel", onGesture, opts);
+    window.addEventListener("scroll", onGesture, opts);
+
+    return () => {
+      window.clearTimeout(lockTimer);
+      document.removeEventListener("pointerdown", onGesture, opts);
+      document.removeEventListener("wheel", onGesture, opts);
+      window.removeEventListener("scroll", onGesture, opts);
+    };
+  }, [tryPlay]);
+
+  function toggle() {
+    const el = audioRef.current;
+    if (!el) return;
+    if (el.paused) {
+      el.muted = false;
+      tryPlay();
+    } else {
+      userPausedRef.current = true;
+      el.pause();
+    }
+  }
+
+  return (
+    <>
+      <audio
+        ref={audioRef}
+        src={resolvedSrc}
+        loop
+        playsInline
+        preload="auto"
+        onError={() =>
+          setLoadError(
+            `Không tải được file nhạc (${resolvedSrc}). Đặt music.mp3 trong public/music/ rồi build lại.`,
+          )
+        }
+        onLoadedData={() => setLoadError(null)}
+      />
+
+      <div
+        data-music-control
+        className="fixed bottom-5 right-5 z-[150] flex max-w-[min(100vw-2rem,18rem)] flex-col items-end gap-2 md:bottom-8 md:right-8"
+      >
+        {loadError && (
+          <p className="rounded-xl border border-red-200 bg-card/95 px-3 py-2 text-xs text-red-700 shadow-md dark:border-red-900 dark:text-red-400">
+            {loadError}
+          </p>
+        )}
+        <button
+          type="button"
+          onClick={toggle}
+          title={playing ? "Tạm dừng nhạc" : "Bật nhạc nền"}
+          aria-label={playing ? "Tạm dừng nhạc nền" : "Phát nhạc nền"}
+          className="flex items-center gap-2 rounded-full border border-primary/25 bg-card/95 py-2.5 pl-3 pr-4 text-sm font-medium text-primary shadow-lg backdrop-blur-md transition hover:bg-primary hover:text-primary-foreground"
+        >
+          {playing ? (
+            <Pause className="h-5 w-5 shrink-0" aria-hidden />
+          ) : (
+            <Music className="h-5 w-5 shrink-0" aria-hidden />
+          )}
+          <span className="hidden sm:inline">
+            {playing ? "Tạm dừng" : "Bật nhạc"}
+          </span>
+        </button>
+      </div>
+    </>
+  );
+});
+
 function EventIcon({ id }) {
-  const cls = 'w-7 h-7 text-primary';
-  if (id === 'nap-tai') return <Gift className={cls} aria-hidden />;
-  if (id === 'tiec-cuoi') return <Heart className={cls} aria-hidden />;
+  const cls = "w-7 h-7 text-primary";
+  if (id === "nap-tai") return <Gift className={cls} aria-hidden />;
+  if (id === "tiec-cuoi") return <Heart className={cls} aria-hidden />;
   return <CalendarHeart className={cls} aria-hidden />;
 }
 
@@ -67,7 +304,7 @@ function EventLines({ item }) {
   return (
     <div className="space-y-3 text-foreground/80 flex-grow text-sm md:text-base">
       {item.lines.map((line, i) => {
-        if (line.type === 'time') {
+        if (line.type === "time") {
           return (
             <p key={i} className="flex items-center justify-center gap-2">
               <Clock className="w-4 h-4 text-secondary shrink-0" aria-hidden />
@@ -75,7 +312,7 @@ function EventLines({ item }) {
             </p>
           );
         }
-        if (line.type === 'date') {
+        if (line.type === "date") {
           return (
             <p key={i} className="flex items-center justify-center gap-2">
               <CalendarHeart
@@ -86,20 +323,17 @@ function EventLines({ item }) {
             </p>
           );
         }
-        if (line.type === 'lunar') {
+        if (line.type === "lunar") {
           return (
             <p key={i} className="text-xs text-foreground/50">
               {line.text}
             </p>
           );
         }
-        if (line.type === 'place') {
+        if (line.type === "place") {
           if (line.primary != null) {
             return (
-              <p
-                key={i}
-                className="flex items-start justify-center gap-2 mt-3"
-              >
+              <p key={i} className="flex items-start justify-center gap-2 mt-3">
                 <MapPin
                   className="w-4 h-4 text-secondary shrink-0 mt-0.5"
                   aria-hidden
@@ -115,10 +349,7 @@ function EventLines({ item }) {
             );
           }
           return (
-            <p
-              key={i}
-              className="flex items-start justify-center gap-2 mt-3"
-            >
+            <p key={i} className="flex items-start justify-center gap-2 mt-3">
               <MapPin
                 className="w-4 h-4 text-secondary shrink-0 mt-0.5"
                 aria-hidden
@@ -138,21 +369,22 @@ function WeddingPage() {
   const cd = useCountdown(c.countdown.targetIso);
   const [attending, setAttending] = useState(true);
   const [form, setForm] = useState({
-    name: '',
-    email: '',
+    name: "",
+    email: "",
     guestCount: 1,
-    message: '',
+    message: "",
   });
 
   function handleSubmit(e) {
     e.preventDefault();
     const payload = { ...form, attending };
-    console.log('RSVP', payload);
-    alert('Đã ghi nhận (demo). Kết nối API/backend để lưu thật.');
+    console.log("RSVP", payload);
+    alert("Đã ghi nhận (demo). Kết nối API/backend để lưu thật.");
   }
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans overflow-hidden">
+      <BackgroundMusic src={c.music.src} volume={c.music.volume} />
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -194,15 +426,15 @@ function WeddingPage() {
           </h2>
           <div className="flex gap-3 md:gap-6 justify-center">
             {[
-              ['Ngày', cd.days],
-              ['Giờ', cd.hours],
-              ['Phút', cd.minutes],
-              ['Giây', cd.seconds],
+              ["Ngày", cd.days],
+              ["Giờ", cd.hours],
+              ["Phút", cd.minutes],
+              ["Giây", cd.seconds],
             ].map(([label, value]) => (
               <div key={label} className="flex flex-col items-center">
                 <div className="w-16 h-16 md:w-24 md:h-24 bg-white/60 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 flex items-center justify-center mb-2">
                   <span className="font-display text-3xl md:text-5xl text-primary">
-                    {String(value).padStart(2, '0')}
+                    {String(value).padStart(2, "0")}
                   </span>
                 </div>
                 <span className="text-xs md:text-sm font-semibold text-foreground/70 uppercase tracking-widest">
@@ -281,8 +513,8 @@ function WeddingPage() {
                 key={item.id}
                 className={
                   item.highlight
-                    ? 'rounded-3xl border bg-card/80 backdrop-blur-xl text-card-foreground shadow-2xl shadow-primary/5 p-6 md:p-8 text-center h-full flex flex-col items-center border-primary/30'
-                    : 'rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl text-card-foreground shadow-2xl shadow-primary/5 p-6 md:p-8 text-center h-full flex flex-col items-center'
+                    ? "rounded-3xl border bg-card/80 backdrop-blur-xl text-card-foreground shadow-2xl shadow-primary/5 p-6 md:p-8 text-center h-full flex flex-col items-center border-primary/30"
+                    : "rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl text-card-foreground shadow-2xl shadow-primary/5 p-6 md:p-8 text-center h-full flex flex-col items-center"
                 }
               >
                 <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-5">
@@ -352,8 +584,5 @@ function WeddingPage() {
   );
 }
 
-createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <WeddingPage />
-  </React.StrictMode>
-);
+/* StrictMode tắt: trong dev mount 2 lần có thể hủy thẻ audio → nhạc tắt giữa chừng. */
+createRoot(document.getElementById("root")).render(<WeddingPage />);

@@ -29,7 +29,7 @@ export const content = {
       label: 'Nhà Trai',
       parentsPrefix: 'Ông & Bà',
       father: 'Lê Hồng Bình',
-      mother: 'Lê Thị Thị',
+      mother: 'Lê Thị Phi',
       address: 'Phố 1, P. Nguyệt Viên, TP. Thanh Hóa',
     },
   },
@@ -75,7 +75,7 @@ export const content = {
           { type: 'lunar', text: '(19 tháng 2 năm Bính Ngọ)' },
           {
             type: 'place',
-            primary: 'Nhà Văn Hóa Phú I',
+            primary: 'Nhà Văn Hóa số 1',
             secondary: 'P. Nguyệt Viên, TP. Thanh Hóa',
           },
         ],

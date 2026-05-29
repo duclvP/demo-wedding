@@ -364,6 +364,121 @@ function EventLines({ item }) {
   );
 }
 
+function PhotoGallery({ title, subtitle, images }) {
+  const [activeIdx, setActiveIdx] = useState(null);
+
+  const openLightbox = (idx) => setActiveIdx(idx);
+  const closeLightbox = () => setActiveIdx(null);
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setActiveIdx((prev) => (prev + 1) % images.length);
+  };
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setActiveIdx((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  useEffect(() => {
+    if (activeIdx === null) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") setActiveIdx((prev) => (prev + 1) % images.length);
+      if (e.key === "ArrowLeft") setActiveIdx((prev) => (prev - 1 + images.length) % images.length);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeIdx, images.length]);
+
+  const renderGalleryImage = (img, idx, className = "") => (
+    <div
+      key={idx}
+      onClick={() => openLightbox(idx)}
+      className={`group relative overflow-hidden rounded-3xl shadow-lg cursor-pointer transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 ${className}`}
+    >
+      <img
+        src={img.src}
+        alt={img.alt}
+        className="block w-full h-full object-cover object-top scale-100 group-hover:scale-105 transition-transform duration-700"
+      />
+      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+        <span className="text-white text-xs tracking-wider uppercase font-semibold border border-white/50 px-4 py-2 rounded-full backdrop-blur-sm">
+          Phóng to ⤢
+        </span>
+      </div>
+    </div>
+  );
+
+  return (
+    <section className="py-16 px-4 overflow-hidden">
+      <div className="text-center mb-16">
+        <h2 className="font-display text-4xl md:text-5xl text-primary mb-4">
+          {title}
+        </h2>
+        <p className="text-foreground/70 max-w-lg mx-auto">{subtitle}</p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 md:auto-rows-[210px] lg:auto-rows-[250px] gap-4 md:gap-6 max-w-6xl mx-auto">
+        {images.map((img, idx) =>
+          renderGalleryImage(
+            img,
+            idx,
+            idx === 0
+              ? "aspect-[3/4] md:aspect-auto md:col-span-2 md:row-span-2"
+              : "aspect-[3/4] md:aspect-auto",
+          ),
+        )}
+      </div>
+
+      <div className="h-8 md:h-12" />
+
+      {activeIdx !== null && (
+        <div
+          onClick={closeLightbox}
+          className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-300 animate-fadeIn"
+        >
+          <button
+            onClick={closeLightbox}
+            className="absolute top-6 right-6 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-3 rounded-full transition-all text-xl"
+            aria-label="Đóng"
+          >
+            ✕
+          </button>
+
+          <button
+            onClick={prevImage}
+            className="absolute left-4 md:left-8 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 w-12 h-12 rounded-full flex items-center justify-center transition-all text-lg font-bold"
+            aria-label="Ảnh trước"
+          >
+            ‹
+          </button>
+
+          <div className="max-w-4xl max-h-[85vh] flex flex-col items-center gap-4">
+            <img
+              src={images[activeIdx].src}
+              alt={images[activeIdx].alt}
+              className="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl transition-all duration-300"
+              onClick={(e) => e.stopPropagation()}
+            />
+            {images[activeIdx].alt && (
+              <p className="text-white/60 text-sm font-sans tracking-wide">
+                {images[activeIdx].alt} ({activeIdx + 1} / {images.length})
+              </p>
+            )}
+          </div>
+
+          <button
+            onClick={nextImage}
+            className="absolute right-4 md:right-8 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 w-12 h-12 rounded-full flex items-center justify-center transition-all text-lg font-bold"
+            aria-label="Ảnh sau"
+          >
+            ›
+          </button>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function WeddingPage() {
   const c = content;
   const cd = useCountdown(c.countdown.targetIso);
@@ -459,7 +574,7 @@ function WeddingPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[c.families.brideSide, c.families.groomSide].map((side) => (
+            {[c.families.groomSide, c.families.brideSide].map((side) => (
               <div
                 key={side.label}
                 className="rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl text-card-foreground shadow-2xl shadow-primary/5 p-8 md:p-10 text-center h-full flex flex-col items-center"
@@ -482,13 +597,28 @@ function WeddingPage() {
                   {side.mother}
                 </h3>
                 <div className="w-12 h-px bg-primary/20 mb-6" />
-                <p className="text-foreground/60 text-sm leading-relaxed flex items-start gap-2">
-                  <MapPin
-                    className="w-4 h-4 text-secondary shrink-0 mt-0.5"
-                    aria-hidden
-                  />
-                  <span>{side.address}</span>
-                </p>
+                {side.maps ? (
+                  <a
+                    href={side.maps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground/60 hover:text-primary text-sm leading-relaxed flex items-start gap-2 group transition-colors"
+                  >
+                    <MapPin
+                      className="w-4 h-4 text-secondary group-hover:text-primary shrink-0 mt-0.5 transition-colors"
+                      aria-hidden
+                    />
+                    <span className="underline-offset-4 decoration-secondary/30 group-hover:underline group-hover:decoration-primary">{side.address}</span>
+                  </a>
+                ) : (
+                  <p className="text-foreground/60 text-sm leading-relaxed flex items-start gap-2">
+                    <MapPin
+                      className="w-4 h-4 text-secondary shrink-0 mt-0.5"
+                      aria-hidden
+                    />
+                    <span>{side.address}</span>
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -524,6 +654,17 @@ function WeddingPage() {
                   {item.title}
                 </h3>
                 <EventLines item={item} />
+                {item.maps && (
+                  <a
+                    href={item.maps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-6 flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-5 py-2.5 text-xs font-semibold text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
+                  >
+                    <MapPin className="w-3.5 h-3.5 shrink-0" />
+                    Xem bản đồ
+                  </a>
+                )}
               </div>
             ))}
           </div>
@@ -532,37 +673,11 @@ function WeddingPage() {
 
       <Divider />
 
-      <section className="py-16 px-4 overflow-hidden">
-        <div className="text-center mb-16">
-          <h2 className="font-display text-4xl md:text-5xl text-primary mb-4">
-            {c.gallery.title}
-          </h2>
-          <p className="text-foreground/70">{c.gallery.subtitle}</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          <div className="md:col-span-1 md:translate-y-12">
-            <img
-              className="rounded-3xl shadow-2xl shadow-primary/10 w-full object-cover aspect-[3/4] hover:scale-105 transition-transform duration-700"
-              alt={c.gallery.alts[0]}
-              src={images.gallery.one}
-            />
-          </div>
-          <div className="md:col-span-1">
-            <img
-              className="rounded-3xl shadow-2xl shadow-primary/10 w-full object-cover aspect-square md:aspect-[3/4] hover:scale-105 transition-transform duration-700 object-top"
-              alt={c.gallery.alts[1]}
-              src={images.gallery.two}
-            />
-          </div>
-          <div className="md:col-span-1 md:translate-y-24">
-            <img
-              className="rounded-3xl shadow-2xl shadow-primary/10 w-full object-cover aspect-[3/4] hover:scale-105 transition-transform duration-700"
-              alt={c.gallery.alts[2]}
-              src={images.gallery.three}
-            />
-          </div>
-        </div>
-      </section>
+      <PhotoGallery
+        title={c.gallery.title}
+        subtitle={c.gallery.subtitle}
+        images={c.gallery.images}
+      />
 
       <div className="mt-32 md:mt-48" />
 

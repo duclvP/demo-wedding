@@ -59,16 +59,16 @@ export const content = {
         title: "Bữa Cơm Thân Mật",
         highlight: true,
         lines: [
-          { type: "time", text: "16 giờ 00'" },
-          { type: "date", text: "Chủ Nhật, 14/06/2026" },
-          { type: "lunar", text: "(Tức ngày 29 tháng 04 năm Bính Ngọ)" },
+          { type: "time", text: "17 giờ 15'" },
+          { type: "date", text: "Thứ Hai, 15/06/2026" },
+          { type: "lunar", text: "(Tức ngày 01 tháng 05 năm Bính Ngọ)" },
           {
             type: "place",
-            text: "Gia Đình Nhà Trai",
+            text: "Gia Đình Nhà Gái",
             multiline: false,
           },
         ],
-        maps: "https://www.google.com/maps/place/19%C2%B035'07.0%22N+105%C2%B039'00.7%22E/@19.5827889,105.6499051,14.12z/data=!4m4!3m3!8m2!3d19.585289!4d105.650204?entry=ttu",
+        maps: "https://www.google.com/maps?q=20.689712,105.481342",
       },
       {
         id: "thanh-hon",

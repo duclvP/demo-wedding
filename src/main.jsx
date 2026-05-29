@@ -515,13 +515,13 @@ function WeddingPage() {
               {c.hero.subtitle}
             </h2>
             <h1 className="font-script text-7xl md:text-9xl text-primary drop-shadow-sm leading-tight mb-2">
-              {c.hero.groom}
+              {c.hero.bride}
             </h1>
             <h1 className="font-script text-5xl md:text-7xl text-secondary mb-2">
               &
             </h1>
             <h1 className="font-script text-7xl md:text-9xl text-primary drop-shadow-sm leading-tight">
-              {c.hero.bride}
+              {c.hero.groom}
             </h1>
           </div>
           <div className="flex items-center gap-6 mt-8">
@@ -574,7 +574,7 @@ function WeddingPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[c.families.groomSide, c.families.brideSide].map((side) => (
+            {[c.families.brideSide, c.families.groomSide].map((side) => (
               <div
                 key={side.label}
                 className="rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl text-card-foreground shadow-2xl shadow-primary/5 p-8 md:p-10 text-center h-full flex flex-col items-center"

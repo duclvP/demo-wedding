@@ -32,7 +32,7 @@ export const content = {
       father: "Nguyễn Văn Quân",
       mother: "Nguyễn Thị Toan",
       address:
-        "Số 11 Ngõ 11 Xóm 2 Thôn Thọ Thượng, Xã Thắng Bình, Tỉnh Thanh Hóa",
+        "Số 11 Ngõ 11 Xóm 2 Thôn Thọ Thượng, Xã Thăng Bình, Tỉnh Thanh Hóa",
       maps: "https://www.google.com/maps/place/19%C2%B035'07.0%22N+105%C2%B039'00.7%22E/@19.5827889,105.6499051,14.12z/data=!4m4!3m3!8m2!3d19.585289!4d105.650204?entry=ttu",
     },
   },

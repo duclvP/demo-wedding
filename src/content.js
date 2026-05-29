@@ -125,7 +125,7 @@ export const content = {
   },
 
   footer: {
-    names: "Nguyễn Quang & Bùi Lộc",
+    names: "Bùi Lộc & Nguyễn Quang",
     quote: '"Gặp gỡ là duyên phận, đồng hành là lựa chọn, và bên nhau trọn đời là lời hứa ngọt ngào nhất."',
   },
 

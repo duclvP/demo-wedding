@@ -1,69 +1,9 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import {
-  CalendarHeart,
-  Clock,
-  Gift,
-  Heart,
-  MapPin,
-  Music,
-  Pause,
-} from "lucide-react";
+import { Check, Copy, Gift, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
 import { images } from "./image.js";
 import "./index.css";
-
-function useCountdown(target) {
-  const targetTime = useMemo(() => new Date(target).getTime(), [target]);
-  const [now, setNow] = useState(() => Date.now());
-
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  return useMemo(() => {
-    const diff = Math.max(0, targetTime - now);
-    const s = Math.floor(diff / 1000);
-    return {
-      days: Math.floor(s / 86400),
-      hours: Math.floor((s % 86400) / 3600),
-      minutes: Math.floor((s % 3600) / 60),
-      seconds: s % 60,
-    };
-  }, [now, targetTime]);
-}
-
-function Divider() {
-  if (images.divider) {
-    return (
-      <div className="flex justify-center opacity-60">
-        <img
-          alt=""
-          className="h-10 md:h-14 object-contain"
-          src={images.divider}
-        />
-      </div>
-    );
-  }
-  return (
-    <div
-      className="flex justify-center items-center gap-3 opacity-50"
-      aria-hidden
-    >
-      <span className="h-px w-16 md:w-24 bg-gradient-to-r from-transparent to-secondary/50" />
-      <span className="text-secondary text-lg font-display">✦</span>
-      <span className="h-px w-16 md:w-24 bg-gradient-to-l from-transparent to-secondary/50" />
-    </div>
-  );
-}
 
 function publicAssetUrl(path) {
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
@@ -265,10 +205,10 @@ const BackgroundMusic = memo(function BackgroundMusic({ src, volume }) {
 
       <div
         data-music-control
-        className="fixed bottom-5 right-5 z-[150] flex max-w-[min(100vw-2rem,18rem)] flex-col items-end gap-2 md:bottom-8 md:right-8"
+        className="fixed bottom-5 left-5 z-[150] flex max-w-[min(100vw-2rem,18rem)] flex-col items-start gap-2"
       >
         {loadError && (
-          <p className="rounded-xl border border-red-200 bg-card/95 px-3 py-2 text-xs text-red-700 shadow-md dark:border-red-900 dark:text-red-400">
+          <p className="rounded-xl border border-red-200 bg-white/95 px-3 py-2 text-xs text-red-700 shadow-md">
             {loadError}
           </p>
         )}
@@ -277,309 +217,636 @@ const BackgroundMusic = memo(function BackgroundMusic({ src, volume }) {
           onClick={toggle}
           title={playing ? "Tạm dừng nhạc" : "Bật nhạc nền"}
           aria-label={playing ? "Tạm dừng nhạc nền" : "Phát nhạc nền"}
-          className="flex items-center gap-2 rounded-full border border-primary/25 bg-card/95 py-2.5 pl-3 pr-4 text-sm font-medium text-primary shadow-lg backdrop-blur-md transition hover:bg-primary hover:text-primary-foreground"
+          className="music-btn relative flex h-11 w-11 items-center justify-center rounded-full bg-black/30 text-white transition-colors hover:bg-black/45 active:animate-press"
         >
-          {playing ? (
-            <Pause className="h-5 w-5 shrink-0" aria-hidden />
-          ) : (
-            <Music className="h-5 w-5 shrink-0" aria-hidden />
+          {playing && (
+            <>
+              <span className="music-ripple" aria-hidden />
+              <span className="music-ripple [animation-delay:1s]" aria-hidden />
+            </>
           )}
-          <span className="hidden sm:inline">
-            {playing ? "Tạm dừng" : "Bật nhạc"}
-          </span>
+          {playing ? (
+            <Volume2 className="relative h-6 w-6 shrink-0" aria-hidden />
+          ) : (
+            <VolumeX className="relative h-6 w-6 shrink-0" aria-hidden />
+          )}
         </button>
       </div>
     </>
   );
 });
 
-function EventIcon({ id }) {
-  const cls = "w-7 h-7 text-primary";
-  if (id === "nap-tai") return <Gift className={cls} aria-hidden />;
-  if (id === "tiec-cuoi") return <Heart className={cls} aria-hidden />;
-  return <CalendarHeart className={cls} aria-hidden />;
+/** Hiện dần khi cuộn tới — variant: up | down | left | right | zoom | bounce */
+const CurtainContext = React.createContext(true);
+
+function Reveal({ as: Tag = "div", variant = "up", delay = 0, className = "", children }) {
+  const ref = useRef(null);
+  const [seen, setSeen] = useState(false);
+  /** Không chạy hiệu ứng khi rèm còn che — tránh phần đầu thiệp "diễn" trước khi khách thấy */
+  const curtainOpen = React.useContext(CurtainContext);
+  const visible = seen && curtainOpen;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) {
+      setSeen(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSeen(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  /**
+   * Quan sát lớp ngoài (không transform) — nếu quan sát chính phần tử đang bị
+   * đẩy ra ngoài khung (translateX(-100%)), nó không bao giờ "giao" với màn hình.
+   */
+  return (
+    <div ref={ref}>
+      <Tag
+        style={{ transitionDelay: `${delay}ms`, animationDelay: `${delay}ms` }}
+        className={`reveal reveal-${variant} ${visible ? "is-visible" : ""} ${className}`}
+      >
+        {children}
+      </Tag>
+    </div>
+  );
 }
 
-function EventLines({ item }) {
+/** Tuyết ❆ và tim ❤ rơi khắp màn hình, giống mẫu lovecard */
+const FALLING = [
+  { kind: "snowflake", chars: ["❆", "❅"], every: 2500, burst: 8, size: [0.8, 0.6], duration: [15, 5] },
+  { kind: "heart", chars: ["❤"], every: 4000, burst: 6, size: [1.2, 1], duration: [10, 5] },
+];
+
+/** Bắt đầu khi `active` = true (rèm đã mở): rơi một đợt ngay, sau đó rơi đều */
+function FallingEffects({ active }) {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    if (!active) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    let seq = 0;
+    const timeouts = new Set();
+
+    function spawn(cfg, delay = 0) {
+      const id = seq++;
+      const duration = cfg.duration[0] + Math.random() * cfg.duration[1];
+      const item = {
+        id,
+        kind: cfg.kind,
+        char: cfg.chars[Math.floor(Math.random() * cfg.chars.length)],
+        style: {
+          left: `${Math.random() * 100}%`,
+          fontSize: `${cfg.size[0] + Math.random() * cfg.size[1]}em`,
+          animationDuration: `${duration}s`,
+          animationDelay: `${delay}s`,
+          "--rand-x": Math.random(),
+        },
+      };
+      setItems((list) => [...list, item]);
+      const t = setTimeout(() => {
+        timeouts.delete(t);
+        setItems((list) => list.filter((x) => x.id !== id));
+      }, (duration + delay) * 1000);
+      timeouts.add(t);
+    }
+
+    FALLING.forEach((cfg) => {
+      for (let i = 0; i < cfg.burst; i++) spawn(cfg, Math.random() * 3);
+    });
+    const timers = FALLING.map((cfg) =>
+      setInterval(() => {
+        if (document.visibilityState !== "hidden") spawn(cfg);
+      }, cfg.every),
+    );
+    return () => {
+      timers.forEach(clearInterval);
+      timeouts.forEach(clearTimeout);
+    };
+  }, [active]);
+
   return (
-    <div className="space-y-3 text-foreground/80 flex-grow text-sm md:text-base">
-      {item.lines.map((line, i) => {
-        if (line.type === "time") {
-          return (
-            <p key={i} className="flex items-center justify-center gap-2">
-              <Clock className="w-4 h-4 text-secondary shrink-0" aria-hidden />
-              {line.text}
-            </p>
-          );
-        }
-        if (line.type === "date") {
-          return (
-            <p key={i} className="flex items-center justify-center gap-2">
-              <CalendarHeart
-                className="w-4 h-4 text-secondary shrink-0"
-                aria-hidden
-              />
-              {line.text}
-            </p>
-          );
-        }
-        if (line.type === "lunar") {
-          return (
-            <p key={i} className="text-xs text-foreground/50">
-              {line.text}
-            </p>
-          );
-        }
-        if (line.type === "place") {
-          if (line.primary != null) {
-            return (
-              <p key={i} className="flex items-start justify-center gap-2 mt-3">
-                <MapPin
-                  className="w-4 h-4 text-secondary shrink-0 mt-0.5"
-                  aria-hidden
+    <div aria-hidden>
+      {items.map((x) => (
+        <span key={x.id} className={`falling falling-${x.kind}`} style={x.style}>
+          {x.char}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/** Rèm đỏ che thiệp, tự kéo sang hai bên (hoặc khi chạm con dấu 囍) */
+function OpeningCurtain({ onOpen, onDone }) {
+  const [opening, setOpening] = useState(false);
+
+  const open = useCallback(() => {
+    setOpening((was) => {
+      if (!was) onOpen();
+      return true;
+    });
+  }, [onOpen]);
+
+  useEffect(() => {
+    const t = setTimeout(open, 1500);
+    return () => clearTimeout(t);
+  }, [open]);
+
+  useEffect(() => {
+    if (!opening) return;
+    const t = setTimeout(onDone, 3000);
+    return () => clearTimeout(t);
+  }, [opening, onDone]);
+
+  return (
+    <div
+      className={`fixed inset-0 z-[160] mx-auto max-w-[460px] overflow-hidden ${opening ? "pointer-events-none" : ""}`}
+      onClick={open}
+      aria-hidden
+    >
+      <div className={`curtain curtain-left ${opening ? "is-open" : ""}`} />
+      <div className={`curtain curtain-right ${opening ? "is-open" : ""}`} />
+      <div
+        className={`absolute left-1/2 top-[38%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center transition-all duration-700 ${
+          opening ? "scale-50 opacity-0" : ""
+        }`}
+      >
+        <button type="button" className="seal animate-pulse-soft" aria-label="Mở thiệp">
+          <span className="font-display font-bold text-[64px] leading-none text-[#f3d27a]">囍</span>
+        </button>
+        <p className="mt-4 font-lora text-sm tracking-widest uppercase text-[#f8e4a6] drop-shadow">
+          Chạm để mở thiệp
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Họa tiết trang trí (SVG vẽ tay, không cần file ảnh) ---------- */
+
+function DoubleHappiness({ className = "" }) {
+  return (
+    <div
+      className={`flex items-center justify-center rounded-full border-2 border-primary/80 text-primary font-display font-bold ${className}`}
+      aria-hidden
+    >
+      囍
+    </div>
+  );
+}
+
+function Knot({ className = "" }) {
+  return (
+    <svg viewBox="0 0 40 90" className={className} aria-hidden>
+      <g fill="none" stroke="#e0782f" strokeWidth="2">
+        <line x1="20" y1="0" x2="20" y2="14" />
+        <path d="M20 14 L32 26 L20 38 L8 26 Z" />
+        <path d="M14 20 L26 32 M26 20 L14 32" />
+        <circle cx="8" cy="26" r="3" />
+        <circle cx="32" cy="26" r="3" />
+        <line x1="20" y1="38" x2="20" y2="48" />
+      </g>
+      <path d="M16 48 h8 l2 34 h-12 z" fill="#e0782f" opacity="0.85" />
+    </svg>
+  );
+}
+
+function Lantern({ className = "" }) {
+  return (
+    <svg viewBox="0 0 40 70" className={className} aria-hidden>
+      <line x1="20" y1="0" x2="20" y2="10" stroke="#b8860b" strokeWidth="1.5" />
+      <rect x="13" y="10" width="14" height="4" rx="1" fill="#b8860b" />
+      <ellipse cx="20" cy="32" rx="16" ry="18" fill="#d6262b" />
+      <path d="M20 14 Q8 32 20 50 M20 14 Q32 32 20 50" stroke="#a01519" strokeWidth="1.2" fill="none" />
+      <rect x="13" y="49" width="14" height="4" rx="1" fill="#b8860b" />
+      <path d="M17 53 h6 l1 14 h-8 z" fill="#d6262b" />
+    </svg>
+  );
+}
+
+/** Viền hoa văn vàng chạy dọc mép thiệp */
+function KeyBorder({ side }) {
+  return (
+    <div
+      className={`key-border pointer-events-none absolute inset-y-0 ${side === "left" ? "left-1.5" : "right-1.5"} w-4 z-20`}
+      aria-hidden
+    />
+  );
+}
+
+function GoldFrame({ src, alt, className = "", imgClass = "" }) {
+  return (
+    <div className={`gold-frame p-[6px] shadow-xl ${className}`}>
+      <div className="bg-white p-1.5">
+        <img src={src} alt={alt} className={`w-full object-cover ${imgClass}`} loading="lazy" />
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Các khối nội dung ---------- */
+
+function mapUrl(address) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+}
+
+/** Tên khách lấy từ link ?khach=..., không có thì dùng mặc định */
+function useGuestName(fallback) {
+  return useState(() => {
+    try {
+      const name = new URLSearchParams(window.location.search).get("khach");
+      return name?.trim() || fallback;
+    } catch {
+      return fallback;
+    }
+  })[0];
+}
+
+function FamilySide({ side }) {
+  return (
+    <div className="text-center">
+      <h3 className="font-upright font-semibold text-[28px] text-foreground mb-1">{side.label}</h3>
+      {side.father && (
+        <p className="font-oswald font-medium text-[15px] uppercase">Bố: {side.father}</p>
+      )}
+      {side.mother && (
+        <p className="font-oswald font-medium text-[15px] uppercase mb-2">Mẹ: {side.mother}</p>
+      )}
+      <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
+    </div>
+  );
+}
+
+function EventCard({ item, mapLabel }) {
+  return (
+    <div className="rounded-[28px] bg-primary text-primary-foreground px-6 py-7 text-center shadow-lg shadow-primary/25">
+      <h3 className="font-avo font-semibold uppercase text-lg mb-2">{item.title}</h3>
+      <p className="font-avo text-base mb-1">{item.time}</p>
+      <p className="font-avo font-semibold text-3xl mb-1">{item.date}</p>
+      <p className="italic text-xs opacity-85 mb-5">{item.lunar}</p>
+      <div className="space-y-5">
+        {item.places.map((place) => (
+          <div key={place.label}>
+            <p className="font-avo uppercase text-lg mb-1">{place.label}</p>
+            <p className="text-sm opacity-90 mb-3">{place.address}</p>
+            <a
+              href={mapUrl(place.address)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-full bg-white px-8 py-1.5 font-lora text-primary text-base shadow transition hover:scale-105"
+            >
+              {mapLabel}
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
+
+function MonthCalendar({ dateIso }) {
+  const [y, m, d] = dateIso.split("-").map(Number);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  /** Lịch bắt đầu từ Thứ Hai */
+  const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
+  const cells = [
+    ...Array(lead).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
+
+  return (
+    <div>
+      <p className="text-center font-date text-xl text-primary uppercase mb-4">
+        Tháng {m} - {y}
+      </p>
+      <div className="grid grid-cols-7 bg-primary text-primary-foreground text-center font-semibold text-sm py-2.5">
+        {WEEKDAYS.map((w) => (
+          <span key={w}>{w}</span>
+        ))}
+      </div>
+      <div className="grid grid-cols-7 gap-y-2 text-center font-display text-lg mt-3">
+        {cells.map((day, i) =>
+          day === d ? (
+            <span key={i} className="relative flex items-center justify-center h-10">
+              <svg viewBox="0 0 24 24" className="absolute w-11 h-11 text-[#e0303a] animate-pulse-soft" aria-hidden>
+                <path
+                  fill="currentColor"
+                  opacity="0.85"
+                  d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 3 5 6.4 5c2 0 3.6 1.1 4.6 2.6C12 6.1 13.6 5 15.6 5 19 5 21.1 8.6 19.6 11.9 17.5 16.4 12 21 12 21z"
                 />
-                <span className="text-left">
-                  {line.primary}
-                  <br />
-                  <span className="text-xs text-foreground/60">
-                    {line.secondary}
-                  </span>
-                </span>
-              </p>
-            );
-          }
-          return (
-            <p key={i} className="flex items-start justify-center gap-2 mt-3">
-              <MapPin
-                className="w-4 h-4 text-secondary shrink-0 mt-0.5"
-                aria-hidden
-              />
-              <span>{line.text}</span>
-            </p>
-          );
-        }
-        return null;
-      })}
+              </svg>
+              <span className="relative font-bold text-white">{day}</span>
+            </span>
+          ) : (
+            <span key={i} className="flex items-center justify-center h-10">
+              {day ?? ""}
+            </span>
+          ),
+        )}
+      </div>
+    </div>
+  );
+}
+
+function RsvpForm({ c }) {
+  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: "", message: "", attend: "", guestCount: "" });
+
+  function update(field) {
+    return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log("RSVP", form);
+    setSent(true);
+  }
+
+  const inputCls =
+    "w-full bg-white px-3 py-2.5 font-lora text-[15px] text-foreground placeholder:text-foreground/50 outline-none focus:ring-2 focus:ring-white/60";
+
+  return (
+    <div className="rounded-[28px] bg-primary px-4 py-8 shadow-lg shadow-primary/25">
+      <h2 className="font-script text-[clamp(24px,8vw,36px)] leading-tight whitespace-nowrap text-white text-center mb-6">{c.title}</h2>
+      {sent ? (
+        <p className="text-center text-white font-lora text-lg py-6">{c.thanks}</p>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <input required value={form.name} onChange={update("name")} placeholder={c.placeholders.name} className={inputCls} />
+          <input value={form.message} onChange={update("message")} placeholder={c.placeholders.message} className={inputCls} />
+          <select
+            required
+            value={form.attend}
+            onChange={update("attend")}
+            className={`${inputCls} ${form.attend ? "" : "text-foreground/50"}`}
+          >
+            <option value="" disabled>
+              {c.placeholders.attend}
+            </option>
+            <option value="yes">{c.attendYes}</option>
+            <option value="no">{c.attendNo}</option>
+          </select>
+          {form.attend !== "no" && (
+            <input
+              type="number"
+              min={1}
+              max={20}
+              value={form.guestCount}
+              onChange={update("guestCount")}
+              placeholder={c.placeholders.guestCount}
+              className={inputCls}
+            />
+          )}
+          <div className="text-center pt-3">
+            <button
+              type="submit"
+              className="rounded-full bg-white px-12 py-2 font-bold uppercase text-sm text-primary shadow transition hover:scale-105 animate-pulse-soft"
+            >
+              {c.submit}
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
+
+function GiftAccount({ account, c }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(account.number);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      window.prompt("Số tài khoản:", account.number);
+    }
+  }
+
+  return (
+    <div className="rounded-2xl border border-primary/20 p-4 text-center">
+      <p className="font-lora text-xl text-primary mb-2">{account.side}</p>
+      <p className="text-sm">CTK: {account.holder}</p>
+      <p className="text-sm">
+        STK: <span className="font-bold text-primary">{account.number}</span>
+      </p>
+      <p className="text-sm mb-3">NH: {account.bank}</p>
+      <button
+        type="button"
+        onClick={copy}
+        className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-1.5 text-xs font-semibold text-white"
+      >
+        {copied ? <Check className="w-3.5 h-3.5" aria-hidden /> : <Copy className="w-3.5 h-3.5" aria-hidden />}
+        {copied ? c.copiedLabel : c.copyLabel}
+      </button>
+    </div>
+  );
+}
+
+function GiftModal({ c, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 px-4" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={c.title}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl animate-pop"
+      >
+        <button type="button" onClick={onClose} aria-label="Đóng" className="absolute right-4 top-4 text-foreground/50 hover:text-foreground">
+          <X className="w-5 h-5" />
+        </button>
+        <h2 className="font-script text-5xl text-primary text-center mb-5">{c.title}</h2>
+        <div className="space-y-4">
+          {c.accounts.map((account) => (
+            <GiftAccount key={account.number} account={account} c={c} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
 function WeddingPage() {
   const c = content;
-  const cd = useCountdown(c.countdown.targetIso);
-  const [attending, setAttending] = useState(true);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    guestCount: 1,
-    message: "",
-  });
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    const payload = { ...form, attending };
-    console.log("RSVP", payload);
-    alert("Đã ghi nhận (demo). Kết nối API/backend để lưu thật.");
-  }
+  const guest = useGuestName(c.invitation.defaultGuest);
+  const [giftOpen, setGiftOpen] = useState(false);
+  const closeGift = useCallback(() => setGiftOpen(false), []);
+  /** opened: rèm bắt đầu kéo ra; curtainGone: rèm đã kéo xong, gỡ khỏi trang */
+  const [opened, setOpened] = useState(false);
+  const [curtainGone, setCurtainGone] = useState(false);
+  const handleOpen = useCallback(() => setOpened(true), []);
+  const handleCurtainDone = useCallback(() => setCurtainGone(true), []);
+  const [first, second] = c.hero.names;
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans overflow-hidden">
+    <div className="min-h-screen bg-[#f3eeee] text-foreground font-sans">
       <BackgroundMusic src={c.music.src} volume={c.music.volume} />
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            alt="Hero Background"
-            className="w-full h-full object-cover object-top opacity-80"
-            src={images.heroBackground}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/20 to-background" />
-        </div>
-        <div className="relative z-10 text-center px-4 flex flex-col items-center w-full max-w-4xl">
-          <div className="mb-8">
-            <h2 className="text-secondary font-sans tracking-[0.4em] uppercase text-sm md:text-base font-semibold mb-8">
-              {c.hero.subtitle}
-            </h2>
-            <h1 className="font-script text-7xl md:text-9xl text-primary drop-shadow-sm leading-tight mb-2">
-              {c.hero.groom}
-            </h1>
-            <h1 className="font-script text-5xl md:text-7xl text-secondary mb-2">
-              &
-            </h1>
-            <h1 className="font-script text-7xl md:text-9xl text-primary drop-shadow-sm leading-tight">
-              {c.hero.bride}
-            </h1>
-          </div>
-          <div className="flex items-center gap-6 mt-8">
-            <div className="w-16 md:w-32 h-px bg-secondary/60" />
-            <p className="font-display text-2xl md:text-3xl text-foreground/80 tracking-widest">
-              {c.hero.dateLine}
-            </p>
-            <div className="w-16 md:w-32 h-px bg-secondary/60" />
-          </div>
-        </div>
-      </section>
+      <FallingEffects active={opened} />
+      {!curtainGone && <OpeningCurtain onOpen={handleOpen} onDone={handleCurtainDone} />}
 
-      <section className="py-20 px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-display text-4xl md:text-5xl text-primary mb-12">
-            {c.countdown.title}
-          </h2>
-          <div className="flex gap-3 md:gap-6 justify-center">
-            {[
-              ["Ngày", cd.days],
-              ["Giờ", cd.hours],
-              ["Phút", cd.minutes],
-              ["Giây", cd.seconds],
-            ].map(([label, value]) => (
-              <div key={label} className="flex flex-col items-center">
-                <div className="w-16 h-16 md:w-24 md:h-24 bg-white/60 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 flex items-center justify-center mb-2">
-                  <span className="font-display text-3xl md:text-5xl text-primary">
-                    {String(value).padStart(2, "0")}
+      <CurtainContext.Provider value={opened}>
+      <main className="relative mx-auto max-w-[460px] bg-white overflow-hidden shadow-2xl">
+        <KeyBorder side="left" />
+        <KeyBorder side="right" />
+
+        <div className="px-8">
+          {/* Save the date */}
+          <section className="relative pt-10 pb-12 text-center">
+            <Reveal variant="down">
+              <h2 className="font-lora text-[32px] uppercase">{c.hero.subtitle}</h2>
+            </Reveal>
+            <Reveal variant="zoom" delay={150}>
+              <p className="font-script text-[clamp(28px,9vw,42px)] leading-tight whitespace-nowrap text-foreground mt-4">
+                {first} & {second}
+              </p>
+            </Reveal>
+            <Reveal variant="zoom" delay={300} className="relative mt-6 flex items-center justify-center">
+              <Knot className="absolute left-6 top-0 w-9 h-20 animate-swing" />
+              <DoubleHappiness className="w-14 h-14 text-3xl animate-pulse-soft" />
+              <Knot className="absolute right-6 top-0 w-9 h-20 animate-swing [animation-delay:0.8s]" />
+            </Reveal>
+            <Reveal delay={400}>
+              <p className="font-date text-[32px] mt-12 mb-6">{c.hero.dateLine}</p>
+            </Reveal>
+            <Reveal variant="left" delay={500}>
+              <GoldFrame src={images.hero} alt={`${first} & ${second}`} imgClass="aspect-[2/3]" />
+            </Reveal>
+            <Lantern className="absolute -right-2 bottom-0 w-9 h-16 animate-swing" />
+            <Lantern className="absolute right-6 bottom-8 w-7 h-12 animate-swing [animation-delay:0.6s]" />
+          </section>
+
+          {/* Gia đình hai bên */}
+          <section className="pb-12 text-center">
+            <Reveal variant="down" className="mb-10">
+              <div className="flex flex-col items-center animate-swing">
+              <span className="w-px h-6 bg-primary/70" />
+              <DoubleHappiness className="w-16 h-16 text-3xl" />
+              <Knot className="w-8 h-16 -mt-1" />
+              </div>
+            </Reveal>
+            <div className="grid grid-cols-2 gap-4 mb-10">
+              <Reveal variant="left">
+                <FamilySide side={c.families.groomSide} />
+              </Reveal>
+              <Reveal variant="right">
+                <FamilySide side={c.families.brideSide} />
+              </Reveal>
+            </div>
+            <Reveal variant="left">
+              <p className="font-script text-5xl">{c.families.fullNames[0]}</p>
+            </Reveal>
+            <Reveal variant="bounce" delay={300}>
+              <p className="font-script text-4xl my-1">&</p>
+            </Reveal>
+            <Reveal variant="right">
+              <p className="font-script text-5xl">{c.families.fullNames[1]}</p>
+            </Reveal>
+            <Reveal variant="up" className="mt-10">
+              <GoldFrame src={images.couple} alt="" imgClass="aspect-[4/5] object-top" />
+            </Reveal>
+          </section>
+
+          {/* Lời mời */}
+          <section className="pb-8 text-center">
+            <Reveal>
+              <p className="font-avo uppercase text-xl text-foreground/75 font-medium">{c.invitation.kicker}</p>
+              <p className="font-guest text-[40px] text-primary mt-3 pb-1 border-b border-dashed border-foreground/30 mx-8">
+                {guest}
+              </p>
+              <p className="font-lora uppercase text-xl mt-4">{c.invitation.title}</p>
+            </Reveal>
+            <div className="grid grid-cols-3 gap-1.5 mt-6 -mx-4">
+              {images.dateStrip.map((src, i) => (
+                <Reveal key={i} variant="up" delay={i * 150} className="relative border-[3px] border-[#ecc8c8]">
+                  <img src={src} alt="" className="w-full aspect-[3/5] object-cover" loading="lazy" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
+                  <span className="absolute bottom-2 inset-x-0 text-center font-lora font-bold text-3xl text-white drop-shadow">
+                    {c.invitation.dateParts[i]}
                   </span>
-                </div>
-                <span className="text-xs md:text-sm font-semibold text-foreground/70 uppercase tracking-widest">
-                  {label}
-                </span>
-              </div>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+
+          {/* Sự kiện */}
+          <section className="space-y-3 pb-12">
+            {c.events.items.map((item, i) => (
+              <Reveal key={item.id} variant={i % 2 ? "right" : "left"}>
+                <EventCard item={item} mapLabel={c.events.mapLabel} />
+              </Reveal>
             ))}
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <Divider />
+          {/* Lịch */}
+          <section className="pb-12 -mx-2">
+            <Reveal variant="right">
+              <h2 className="text-center font-lora text-3xl text-primary uppercase mb-1">{c.calendar.title}</h2>
+              <MonthCalendar dateIso={c.calendar.dateIso} />
+            </Reveal>
+          </section>
 
-      <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="font-display text-4xl md:text-5xl text-primary mb-4">
-              {c.families.title}
-            </h2>
-            <p className="text-foreground/70 max-w-lg mx-auto">
-              {c.families.intro}
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[c.families.brideSide, c.families.groomSide].map((side) => (
-              <div
-                key={side.label}
-                className="rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl text-card-foreground shadow-2xl shadow-primary/5 p-8 md:p-10 text-center h-full flex flex-col items-center"
-              >
-                <div className="mb-4">
-                  <span className="inline-block text-xs tracking-[0.3em] uppercase font-semibold text-secondary border border-secondary/30 rounded-full px-4 py-1.5 mb-6">
-                    {side.label}
-                  </span>
-                </div>
-                <p className="text-foreground/60 text-sm mb-3">
-                  {side.parentsPrefix}
-                </p>
-                <h3 className="font-display text-2xl md:text-3xl text-primary mb-2">
-                  {side.father}
-                </h3>
-                <p className="font-display text-lg text-foreground/70 mb-1">
-                  &
-                </p>
-                <h3 className="font-display text-2xl md:text-3xl text-primary mb-6">
-                  {side.mother}
-                </h3>
-                <div className="w-12 h-px bg-primary/20 mb-6" />
-                <p className="text-foreground/60 text-sm leading-relaxed flex items-start gap-2">
-                  <MapPin
-                    className="w-4 h-4 text-secondary shrink-0 mt-0.5"
-                    aria-hidden
-                  />
-                  <span>{side.address}</span>
-                </p>
-              </div>
+          {/* Xác nhận + mừng cưới */}
+          <section className="pb-10 -mx-2">
+            <Reveal>
+              <RsvpForm c={c.rsvp} />
+            </Reveal>
+            {c.gift.accounts.length > 0 && (
+              <Reveal className="text-center mt-8">
+                <button
+                  type="button"
+                  onClick={() => setGiftOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-10 py-2.5 font-upright font-semibold text-lg uppercase text-white shadow-lg shadow-primary/30 animate-pulse-soft"
+                >
+                  <Gift className="w-5 h-5" aria-hidden />
+                  {c.gift.button}
+                </button>
+              </Reveal>
+            )}
+          </section>
+
+          {/* Album */}
+          <section className="grid grid-cols-2 gap-1.5 pb-3 -mx-2">
+            {images.album.map((src, i) => (
+              <Reveal key={i} variant={i % 2 ? "right" : "left"} className="border-2 border-[#e6e6e6]">
+                <img src={src} alt="" className="w-full aspect-[2/3] object-cover" loading="lazy" />
+              </Reveal>
             ))}
-          </div>
+          </section>
+
+          {/* Thank you */}
+          <section className="relative -mx-2 mb-10 overflow-hidden">
+            <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+            <Reveal variant="up" className="absolute inset-x-0 bottom-0 px-4 pb-6 text-center text-white">
+              <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>
+              <p className="text-sm leading-relaxed drop-shadow">{c.thanks.text}</p>
+            </Reveal>
+          </section>
         </div>
-      </section>
+      </main>
+      </CurtainContext.Provider>
 
-      <Divider />
-
-      <section className="py-16 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-4xl md:text-5xl text-primary mb-4">
-              {c.events.title}
-            </h2>
-            <p className="text-foreground/70 max-w-lg mx-auto">
-              {c.events.intro}
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {c.events.items.map((item) => (
-              <div
-                key={item.id}
-                className={
-                  item.highlight
-                    ? "rounded-3xl border bg-card/80 backdrop-blur-xl text-card-foreground shadow-2xl shadow-primary/5 p-6 md:p-8 text-center h-full flex flex-col items-center border-primary/30"
-                    : "rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl text-card-foreground shadow-2xl shadow-primary/5 p-6 md:p-8 text-center h-full flex flex-col items-center"
-                }
-              >
-                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-5">
-                  <EventIcon id={item.id} />
-                </div>
-                <h3 className="font-display text-2xl md:text-3xl mb-5">
-                  {item.title}
-                </h3>
-                <EventLines item={item} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <Divider />
-
-      <section className="py-16 px-4 overflow-hidden">
-        <div className="text-center mb-16">
-          <h2 className="font-display text-4xl md:text-5xl text-primary mb-4">
-            {c.gallery.title}
-          </h2>
-          <p className="text-foreground/70">{c.gallery.subtitle}</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          <div className="md:col-span-1 md:translate-y-12">
-            <img
-              className="rounded-3xl shadow-2xl shadow-primary/10 w-full object-cover aspect-[3/4] hover:scale-105 transition-transform duration-700"
-              alt={c.gallery.alts[0]}
-              src={images.gallery.one}
-            />
-          </div>
-          <div className="md:col-span-1">
-            <img
-              className="rounded-3xl shadow-2xl shadow-primary/10 w-full object-cover aspect-square md:aspect-[3/4] hover:scale-105 transition-transform duration-700 object-top"
-              alt={c.gallery.alts[1]}
-              src={images.gallery.two}
-            />
-          </div>
-          <div className="md:col-span-1 md:translate-y-24">
-            <img
-              className="rounded-3xl shadow-2xl shadow-primary/10 w-full object-cover aspect-[3/4] hover:scale-105 transition-transform duration-700"
-              alt={c.gallery.alts[2]}
-              src={images.gallery.three}
-            />
-          </div>
-        </div>
-      </section>
-
-      <div className="mt-32 md:mt-48" />
-
-      <footer className="bg-primary/5 py-16 text-center relative z-10 border-t border-primary/10">
-        <h2 className="font-script text-5xl text-primary mb-6">
-          {c.footer.names}
-        </h2>
-        <p className="font-sans text-sm md:text-base text-foreground/60 max-w-lg mx-auto mb-10 px-4 leading-relaxed">
-          {c.footer.quote}
-        </p>
-        <a
-          href={c.footer.adminHref}
-          className="text-xs tracking-widest uppercase text-foreground/30 hover:text-primary transition-colors font-semibold"
-        >
-          {c.footer.adminLabel}
-        </a>
-      </footer>
+      {giftOpen && <GiftModal c={c.gift} onClose={closeGift} />}
     </div>
   );
 }

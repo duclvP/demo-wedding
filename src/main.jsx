@@ -719,31 +719,33 @@ function GiftModal({ c, photo, onClose }) {
         aria-modal="true"
         aria-label={c.title}
         onClick={(e) => e.stopPropagation()}
-        className="gift-card relative w-full max-w-[400px] max-h-[90vh] overflow-y-auto rounded-3xl px-4 pt-5 pb-6 shadow-2xl animate-pop"
+        className="gift-card relative w-full max-w-[400px] max-h-[90vh] overflow-hidden rounded-3xl shadow-2xl animate-pop"
       >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Đóng"
-          className="absolute right-4 top-4 text-foreground/70 hover:text-foreground"
-        >
-          <X className="w-6 h-6" />
-        </button>
-        <div className="flex justify-center">
-          <DoubleHappiness className="w-12 h-12 text-2xl bg-white/70" />
-        </div>
-        <h2 className="font-script text-[44px] leading-tight text-primary text-center mt-1">{c.title}</h2>
-        <div className="h-px bg-foreground/15 my-4" />
-        <div className="grid grid-cols-[1fr_1.1fr] items-center gap-3">
-          <img
-            src={photo}
-            alt=""
-            className="w-full aspect-[3/4] object-cover rounded-2xl border-2 border-white shadow-lg"
-          />
-          <div className="space-y-6">
-            {c.accounts.map((account) => (
-              <GiftAccount key={account.number} account={account} c={c} />
-            ))}
+        <div className="relative max-h-[90vh] overflow-y-auto px-4 pt-5 pb-6">
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Đóng"
+            className="absolute right-4 top-4 text-foreground/70 hover:text-foreground"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <div className="flex justify-center">
+            <DoubleHappiness className="w-12 h-12 text-2xl bg-white/70" />
+          </div>
+          <h2 className="font-vibes text-[42px] leading-tight whitespace-nowrap text-primary text-center mt-1">{c.title}</h2>
+          <div className="h-px bg-foreground/15 my-4" />
+          <div className="grid grid-cols-[1fr_1.1fr] items-center gap-3">
+            <img
+              src={photo}
+              alt=""
+              className="w-full aspect-[3/4] object-cover rounded-2xl border-2 border-white shadow-lg"
+            />
+            <div className="space-y-6">
+              {c.accounts.map((account) => (
+                <GiftAccount key={account.number} account={account} c={c} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

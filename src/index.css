@@ -130,7 +130,7 @@ body {
   cursor: pointer;
 }
 
-/* Nền hộp quà: vân đá cẩm thạch nhẹ */
+/* Nền hộp quà: loang xanh nhạt trên nền trắng */
 .gift-card {
   background:
     radial-gradient(ellipse at 15% 10%, rgba(176, 196, 222, 0.45), transparent 55%),

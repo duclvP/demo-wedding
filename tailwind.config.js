@@ -8,6 +8,8 @@ export default {
         sans: ['Quicksand', 'system-ui', 'sans-serif'],
         /** 1FTV VIP High Spirited */
         script: ['Ephesis', 'cursive'],
+        /** Tiêu đề hộp quà mừng cưới */
+        vibes: ['"Great Vibes"', 'cursive'],
         /** Ed Drayton — chữ "Quý khách" */
         guest: ['"Imperial Script"', 'cursive'],
         /** 1FTV VIP Askilon — ngày tháng */

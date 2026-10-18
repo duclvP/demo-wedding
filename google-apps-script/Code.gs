@@ -3,6 +3,9 @@
  * Dán toàn bộ file này vào Extensions → Apps Script của bảng tính.
  */
 
+/** Bảng tính nhận lời chúc (phần giữa /d/ và /edit trong link Google Sheets) */
+const SPREADSHEET_ID = '15V6U85vRkfvhvhlzQ2pR2GL2NMnvsB8KUIsOOy04OAE';
+
 /** Email nhận thông báo — để '' nếu không muốn nhận email */
 const NOTIFY_EMAIL = 'ban@gmail.com';
 
@@ -23,7 +26,7 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+    const sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheets()[0];
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(HEADERS);
       sheet.setFrozenRows(1);
@@ -44,7 +47,7 @@ function doPost(e) {
         '',
         `Lời chúc: ${row[2] || '(không có)'}`,
         '',
-        `Xem tất cả: ${SpreadsheetApp.getActiveSpreadsheet().getUrl()}`,
+        `Xem tất cả: https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit`,
       ].join('\n'),
     });
   }

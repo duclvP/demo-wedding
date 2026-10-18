@@ -70,6 +70,12 @@ export const content = {
   },
 
   rsvp: {
+    /**
+     * Link Web App của Google Apps Script — lời chúc sẽ lưu vào Google Sheets
+     * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
+     * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
+     */
+    endpoint: '',
     title: 'Gửi Lời Chúc & Xác Nhận',
     placeholders: {
       name: 'Tên của bạn là gì ?',
@@ -80,6 +86,8 @@ export const content = {
     attendYes: 'Có, mình sẽ đến',
     attendNo: 'Xin lỗi, hôm đấy mình không tới được :(',
     submit: 'Gửi Xác Nhận',
+    sending: 'Đang gửi...',
+    error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
     thanks: 'Cảm ơn bạn! Lời chúc của bạn đã được ghi nhận.',
   },
 
@@ -89,9 +97,15 @@ export const content = {
     title: 'Hộp Quà Mừng Cưới',
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
+    saveQrLabel: 'Lưu ảnh QR',
     accounts: [
-      // { side: 'Cô Dâu', holder: 'BUI MINH ANH', number: '0000000000', bank: 'Vietcombank' },
-      // { side: 'Chú Rể', holder: 'DO TRUNG ANH', number: '0000000000', bank: 'Techcombank' },
+      {
+        holder: 'BUI MINH ANH',
+        number: '203704070018671',
+        bank: 'HDBank',
+        /** Ảnh mã QR trong public/images/ — để null nếu không có */
+        qr: '/images/qr-hdbank.png',
+      },
     ],
   },
 

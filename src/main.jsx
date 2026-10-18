@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Check, Copy, Gift, Volume2, VolumeX, X } from "lucide-react";
+import { Check, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
 import { images } from "./image.js";
 import "./index.css";
@@ -562,16 +562,44 @@ function MonthCalendar({ dateIso }) {
 
 function RsvpForm({ c }) {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(null);
   const [form, setForm] = useState({ name: "", message: "", attend: "", guestCount: "" });
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log("RSVP", form);
-    setSent(true);
+    if (!c.endpoint) {
+      console.warn("Chưa cấu hình rsvp.endpoint trong content.js — lời chúc không được lưu.", form);
+      setSent(true);
+      return;
+    }
+    setSending(true);
+    setError(null);
+    try {
+      /**
+       * Google Apps Script không trả header CORS → gửi no-cors (không đọc được phản hồi).
+       * Lỗi mạng vẫn bị bắt ở catch.
+       */
+      await fetch(c.endpoint, {
+        method: "POST",
+        mode: "no-cors",
+        body: new URLSearchParams({
+          name: form.name.trim(),
+          message: form.message.trim(),
+          attend: form.attend === "yes" ? c.attendYes : c.attendNo,
+          guestCount: form.attend === "yes" ? form.guestCount || "1" : "0",
+        }),
+      });
+      setSent(true);
+    } catch {
+      setError(c.error);
+    } finally {
+      setSending(false);
+    }
   }
 
   const inputCls =
@@ -610,11 +638,13 @@ function RsvpForm({ c }) {
             />
           )}
           <div className="text-center pt-3">
+            {error && <p className="text-sm text-white/90 mb-3">{error}</p>}
             <button
               type="submit"
-              className="rounded-full bg-white px-12 py-2 font-bold uppercase text-sm text-primary shadow transition hover:scale-105 animate-pulse-soft"
+              disabled={sending}
+              className="rounded-full bg-white px-12 py-2 font-bold uppercase text-sm text-primary shadow transition hover:scale-105 disabled:opacity-70 disabled:hover:scale-100 animate-pulse-soft"
             >
-              {c.submit}
+              {sending ? c.sending : c.submit}
             </button>
           </div>
         </form>
@@ -637,26 +667,45 @@ function GiftAccount({ account, c }) {
   }
 
   return (
-    <div className="rounded-2xl border border-primary/20 p-4 text-center">
-      <p className="font-lora text-xl text-primary mb-2">{account.side}</p>
-      <p className="text-sm">CTK: {account.holder}</p>
-      <p className="text-sm">
-        STK: <span className="font-bold text-primary">{account.number}</span>
-      </p>
-      <p className="text-sm mb-3">NH: {account.bank}</p>
-      <button
-        type="button"
-        onClick={copy}
-        className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-1.5 text-xs font-semibold text-white"
-      >
-        {copied ? <Check className="w-3.5 h-3.5" aria-hidden /> : <Copy className="w-3.5 h-3.5" aria-hidden />}
-        {copied ? c.copiedLabel : c.copyLabel}
-      </button>
+    <div className="flex flex-col items-center text-center">
+      {account.qr && (
+        <img
+          src={account.qr}
+          alt={`Mã QR chuyển khoản ${account.bank} ${account.number}`}
+          className="w-36 h-36 rounded-xl border-2 border-foreground/80 bg-white p-1.5 shadow-md"
+        />
+      )}
+      <dl className="mt-3 space-y-1 font-lora font-bold text-[13px] uppercase text-primary">
+        <div><dt className="inline">CTK: </dt><dd className="inline">{account.holder}</dd></div>
+        <div><dt className="inline">STK: </dt><dd className="inline tracking-wide">{account.number}</dd></div>
+        <div><dt className="inline">NH: </dt><dd className="inline">{account.bank}</dd></div>
+      </dl>
+      <div className="mt-3 flex flex-wrap justify-center gap-2">
+        <button
+          type="button"
+          onClick={copy}
+          className="inline-flex items-center gap-1.5 rounded-lg bg-foreground/45 px-4 py-1.5 font-lora text-sm text-white shadow transition hover:bg-foreground/60 animate-pulse-soft"
+        >
+          {copied ? <Check className="w-3.5 h-3.5" aria-hidden /> : <Copy className="w-3.5 h-3.5" aria-hidden />}
+          {copied ? c.copiedLabel : c.copyLabel}
+        </button>
+        {account.qr && (
+          /** Khách mở thiệp trên chính điện thoại thì không quét được — lưu ảnh rồi chọn trong app ngân hàng */
+          <a
+            href={account.qr}
+            download={`QR-${account.bank}-${account.number}.png`}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-primary/40 px-4 py-1.5 font-lora text-sm text-primary transition hover:bg-primary hover:text-white"
+          >
+            <Download className="w-3.5 h-3.5" aria-hidden />
+            {c.saveQrLabel}
+          </a>
+        )}
+      </div>
     </div>
   );
 }
 
-function GiftModal({ c, onClose }) {
+function GiftModal({ c, photo, onClose }) {
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
@@ -664,22 +713,38 @@ function GiftModal({ c, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 px-4" onClick={onClose}>
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/55 px-4" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-label={c.title}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl animate-pop"
+        className="gift-card relative w-full max-w-[400px] max-h-[90vh] overflow-y-auto rounded-3xl px-4 pt-5 pb-6 shadow-2xl animate-pop"
       >
-        <button type="button" onClick={onClose} aria-label="Đóng" className="absolute right-4 top-4 text-foreground/50 hover:text-foreground">
-          <X className="w-5 h-5" />
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Đóng"
+          className="absolute right-4 top-4 text-foreground/70 hover:text-foreground"
+        >
+          <X className="w-6 h-6" />
         </button>
-        <h2 className="font-script text-5xl text-primary text-center mb-5">{c.title}</h2>
-        <div className="space-y-4">
-          {c.accounts.map((account) => (
-            <GiftAccount key={account.number} account={account} c={c} />
-          ))}
+        <div className="flex justify-center">
+          <DoubleHappiness className="w-12 h-12 text-2xl bg-white/70" />
+        </div>
+        <h2 className="font-script text-[44px] leading-tight text-primary text-center mt-1">{c.title}</h2>
+        <div className="h-px bg-foreground/15 my-4" />
+        <div className="grid grid-cols-[1fr_1.1fr] items-center gap-3">
+          <img
+            src={photo}
+            alt=""
+            className="w-full aspect-[3/4] object-cover rounded-2xl border-2 border-white shadow-lg"
+          />
+          <div className="space-y-6">
+            {c.accounts.map((account) => (
+              <GiftAccount key={account.number} account={account} c={c} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -846,7 +911,7 @@ function WeddingPage() {
       </main>
       </CurtainContext.Provider>
 
-      {giftOpen && <GiftModal c={c.gift} onClose={closeGift} />}
+      {giftOpen && <GiftModal c={c.gift} photo={images.gift} onClose={closeGift} />}
     </div>
   );
 }

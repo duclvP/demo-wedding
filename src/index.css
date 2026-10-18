@@ -130,6 +130,15 @@ body {
   cursor: pointer;
 }
 
+/* Nền hộp quà: vân đá cẩm thạch nhẹ */
+.gift-card {
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(176, 196, 222, 0.45), transparent 55%),
+    radial-gradient(ellipse at 85% 30%, rgba(200, 210, 230, 0.5), transparent 50%),
+    radial-gradient(ellipse at 30% 85%, rgba(186, 200, 225, 0.45), transparent 55%),
+    linear-gradient(160deg, #ffffff, #eef2f8);
+}
+
 /* Nút nhạc: sóng lan ra khi đang phát, nhún khi bấm */
 .music-ripple {
   position: absolute;

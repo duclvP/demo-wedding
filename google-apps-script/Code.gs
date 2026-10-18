@@ -1,0 +1,65 @@
+/**
+ * Nhận lời chúc từ thiệp cưới → ghi vào Google Sheets + gửi email thông báo.
+ * Dán toàn bộ file này vào Extensions → Apps Script của bảng tính.
+ */
+
+/** Email nhận thông báo — để '' nếu không muốn nhận email */
+const NOTIFY_EMAIL = 'ban@gmail.com';
+
+const HEADERS = ['Thời gian', 'Tên khách', 'Lời chúc', 'Tham dự', 'Số người'];
+
+function doPost(e) {
+  const p = (e && e.parameter) || {};
+  const row = [
+    new Date(),
+    clean(p.name, 100),
+    clean(p.message, 1000),
+    clean(p.attend, 100),
+    Number(p.guestCount) || 0,
+  ];
+
+  if (!row[1]) return json({ ok: false, error: 'missing name' });
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(HEADERS);
+      sheet.setFrozenRows(1);
+    }
+    sheet.appendRow(row);
+  } finally {
+    lock.releaseLock();
+  }
+
+  if (NOTIFY_EMAIL) {
+    MailApp.sendEmail({
+      to: NOTIFY_EMAIL,
+      subject: `💌 ${row[1]} vừa gửi lời chúc — ${row[3]}`,
+      body: [
+        `Tên: ${row[1]}`,
+        `Tham dự: ${row[3]}`,
+        `Số người: ${row[4]}`,
+        '',
+        `Lời chúc: ${row[2] || '(không có)'}`,
+        '',
+        `Xem tất cả: ${SpreadsheetApp.getActiveSpreadsheet().getUrl()}`,
+      ].join('\n'),
+    });
+  }
+
+  return json({ ok: true });
+}
+
+/** Chặn công thức Sheets (=, +, -, @) trong dữ liệu khách nhập và giới hạn độ dài */
+function clean(value, max) {
+  const s = String(value || '').trim().slice(0, max);
+  return /^[=+\-@]/.test(s) ? "'" + s : s;
+}
+
+function json(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(
+    ContentService.MimeType.JSON,
+  );
+}

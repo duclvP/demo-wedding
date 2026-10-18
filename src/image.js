@@ -11,6 +11,8 @@ export const images = {
   dateStrip: ['/images/1.jpg', '/images/3.jpg', '/images/4.jpg'],
   /** Lưới ảnh 2 cột */
   album: ['/images/1.jpg', '/images/2.jpg', '/images/3.jpg', '/images/4.jpg'],
+  /** Ảnh trong hộp quà mừng cưới */
+  gift: '/images/1.jpg',
   /** Ảnh mục Thank You */
   thankYou: '/images/4.jpg',
 };

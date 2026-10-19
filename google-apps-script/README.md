@@ -2,7 +2,7 @@
 
 Làm một lần, khoảng 5 phút.
 
-1. Mở bảng tính [Lời chúc](https://docs.google.com/spreadsheets/d/15V6U85vRkfvhvhlzQ2pR2GL2NMnvsB8KUIsOOy04OAE/edit)
+1. Mở bảng tính [Lời chúc](https://docs.google.com/spreadsheets/d/13Gf4OiaON6khHcU1gUXDsv99iKK4f0r3vfx7d61VA0M/edit)
    (đã gắn sẵn trong `SPREADSHEET_ID` của Code.gs; dùng bảng tính khác thì sửa ID đó).
 2. Trên menu chọn **Tiện ích mở rộng → Apps Script** (Extensions → Apps Script).
 3. Xoá hết code có sẵn, dán toàn bộ nội dung file [Code.gs](Code.gs) vào.

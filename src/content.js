@@ -75,7 +75,7 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
+    endpoint: 'https://script.google.com/macros/s/AKfycbzBXY8azqHwzSA94uG0vbypYeJJdDGhoqYAJmP4set7zDz1-2Q_Yff-VXNco5Mk45IDcg/exec',
     title: 'Xác nhận tham dự',
     intro: 'Hãy xác nhận tham dự để chúng mình chuẩn bị đón tiếp thật chu đáo. Trân Trọng!',
     placeholders: {

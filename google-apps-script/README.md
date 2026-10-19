@@ -2,8 +2,8 @@
 
 Làm một lần, khoảng 5 phút.
 
-1. Mở bảng tính [Lời chúc](https://docs.google.com/spreadsheets/d/15V6U85vRkfvhvhlzQ2pR2GL2NMnvsB8KUIsOOy04OAE/edit)
-   (đã gắn sẵn trong `SPREADSHEET_ID` của Code.gs; dùng bảng tính khác thì sửa ID đó).
+1. Tạo bảng tính mới tại [sheets.new](https://sheets.new). Copy ID của bảng tính (phần giữa `/d/` và `/edit` trong link)
+   vào `SPREADSHEET_ID` trong Code.gs.
 2. Trên menu chọn **Tiện ích mở rộng → Apps Script** (Extensions → Apps Script).
 3. Xoá hết code có sẵn, dán toàn bộ nội dung file [Code.gs](Code.gs) vào.
    Sửa dòng `NOTIFY_EMAIL` thành Gmail của bạn. Bấm biểu tượng 💾 để lưu.

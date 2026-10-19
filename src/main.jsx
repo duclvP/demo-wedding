@@ -2,6 +2,7 @@ import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Check, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
+import { guestEntries, slugify } from "./guests.js";
 import { images } from "./image.js";
 import "./index.css";
 
@@ -460,10 +461,18 @@ function mapUrl(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-/** Tên khách lấy từ link ?khach=..., không có thì dùng mặc định */
+/**
+ * Tên khách theo link:
+ *   /co-lan        → tra trong src/guests.js
+ *   ?khach=Cô Lan  → dùng nguyên văn (cho khách không có trong danh sách)
+ * Không có thì dùng tên mặc định.
+ */
 function useGuestName(fallback) {
   return useState(() => {
     try {
+      const slug = decodeURIComponent(window.location.pathname).replace(/^\/+|\/+$/g, "");
+      const guest = slug && guestEntries().find((g) => g.slug === slugify(slug));
+      if (guest) return guest.name;
       const name = new URLSearchParams(window.location.search).get("khach");
       return name?.trim() || fallback;
     } catch {
@@ -516,8 +525,15 @@ function EventCard({ item, mapLabel }) {
 
 const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
-function MonthCalendar({ dateIso }) {
-  const [y, m, d] = dateIso.split("-").map(Number);
+/** dates: các ngày "YYYY-MM-DD" cần đánh dấu — lịch hiển thị tháng của ngày đầu tiên */
+function MonthCalendar({ dates }) {
+  const [y, m] = dates[0].split("-").map(Number);
+  const marked = new Set(
+    dates
+      .map((iso) => iso.split("-").map(Number))
+      .filter(([yy, mm]) => yy === y && mm === m)
+      .map(([, , dd]) => dd),
+  );
   const daysInMonth = new Date(y, m, 0).getDate();
   /** Lịch bắt đầu từ Thứ Hai */
   const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
@@ -538,7 +554,7 @@ function MonthCalendar({ dateIso }) {
       </div>
       <div className="grid grid-cols-7 gap-y-2 text-center font-display text-lg mt-3">
         {cells.map((day, i) =>
-          day === d ? (
+          marked.has(day) ? (
             <span key={i} className="relative flex items-center justify-center h-10">
               <svg viewBox="0 0 24 24" className="absolute w-11 h-11 text-[#e0303a] animate-pulse-soft" aria-hidden>
                 <path
@@ -868,7 +884,7 @@ function WeddingPage() {
           <section className="pb-12 -mx-2">
             <Reveal variant="right">
               <h2 className="text-center font-lora text-3xl text-primary uppercase mb-1">{c.calendar.title}</h2>
-              <MonthCalendar dateIso={c.calendar.dateIso} />
+              <MonthCalendar dates={c.calendar.dates} />
             </Reveal>
           </section>
 
@@ -901,8 +917,8 @@ function WeddingPage() {
           </section>
 
           {/* Thank you */}
-          <section className="relative -mx-2 mb-10 overflow-hidden">
-            <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
+          <section className="relative -mx-2 overflow-hidden">
+            <img src={images.thankYou} alt="" className="block w-full aspect-[3/4] object-cover" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
             <Reveal variant="up" className="absolute inset-x-0 bottom-0 px-4 pb-6 text-center text-white">
               <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>

@@ -779,7 +779,7 @@ function EventBlock({ item, mapLabel }) {
       <h4 className="font-sans font-bold uppercase text-[21px] mt-7">{item.place}</h4>
       <p className="font-sans text-[14px] leading-relaxed mt-2">Địa Chỉ: {item.address}</p>
       <a
-        href={mapUrl(item.address)}
+        href={item.mapUrl || mapUrl(item.address)}
         target="_blank"
         rel="noopener noreferrer"
         className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-2.5 font-display font-bold uppercase text-[16px] text-primary-foreground shadow-[0_3px_8px_rgba(0,0,0,0.35)] ring-1 ring-white/20 transition hover:scale-105"

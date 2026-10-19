@@ -36,7 +36,10 @@ export const content = {
 
   events: {
     mapLabel: 'Chỉ đường',
-    /** title: để null nếu không cần tiêu đề (như khối đầu của mẫu) */
+    /**
+     * title: để null nếu không cần tiêu đề (như khối đầu của mẫu)
+     * mapUrl: link Google Maps cho nút "Chỉ đường" — bỏ trống thì tự tìm theo address
+     */
     items: [
       {
         id: 'nha-gai',
@@ -48,6 +51,7 @@ export const content = {
         lunar: '( Nhằm Ngày 03 Tháng 10 Năm Bính Ngọ )',
         place: 'Tư Gia Nhà Gái',
         address: ADDRESS_BRIDE,
+        mapUrl: 'https://maps.app.goo.gl/jJmngVtBjMAXz33z7',
       },
     ],
   },

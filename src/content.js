@@ -1,118 +1,117 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
+const ADDRESS_GROOM = 'Đình Tây Câu Đông, An Quang, Hải Phòng';
+const ADDRESS_BRIDE = 'Xóm 8 Câu Trung, An Quang, Hải Phòng';
+
 export const content = {
   hero: {
-    subtitle: 'Lễ Thành Hôn',
-    groom: 'Lê Đại',
-    bride: 'Phương Lam',
-    dateLine: '06 . 04 . 2026',
-  },
-
-  countdown: {
-    title: 'Cùng chờ đón khoảnh khắc',
-    /** Mốc đếm ngược: Lễ Thành Hôn — Thứ Hai 06/04/2026 10:50 (GMT+7) */
-    targetIso: '2026-04-06T10:50:00+07:00',
+    subtitle: 'Save The Date',
+    /** Hiển thị theo đúng thứ tự này */
+    names: ['Minh Ánh', 'Trung Anh'],
+    dateLine: '01 . 11 . 2026',
   },
 
   families: {
-    title: 'Gia Đình Hai Bên',
-    intro:
-      'Trân trọng kính mời quý vị đến chung vui trong ngày trọng đại của chúng tôi.',
-    brideSide: {
-      label: 'Nhà Gái',
-      parentsPrefix: 'Ông & Bà',
-      father: 'Lê Biểu',
-      mother: 'Đỗ Thị Dung',
-      address: 'SN 134, Vạn Thành, Thăng Bình, Thanh Hóa',
-    },
+    /** father / mother: để null nếu không muốn hiển thị */
     groomSide: {
       label: 'Nhà Trai',
-      parentsPrefix: 'Ông & Bà',
-      father: 'Lê Hồng Bình',
-      mother: 'Lê Thị Phi',
-      address: 'Phố 1, P. Nguyệt Viên, TP. Thanh Hóa',
+      father: null,
+      mother: null,
+      address: ADDRESS_GROOM,
     },
+    brideSide: {
+      label: 'Nhà Gái',
+      father: null,
+      mother: null,
+      address: ADDRESS_BRIDE,
+    },
+    /** Họ tên đầy đủ, hiện dưới phần gia đình */
+    fullNames: ['Bùi Minh Ánh', 'Đỗ Trung Anh'],
+  },
+
+  invitation: {
+    kicker: 'Trân Trọng Kính Mời',
+    /** Tên khách mặc định — có thể thay bằng link ?khach=Tên%20Khách */
+    defaultGuest: 'Quý khách',
+    title: 'Tham Dự Lễ Cưới',
+    /** Chữ đè lên 3 ảnh */
+    dateParts: ['01', '11', '2026'],
   },
 
   events: {
-    title: 'Thông tin sự kiện',
-    intro:
-      'Sự hiện diện của quý vị là niềm vinh hạnh và là món quà ý nghĩa nhất dành cho chúng tôi.',
+    mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'nap-tai',
-        title: 'Lễ Nạp Tài',
-        highlight: false,
-        lines: [
-          { type: 'time', text: "9 giờ 00'" },
-          { type: 'date', text: 'Thứ Bảy, 04/04/2026' },
-          { type: 'lunar', text: '(17 tháng 2 năm Bính Ngọ)' },
-          { type: 'place', text: 'Gia Đình Nhà Gái', multiline: false },
+        id: 'thanh-hon',
+        title: 'Lễ Thành Hôn',
+        time: '09:00 - Chủ Nhật',
+        date: '01. 11. 2026',
+        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
+        places: [
+          { label: 'Tư Gia Nhà Trai', address: 'Đình Câu Đông, An Quang, Hải Phòng' },
+          { label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE },
         ],
       },
       {
         id: 'tiec-cuoi',
-        title: 'Tiệc Cưới',
-        highlight: true,
-        lines: [
-          { type: 'time', text: "16 giờ 00'" },
-          { type: 'date', text: 'Chủ Nhật, 05/04/2026' },
-          { type: 'lunar', text: '(18 tháng 2 năm Bính Ngọ)' },
-          {
-            type: 'place',
-            text: 'Gia Đình Nhà Gái',
-            multiline: false,
-          },
-        ],
-      },
-      {
-        id: 'thanh-hon',
-        title: 'Lễ Thành Hôn',
-        highlight: false,
-        lines: [
-          { type: 'time', text: "10 giờ 50'" },
-          { type: 'date', text: 'Thứ Hai, 06/04/2026' },
-          { type: 'lunar', text: '(19 tháng 2 năm Bính Ngọ)' },
-          {
-            type: 'place',
-            primary: 'Nhà Văn Hóa Phố 1',
-            secondary: 'P. Nguyệt Viên, TP. Thanh Hóa',
-          },
-        ],
+        title: 'Tiệc Mừng Lễ Cưới',
+        time: '13:00 - Chủ Nhật',
+        date: '01. 11. 2026',
+        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
       },
     ],
   },
 
-  gallery: {
-    title: 'Khoảnh khắc tình yêu',
-    subtitle: 'Những kỷ niệm đẹp nhất trên chặng đường chúng tôi đi qua.',
-    alts: ['Khoảnh khắc 1', 'Khoảnh khắc 2', 'Khoảnh khắc 3'],
+  calendar: {
+    title: 'Save The Date',
+    /** Ngày được đánh dấu trên lịch */
+    dateIso: '2026-11-01',
   },
 
   rsvp: {
-    title: 'Gửi Xác Nhận',
-    deadline: 'Vui lòng phản hồi trước ngày 25/03/2026',
-    labels: {
-      name: 'Tên khách mời',
-      email: 'Email liên hệ',
-      attend: 'Bạn sẽ tham dự chứ?',
-      guestCount: 'Số người tham dự',
-      message: 'Lời chúc gửi đến cô dâu chú rể',
-    },
+    /**
+     * Link Web App của Google Apps Script — lời chúc sẽ lưu vào Google Sheets
+     * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
+     * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
+     */
+    endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
+    title: 'Gửi Lời Chúc & Xác Nhận',
     placeholders: {
-      name: 'Vd: Nguyễn Văn A',
-      email: 'Vd: email@example.com',
-      message: 'Viết vài dòng yêu thương...',
+      name: 'Tên của bạn là gì ?',
+      message: 'Gửi lời chúc cho cô dâu & chú rể',
+      attend: 'Xác nhận tham dự ?',
+      guestCount: 'Bạn đi bao nhiêu người ?',
     },
-    attendYes: 'Có, tôi sẽ tham dự',
-    attendNo: 'Rất tiếc không thể',
+    attendYes: 'Có, mình sẽ đến',
+    attendNo: 'Xin lỗi, hôm đấy mình không tới được :(',
     submit: 'Gửi Xác Nhận',
+    sending: 'Đang gửi...',
+    error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
+    thanks: 'Cảm ơn bạn! Lời chúc của bạn đã được ghi nhận.',
   },
 
-  footer: {
-    names: 'Lê Đại & Phương Lam',
-    quote:
-      '"Yêu không phải là nhìn nhau, mà là cùng nhau nhìn về một hướng."',
+  /** Hộp mừng cưới — để accounts: [] để ẩn nút "Gửi mừng cưới" */
+  gift: {
+    button: 'Gửi Mừng Cưới',
+    title: 'Hộp Quà Mừng Cưới',
+    copyLabel: 'Copy STK',
+    copiedLabel: 'Đã copy',
+    saveQrLabel: 'Lưu ảnh QR',
+    accounts: [
+      {
+        holder: 'BUI MINH ANH',
+        number: '203704070018671',
+        bank: 'HDBank',
+        /** Ảnh mã QR trong public/images/ — để null nếu không có */
+        qr: '/images/qr-hdbank.png',
+      },
+    ],
+  },
+
+  thanks: {
+    title: 'Thank You',
+    text: 'Từ tận đáy lòng, chúng mình cảm ơn bạn đã dành tình cảm và sự hiện diện cho ngày vui này. Chính bạn đã góp phần làm nên một kỷ niệm hạnh phúc mà chúng mình sẽ luôn trân trọng.',
   },
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */

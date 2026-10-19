@@ -1,32 +1,32 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Đình Tây Câu Đông, An Quang, Hải Phòng';
-const ADDRESS_BRIDE = 'Xóm 8 Câu Trung, An Quang, Hải Phòng';
+const ADDRESS_GROOM = 'Thôn Bản Sái, xã Bản Hồ, tỉnh Lào Cai';
+const ADDRESS_BRIDE = 'Km19, thôn Ky Công Hồ, đường Sa Pa - Lào Cai';
 
 export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Minh Ánh', 'Trung Anh'],
-    dateLine: '01 . 11 . 2026',
+    names: ['Mẩy Líu', 'Phùng Yết'],
+    dateLine: '24 . 11 . 2026',
   },
 
   families: {
     /** father / mother: để null nếu không muốn hiển thị */
     groomSide: {
       label: 'Nhà Trai',
-      father: null,
-      mother: null,
+      father: 'Phùng Vần Siểu',
+      mother: 'Phùng Cờ Mẩy',
       address: ADDRESS_GROOM,
     },
     brideSide: {
       label: 'Nhà Gái',
-      father: null,
-      mother: null,
+      father: 'Chảo Diếu Nhàn',
+      mother: 'Lý Tả Mẩy',
       address: ADDRESS_BRIDE,
     },
     /** Họ tên đầy đủ, hiện dưới phần gia đình */
-    fullNames: ['Bùi Minh Ánh', 'Đỗ Trung Anh'],
+    fullNames: ['Mẩy Líu', 'Phùng Yết'],
   },
 
   invitation: {
@@ -35,29 +35,26 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Cưới',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['01', '11', '2026'],
+    dateParts: ['24', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '09:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [
-          { label: 'Tư Gia Nhà Trai', address: 'Đình Câu Đông, An Quang, Hải Phòng' },
-          { label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE },
-        ],
+        id: 'nha-trai',
+        title: 'Lễ Cưới Nhà Trai',
+        time: '09:00 - Thứ Hai',
+        date: '23. 11. 2026',
+        lunar: '( Tức Ngày 15 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
       {
-        id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Cưới',
-        time: '13:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
+        id: 'nha-gai',
+        title: 'Lễ Cưới Nhà Gái',
+        time: '09:00 - Thứ Ba',
+        date: '24. 11. 2026',
+        lunar: '( Tức Ngày 16 Tháng 10 Năm Bính Ngọ )',
         places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
       },
     ],
@@ -65,8 +62,8 @@ export const content = {
 
   calendar: {
     title: 'Save The Date',
-    /** Ngày được đánh dấu trên lịch */
-    dateIso: '2026-11-01',
+    /** Các ngày được đánh dấu trái tim trên lịch (cùng một tháng) */
+    dates: ['2026-11-23', '2026-11-24'],
   },
 
   rsvp: {
@@ -75,7 +72,7 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
+    endpoint: '',
     title: 'Gửi Lời Chúc & Xác Nhận',
     placeholders: {
       name: 'Tên của bạn là gì ?',
@@ -99,13 +96,7 @@ export const content = {
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
-      {
-        holder: 'BUI MINH ANH',
-        number: '203704070018671',
-        bank: 'HDBank',
-        /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-hdbank.png',
-      },
+      // { holder: 'TEN CHU TAI KHOAN', number: '0000000000', bank: 'Tên ngân hàng', qr: '/images/qr.png' },
     ],
   },
 

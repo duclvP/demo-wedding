@@ -4,7 +4,7 @@
  */
 
 /** Bảng tính nhận lời chúc (phần giữa /d/ và /edit trong link Google Sheets) */
-const SPREADSHEET_ID = '15V6U85vRkfvhvhlzQ2pR2GL2NMnvsB8KUIsOOy04OAE';
+const SPREADSHEET_ID = 'DIEN_ID_BANG_TINH_CUA_THIEP_NAY';
 
 /** Email nhận thông báo — để '' nếu không muốn nhận email */
 const NOTIFY_EMAIL = 'ban@gmail.com';

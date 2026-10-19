@@ -1,72 +1,68 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Đình Tây Câu Đông, An Quang, Hải Phòng';
-const ADDRESS_BRIDE = 'Xóm 8 Câu Trung, An Quang, Hải Phòng';
+const ADDRESS_BRIDE = 'Nhà riêng Cốc Tào, thôn Bản Cầy, xã Nà Phặc, tỉnh Thái Nguyên';
 
 export const content = {
   hero: {
-    subtitle: 'Save The Date',
-    /** Hiển thị theo đúng thứ tự này */
-    names: ['Minh Ánh', 'Trung Anh'],
-    dateLine: '01 . 11 . 2026',
+    /** Hiển thị theo đúng thứ tự này — lễ tổ chức bên nhà gái nên cô dâu đứng trước */
+    names: ['Thảo Dinh', 'Xuân Viên'],
+    joiner: 'and',
+    subtitle: 'Save the date',
+    dateLine: '11. 11. 2026',
+  },
+
+  calendar: {
+    /** Ngày được đánh dấu trên lịch */
+    dateIso: '2026-11-11',
+    monthLabel: 'November',
   },
 
   families: {
+    /** Chữ lồng trong khung hoa văn: [chữ trên trái, chữ dưới phải] */
+    monogram: ['D', 'V'],
     /** father / mother: để null nếu không muốn hiển thị */
-    groomSide: {
-      label: 'Nhà Trai',
-      father: null,
-      mother: null,
-      address: ADDRESS_GROOM,
-    },
-    brideSide: {
-      label: 'Nhà Gái',
-      father: null,
-      mother: null,
-      address: ADDRESS_BRIDE,
-    },
-    /** Họ tên đầy đủ, hiện dưới phần gia đình */
-    fullNames: ['Bùi Minh Ánh', 'Đỗ Trung Anh'],
+    sides: [
+      { label: 'Nhà Gái', father: 'Phạm Văn Hưng', mother: 'Nông Thị Điền' },
+      { label: 'Nhà Trai', father: 'Nguyễn Văn Công', mother: 'Đặng Thị Vui' },
+    ],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — có thể thay bằng link ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Cưới',
-    /** Chữ đè lên 3 ảnh */
-    dateParts: ['01', '11', '2026'],
+    lead: 'Tham dự tiệc chung vui của gia đình chúng tôi',
   },
 
   events: {
-    mapLabel: 'Xem chỉ đường',
+    mapLabel: 'Chỉ đường',
+    /** title: để null nếu không cần tiêu đề (như khối đầu của mẫu) */
     items: [
       {
-        id: 'thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '09:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [
-          { label: 'Tư Gia Nhà Trai', address: 'Đình Câu Đông, An Quang, Hải Phòng' },
-          { label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE },
-        ],
-      },
-      {
-        id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Cưới',
-        time: '13:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+        id: 'nha-gai',
+        title: null,
+        timeLine: 'Vào lúc 16 giờ 00 phút – Thứ Tư',
+        day: '11',
+        month: 'Tháng 11',
+        year: 'Năm 2026',
+        lunar: '( Nhằm Ngày 03 Tháng 10 Năm Bính Ngọ )',
+        place: 'Tư Gia Nhà Gái',
+        address: ADDRESS_BRIDE,
       },
     ],
   },
 
-  calendar: {
-    title: 'Save The Date',
-    /** Ngày được đánh dấu trên lịch */
-    dateIso: '2026-11-01',
+  story: {
+    title: 'Our Story',
+    /** Ảnh oval: theo thứ tự trong image.js → images.people */
+    people: [
+      { label: 'Cô Dâu', name: 'Thảo Dinh' },
+      { label: 'Chú rể', name: 'Xuân Viên' },
+    ],
+    paragraphs: [
+      'Tình yêu của chúng mình bắt đầu từ những điều rất giản dị, rồi lớn dần qua thời gian, qua những lần thấu hiểu, cảm thông và cả những thử thách không tránh khỏi. Giữa muôn vàn lựa chọn của cuộc đời, anh và em đã chọn ở lại bên nhau, chọn tin tưởng, chọn yêu thương và cùng nhau bước tiếp.',
+      'Từ giây phút này, anh và em không chỉ là hai con người yêu nhau, mà là một gia đình – bắt đầu chương mới mang tên hạnh phúc!',
+    ],
   },
 
   rsvp: {
@@ -76,15 +72,15 @@ export const content = {
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
     endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
-    title: 'Gửi Lời Chúc & Xác Nhận',
+    title: 'Xác nhận tham dự',
+    intro: 'Hãy xác nhận tham dự để chúng mình chuẩn bị đón tiếp thật chu đáo. Trân Trọng!',
     placeholders: {
-      name: 'Tên của bạn là gì ?',
-      message: 'Gửi lời chúc cho cô dâu & chú rể',
-      attend: 'Xác nhận tham dự ?',
-      guestCount: 'Bạn đi bao nhiêu người ?',
+      name: 'Họ và Tên',
+      guestCount: 'Bạn đi bao nhiêu người',
+      message: 'Gửi lời chúc cho dâu, rể',
     },
     attendYes: 'Có, mình sẽ đến',
-    attendNo: 'Xin lỗi, hôm đấy mình không tới được :(',
+    attendNo: 'Tiếc quá, hôm đấy mình không đến được :((',
     submit: 'Gửi Xác Nhận',
     sending: 'Đang gửi...',
     error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
@@ -94,19 +90,16 @@ export const content = {
   /** Hộp mừng cưới — để accounts: [] để ẩn nút "Gửi mừng cưới" */
   gift: {
     button: 'Gửi Mừng Cưới',
-    title: 'Hộp Quà Mừng Cưới',
+    title: 'Hộp Mừng Cưới',
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    accounts: [
-      {
-        holder: 'BUI MINH ANH',
-        number: '203704070018671',
-        bank: 'HDBank',
-        /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-hdbank.png',
-      },
-    ],
+    /** { holder, number, bank, qr } — qr là ảnh trong public/images/, để null nếu không có */
+    accounts: [],
+  },
+
+  album: {
+    title: 'Album of Love',
   },
 
   thanks: {

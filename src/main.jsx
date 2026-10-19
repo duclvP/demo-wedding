@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Check, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
+import { Check, Copy, Download, Gift, MapPin, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
 import { images } from "./image.js";
 import "./index.css";
@@ -236,15 +236,16 @@ const BackgroundMusic = memo(function BackgroundMusic({ src, volume }) {
   );
 });
 
-/** Hiện dần khi cuộn tới — variant: up | down | left | right | zoom | bounce */
-const CurtainContext = React.createContext(true);
+/** true khi cửa thiệp đã mở */
+const DoorsContext = React.createContext(true);
 
+/** Hiện dần khi cuộn tới — variant: up | down | left | right | zoom | bounce */
 function Reveal({ as: Tag = "div", variant = "up", delay = 0, className = "", children }) {
   const ref = useRef(null);
   const [seen, setSeen] = useState(false);
-  /** Không chạy hiệu ứng khi rèm còn che — tránh phần đầu thiệp "diễn" trước khi khách thấy */
-  const curtainOpen = React.useContext(CurtainContext);
-  const visible = seen && curtainOpen;
+  /** Không chạy hiệu ứng khi cửa còn đóng — tránh phần đầu thiệp "diễn" trước khi khách thấy */
+  const doorsOpen = React.useContext(DoorsContext);
+  const visible = seen && doorsOpen;
 
   useEffect(() => {
     const el = ref.current;
@@ -288,7 +289,7 @@ const FALLING = [
   { kind: "heart", chars: ["❤"], every: 4000, burst: 6, size: [1.2, 1], duration: [10, 5] },
 ];
 
-/** Bắt đầu khi `active` = true (rèm đã mở): rơi một đợt ngay, sau đó rơi đều */
+/** Bắt đầu khi `active` = true: rơi một đợt ngay, sau đó rơi đều */
 function FallingEffects({ active }) {
   const [items, setItems] = useState([]);
 
@@ -346,116 +347,6 @@ function FallingEffects({ active }) {
   );
 }
 
-/** Rèm đỏ che thiệp, tự kéo sang hai bên (hoặc khi chạm con dấu 囍) */
-function OpeningCurtain({ onOpen, onDone }) {
-  const [opening, setOpening] = useState(false);
-
-  const open = useCallback(() => {
-    setOpening((was) => {
-      if (!was) onOpen();
-      return true;
-    });
-  }, [onOpen]);
-
-  useEffect(() => {
-    const t = setTimeout(open, 1500);
-    return () => clearTimeout(t);
-  }, [open]);
-
-  useEffect(() => {
-    if (!opening) return;
-    const t = setTimeout(onDone, 3000);
-    return () => clearTimeout(t);
-  }, [opening, onDone]);
-
-  return (
-    <div
-      className={`fixed inset-0 z-[160] mx-auto max-w-[460px] overflow-hidden ${opening ? "pointer-events-none" : ""}`}
-      onClick={open}
-      aria-hidden
-    >
-      <div className={`curtain curtain-left ${opening ? "is-open" : ""}`} />
-      <div className={`curtain curtain-right ${opening ? "is-open" : ""}`} />
-      <div
-        className={`absolute left-1/2 top-[38%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center transition-all duration-700 ${
-          opening ? "scale-50 opacity-0" : ""
-        }`}
-      >
-        <button type="button" className="seal animate-pulse-soft" aria-label="Mở thiệp">
-          <span className="font-display font-bold text-[64px] leading-none text-[#f3d27a]">囍</span>
-        </button>
-        <p className="mt-4 font-lora text-sm tracking-widest uppercase text-[#f8e4a6] drop-shadow">
-          Chạm để mở thiệp
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Họa tiết trang trí (SVG vẽ tay, không cần file ảnh) ---------- */
-
-function DoubleHappiness({ className = "" }) {
-  return (
-    <div
-      className={`flex items-center justify-center rounded-full border-2 border-primary/80 text-primary font-display font-bold ${className}`}
-      aria-hidden
-    >
-      囍
-    </div>
-  );
-}
-
-function Knot({ className = "" }) {
-  return (
-    <svg viewBox="0 0 40 90" className={className} aria-hidden>
-      <g fill="none" stroke="#e0782f" strokeWidth="2">
-        <line x1="20" y1="0" x2="20" y2="14" />
-        <path d="M20 14 L32 26 L20 38 L8 26 Z" />
-        <path d="M14 20 L26 32 M26 20 L14 32" />
-        <circle cx="8" cy="26" r="3" />
-        <circle cx="32" cy="26" r="3" />
-        <line x1="20" y1="38" x2="20" y2="48" />
-      </g>
-      <path d="M16 48 h8 l2 34 h-12 z" fill="#e0782f" opacity="0.85" />
-    </svg>
-  );
-}
-
-function Lantern({ className = "" }) {
-  return (
-    <svg viewBox="0 0 40 70" className={className} aria-hidden>
-      <line x1="20" y1="0" x2="20" y2="10" stroke="#b8860b" strokeWidth="1.5" />
-      <rect x="13" y="10" width="14" height="4" rx="1" fill="#b8860b" />
-      <ellipse cx="20" cy="32" rx="16" ry="18" fill="#d6262b" />
-      <path d="M20 14 Q8 32 20 50 M20 14 Q32 32 20 50" stroke="#a01519" strokeWidth="1.2" fill="none" />
-      <rect x="13" y="49" width="14" height="4" rx="1" fill="#b8860b" />
-      <path d="M17 53 h6 l1 14 h-8 z" fill="#d6262b" />
-    </svg>
-  );
-}
-
-/** Viền hoa văn vàng chạy dọc mép thiệp */
-function KeyBorder({ side }) {
-  return (
-    <div
-      className={`key-border pointer-events-none absolute inset-y-0 ${side === "left" ? "left-1.5" : "right-1.5"} w-4 z-20`}
-      aria-hidden
-    />
-  );
-}
-
-function GoldFrame({ src, alt, className = "", imgClass = "" }) {
-  return (
-    <div className={`gold-frame p-[6px] shadow-xl ${className}`}>
-      <div className="bg-white p-1.5">
-        <img src={src} alt={alt} className={`w-full object-cover ${imgClass}`} loading="lazy" />
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Các khối nội dung ---------- */
-
 function mapUrl(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
@@ -472,49 +363,354 @@ function useGuestName(fallback) {
   })[0];
 }
 
-function FamilySide({ side }) {
+/* ---------- Họa tiết trang trí (SVG vẽ tay, không cần file ảnh) ---------- */
+
+/** Số ngẫu nhiên có seed — đường xé giấy giữ nguyên giữa các lần render */
+function seeded(seed) {
+  let s = seed;
+  return () => (s = (s * 9301 + 49297) % 233280) / 233280;
+}
+
+function tornPath(seed) {
+  const rnd = seeded(seed);
+  const pts = [];
+  /** Đi ngẫu nhiên (không nhảy độc lập từng điểm) để mép trông như vết cọ, thỉnh thoảng có sợi giấy nhọn */
+  let y = 8;
+  for (let x = 0; x <= 400; x += 2) {
+    y = Math.min(16, Math.max(2, y + (rnd() - 0.5) * 3.2));
+    const fiber = rnd() < 0.06 ? 4 + rnd() * 6 : 0;
+    pts.push(`${x},${(y + fiber).toFixed(1)}`);
+  }
+  return `M0,0 L${pts.join(" L")} L400,0 Z`;
+}
+
+function roughRectPath(seed) {
+  const rnd = seeded(seed);
+  const j = (v, a) => (v + (rnd() - 0.5) * a).toFixed(1);
+  const pts = [];
+  for (let x = 6; x <= 194; x += 5) pts.push(`${x},${j(6, 9)}`);
+  for (let y = 10; y <= 50; y += 5) pts.push(`${j(194, 10)},${y}`);
+  for (let x = 194; x >= 6; x -= 5) pts.push(`${x},${j(54, 9)}`);
+  for (let y = 50; y >= 10; y -= 5) pts.push(`${j(6, 10)},${y}`);
+  return `M${pts.join(" L")} Z`;
+}
+
+const TORN = [tornPath(7), tornPath(23), tornPath(41)];
+const PATCH = roughRectPath(11);
+
+/** Mép giấy xé màu xanh tràn ra khỏi dải nền (lên trên hoặc xuống dưới) */
+function TornEdge({ side, variant = 0 }) {
   return (
-    <div className="text-center">
-      <h3 className="font-upright font-semibold text-[28px] text-foreground mb-1">{side.label}</h3>
-      {side.father && (
-        <p className="font-oswald font-medium text-[15px] uppercase">Bố: {side.father}</p>
-      )}
-      {side.mother && (
-        <p className="font-oswald font-medium text-[15px] uppercase mb-2">Mẹ: {side.mother}</p>
-      )}
-      <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
+    <svg
+      viewBox="0 0 400 24"
+      preserveAspectRatio="none"
+      className={`absolute inset-x-0 h-6 w-full text-primary ${side === "top" ? "bottom-full -scale-y-100" : "top-full"}`}
+      aria-hidden
+    >
+      <path d={TORN[variant % TORN.length]} fill="currentColor" />
+    </svg>
+  );
+}
+
+/** Dải nền xanh rêu với hai mép xé giấy */
+function GreenBand({ edges = ["top", "bottom"], variant = 0, className = "", children }) {
+  return (
+    <section className={`relative z-10 bg-primary text-primary-foreground ${className}`}>
+      {edges.includes("top") && <TornEdge side="top" variant={variant} />}
+      {children}
+      {edges.includes("bottom") && <TornEdge side="bottom" variant={variant + 1} />}
+    </section>
+  );
+}
+
+/** Miếng giấy kem mép xé (Save the date, Our Story) */
+function PaperPatch({ className = "", children }) {
+  return (
+    <div className={`relative inline-block text-primary ${className}`}>
+      <svg viewBox="0 0 200 60" preserveAspectRatio="none" className="absolute inset-0 h-full w-full text-background" aria-hidden>
+        <path d={PATCH} fill="currentColor" />
+      </svg>
+      <div className="relative">{children}</div>
     </div>
   );
 }
 
-function EventCard({ item, mapLabel }) {
+/** Hoa ly nét mảnh */
+function Lily({ className = "" }) {
   return (
-    <div className="rounded-[28px] bg-primary text-primary-foreground px-6 py-7 text-center shadow-lg shadow-primary/25">
-      <h3 className="font-avo font-semibold uppercase text-lg mb-2">{item.title}</h3>
-      <p className="font-avo text-base mb-1">{item.time}</p>
-      <p className="font-avo font-semibold text-3xl mb-1">{item.date}</p>
-      <p className="italic text-xs opacity-85 mb-5">{item.lunar}</p>
-      <div className="space-y-5">
-        {item.places.map((place) => (
-          <div key={place.label}>
-            <p className="font-avo uppercase text-lg mb-1">{place.label}</p>
-            <p className="text-sm opacity-90 mb-3">{place.address}</p>
-            <a
-              href={mapUrl(place.address)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block rounded-full bg-white px-8 py-1.5 font-lora text-primary text-base shadow transition hover:scale-105"
-            >
-              {mapLabel}
-            </a>
-          </div>
+    <svg
+      viewBox="0 0 120 100"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="0.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M62 64 C52 42 54 20 63 4 C70 22 70 44 62 64Z" />
+      <path d="M62 64 C42 56 26 42 14 22 C36 26 52 40 62 64Z" />
+      <path d="M62 64 C82 56 98 42 110 24 C88 26 72 40 62 64Z" />
+      <path d="M62 64 C44 64 26 72 12 84 C34 86 50 78 62 64Z" />
+      <path d="M62 64 C78 66 94 74 106 86 C86 88 72 80 62 64Z" />
+      <path d="M62 60 C60 42 61 26 63 12 M58 60 C46 50 34 40 22 28 M66 60 C78 50 90 40 102 30" opacity="0.55" />
+      <path d="M62 64 L48 36 M62 64 L57 30 M62 64 L68 31 M62 64 L77 38 M62 64 L84 46" />
+      {[
+        [48, 36],
+        [57, 30],
+        [68, 31],
+        [77, 38],
+        [84, 46],
+      ].map(([cx, cy]) => (
+        <ellipse key={cx} cx={cx} cy={cy} rx="2.2" ry="1.1" fill="currentColor" transform={`rotate(-30 ${cx} ${cy})`} />
+      ))}
+      <path d="M40 58 C34 50 34 40 40 32 C46 40 46 50 40 58Z" opacity="0.8" />
+      <path d="M40 58 C46 66 58 66 62 64" />
+    </svg>
+  );
+}
+
+/** Khung hoa văn chữ lồng: chữ thứ nhất trên trái, chữ thứ hai dưới phải */
+function Monogram({ letters }) {
+  const corners = [
+    [12, 18, 1, 1],
+    [80, 18, -1, 1],
+    [12, 112, 1, -1],
+    [80, 112, -1, -1],
+  ];
+  return (
+    <div className="relative mx-auto h-[130px] w-[92px] text-primary">
+      <svg viewBox="0 0 92 130" className="absolute inset-0 h-full w-full" fill="none" stroke="currentColor" aria-hidden>
+        <path d="M14 22 Q14 8 30 8 L62 8 Q78 8 78 22 L78 108 Q78 122 62 122 L30 122 Q14 122 14 108 Z" strokeWidth="1.1" />
+        <path d="M18 24 Q18 12 31 12 L61 12 Q74 12 74 24 L74 106 Q74 118 61 118 L31 118 Q18 118 18 106 Z" strokeWidth="0.5" />
+        {corners.map(([x, y, sx, sy]) => (
+          <g key={`${x}-${y}`} strokeWidth="0.9">
+            <path d={`M${x} ${y + sy * 12} C${x - sx * 10} ${y + sy * 2} ${x + sx * 2} ${y - sy * 12} ${x + sx * 12} ${y - sy * 4}`} />
+            <circle cx={x - sx * 3} cy={y - sy * 4} r="2.2" />
+            <path d={`M${x + sx * 4} ${y + sy * 20} q${-sx * 6} ${-sy * 4} ${-sx * 2} ${-sy * 10}`} />
+          </g>
         ))}
+        <path d="M34 4 Q46 12 58 4 M34 126 Q46 118 58 126" strokeWidth="0.9" />
+      </svg>
+      <span className="absolute left-[24px] top-[22px] font-names text-[38px] leading-none">{letters[0]}</span>
+      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-names text-xl">&</span>
+      <span className="absolute bottom-[22px] right-[24px] font-names text-[38px] leading-none">{letters[1]}</span>
+    </div>
+  );
+}
+
+/** Hai chiếc nhẫn lồng nhau */
+function Rings({ className = "" }) {
+  return (
+    <svg viewBox="0 0 64 30" className={className} fill="none" stroke="currentColor" strokeWidth="1.1" aria-hidden>
+      <ellipse cx="24" cy="17" rx="15" ry="9" />
+      <ellipse cx="24" cy="17" rx="12" ry="6.5" strokeWidth="0.6" />
+      <ellipse cx="40" cy="15" rx="15" ry="9" />
+      <ellipse cx="40" cy="15" rx="12" ry="6.5" strokeWidth="0.6" />
+      <path d="M38 6 l2 -4 l2 4 l-2 2 z" />
+    </svg>
+  );
+}
+
+/** Vòng lá ôm quanh ảnh tròn */
+function Wreath({ className = "" }) {
+  const leaves = [];
+  [
+    [-80, -10],
+    [100, 170],
+  ].forEach(([from, to]) => {
+    for (let a = from; a <= to; a += 9) leaves.push(a);
+  });
+  return (
+    <svg viewBox="0 0 220 220" className={className} fill="none" stroke="currentColor" aria-hidden>
+      <circle cx="110" cy="110" r="100" strokeWidth="1.4" />
+      {leaves.map((a, i) => {
+        const rad = (a * Math.PI) / 180;
+        const r = 103 + (i % 2 ? 5 : -2);
+        const x = 110 + r * Math.cos(rad);
+        const y = 110 + r * Math.sin(rad);
+        return (
+          <ellipse
+            key={a}
+            cx={x}
+            cy={y}
+            rx="7"
+            ry="2.6"
+            fill="currentColor"
+            opacity="0.85"
+            transform={`rotate(${a + 90 + (i % 2 ? 35 : -35)} ${x} ${y})`}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+/* ---------- Cửa mở thiệp ---------- */
+
+/** Bông ly trắng nhìn từ trên xuống: 6 cánh + nhị nâu */
+function LilyBloom({ x, y, scale = 1, rotate = 0 }) {
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rotate}) scale(${scale})`}>
+      {[0, 60, 120, 180, 240, 300].map((a, i) => (
+        <g key={a} transform={`rotate(${a + (i % 2 ? 8 : 0)})`}>
+          <path
+            d="M0 0 C-9 -10 -8 -26 0 -36 C8 -26 9 -10 0 0Z"
+            fill={i % 2 ? "#ffffff" : "#f6f7f0"}
+            stroke="#c9d3bb"
+            strokeWidth="0.8"
+          />
+          <path d="M0 -4 L0 -28" stroke="#dfe6d2" strokeWidth="1" />
+        </g>
+      ))}
+      <circle r="4" fill="#d9e6b8" />
+      {[-50, -20, 10, 40, 70].map((a) => {
+        const rad = ((a - 90) * Math.PI) / 180;
+        const ex = 15 * Math.cos(rad);
+        const ey = 15 * Math.sin(rad);
+        return (
+          <g key={a}>
+            <path d={`M0 0 L${ex.toFixed(1)} ${ey.toFixed(1)}`} stroke="#a7b77f" strokeWidth="0.8" />
+            <ellipse cx={ex} cy={ey} rx="2.6" ry="1.2" fill="#8a5a3c" transform={`rotate(${a} ${ex} ${ey})`} />
+          </g>
+        );
+      })}
+    </g>
+  );
+}
+
+function LilyLeaf({ x, y, length = 60, rotate = 0, tone = "#7f9f6a" }) {
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rotate})`}>
+      <path d={`M0 0 C${length * 0.15} ${-length * 0.08} ${length * 0.7} ${-length * 0.1} ${length} 0 C${length * 0.7} ${length * 0.1} ${length * 0.15} ${length * 0.08} 0 0Z`} fill={tone} />
+      <path d={`M0 0 L${length * 0.9} 0`} stroke="#ffffff" strokeOpacity="0.35" strokeWidth="0.8" />
+    </g>
+  );
+}
+
+function LilyBud({ x, y, rotate = 0 }) {
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rotate})`}>
+      <path d="M0 0 C-6 -10 -5 -26 0 -34 C5 -26 6 -10 0 0Z" fill="#e3ecd2" stroke="#a9bd8f" strokeWidth="0.8" />
+      <path d="M0 0 L0 12" stroke="#7f9f6a" strokeWidth="1.6" />
+    </g>
+  );
+}
+
+/** Cụm hoa ly + lá ở góc cửa (góc trên trái; lật 180° cho góc dưới phải) */
+function LilyCorner({ className = "" }) {
+  return (
+    <svg viewBox="0 0 220 220" className={className} aria-hidden>
+      <LilyLeaf x={20} y={30} length={150} rotate={62} tone="#9cb889" />
+      <LilyLeaf x={30} y={20} length={130} rotate={18} tone="#6f9160" />
+      <LilyLeaf x={60} y={50} length={110} rotate={40} tone="#86a675" />
+      <LilyLeaf x={10} y={80} length={100} rotate={78} tone="#7f9f6a" />
+      <LilyLeaf x={90} y={20} length={90} rotate={-8} tone="#9cb889" />
+      <LilyBud x={150} y={44} rotate={70} />
+      <LilyBud x={52} y={150} rotate={160} />
+      <LilyBloom x={48} y={46} scale={1.15} rotate={10} />
+      <LilyBloom x={118} y={30} scale={0.9} rotate={-15} />
+      <LilyBloom x={28} y={118} scale={0.85} rotate={30} />
+    </svg>
+  );
+}
+
+/** Đường viền con dấu sáp lượn sóng không đều */
+const WAX_EDGE = (() => {
+  const pts = [];
+  for (let i = 0; i < 90; i++) {
+    const t = (i / 90) * Math.PI * 2;
+    const r = 45 + 2.2 * Math.sin(7 * t) + 1.4 * Math.sin(12 * t + 1) + 0.8 * Math.sin(19 * t + 2);
+    pts.push(`${(50 + r * Math.cos(t)).toFixed(1)},${(50 + r * Math.sin(t)).toFixed(1)}`);
+  }
+  return `M${pts.join(" L")} Z`;
+})();
+
+/** Con dấu sáp xanh hình cỏ bốn lá */
+function WaxSeal({ className = "" }) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} aria-hidden>
+      <defs>
+        <radialGradient id="wax" cx="35%" cy="30%" r="80%">
+          <stop offset="0" stopColor="#62c17e" />
+          <stop offset="0.45" stopColor="#2c8a4b" />
+          <stop offset="1" stopColor="#135028" />
+        </radialGradient>
+        <radialGradient id="wax-inner" cx="60%" cy="65%" r="70%">
+          <stop offset="0" stopColor="#3a9b59" />
+          <stop offset="1" stopColor="#1d6a37" />
+        </radialGradient>
+      </defs>
+      <path d={WAX_EDGE} fill="url(#wax)" />
+      <circle cx="50" cy="50" r="33" fill="url(#wax-inner)" stroke="#124d27" strokeWidth="1.6" />
+      <circle cx="50" cy="50" r="34.5" fill="none" stroke="#8ddba3" strokeOpacity="0.45" strokeWidth="1" />
+      {[45, 135, 225, 315].map((a) => (
+        <g key={a} transform={`rotate(${a} 50 50)`}>
+          <path
+            d="M50 50 C45 44 39 39 41 32 C43 26 49 27 50 32 C51 27 57 26 59 32 C61 39 55 44 50 50Z"
+            fill="#2f8f4f"
+            stroke="#114a25"
+            strokeWidth="1"
+          />
+          <path d="M50 49 L50 33 M50 42 L46 37 M50 42 L54 37" stroke="#114a25" strokeWidth="0.6" fill="none" />
+        </g>
+      ))}
+      <path d="M50 50 C52 56 55 60 60 62" stroke="#114a25" strokeWidth="1.4" fill="none" />
+    </svg>
+  );
+}
+
+/** Hai cánh cửa kem hoa ly, tự mở sau vài giây (hoặc khi chạm) */
+function OpeningDoors({ onOpen, onDone }) {
+  const [opening, setOpening] = useState(false);
+
+  const open = useCallback(() => {
+    setOpening((was) => {
+      if (!was) onOpen();
+      return true;
+    });
+  }, [onOpen]);
+
+  useEffect(() => {
+    const t = setTimeout(open, 3000);
+    return () => clearTimeout(t);
+  }, [open]);
+
+  useEffect(() => {
+    if (!opening) return;
+    const t = setTimeout(onDone, 2800);
+    return () => clearTimeout(t);
+  }, [opening, onDone]);
+
+  return (
+    <div
+      className={`fixed inset-0 z-[160] mx-auto max-w-[420px] overflow-hidden ${opening ? "pointer-events-none" : ""}`}
+      onClick={open}
+      aria-hidden
+    >
+      <div className={`door door-left ${opening ? "is-open" : ""}`}>
+        <LilyCorner className="absolute -left-3 -top-3 w-[96%] max-w-[320px]" />
+      </div>
+      <div className={`door door-right ${opening ? "is-open" : ""}`}>
+        <LilyCorner className="absolute -bottom-3 -right-3 w-[96%] max-w-[320px] rotate-180" />
+      </div>
+      <div
+        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center transition-all duration-700 ${
+          opening ? "scale-50 opacity-0" : ""
+        }`}
+      >
+        <button type="button" className="animate-pulse-soft drop-shadow-[0_6px_10px_rgba(0,0,0,0.35)]" aria-label="Mở thiệp">
+          <WaxSeal className="h-28 w-28" />
+        </button>
+        <p className="mt-3 font-sans text-[13px] uppercase tracking-[0.25em] text-primary/80">Chạm để mở thiệp</p>
       </div>
     </div>
   );
 }
 
-const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
+/* ---------- Các khối nội dung ---------- */
+
+const WEEKDAYS = ["MON", "TUE", "WED", "THUR", "FRI", "SAT", "SUN"];
 
 function MonthCalendar({ dateIso }) {
   const [y, m, d] = dateIso.split("-").map(Number);
@@ -527,30 +723,28 @@ function MonthCalendar({ dateIso }) {
   ];
 
   return (
-    <div>
-      <p className="text-center font-date text-xl text-primary uppercase mb-4">
-        Tháng {m} - {y}
-      </p>
-      <div className="grid grid-cols-7 bg-primary text-primary-foreground text-center font-semibold text-sm py-2.5">
+    <div className="px-2">
+      <div className="grid grid-cols-7 text-center font-sans text-[13px]">
         {WEEKDAYS.map((w) => (
           <span key={w}>{w}</span>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-y-2 text-center font-display text-lg mt-3">
+      <div className="mt-2 grid grid-cols-7 gap-y-1 text-center font-display text-[17px]">
         {cells.map((day, i) =>
           day === d ? (
-            <span key={i} className="relative flex items-center justify-center h-10">
-              <svg viewBox="0 0 24 24" className="absolute w-11 h-11 text-[#e0303a] animate-pulse-soft" aria-hidden>
+            <span key={i} className="relative flex h-11 items-center justify-center">
+              <svg viewBox="0 0 24 24" className="absolute h-14 w-14 animate-pulse-soft" aria-hidden>
                 <path
-                  fill="currentColor"
-                  opacity="0.85"
-                  d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 3 5 6.4 5c2 0 3.6 1.1 4.6 2.6C12 6.1 13.6 5 15.6 5 19 5 21.1 8.6 19.6 11.9 17.5 16.4 12 21 12 21z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  d="M12 20.5s-7.8-4.7-9.4-9.4C1.4 7.6 3.6 4.5 6.8 4.5c2.1 0 3.9 1.3 5.2 3.1 1.3-1.8 3.1-3.1 5.2-3.1 3.2 0 5.4 3.1 4.2 6.6-1.6 4.7-9.4 9.4-9.4 9.4z"
                 />
               </svg>
-              <span className="relative font-bold text-white">{day}</span>
+              <span className="relative">{day}</span>
             </span>
           ) : (
-            <span key={i} className="flex items-center justify-center h-10">
+            <span key={i} className="flex h-11 items-center justify-center">
               {day ?? ""}
             </span>
           ),
@@ -560,11 +754,48 @@ function MonthCalendar({ dateIso }) {
   );
 }
 
+function FamilySide({ side }) {
+  return (
+    <div className="text-center">
+      <h3 className="font-sans font-bold uppercase text-[17px] mb-1.5">{side.label}</h3>
+      {side.father && <p className="font-sans text-[14px] leading-7">Ông: {side.father}</p>}
+      {side.mother && <p className="font-sans text-[14px] leading-7">Bà: {side.mother}</p>}
+    </div>
+  );
+}
+
+function EventBlock({ item, mapLabel }) {
+  const sideCls = "w-[104px] border-y border-primary py-2 font-sans font-bold uppercase text-[17px]";
+  return (
+    <div className="text-center">
+      {item.title && <h3 className="font-sans font-bold uppercase text-[22px] mb-3">{item.title}</h3>}
+      <p className="font-sans font-semibold uppercase text-[15px]">{item.timeLine}</p>
+      <div className="mt-3 flex items-center justify-center gap-3">
+        <span className={sideCls}>{item.month}</span>
+        <span className="font-names font-medium text-[86px] leading-[0.75] pt-2 [font-variant-numeric:lining-nums]">{item.day}</span>
+        <span className={sideCls}>{item.year}</span>
+      </div>
+      <p className="font-sans italic text-[14px] mt-4">{item.lunar}</p>
+      <h4 className="font-sans font-bold uppercase text-[21px] mt-7">{item.place}</h4>
+      <p className="font-sans text-[14px] leading-relaxed mt-2">Địa Chỉ: {item.address}</p>
+      <a
+        href={mapUrl(item.address)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-2.5 font-display font-bold uppercase text-[16px] text-primary-foreground shadow-[0_3px_8px_rgba(0,0,0,0.35)] ring-1 ring-white/20 transition hover:scale-105"
+      >
+        <MapPin className="h-5 w-5" aria-hidden />
+        {mapLabel}
+      </a>
+    </div>
+  );
+}
+
 function RsvpForm({ c }) {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
-  const [form, setForm] = useState({ name: "", message: "", attend: "", guestCount: "" });
+  const [form, setForm] = useState({ name: "", attend: "", guestCount: "", message: "" });
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -602,30 +833,37 @@ function RsvpForm({ c }) {
     }
   }
 
-  const inputCls =
-    "w-full bg-white px-3 py-2.5 font-lora text-[15px] text-foreground placeholder:text-foreground/50 outline-none focus:ring-2 focus:ring-white/60";
+  const boxCls = "w-full rounded-[10px] border border-primary/80 bg-white px-3 font-display text-[15px] text-foreground";
+  const inputCls = `${boxCls} py-2.5 placeholder:text-foreground/80 outline-none focus:ring-2 focus:ring-primary/30`;
 
   return (
-    <div className="rounded-[28px] bg-primary px-4 py-8 shadow-lg shadow-primary/25">
-      <h2 className="font-script text-[clamp(24px,8vw,36px)] leading-tight whitespace-nowrap text-white text-center mb-6">{c.title}</h2>
+    <div className="px-5 text-center">
+      <h2 className="font-hand text-[44px] leading-tight">{c.title}</h2>
+      <p className="font-display text-[16px] leading-relaxed mt-1 px-6">{c.intro}</p>
       {sent ? (
-        <p className="text-center text-white font-lora text-lg py-6">{c.thanks}</p>
+        <p className="font-display text-lg py-8">{c.thanks}</p>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-2.5 px-2 text-left">
           <input required value={form.name} onChange={update("name")} placeholder={c.placeholders.name} className={inputCls} />
-          <input value={form.message} onChange={update("message")} placeholder={c.placeholders.message} className={inputCls} />
-          <select
-            required
-            value={form.attend}
-            onChange={update("attend")}
-            className={`${inputCls} ${form.attend ? "" : "text-foreground/50"}`}
-          >
-            <option value="" disabled>
-              {c.placeholders.attend}
-            </option>
-            <option value="yes">{c.attendYes}</option>
-            <option value="no">{c.attendNo}</option>
-          </select>
+          <fieldset className={`${boxCls} py-2 space-y-1`}>
+            {[
+              ["yes", c.attendYes],
+              ["no", c.attendNo],
+            ].map(([value, label]) => (
+              <label key={value} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="attend"
+                  required
+                  value={value}
+                  checked={form.attend === value}
+                  onChange={update("attend")}
+                  className="accent-primary"
+                />
+                {label}
+              </label>
+            ))}
+          </fieldset>
           {form.attend !== "no" && (
             <input
               type="number"
@@ -637,12 +875,19 @@ function RsvpForm({ c }) {
               className={inputCls}
             />
           )}
-          <div className="text-center pt-3">
-            {error && <p className="text-sm text-white/90 mb-3">{error}</p>}
+          <textarea
+            rows={3}
+            value={form.message}
+            onChange={update("message")}
+            placeholder={c.placeholders.message}
+            className={`${inputCls} resize-none`}
+          />
+          <div className="text-center pt-2">
+            {error && <p className="text-sm text-accent mb-3">{error}</p>}
             <button
               type="submit"
               disabled={sending}
-              className="rounded-full bg-white px-12 py-2 font-bold uppercase text-sm text-primary shadow transition hover:scale-105 disabled:opacity-70 disabled:hover:scale-100 animate-pulse-soft"
+              className="bg-primary px-14 py-2.5 font-display font-bold uppercase text-[16px] text-primary-foreground transition hover:opacity-90 disabled:opacity-70"
             >
               {sending ? c.sending : c.submit}
             </button>
@@ -719,33 +964,24 @@ function GiftModal({ c, photo, onClose }) {
         aria-modal="true"
         aria-label={c.title}
         onClick={(e) => e.stopPropagation()}
-        className="gift-card relative w-full max-w-[400px] max-h-[90vh] overflow-hidden rounded-3xl shadow-2xl animate-pop"
+        className="relative w-full max-w-[400px] max-h-[90vh] overflow-y-auto rounded-3xl bg-background px-4 pt-6 pb-7 shadow-2xl animate-pop"
       >
-        <div className="relative max-h-[90vh] overflow-y-auto px-4 pt-5 pb-6">
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Đóng"
-            className="absolute right-4 top-4 text-foreground/70 hover:text-foreground"
-          >
-            <X className="w-6 h-6" />
-          </button>
-          <div className="flex justify-center">
-            <DoubleHappiness className="w-12 h-12 text-2xl bg-white/70" />
-          </div>
-          <h2 className="font-vibes text-[42px] leading-tight whitespace-nowrap text-primary text-center mt-1">{c.title}</h2>
-          <div className="h-px bg-foreground/15 my-4" />
-          <div className="grid grid-cols-[1fr_1.1fr] items-center gap-3">
-            <img
-              src={photo}
-              alt=""
-              className="w-full aspect-[3/4] object-cover rounded-2xl border-2 border-white shadow-lg"
-            />
-            <div className="space-y-6">
-              {c.accounts.map((account) => (
-                <GiftAccount key={account.number} account={account} c={c} />
-              ))}
-            </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Đóng"
+          className="absolute right-4 top-4 text-foreground/70 hover:text-foreground"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        <h2 className="font-sans font-bold uppercase text-2xl text-center">{c.title}</h2>
+        <div className="h-px bg-primary/20 my-4" />
+        <div className="grid grid-cols-[1fr_1.1fr] items-center gap-3">
+          <img src={photo} alt="" className="w-full aspect-[3/4] object-cover rounded-2xl border-2 border-white shadow-lg" />
+          <div className="space-y-6">
+            {c.accounts.map((account) => (
+              <GiftAccount key={account.number} account={account} c={c} />
+            ))}
           </div>
         </div>
       </div>
@@ -758,160 +994,176 @@ function WeddingPage() {
   const guest = useGuestName(c.invitation.defaultGuest);
   const [giftOpen, setGiftOpen] = useState(false);
   const closeGift = useCallback(() => setGiftOpen(false), []);
-  /** opened: rèm bắt đầu kéo ra; curtainGone: rèm đã kéo xong, gỡ khỏi trang */
-  const [opened, setOpened] = useState(false);
-  const [curtainGone, setCurtainGone] = useState(false);
-  const handleOpen = useCallback(() => setOpened(true), []);
-  const handleCurtainDone = useCallback(() => setCurtainGone(true), []);
   const [first, second] = c.hero.names;
+  const [personA, personB] = c.story.people;
+  /** opened: cửa bắt đầu mở; doorsGone: cửa đã mở xong, gỡ khỏi trang */
+  const [opened, setOpened] = useState(false);
+  const [doorsGone, setDoorsGone] = useState(false);
+  const handleOpen = useCallback(() => setOpened(true), []);
+  const handleDoorsDone = useCallback(() => setDoorsGone(true), []);
 
   return (
-    <div className="min-h-screen bg-[#f3eeee] text-foreground font-sans">
+    <div className="min-h-screen bg-white text-foreground font-sans">
       <BackgroundMusic src={c.music.src} volume={c.music.volume} />
       <FallingEffects active={opened} />
-      {!curtainGone && <OpeningCurtain onOpen={handleOpen} onDone={handleCurtainDone} />}
+      {!doorsGone && <OpeningDoors onOpen={handleOpen} onDone={handleDoorsDone} />}
 
-      <CurtainContext.Provider value={opened}>
-      <main className="relative mx-auto max-w-[460px] bg-white overflow-hidden shadow-2xl">
-        <KeyBorder side="left" />
-        <KeyBorder side="right" />
+      <DoorsContext.Provider value={opened}>
+      <main className="relative mx-auto max-w-[420px] bg-background overflow-hidden shadow-2xl">
+        {/* Ảnh bìa */}
+        <img src={images.hero} alt={`${first} & ${second}`} className="block w-full aspect-square object-cover object-top" />
 
-        <div className="px-8">
-          {/* Save the date */}
-          <section className="relative pt-10 pb-12 text-center">
-            <Reveal variant="down">
-              <h2 className="font-lora text-[32px] uppercase">{c.hero.subtitle}</h2>
-            </Reveal>
-            <Reveal variant="zoom" delay={150}>
-              <p className="font-script text-[clamp(28px,9vw,42px)] leading-tight whitespace-nowrap text-foreground mt-4">
-                {first} & {second}
-              </p>
-            </Reveal>
-            <Reveal variant="zoom" delay={300} className="relative mt-6 flex items-center justify-center">
-              <Knot className="absolute left-6 top-0 w-9 h-20 animate-swing" />
-              <DoubleHappiness className="w-14 h-14 text-3xl animate-pulse-soft" />
-              <Knot className="absolute right-6 top-0 w-9 h-20 animate-swing [animation-delay:0.8s]" />
-            </Reveal>
-            <Reveal delay={400}>
-              <p className="font-date text-[32px] mt-12 mb-6">{c.hero.dateLine}</p>
-            </Reveal>
-            <Reveal variant="left" delay={500}>
-              <GoldFrame src={images.hero} alt={`${first} & ${second}`} imgClass="aspect-[2/3]" />
-            </Reveal>
-            <Lantern className="absolute -right-2 bottom-0 w-9 h-16 animate-swing" />
-            <Lantern className="absolute right-6 bottom-8 w-7 h-12 animate-swing [animation-delay:0.6s]" />
-          </section>
+        {/* Tên + Save the date + lịch */}
+        <GreenBand className="pt-16 pb-14 text-center">
+          <Reveal variant="down">
+            <p className="font-names font-medium uppercase text-[40px] leading-tight">{first}</p>
+          </Reveal>
+          <Reveal variant="zoom" delay={200}>
+            <p className="font-script text-[44px] leading-none my-2">{c.hero.joiner}</p>
+          </Reveal>
+          <Reveal variant="up" delay={350}>
+            <p className="font-names font-medium uppercase text-[40px] leading-tight">{second}</p>
+          </Reveal>
+          <Reveal variant="zoom" delay={500} className="mt-12">
+            <PaperPatch className="px-14 py-3">
+              <p className="font-script text-[26px] leading-tight">{c.hero.subtitle}</p>
+              <p className="font-display font-bold text-[24px] leading-tight">{c.hero.dateLine}</p>
+            </PaperPatch>
+          </Reveal>
 
-          {/* Gia đình hai bên */}
-          <section className="pb-12 text-center">
-            <Reveal variant="down" className="mb-10">
-              <div className="flex flex-col items-center animate-swing">
-              <span className="w-px h-6 bg-primary/70" />
-              <DoubleHappiness className="w-16 h-16 text-3xl" />
-              <Knot className="w-8 h-16 -mt-1" />
-              </div>
-            </Reveal>
-            <div className="grid grid-cols-2 gap-4 mb-10">
-              <Reveal variant="left">
-                <FamilySide side={c.families.groomSide} />
+          <Reveal variant="zoom" className="relative mt-24 mb-8 flex flex-col items-center">
+            <Lily className="h-28 w-32 text-[#d8cba4]" />
+            <p className="-mt-8 font-script text-[48px] leading-none drop-shadow">{c.calendar.monthLabel}</p>
+          </Reveal>
+          <Reveal>
+            <MonthCalendar dateIso={c.calendar.dateIso} />
+          </Reveal>
+        </GreenBand>
+
+        {/* Gia đình + lời mời + sự kiện */}
+        <section className="px-5 pt-16 pb-16 text-center">
+          <Reveal variant="zoom">
+            <Monogram letters={c.families.monogram} />
+          </Reveal>
+          <div className="mt-10 grid grid-cols-2 gap-3">
+            {c.families.sides.map((side, i) => (
+              <Reveal key={side.label} variant={i % 2 ? "right" : "left"}>
+                <FamilySide side={side} />
               </Reveal>
-              <Reveal variant="right">
-                <FamilySide side={c.families.brideSide} />
-              </Reveal>
-            </div>
-            <Reveal variant="left">
-              <p className="font-script text-5xl">{c.families.fullNames[0]}</p>
-            </Reveal>
-            <Reveal variant="bounce" delay={300}>
-              <p className="font-script text-4xl my-1">&</p>
-            </Reveal>
-            <Reveal variant="right">
-              <p className="font-script text-5xl">{c.families.fullNames[1]}</p>
-            </Reveal>
-            <Reveal variant="up" className="mt-10">
-              <GoldFrame src={images.couple} alt="" imgClass="aspect-[4/5] object-top" />
-            </Reveal>
-          </section>
-
-          {/* Lời mời */}
-          <section className="pb-8 text-center">
-            <Reveal>
-              <p className="font-avo uppercase text-xl text-foreground/75 font-medium">{c.invitation.kicker}</p>
-              <p className="font-guest text-[40px] text-primary mt-3 pb-1 border-b border-dashed border-foreground/30 mx-8">
-                {guest}
-              </p>
-              <p className="font-lora uppercase text-xl mt-4">{c.invitation.title}</p>
-            </Reveal>
-            <div className="grid grid-cols-3 gap-1.5 mt-6 -mx-4">
-              {images.dateStrip.map((src, i) => (
-                <Reveal key={i} variant="up" delay={i * 150} className="relative border-[3px] border-[#ecc8c8]">
-                  <img src={src} alt="" className="w-full aspect-[3/5] object-cover" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
-                  <span className="absolute bottom-2 inset-x-0 text-center font-lora font-bold text-3xl text-white drop-shadow">
-                    {c.invitation.dateParts[i]}
-                  </span>
-                </Reveal>
-              ))}
-            </div>
-          </section>
-
-          {/* Sự kiện */}
-          <section className="space-y-3 pb-12">
+            ))}
+          </div>
+          <Reveal className="mt-5">
+            <p className="font-sans font-bold uppercase text-[15px]">{c.invitation.kicker}</p>
+            <p className="font-guest text-[30px] leading-tight text-accent mx-auto mt-1 w-[200px] border-b border-dotted border-primary/70">
+              {guest}
+            </p>
+            <p className="font-sans font-bold uppercase text-[clamp(11px,3.3vw,13.5px)] whitespace-nowrap mt-2">{c.invitation.lead}</p>
+          </Reveal>
+          <Reveal variant="zoom" className="mt-3">
+            <p className="font-names font-medium uppercase text-[38px] leading-tight">{first}</p>
+            <Rings className="mx-auto my-1 h-8 w-14" />
+            <p className="font-names font-medium uppercase text-[38px] leading-tight">{second}</p>
+          </Reveal>
+          <div className="mt-6 space-y-10">
             {c.events.items.map((item, i) => (
-              <Reveal key={item.id} variant={i % 2 ? "right" : "left"}>
-                <EventCard item={item} mapLabel={c.events.mapLabel} />
+              <Reveal key={item.id} variant="up">
+                {i > 0 && <div className="mx-auto mb-10 h-px w-44 bg-primary" />}
+                <EventBlock item={item} mapLabel={c.events.mapLabel} />
               </Reveal>
             ))}
-          </section>
+          </div>
+        </section>
 
-          {/* Lịch */}
-          <section className="pb-12 -mx-2">
-            <Reveal variant="right">
-              <h2 className="text-center font-lora text-3xl text-primary uppercase mb-1">{c.calendar.title}</h2>
-              <MonthCalendar dateIso={c.calendar.dateIso} />
-            </Reveal>
-          </section>
-
-          {/* Xác nhận + mừng cưới */}
-          <section className="pb-10 -mx-2">
-            <Reveal>
-              <RsvpForm c={c.rsvp} />
-            </Reveal>
-            {c.gift.accounts.length > 0 && (
-              <Reveal className="text-center mt-8">
-                <button
-                  type="button"
-                  onClick={() => setGiftOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-10 py-2.5 font-upright font-semibold text-lg uppercase text-white shadow-lg shadow-primary/30 animate-pulse-soft"
-                >
-                  <Gift className="w-5 h-5" aria-hidden />
-                  {c.gift.button}
-                </button>
+        {/* Cô dâu chú rể + Our Story */}
+        <GreenBand variant={1} className="pt-14 pb-16">
+          <div className="relative px-6">
+            <div className="flex items-center gap-4">
+              <Reveal variant="left">
+                <img src={images.people[0]} alt={personA.name} className="h-56 w-40 rounded-[50%] object-cover" loading="lazy" />
               </Reveal>
-            )}
-          </section>
+              <Reveal variant="right" className="flex-1 text-center">
+                <p className="font-names text-[20px]">{personA.label}</p>
+                <p className="font-names font-medium uppercase text-[26px] leading-tight">{personA.name}</p>
+              </Reveal>
+            </div>
+            <Lily className="absolute left-1/2 top-[44%] h-24 w-24 -translate-x-1/2 text-white/90" />
+            <div className="mt-2 flex flex-row-reverse items-center gap-4">
+              <Reveal variant="right">
+                <img src={images.people[1]} alt={personB.name} className="h-56 w-40 rounded-[50%] object-cover" loading="lazy" />
+              </Reveal>
+              <Reveal variant="left" className="flex-1 text-center">
+                <p className="font-names text-[20px]">{personB.label}</p>
+                <p className="font-names font-medium uppercase text-[26px] leading-tight">{personB.name}</p>
+              </Reveal>
+            </div>
+          </div>
 
-          {/* Album */}
-          <section className="grid grid-cols-2 gap-1.5 pb-3 -mx-2">
+          <Reveal variant="zoom" className="mt-16 text-center">
+            <PaperPatch className="px-12 py-3">
+              <h2 className="font-script text-[38px] leading-tight">{c.story.title}</h2>
+            </PaperPatch>
+          </Reveal>
+          <Reveal className="mt-6 space-y-5 px-6 text-center font-sans text-[14px] leading-[1.9]">
+            {c.story.paragraphs.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
+          </Reveal>
+        </GreenBand>
+
+        {/* Ảnh polaroid + xác nhận + mừng cưới */}
+        <section className="pt-14 pb-20">
+          <Reveal variant="zoom" className="px-3">
+            <div className="relative bg-white p-3.5 pb-5 shadow-[0_14px_18px_-8px_rgba(0,0,0,0.45)]">
+              <span className="absolute -top-4 left-1/2 h-9 w-32 -translate-x-1/2 -rotate-2 bg-[#efe3d6]/90 shadow-sm" aria-hidden />
+              <img src={images.polaroid} alt="" className="w-full aspect-[6/5] object-cover object-[center_20%]" loading="lazy" />
+            </div>
+          </Reveal>
+          <Reveal className="mt-10">
+            <RsvpForm c={c.rsvp} />
+          </Reveal>
+          <Reveal variant="zoom" className="mt-10">
+            <div className="relative mx-auto h-52 w-52 text-primary">
+              <img src={images.circle} alt="" className="absolute inset-[8px] h-[calc(100%-16px)] w-[calc(100%-16px)] rounded-full object-cover object-[center_25%]" loading="lazy" />
+              <Wreath className="absolute -inset-1.5" />
+            </div>
+          </Reveal>
+          {c.gift.accounts.length > 0 && (
+            <Reveal className="mt-8 text-center">
+              <button
+                type="button"
+                onClick={() => setGiftOpen(true)}
+                className="inline-flex items-center gap-3 rounded-full bg-primary px-12 py-3 font-names font-medium uppercase text-[17px] text-primary-foreground shadow-lg animate-pulse-soft"
+              >
+                <Gift className="h-6 w-6" aria-hidden />
+                {c.gift.button}
+              </button>
+            </Reveal>
+          )}
+        </section>
+
+        {/* Album + Thank you */}
+        <GreenBand edges={["top"]} variant={2} className="pt-14 pb-2">
+          <Reveal variant="zoom">
+            <h2 className="text-center font-script text-[46px] mb-6">{c.album.title}</h2>
+          </Reveal>
+          <div className="grid grid-cols-2 gap-2 px-2">
             {images.album.map((src, i) => (
-              <Reveal key={i} variant={i % 2 ? "right" : "left"} className="border-2 border-[#e6e6e6]">
-                <img src={src} alt="" className="w-full aspect-[2/3] object-cover" loading="lazy" />
+              <Reveal key={i} variant={i % 2 ? "right" : "left"}>
+                <img src={src} alt="" className="w-full aspect-[2/3] object-cover border-[3px] border-white" loading="lazy" />
               </Reveal>
             ))}
-          </section>
-
-          {/* Thank you */}
-          <section className="relative -mx-2 mb-10 overflow-hidden">
-            <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-            <Reveal variant="up" className="absolute inset-x-0 bottom-0 px-4 pb-6 text-center text-white">
-              <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>
-              <p className="text-sm leading-relaxed drop-shadow">{c.thanks.text}</p>
+          </div>
+          <div className="relative mx-2 mt-2 border-[3px] border-white">
+            <img src={images.thankYou} alt="" className="block w-full aspect-[4/5] object-cover" loading="lazy" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent" />
+            <Reveal variant="up" className="absolute inset-x-0 bottom-0 px-6 pb-6 text-center">
+              <h2 className="font-script text-[56px] leading-tight drop-shadow-lg">{c.thanks.title}</h2>
+              <p className="font-sans text-[13px] leading-relaxed drop-shadow">{c.thanks.text}</p>
             </Reveal>
-          </section>
-        </div>
+          </div>
+        </GreenBand>
       </main>
-      </CurtainContext.Provider>
+      </DoorsContext.Provider>
 
       {giftOpen && <GiftModal c={c.gift} photo={images.gift} onClose={closeGift} />}
     </div>

@@ -4,22 +4,18 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        /* Font thay thế gần nhất cho font của mẫu lovecard (ghi chú: font gốc) */
-        sans: ['Quicksand', 'system-ui', 'sans-serif'],
-        /** 1FTV VIP High Spirited */
-        script: ['Ephesis', 'cursive'],
-        /** Tiêu đề hộp quà mừng cưới */
-        vibes: ['"Great Vibes"', 'cursive'],
-        /** Ed Drayton — chữ "Quý khách" */
+        /* Font thay thế gần nhất cho font của mẫu lovecard thiepso06 */
+        /** Chữ thường + tiêu đề in hoa (NHÀ TRAI, TRÂN TRỌNG KÍNH MỜI...) */
+        sans: ['"Josefin Sans"', 'system-ui', 'sans-serif'],
+        /** Tên cô dâu chú rể, số ngày lớn */
+        names: ['"Cormorant Garamond"', 'serif'],
+        /** Save the date, tháng, Our Story, Album of Love, Thank You */
+        script: ['"Great Vibes"', 'cursive'],
+        /** "Xác nhận tham dự" — nét bút mảnh */
+        hand: ['Ephesis', 'cursive'],
+        /** Tên khách mời */
         guest: ['"Imperial Script"', 'cursive'],
-        /** 1FTV VIP Askilon — ngày tháng */
-        date: ['Prata', 'serif'],
-        /** UTM Avo — thẻ sự kiện, "Trân Trọng Kính Mời" */
-        avo: ['Montserrat', 'sans-serif'],
-        lora: ['Lora', 'serif'],
-        upright: ['"Cormorant Upright"', 'serif'],
-        oswald: ['Oswald', 'sans-serif'],
-        /** Số trên lịch */
+        /** Số trên lịch, ngày trong "Save the date", form */
         display: ['Tinos', 'serif'],
       },
       colors: {
@@ -29,18 +25,7 @@ export default {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
         },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
+        accent: 'hsl(var(--accent))',
         border: 'hsl(var(--border))',
       },
     },

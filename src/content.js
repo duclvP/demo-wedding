@@ -100,11 +100,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'TRAN THI MINH NGUYET',
-        number: '0985327617',
-        bank: 'MB Bank',
+        holder: 'NGUYEN VAN TRUC',
+        number: '19072110330016',
+        bank: 'Techcombank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-mbbank.png',
+        qr: '/images/qr-techcombank.png',
       },
     ],
   },

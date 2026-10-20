@@ -1,22 +1,19 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-/** Địa chỉ sau sáp nhập; mapQuery = địa chỉ cũ để Google Maps tìm đúng chỗ */
-const ADDRESS_GROOM = 'Thôn Phương Ngạc, Xã Hải Lựu, Tỉnh Phú Thọ';
-const MAP_GROOM = 'Thôn Ngạc Thị, Xã Phương Khoan, Huyện Sông Lô, Tỉnh Vĩnh Phúc';
-const ADDRESS_BRIDE = 'Ngõ 103 Đường Đinh Tiên Hoàng, Phường Yên Bái, Tỉnh Lào Cai';
-const MAP_BRIDE = 'Ngõ 103 Đường Đinh Tiên Hoàng, Phường Đồng Tâm, TP. Yên Bái';
+const ADDRESS_GROOM = 'Xã Hoà An, TP. Cần Thơ';
+const ADDRESS_BRIDE = 'Xã Vĩnh Tường, TP. Cần Thơ';
 
-/** father / mother / address: để null nếu không muốn hiển thị — TODO: chưa có tên bố mẹ */
+/** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: null,
-  mother: null,
+  father: 'Hà Văn Bẽo',
+  mother: 'Võ Kim Khoa',
   address: ADDRESS_GROOM,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: null,
-  mother: null,
+  father: 'Nguyễn Văn Chính',
+  mother: 'Huỳnh Thị Nhung',
   address: ADDRESS_BRIDE,
 };
 
@@ -24,15 +21,15 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Văn Long', 'Minh Ngọc'],
-    dateLine: '17 . 11 . 2026',
+    names: ['Thái Ngọc', 'Hồng Gấm'],
+    dateLine: '28 . 10 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Văn Long', 'Minh Ngọc'],
+    fullNames: ['Thái Ngọc', 'Hồng Gấm'],
   },
 
   invitation: {
@@ -41,7 +38,7 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['17', '11', '2026'],
+    dateParts: ['28', '10', '2026'],
   },
 
   events: {
@@ -50,20 +47,16 @@ export const content = {
       {
         id: 'tiec-cuoi',
         title: 'Tiệc Mừng Lễ Thành Hôn',
-        time: '15:00 - Thứ Ba',
-        date: '17. 11. 2026',
-        lunar: '( Tức Ngày 09 Tháng 10 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM }],
-      },
-      {
-        id: 'don-dau',
-        title: 'Lễ Thành Hôn',
-        time: '05:05 - Thứ Tư',
-        date: '18. 11. 2026',
-        lunar: '( Tức Ngày 10 Tháng 10 Năm Bính Ngọ )',
+        /** TODO: thiệp giấy để trống giờ — thêm giờ khi có, vd '10:00 - Thứ Tư' */
+        time: 'Thứ Tư',
+        date: '28. 10. 2026',
+        lunar: '( Tức Ngày 19 Tháng 09 Năm Bính Ngọ )',
         places: [
-          { label: 'Xuất Phát Từ Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM },
-          { label: 'Đón Dâu Tại Nhà Gái', address: ADDRESS_BRIDE, mapQuery: MAP_BRIDE },
+          {
+            label: 'Tư Gia Nhà Trai',
+            address: 'Xã Hoà An, TP. Cần Thơ (Chợ Kinh Cùng vô thẳng 1500m)',
+            mapQuery: 'Chợ Kinh Cùng, Hoà An, Cần Thơ',
+          },
         ],
       },
     ],
@@ -72,7 +65,7 @@ export const content = {
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
-    dateIso: '2026-11-17',
+    dateIso: '2026-10-28',
   },
 
   rsvp: {
@@ -81,7 +74,7 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
+    endpoint: '',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: false,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
@@ -110,17 +103,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'TA VAN LONG',
-        number: '0868343248',
-        bank: 'MB Bank',
+        holder: 'HA THAI NGOC',
+        number: '7006205282315',
+        bank: 'Agribank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-mb.png',
-      },
-      {
-        holder: 'HOANG MINH NGOC',
-        number: '8873944665',
-        bank: 'BIDV',
-        qr: '/images/qr-bidv.png',
+        qr: '/images/qr-agribank.png',
       },
     ],
   },

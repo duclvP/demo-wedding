@@ -1,27 +1,30 @@
 /**
  * Đường dẫn ảnh — file trong public/images/
  * Thêm ảnh mới: bỏ file vào public/images/ rồi thêm đường dẫn vào đây.
+ *
+ * ⚠️ Ảnh demo-*.jpg là ảnh mẫu tạm lấy từ lovecard.click — thay bằng ảnh thật
+ * của cô dâu chú rể trước khi gửi thiệp.
  */
 export const images = {
   /** Ảnh dọc lớn đầu thiệp (khung vàng) */
-  hero: '/images/ao-dai-1.jpg',
+  hero: '/images/demo-05.jpg',
   /** Ảnh dưới phần gia đình (khung vàng) */
-  couple: '/images/ao-dai-3.jpg',
+  couple: '/images/demo-07.jpg',
   /** 3 ảnh dải ngày cưới */
-  dateStrip: ['/images/chu-re.jpg', '/images/studio-2.jpg', '/images/co-dau.jpg'],
+  dateStrip: ['/images/demo-02.jpg', '/images/demo-03.jpg', '/images/demo-04.jpg'],
   /** Lưới ảnh 2 cột */
   album: [
-    '/images/studio-3.jpg',
-    '/images/do-1.jpg',
-    '/images/studio-4.jpg',
-    '/images/do-2.jpg',
-    '/images/studio-5.jpg',
-    '/images/studio-6.jpg',
-    '/images/studio-7.jpg',
-    '/images/studio-8.jpg',
+    '/images/demo-09.jpg',
+    '/images/demo-10.jpg',
+    '/images/demo-11.jpg',
+    '/images/demo-12.jpg',
+    '/images/demo-13.jpg',
+    '/images/demo-14.jpg',
+    '/images/demo-15.jpg',
+    '/images/demo-16.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/studio-1.jpg',
+  gift: '/images/demo-06.jpg',
   /** Ảnh mục Thank You */
-  thankYou: '/images/ao-dai-2.jpg',
+  thankYou: '/images/demo-01.jpg',
 };

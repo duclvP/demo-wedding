@@ -482,7 +482,9 @@ function FamilySide({ side }) {
       {side.mother && (
         <p className="font-oswald font-medium text-[15px] uppercase mb-2">Mẹ: {side.mother}</p>
       )}
-      <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
+      {side.address && (
+        <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
+      )}
     </div>
   );
 }
@@ -812,12 +814,11 @@ function WeddingPage() {
               </div>
             </Reveal>
             <div className="grid grid-cols-2 gap-4 mb-10">
-              <Reveal variant="left">
-                <FamilySide side={c.families.groomSide} />
-              </Reveal>
-              <Reveal variant="right">
-                <FamilySide side={c.families.brideSide} />
-              </Reveal>
+              {c.families.sides.map((side, i) => (
+                <Reveal key={side.label} variant={i ? "right" : "left"}>
+                  <FamilySide side={side} />
+                </Reveal>
+              ))}
             </div>
             <Reveal variant="left">
               <p className="font-script text-5xl">{c.families.fullNames[0]}</p>

@@ -1,39 +1,43 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Đình Tây Câu Đông, An Quang, Hải Phòng';
-const ADDRESS_BRIDE = 'Xóm 8 Câu Trung, An Quang, Hải Phòng';
+const ADDRESS_GROOM = 'Số nhà 63, Đường Tiền Lệ 1, Xã Sơn Đồng, TP. Hà Nội';
+const ADDRESS_RESTAURANT = 'Nhà hàng Việt Anh, Đường 417, Xã Liên Minh, TP. Hà Nội';
+
+/** father / mother / address: để null nếu không muốn hiển thị */
+const GROOM_SIDE = {
+  label: 'Nhà Trai',
+  father: 'Nguyễn Văn Mạnh',
+  mother: 'Nguyễn Thị Hoa',
+  address: ADDRESS_GROOM,
+};
+const BRIDE_SIDE = {
+  label: 'Nhà Gái',
+  father: 'Trần Việt Hùng',
+  mother: 'Bùi Thị Hồng Tươi',
+  /** Thiệp không ghi địa chỉ tư gia nhà gái */
+  address: null,
+};
 
 export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Minh Ánh', 'Trung Anh'],
+    names: ['Minh Nguyệt', 'Văn Trúc'],
     dateLine: '01 . 11 . 2026',
   },
 
   families: {
-    /** father / mother: để null nếu không muốn hiển thị */
-    groomSide: {
-      label: 'Nhà Trai',
-      father: null,
-      mother: null,
-      address: ADDRESS_GROOM,
-    },
-    brideSide: {
-      label: 'Nhà Gái',
-      father: null,
-      mother: null,
-      address: ADDRESS_BRIDE,
-    },
+    /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
+    sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Họ tên đầy đủ, hiện dưới phần gia đình */
-    fullNames: ['Bùi Minh Ánh', 'Đỗ Trung Anh'],
+    fullNames: ['Trần Thị Minh Nguyệt', 'Nguyễn Văn Trúc'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — có thể thay bằng link ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Cưới',
+    title: 'Tham Dự Lễ Vu Quy',
     /** Chữ đè lên 3 ảnh */
     dateParts: ['01', '11', '2026'],
   },
@@ -42,23 +46,20 @@ export const content = {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '09:00 - Chủ Nhật',
+        id: 'vu-quy',
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        time: '15:00 - Chủ Nhật',
         date: '01. 11. 2026',
         lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [
-          { label: 'Tư Gia Nhà Trai', address: 'Đình Câu Đông, An Quang, Hải Phòng' },
-          { label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE },
-        ],
+        places: [{ label: 'Nhà Hàng Việt Anh', address: ADDRESS_RESTAURANT }],
       },
       {
-        id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Cưới',
-        time: '13:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+        id: 'thanh-hon',
+        title: 'Lễ Thành Hôn',
+        time: '11:00 - Thứ Hai',
+        date: '02. 11. 2026',
+        lunar: '( Tức Ngày 24 Tháng 09 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
     ],
   },
@@ -100,11 +101,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'BUI MINH ANH',
-        number: '203704070018671',
-        bank: 'HDBank',
+        holder: 'TRAN THI MINH NGUYET',
+        number: '0985327617',
+        bank: 'MB Bank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-hdbank.png',
+        qr: '/images/qr-mbbank.png',
       },
     ],
   },

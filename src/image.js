@@ -8,7 +8,7 @@ export const images = {
   /** Ảnh dưới phần gia đình (khung vàng) */
   couple: '/images/studio-1.jpg',
   /** 3 ảnh dải ngày cưới */
-  dateStrip: ['/images/co-dau.jpg', '/images/ao-dai-2.jpg', '/images/chu-re.jpg'],
+  dateStrip: ['/images/chu-re.jpg', '/images/ao-dai-2.jpg', '/images/co-dau.jpg'],
   /** Lưới ảnh 2 cột */
   album: [
     '/images/studio-3.jpg',

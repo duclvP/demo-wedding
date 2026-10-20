@@ -1,7 +1,6 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
 const ADDRESS_GROOM = 'Số nhà 63, Đường Tiền Lệ 1, Xã Sơn Đồng, TP. Hà Nội';
-const ADDRESS_RESTAURANT = 'Nhà hàng Việt Anh, Đường 417, Xã Liên Minh, TP. Hà Nội';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {
@@ -22,22 +21,22 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Minh Nguyệt', 'Văn Trúc'],
+    names: ['Văn Trúc', 'Minh Nguyệt'],
     dateLine: '01 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [BRIDE_SIDE, GROOM_SIDE],
+    sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Họ tên đầy đủ, hiện dưới phần gia đình */
-    fullNames: ['Trần Thị Minh Nguyệt', 'Nguyễn Văn Trúc'],
+    fullNames: ['Nguyễn Văn Trúc', 'Trần Thị Minh Nguyệt'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — có thể thay bằng link ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Vu Quy',
+    title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
     dateParts: ['01', '11', '2026'],
   },
@@ -46,12 +45,12 @@ export const content = {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'vu-quy',
-        title: 'Tiệc Mừng Lễ Vu Quy',
+        id: 'tiec-thanh-hon',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
         time: '15:00 - Chủ Nhật',
         date: '01. 11. 2026',
         lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Nhà Hàng Việt Anh', address: ADDRESS_RESTAURANT }],
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
       {
         id: 'thanh-hon',

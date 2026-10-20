@@ -82,6 +82,8 @@ export const content = {
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
     endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
+    /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
+    show: false,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
     askAttend: false,
     title: 'Gửi Lời Chúc',

@@ -917,11 +917,13 @@ function WeddingPage() {
 
           {/* Xác nhận + mừng cưới */}
           <section className="pb-10 -mx-2">
-            <Reveal>
-              <RsvpForm c={c.rsvp} />
-            </Reveal>
+            {c.rsvp.show && (
+              <Reveal>
+                <RsvpForm c={c.rsvp} />
+              </Reveal>
+            )}
             {c.gift.accounts.length > 0 && (
-              <Reveal className="text-center mt-8">
+              <Reveal className={`text-center ${c.rsvp.show ? "mt-8" : ""}`}>
                 <button
                   type="button"
                   onClick={() => setGiftOpen(true)}

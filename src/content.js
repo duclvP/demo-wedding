@@ -14,8 +14,7 @@ const BRIDE_SIDE = {
   label: 'Nhà Gái',
   father: 'Trần Việt Hùng',
   mother: 'Bùi Thị Hồng Tươi',
-  /** Thiệp không ghi địa chỉ tư gia nhà gái */
-  address: null,
+  address: ADDRESS_RESTAURANT,
 };
 
 export const content = {

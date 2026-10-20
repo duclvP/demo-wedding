@@ -65,7 +65,7 @@ export const content = {
 
   calendar: {
     title: 'Save The Date',
-    /** Ngày được đánh dấu trên lịch */
+    /** Ngày được đánh dấu trên lịch — một ngày hoặc mảng nhiều ngày cùng tháng */
     dateIso: '2026-11-01',
   },
 

@@ -561,8 +561,11 @@ function EventCard({ item, mapLabel }) {
 
 const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
+/** dateIso: một ngày "2026-11-01" hoặc nhiều ngày cùng tháng ["2026-11-01", "2026-11-02"] */
 function MonthCalendar({ dateIso }) {
-  const [y, m, d] = dateIso.split("-").map(Number);
+  const isos = [].concat(dateIso);
+  const [y, m] = isos[0].split("-").map(Number);
+  const marked = new Set(isos.map((iso) => Number(iso.split("-")[2])));
   const daysInMonth = new Date(y, m, 0).getDate();
   /** Lịch bắt đầu từ Thứ Hai */
   const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
@@ -583,7 +586,7 @@ function MonthCalendar({ dateIso }) {
       </div>
       <div className="grid grid-cols-7 gap-y-2 text-center font-display text-lg mt-3">
         {cells.map((day, i) =>
-          day === d ? (
+          marked.has(day) ? (
             <span key={i} className="relative flex items-center justify-center h-10">
               <svg viewBox="0 0 24 24" className="absolute w-11 h-11 text-[#e0303a] animate-pulse-soft" aria-hidden>
                 <path

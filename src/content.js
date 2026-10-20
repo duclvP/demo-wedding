@@ -22,7 +22,7 @@ export const content = {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
     names: ['Văn Trúc', 'Minh Nguyệt'],
-    dateLine: '01 . 11 . 2026',
+    dateLine: '02 . 11 . 2026',
   },
 
   families: {
@@ -38,7 +38,7 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['01', '11', '2026'],
+    dateParts: ['02', '11', '2026'],
   },
 
   events: {
@@ -66,7 +66,7 @@ export const content = {
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch */
-    dateIso: '2026-11-01',
+    dateIso: '2026-11-02',
   },
 
   rsvp: {

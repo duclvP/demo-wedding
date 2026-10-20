@@ -28,8 +28,8 @@ export const content = {
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [BRIDE_SIDE, GROOM_SIDE],
-    /** Họ tên đầy đủ, hiện dưới phần gia đình */
-    fullNames: ['Trần Thị Minh Nguyệt', 'Nguyễn Văn Trúc'],
+    /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
+    fullNames: ['Minh Nguyệt', 'Văn Trúc'],
   },
 
   invitation: {

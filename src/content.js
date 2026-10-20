@@ -1,10 +1,12 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-/** TODO: chưa có thiệp giấy — bổ sung bố mẹ, địa chỉ hai bên khi có thông tin */
-const ADDRESS_GROOM = null;
-const ADDRESS_BRIDE = null;
+/** Địa chỉ sau sáp nhập; mapQuery = địa chỉ cũ để Google Maps tìm đúng chỗ */
+const ADDRESS_GROOM = 'Thôn Phương Ngạc, Xã Hải Lựu, Tỉnh Phú Thọ';
+const MAP_GROOM = 'Thôn Ngạc Thị, Xã Phương Khoan, Huyện Sông Lô, Tỉnh Vĩnh Phúc';
+const ADDRESS_BRIDE = 'Ngõ 103 Đường Đinh Tiên Hoàng, Phường Yên Bái, Tỉnh Lào Cai';
+const MAP_BRIDE = 'Ngõ 103 Đường Đinh Tiên Hoàng, Phường Đồng Tâm, TP. Yên Bái';
 
-/** father / mother / address: để null nếu không muốn hiển thị */
+/** father / mother / address: để null nếu không muốn hiển thị — TODO: chưa có tên bố mẹ */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
   father: null,
@@ -23,8 +25,7 @@ export const content = {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
     names: ['Văn Long', 'Minh Ngọc'],
-    /** TODO: thay bằng ngày cưới, vd '02 . 11 . 2026' */
-    dateLine: 'Đang cập nhật',
+    dateLine: '17 . 11 . 2026',
   },
 
   families: {
@@ -40,29 +41,38 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    /** TODO: thay bằng ngày / tháng / năm cưới */
-    dateParts: ['Save', 'The', 'Date'],
+    dateParts: ['17', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
-    /** TODO: bổ sung giờ, thứ, ngày dương, ngày âm, địa điểm (places: [{ label, address }]) */
     items: [
       {
-        id: 'thanh-hon',
+        id: 'tiec-cuoi',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
+        time: '15:00 - Thứ Ba',
+        date: '17. 11. 2026',
+        lunar: '( Tức Ngày 09 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM }],
+      },
+      {
+        id: 'don-dau',
         title: 'Lễ Thành Hôn',
-        time: 'Thời gian & địa điểm',
-        date: 'Đang cập nhật',
-        lunar: '',
-        places: [],
+        time: '05:05 - Thứ Tư',
+        date: '18. 11. 2026',
+        lunar: '( Tức Ngày 10 Tháng 10 Năm Bính Ngọ )',
+        places: [
+          { label: 'Xuất Phát Từ Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM },
+          { label: 'Đón Dâu Tại Nhà Gái', address: ADDRESS_BRIDE, mapQuery: MAP_BRIDE },
+        ],
       },
     ],
   },
 
   calendar: {
     title: 'Save The Date',
-    /** Ngày được đánh dấu trên lịch, vd '2026-11-02' — để null thì ẩn lịch */
-    dateIso: null,
+    /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
+    dateIso: '2026-11-17',
   },
 
   rsvp: {

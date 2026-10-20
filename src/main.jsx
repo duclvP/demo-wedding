@@ -545,7 +545,7 @@ function EventCard({ item, mapLabel }) {
             <p className="font-avo uppercase text-lg mb-1">{place.label}</p>
             <p className="text-sm opacity-90 mb-3">{place.address}</p>
             <a
-              href={mapUrl(place.address)}
+              href={mapUrl(place.mapQuery ?? place.address)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block rounded-full bg-white px-8 py-1.5 font-lora text-primary text-base shadow transition hover:scale-105"

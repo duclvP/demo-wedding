@@ -1,39 +1,42 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Đình Tây Câu Đông, An Quang, Hải Phòng';
-const ADDRESS_BRIDE = 'Xóm 8 Câu Trung, An Quang, Hải Phòng';
+const ADDRESS_GROOM = 'Số nhà 63, Đường Tiền Lệ 1, Xã Sơn Đồng, TP. Hà Nội';
+const ADDRESS_RESTAURANT = 'Nhà hàng Việt Anh, Đường 417, Xã Liên Minh, TP. Hà Nội';
+
+/** father / mother / address: để null nếu không muốn hiển thị */
+const GROOM_SIDE = {
+  label: 'Nhà Trai',
+  father: 'Nguyễn Văn Mạnh',
+  mother: 'Nguyễn Thị Hoa',
+  address: ADDRESS_GROOM,
+};
+const BRIDE_SIDE = {
+  label: 'Nhà Gái',
+  father: 'Trần Việt Hùng',
+  mother: 'Bùi Thị Hồng Tươi',
+  address: ADDRESS_RESTAURANT,
+};
 
 export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Minh Ánh', 'Trung Anh'],
+    names: ['Minh Nguyệt', 'Văn Trúc'],
     dateLine: '01 . 11 . 2026',
   },
 
   families: {
-    /** father / mother: để null nếu không muốn hiển thị */
-    groomSide: {
-      label: 'Nhà Trai',
-      father: null,
-      mother: null,
-      address: ADDRESS_GROOM,
-    },
-    brideSide: {
-      label: 'Nhà Gái',
-      father: null,
-      mother: null,
-      address: ADDRESS_BRIDE,
-    },
-    /** Họ tên đầy đủ, hiện dưới phần gia đình */
-    fullNames: ['Bùi Minh Ánh', 'Đỗ Trung Anh'],
+    /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
+    sides: [BRIDE_SIDE, GROOM_SIDE],
+    /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
+    fullNames: ['Minh Nguyệt', 'Văn Trúc'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
-    /** Tên khách mặc định — có thể thay bằng link ?khach=Tên%20Khách */
+    /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Cưới',
+    title: 'Tham Dự Lễ Vu Quy',
     /** Chữ đè lên 3 ảnh */
     dateParts: ['01', '11', '2026'],
   },
@@ -42,30 +45,27 @@ export const content = {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '09:00 - Chủ Nhật',
+        id: 'vu-quy',
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        time: '15:00 - Chủ Nhật',
         date: '01. 11. 2026',
         lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [
-          { label: 'Tư Gia Nhà Trai', address: 'Đình Câu Đông, An Quang, Hải Phòng' },
-          { label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE },
-        ],
+        places: [{ label: 'Nhà Hàng Việt Anh', address: ADDRESS_RESTAURANT }],
       },
       {
-        id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Cưới',
-        time: '13:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+        id: 'thanh-hon',
+        title: 'Lễ Thành Hôn',
+        time: '11:00 - Thứ Hai',
+        date: '02. 11. 2026',
+        lunar: '( Tức Ngày 24 Tháng 09 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
     ],
   },
 
   calendar: {
     title: 'Save The Date',
-    /** Ngày được đánh dấu trên lịch */
+    /** Ngày được đánh dấu trên lịch — một ngày hoặc mảng nhiều ngày cùng tháng */
     dateIso: '2026-11-01',
   },
 
@@ -75,7 +75,7 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
+    endpoint: 'https://script.google.com/macros/s/AKfycbxX--VN9RujWyRYWhfhRygkIwCshmO3XsOS76jAY8Av0d0TLF6wLzbsyZRzuTfP5fOr/exec',
     title: 'Gửi Lời Chúc & Xác Nhận',
     placeholders: {
       name: 'Tên của bạn là gì ?',
@@ -100,11 +100,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'BUI MINH ANH',
-        number: '203704070018671',
-        bank: 'HDBank',
+        holder: 'TRAN THI MINH NGUYET',
+        number: '0985327617',
+        bank: 'MB Bank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-hdbank.png',
+        qr: '/images/qr-mbbank.png',
       },
     ],
   },

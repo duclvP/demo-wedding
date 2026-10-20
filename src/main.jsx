@@ -909,12 +909,14 @@ function WeddingPage() {
           </section>
 
           {/* Lịch */}
-          <section className="pb-12 -mx-2">
-            <Reveal variant="right">
-              <h2 className="text-center font-lora text-3xl text-primary uppercase mb-1">{c.calendar.title}</h2>
-              <MonthCalendar dateIso={c.calendar.dateIso} />
-            </Reveal>
-          </section>
+          {c.calendar.dateIso && (
+            <section className="pb-12 -mx-2">
+              <Reveal variant="right">
+                <h2 className="text-center font-lora text-3xl text-primary uppercase mb-1">{c.calendar.title}</h2>
+                <MonthCalendar dateIso={c.calendar.dateIso} />
+              </Reveal>
+            </section>
+          )}
 
           {/* Xác nhận + mừng cưới */}
           <section className="pb-10 -mx-2">

@@ -1,35 +1,37 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Số nhà 63, Đường Tiền Lệ 1, Xã Sơn Đồng, TP. Hà Nội';
-const ADDRESS_RESTAURANT = 'Nhà hàng Việt Anh, Đường 417, Xã Liên Minh, TP. Hà Nội';
+/** TODO: chưa có thiệp giấy — bổ sung bố mẹ, địa chỉ hai bên khi có thông tin */
+const ADDRESS_GROOM = null;
+const ADDRESS_BRIDE = null;
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Nguyễn Văn Mạnh',
-  mother: 'Nguyễn Thị Hoa',
+  father: null,
+  mother: null,
   address: ADDRESS_GROOM,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Trần Việt Hùng',
-  mother: 'Bùi Thị Hồng Tươi',
-  address: ADDRESS_RESTAURANT,
+  father: null,
+  mother: null,
+  address: ADDRESS_BRIDE,
 };
 
 export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Văn Trúc', 'Minh Nguyệt'],
-    dateLine: '02 . 11 . 2026',
+    names: ['Văn Long', 'Minh Ngọc'],
+    /** TODO: thay bằng ngày cưới, vd '02 . 11 . 2026' */
+    dateLine: 'Đang cập nhật',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Văn Trúc', 'Minh Nguyệt'],
+    fullNames: ['Văn Long', 'Minh Ngọc'],
   },
 
   invitation: {
@@ -38,35 +40,29 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['02', '11', '2026'],
+    /** TODO: thay bằng ngày / tháng / năm cưới */
+    dateParts: ['Save', 'The', 'Date'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
+    /** TODO: bổ sung giờ, thứ, ngày dương, ngày âm, địa điểm (places: [{ label, address }]) */
     items: [
-      {
-        id: 'tiec-thanh-hon',
-        title: 'Tiệc Mừng Lễ Thành Hôn',
-        time: '15:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
-      },
       {
         id: 'thanh-hon',
         title: 'Lễ Thành Hôn',
-        time: '11:00 - Thứ Hai',
-        date: '02. 11. 2026',
-        lunar: '( Tức Ngày 24 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
+        time: 'Thời gian & địa điểm',
+        date: 'Đang cập nhật',
+        lunar: '',
+        places: [],
       },
     ],
   },
 
   calendar: {
     title: 'Save The Date',
-    /** Ngày được đánh dấu trên lịch */
-    dateIso: '2026-11-02',
+    /** Ngày được đánh dấu trên lịch, vd '2026-11-02' — để null thì ẩn lịch */
+    dateIso: null,
   },
 
   rsvp: {
@@ -100,11 +96,17 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'NGUYEN VAN TRUC',
-        number: '19072110330016',
-        bank: 'Techcombank',
+        holder: 'TA VAN LONG',
+        number: '0868343248',
+        bank: 'MB Bank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-techcombank.png',
+        qr: '/images/qr-mb.png',
+      },
+      {
+        holder: 'HOANG MINH NGOC',
+        number: '8873944665',
+        bank: 'BIDV',
+        qr: '/images/qr-bidv.png',
       },
     ],
   },

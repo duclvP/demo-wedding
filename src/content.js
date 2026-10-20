@@ -34,7 +34,7 @@ export const content = {
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
-    /** Tên khách mặc định — thay bằng link /cô-hoa hoặc ?khach=Tên%20Khách */
+    /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */

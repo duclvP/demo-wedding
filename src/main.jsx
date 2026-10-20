@@ -460,8 +460,29 @@ function mapUrl(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
+/** Từ xưng hô gõ không dấu ở đầu link → có dấu: /co-lan → "Cô Lan"; không có thì thêm "Bạn" */
+const GUEST_TITLES = {
+  "gia dinh": "Gia Đình",
+  ban: "Bạn",
+  anh: "Anh",
+  chi: "Chị",
+  em: "Em",
+  co: "Cô",
+  chu: "Chú",
+  bac: "Bác",
+  thim: "Thím",
+  di: "Dì",
+  duong: "Dượng",
+  cau: "Cậu",
+  mo: "Mợ",
+  ong: "Ông",
+  ba: "Bà",
+  thay: "Thầy",
+  "vo chong": "Vợ Chồng",
+};
+
 /**
- * Tên khách lấy từ link ?khach=Tên%20Khách hoặc đường dẫn /cô-hoa (→ "Cô Hoa"),
+ * Tên khách lấy từ link ?khach=Tên%20Khách (giữ nguyên) hoặc đường dẫn /hoa (→ "Bạn Hoa"),
  * không có thì dùng mặc định
  */
 function useGuestName(fallback) {
@@ -475,9 +496,18 @@ function useGuestName(fallback) {
         : window.location.pathname;
       const slug = decodeURIComponent(path.split("/").filter(Boolean).pop() || "");
       if (!slug || /\.html?$/i.test(slug)) return fallback;
-      return slug
-        .replace(/[-_+]+/g, " ")
-        .trim()
+      let rest = slug.replace(/[-_+]+/g, " ").trim();
+      const titles = [];
+      for (;;) {
+        const t = Object.keys(GUEST_TITLES).find((k) => rest.toLowerCase().startsWith(`${k} `));
+        if (!t) break;
+        titles.push(GUEST_TITLES[t]);
+        rest = rest.slice(t.length + 1);
+      }
+      /** Không có xưng hô → mặc định "Bạn" */
+      if (!titles.length) titles.push(GUEST_TITLES.ban);
+      return [...titles, rest]
+        .join(" ")
         .replace(/(^|\s)(\p{L})/gu, (_, sp, ch) => sp + ch.toUpperCase());
     } catch {
       return fallback;

@@ -460,12 +460,25 @@ function mapUrl(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-/** Tên khách lấy từ link ?khach=..., không có thì dùng mặc định */
+/**
+ * Tên khách lấy từ link ?khach=Tên%20Khách hoặc đường dẫn /cô-hoa (→ "Cô Hoa"),
+ * không có thì dùng mặc định
+ */
 function useGuestName(fallback) {
   return useState(() => {
     try {
-      const name = new URLSearchParams(window.location.search).get("khach");
-      return name?.trim() || fallback;
+      const fromQuery = new URLSearchParams(window.location.search).get("khach")?.trim();
+      if (fromQuery) return fromQuery;
+      const base = String(import.meta.env.BASE_URL || "/");
+      const path = window.location.pathname.startsWith(base)
+        ? window.location.pathname.slice(base.length)
+        : window.location.pathname;
+      const slug = decodeURIComponent(path.split("/").filter(Boolean).pop() || "");
+      if (!slug || /\.html?$/i.test(slug)) return fallback;
+      return slug
+        .replace(/[-_+]+/g, " ")
+        .trim()
+        .replace(/(^|\s)(\p{L})/gu, (_, sp, ch) => sp + ch.toUpperCase());
     } catch {
       return fallback;
     }

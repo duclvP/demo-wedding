@@ -82,7 +82,9 @@ export const content = {
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
     endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
-    title: 'Gửi Lời Chúc & Xác Nhận',
+    /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
+    askAttend: false,
+    title: 'Gửi Lời Chúc',
     placeholders: {
       name: 'Tên của bạn là gì ?',
       message: 'Gửi lời chúc cho cô dâu & chú rể',
@@ -91,7 +93,7 @@ export const content = {
     },
     attendYes: 'Có, mình sẽ đến',
     attendNo: 'Xin lỗi, hôm đấy mình không tới được :(',
-    submit: 'Gửi Xác Nhận',
+    submit: 'Gửi Lời Chúc',
     sending: 'Đang gửi...',
     error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
     thanks: 'Cảm ơn bạn! Lời chúc của bạn đã được ghi nhận.',

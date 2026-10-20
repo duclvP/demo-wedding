@@ -630,8 +630,8 @@ function RsvpForm({ c }) {
         body: new URLSearchParams({
           name: form.name.trim(),
           message: form.message.trim(),
-          attend: form.attend === "yes" ? c.attendYes : c.attendNo,
-          guestCount: form.attend === "yes" ? form.guestCount || "1" : "0",
+          attend: !c.askAttend ? "" : form.attend === "yes" ? c.attendYes : c.attendNo,
+          guestCount: !c.askAttend ? "" : form.attend === "yes" ? form.guestCount || "1" : "0",
         }),
       });
       setSent(true);
@@ -654,19 +654,21 @@ function RsvpForm({ c }) {
         <form onSubmit={handleSubmit} className="space-y-3">
           <input required value={form.name} onChange={update("name")} placeholder={c.placeholders.name} className={inputCls} />
           <input value={form.message} onChange={update("message")} placeholder={c.placeholders.message} className={inputCls} />
-          <select
-            required
-            value={form.attend}
-            onChange={update("attend")}
-            className={`${inputCls} ${form.attend ? "" : "text-foreground/50"}`}
-          >
-            <option value="" disabled>
-              {c.placeholders.attend}
-            </option>
-            <option value="yes">{c.attendYes}</option>
-            <option value="no">{c.attendNo}</option>
-          </select>
-          {form.attend !== "no" && (
+          {c.askAttend && (
+            <select
+              required
+              value={form.attend}
+              onChange={update("attend")}
+              className={`${inputCls} ${form.attend ? "" : "text-foreground/50"}`}
+            >
+              <option value="" disabled>
+                {c.placeholders.attend}
+              </option>
+              <option value="yes">{c.attendYes}</option>
+              <option value="no">{c.attendNo}</option>
+            </select>
+          )}
+          {c.askAttend && form.attend !== "no" && (
             <input
               type="number"
               min={1}

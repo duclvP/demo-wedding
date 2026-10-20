@@ -945,7 +945,7 @@ function WeddingPage() {
           </section>
 
           {/* Thank you */}
-          <section className="relative -mx-2 mb-10 overflow-hidden">
+          <section className="relative -mx-2 overflow-hidden">
             <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
             <Reveal variant="up" className="absolute inset-x-0 bottom-0 px-4 pb-6 text-center text-white">

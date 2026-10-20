@@ -1,35 +1,34 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Xã Hoà An, TP. Cần Thơ';
-const ADDRESS_BRIDE = 'Xã Vĩnh Tường, TP. Cần Thơ';
+const ADDRESS_VENUE = 'Thôn 3, Xã Vĩnh Am, TP. Hải Phòng';
 
-/** father / mother / address: để null nếu không muốn hiển thị */
+/** father / mother / address: để null nếu không muốn hiển thị — TODO: chưa có địa chỉ hai nhà */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Hà Văn Bẽo',
-  mother: 'Võ Kim Khoa',
-  address: ADDRESS_GROOM,
+  father: 'Kim Jin Gwon',
+  mother: 'Lee Mi Hwa',
+  address: null,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Nguyễn Văn Chính',
-  mother: 'Huỳnh Thị Nhung',
-  address: ADDRESS_BRIDE,
+  father: 'Phạm Hiếu Doanh',
+  mother: 'Hoàng Thị Hải',
+  address: null,
 };
 
 export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Thái Ngọc', 'Hồng Gấm'],
-    dateLine: '28 . 10 . 2026',
+    names: ['Phạm Ngân', 'Kim Dae Ho'],
+    dateLine: '29 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Thái Ngọc', 'Hồng Gấm'],
+    fullNames: ['Phạm Ngân', 'Kim Dae Ho'],
   },
 
   invitation: {
@@ -38,7 +37,7 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['28', '10', '2026'],
+    dateParts: ['29', '11', '2026'],
   },
 
   events: {
@@ -47,15 +46,14 @@ export const content = {
       {
         id: 'tiec-cuoi',
         title: 'Tiệc Mừng Lễ Thành Hôn',
-        /** TODO: thiệp giấy để trống giờ — thêm giờ khi có, vd '10:00 - Thứ Tư' */
-        time: 'Thứ Tư',
-        date: '28. 10. 2026',
-        lunar: '( Tức Ngày 19 Tháng 09 Năm Bính Ngọ )',
+        time: '09:00 - Chủ Nhật',
+        date: '29. 11. 2026',
+        lunar: '( Tức Ngày 21 Tháng 10 Năm Bính Ngọ )',
         places: [
           {
-            label: 'Tư Gia Nhà Trai',
-            address: 'Xã Hoà An, TP. Cần Thơ (Chợ Kinh Cùng vô thẳng 1500m)',
-            mapQuery: 'Chợ Kinh Cùng, Hoà An, Cần Thơ',
+            label: 'Trung Tâm Văn Hoá Làng Liễu Điện',
+            address: ADDRESS_VENUE,
+            mapQuery: 'Làng Liễu Điện, Vĩnh Am, Hải Phòng',
           },
         ],
       },
@@ -65,7 +63,7 @@ export const content = {
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
-    dateIso: '2026-10-28',
+    dateIso: '2026-11-29',
   },
 
   rsvp: {
@@ -101,15 +99,8 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    accounts: [
-      {
-        holder: 'HA THAI NGOC',
-        number: '7006205282315',
-        bank: 'Agribank',
-        /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-agribank.png',
-      },
-    ],
+    /** TODO: chưa có tài khoản mừng cưới */
+    accounts: [],
   },
 
   thanks: {

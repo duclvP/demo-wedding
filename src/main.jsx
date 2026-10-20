@@ -346,7 +346,7 @@ function FallingEffects({ active }) {
   );
 }
 
-/** Rèm đỏ che thiệp, tự kéo sang hai bên (hoặc khi chạm con dấu 囍) */
+/** Rèm đỏ che thiệp, chỉ kéo sang hai bên khi khách chạm — cú chạm này cũng mở khóa nhạc nền */
 function OpeningCurtain({ onOpen, onDone }) {
   const [opening, setOpening] = useState(false);
 
@@ -356,11 +356,6 @@ function OpeningCurtain({ onOpen, onDone }) {
       return true;
     });
   }, [onOpen]);
-
-  useEffect(() => {
-    const t = setTimeout(open, 1500);
-    return () => clearTimeout(t);
-  }, [open]);
 
   useEffect(() => {
     if (!opening) return;
@@ -460,12 +455,55 @@ function mapUrl(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-/** Tên khách lấy từ link ?khach=..., không có thì dùng mặc định */
+/** Từ xưng hô gõ không dấu ở đầu link → có dấu: /co-lan → "Cô Lan"; không có thì thêm "Bạn" */
+const GUEST_TITLES = {
+  "gia dinh": "Gia Đình",
+  ban: "Bạn",
+  anh: "Anh",
+  chi: "Chị",
+  em: "Em",
+  co: "Cô",
+  chu: "Chú",
+  bac: "Bác",
+  thim: "Thím",
+  di: "Dì",
+  duong: "Dượng",
+  cau: "Cậu",
+  mo: "Mợ",
+  ong: "Ông",
+  ba: "Bà",
+  thay: "Thầy",
+  "vo chong": "Vợ Chồng",
+};
+
+/**
+ * Tên khách lấy từ link ?khach=Tên%20Khách (giữ nguyên) hoặc đường dẫn /hoa (→ "Bạn Hoa"),
+ * không có thì dùng mặc định
+ */
 function useGuestName(fallback) {
   return useState(() => {
     try {
-      const name = new URLSearchParams(window.location.search).get("khach");
-      return name?.trim() || fallback;
+      const fromQuery = new URLSearchParams(window.location.search).get("khach")?.trim();
+      if (fromQuery) return fromQuery;
+      const base = String(import.meta.env.BASE_URL || "/");
+      const path = window.location.pathname.startsWith(base)
+        ? window.location.pathname.slice(base.length)
+        : window.location.pathname;
+      const slug = decodeURIComponent(path.split("/").filter(Boolean).pop() || "");
+      if (!slug || /\.html?$/i.test(slug)) return fallback;
+      let rest = slug.replace(/[-_+]+/g, " ").trim();
+      const titles = [];
+      for (;;) {
+        const t = Object.keys(GUEST_TITLES).find((k) => rest.toLowerCase().startsWith(`${k} `));
+        if (!t) break;
+        titles.push(GUEST_TITLES[t]);
+        rest = rest.slice(t.length + 1);
+      }
+      /** Không có xưng hô → mặc định "Bạn" */
+      if (!titles.length) titles.push(GUEST_TITLES.ban);
+      return [...titles, rest]
+        .join(" ")
+        .replace(/(^|\s)(\p{L})/gu, (_, sp, ch) => sp + ch.toUpperCase());
     } catch {
       return fallback;
     }
@@ -482,7 +520,9 @@ function FamilySide({ side }) {
       {side.mother && (
         <p className="font-oswald font-medium text-[15px] uppercase mb-2">Mẹ: {side.mother}</p>
       )}
-      <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
+      {side.address && (
+        <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
+      )}
     </div>
   );
 }
@@ -516,8 +556,11 @@ function EventCard({ item, mapLabel }) {
 
 const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
+/** dateIso: một ngày "2026-11-01" hoặc nhiều ngày cùng tháng ["2026-11-01", "2026-11-02"] */
 function MonthCalendar({ dateIso }) {
-  const [y, m, d] = dateIso.split("-").map(Number);
+  const isos = [].concat(dateIso);
+  const [y, m] = isos[0].split("-").map(Number);
+  const marked = new Set(isos.map((iso) => Number(iso.split("-")[2])));
   const daysInMonth = new Date(y, m, 0).getDate();
   /** Lịch bắt đầu từ Thứ Hai */
   const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
@@ -538,7 +581,7 @@ function MonthCalendar({ dateIso }) {
       </div>
       <div className="grid grid-cols-7 gap-y-2 text-center font-display text-lg mt-3">
         {cells.map((day, i) =>
-          day === d ? (
+          marked.has(day) ? (
             <span key={i} className="relative flex items-center justify-center h-10">
               <svg viewBox="0 0 24 24" className="absolute w-11 h-11 text-[#e0303a] animate-pulse-soft" aria-hidden>
                 <path
@@ -812,12 +855,11 @@ function WeddingPage() {
               </div>
             </Reveal>
             <div className="grid grid-cols-2 gap-4 mb-10">
-              <Reveal variant="left">
-                <FamilySide side={c.families.groomSide} />
-              </Reveal>
-              <Reveal variant="right">
-                <FamilySide side={c.families.brideSide} />
-              </Reveal>
+              {c.families.sides.map((side, i) => (
+                <Reveal key={side.label} variant={i ? "right" : "left"}>
+                  <FamilySide side={side} />
+                </Reveal>
+              ))}
             </div>
             <Reveal variant="left">
               <p className="font-script text-5xl">{c.families.fullNames[0]}</p>
@@ -901,7 +943,7 @@ function WeddingPage() {
           </section>
 
           {/* Thank you */}
-          <section className="relative -mx-2 mb-10 overflow-hidden">
+          <section className="relative -mx-2 overflow-hidden">
             <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
             <Reveal variant="up" className="absolute inset-x-0 bottom-0 px-4 pb-6 text-center text-white">

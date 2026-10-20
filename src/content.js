@@ -1,72 +1,72 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Đình Tây Câu Đông, An Quang, Hải Phòng';
-const ADDRESS_BRIDE = 'Xóm 8 Câu Trung, An Quang, Hải Phòng';
+const ADDRESS_GROOM = 'Số nhà 63, Đường Tiền Lệ 1, Xã Sơn Đồng, TP. Hà Nội';
+const ADDRESS_RESTAURANT = 'Nhà hàng Việt Anh, Đường 417, Xã Liên Minh, TP. Hà Nội';
+
+/** father / mother / address: để null nếu không muốn hiển thị */
+const GROOM_SIDE = {
+  label: 'Nhà Trai',
+  father: 'Nguyễn Văn Mạnh',
+  mother: 'Nguyễn Thị Hoa',
+  address: ADDRESS_GROOM,
+};
+const BRIDE_SIDE = {
+  label: 'Nhà Gái',
+  father: 'Trần Việt Hùng',
+  mother: 'Bùi Thị Hồng Tươi',
+  address: ADDRESS_RESTAURANT,
+};
 
 export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Minh Ánh', 'Trung Anh'],
-    dateLine: '01 . 11 . 2026',
+    names: ['Văn Trúc', 'Minh Nguyệt'],
+    dateLine: '02 . 11 . 2026',
   },
 
   families: {
-    /** father / mother: để null nếu không muốn hiển thị */
-    groomSide: {
-      label: 'Nhà Trai',
-      father: null,
-      mother: null,
-      address: ADDRESS_GROOM,
-    },
-    brideSide: {
-      label: 'Nhà Gái',
-      father: null,
-      mother: null,
-      address: ADDRESS_BRIDE,
-    },
-    /** Họ tên đầy đủ, hiện dưới phần gia đình */
-    fullNames: ['Bùi Minh Ánh', 'Đỗ Trung Anh'],
+    /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
+    sides: [GROOM_SIDE, BRIDE_SIDE],
+    /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
+    fullNames: ['Văn Trúc', 'Minh Nguyệt'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
-    /** Tên khách mặc định — có thể thay bằng link ?khach=Tên%20Khách */
+    /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Cưới',
+    title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['01', '11', '2026'],
+    dateParts: ['02', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '09:00 - Chủ Nhật',
+        id: 'tiec-thanh-hon',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
+        time: '15:00 - Chủ Nhật',
         date: '01. 11. 2026',
         lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [
-          { label: 'Tư Gia Nhà Trai', address: 'Đình Câu Đông, An Quang, Hải Phòng' },
-          { label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE },
-        ],
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
       {
-        id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Cưới',
-        time: '13:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+        id: 'thanh-hon',
+        title: 'Lễ Thành Hôn',
+        time: '11:00 - Thứ Hai',
+        date: '02. 11. 2026',
+        lunar: '( Tức Ngày 24 Tháng 09 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
     ],
   },
 
   calendar: {
     title: 'Save The Date',
-    /** Ngày được đánh dấu trên lịch */
-    dateIso: '2026-11-01',
+    /** Ngày được đánh dấu trên lịch — một ngày hoặc mảng nhiều ngày cùng tháng */
+    dateIso: ['2026-11-01', '2026-11-02'],
   },
 
   rsvp: {
@@ -75,7 +75,7 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
+    endpoint: 'https://script.google.com/macros/s/AKfycbyNdj0eR6-TVjZ_-WW_BpTu6ylCwennJbF5FKIgw_Tivqujj4zuIrZGosOeIAGcamcZ/exec',
     title: 'Gửi Lời Chúc & Xác Nhận',
     placeholders: {
       name: 'Tên của bạn là gì ?',
@@ -100,11 +100,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'BUI MINH ANH',
-        number: '203704070018671',
-        bank: 'HDBank',
+        holder: 'NGUYEN VAN TRUC',
+        number: '19072110330016',
+        bank: 'Techcombank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-hdbank.png',
+        qr: '/images/qr-techcombank.png',
       },
     ],
   },
@@ -116,7 +116,7 @@ export const content = {
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */
   music: {
-    src: '/music/music.mp3',
+    src: '/music/truc-nguyet.mp3',
     /** 0–1 */
     volume: 0.45,
   },

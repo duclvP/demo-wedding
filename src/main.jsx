@@ -346,7 +346,7 @@ function FallingEffects({ active }) {
   );
 }
 
-/** Rèm đỏ che thiệp, tự kéo sang hai bên (hoặc khi chạm con dấu 囍) */
+/** Rèm đỏ che thiệp, chỉ kéo sang hai bên khi khách chạm — cú chạm này cũng mở khóa nhạc nền */
 function OpeningCurtain({ onOpen, onDone }) {
   const [opening, setOpening] = useState(false);
 
@@ -356,11 +356,6 @@ function OpeningCurtain({ onOpen, onDone }) {
       return true;
     });
   }, [onOpen]);
-
-  useEffect(() => {
-    const t = setTimeout(open, 1500);
-    return () => clearTimeout(t);
-  }, [open]);
 
   useEffect(() => {
     if (!opening) return;

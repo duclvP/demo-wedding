@@ -1,72 +1,78 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Đình Tây Câu Đông, An Quang, Hải Phòng';
-const ADDRESS_BRIDE = 'Xóm 8 Câu Trung, An Quang, Hải Phòng';
+const ADDRESS_GROOM = 'Lô 80 Khu BĐ.4 Trường Sơn 2, Phường Nha Trang, Tỉnh Khánh Hòa';
+const ADDRESS_BRIDE = 'Buôn Ea Pốc, Xã Quảng Phú, Tỉnh Đắk Lắk';
+
+/** father / mother / address: để null nếu không muốn hiển thị */
+const GROOM_SIDE = {
+  label: 'Nhà Trai',
+  father: 'Đào Văn Quảng',
+  mother: 'Hồ Thị Kim Liên',
+  address: ADDRESS_GROOM,
+};
+const BRIDE_SIDE = {
+  label: 'Nhà Gái',
+  father: 'Phan Long Lạc',
+  mother: 'Nguyễn Thị Nở',
+  address: ADDRESS_BRIDE,
+};
 
 export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Minh Ánh', 'Trung Anh'],
-    dateLine: '01 . 11 . 2026',
+    names: ['Quang Hưng', 'Thị Long'],
+    dateLine: '19 . 12 . 2026',
   },
 
   families: {
-    /** father / mother: để null nếu không muốn hiển thị */
-    groomSide: {
-      label: 'Nhà Trai',
-      father: null,
-      mother: null,
-      address: ADDRESS_GROOM,
-    },
-    brideSide: {
-      label: 'Nhà Gái',
-      father: null,
-      mother: null,
-      address: ADDRESS_BRIDE,
-    },
-    /** Họ tên đầy đủ, hiện dưới phần gia đình */
-    fullNames: ['Bùi Minh Ánh', 'Đỗ Trung Anh'],
+    /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
+    sides: [GROOM_SIDE, BRIDE_SIDE],
+    /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
+    fullNames: ['Quang Hưng', 'Thị Long'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
-    /** Tên khách mặc định — có thể thay bằng link ?khach=Tên%20Khách */
+    /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Cưới',
+    title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['01', '11', '2026'],
+    dateParts: ['19', '12', '2026'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'thanh-hon',
+        id: 'le-thanh-hon',
         title: 'Lễ Thành Hôn',
-        time: '09:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [
-          { label: 'Tư Gia Nhà Trai', address: 'Đình Câu Đông, An Quang, Hải Phòng' },
-          { label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE },
-        ],
+        time: '09:00 - Thứ Bảy',
+        date: '19. 12. 2026',
+        lunar: '( Tức Ngày 11 Tháng 11 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
       {
         id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Cưới',
-        time: '13:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+        title: 'Tiệc Mừng Lễ Thành Hôn',
+        time: '17:30 - Thứ Bảy',
+        date: '19. 12. 2026',
+        lunar: '( Tức Ngày 11 Tháng 11 Năm Bính Ngọ )',
+        places: [
+          {
+            label: 'Sảnh Như Ý - Emerald Center',
+            address: '03 Phong Châu, Nam Nha Trang, Tỉnh Khánh Hòa',
+            mapQuery: 'Emerald Center, 03 Phong Châu, Nha Trang',
+          },
+        ],
       },
     ],
   },
 
   calendar: {
     title: 'Save The Date',
-    /** Ngày được đánh dấu trên lịch */
-    dateIso: '2026-11-01',
+    /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
+    dateIso: null,
   },
 
   rsvp: {
@@ -75,8 +81,12 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: 'https://script.google.com/macros/s/AKfycbwSC1CBCHacEHD58RJ7XGaCZ5z5_xyCOfx3HUPlCrEEfp4_iDwKGgI3rwe_kFA5krbn/exec',
-    title: 'Gửi Lời Chúc & Xác Nhận',
+    endpoint: '',
+    /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
+    show: false,
+    /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
+    askAttend: false,
+    title: 'Gửi Lời Chúc',
     placeholders: {
       name: 'Tên của bạn là gì ?',
       message: 'Gửi lời chúc cho cô dâu & chú rể',
@@ -85,7 +95,7 @@ export const content = {
     },
     attendYes: 'Có, mình sẽ đến',
     attendNo: 'Xin lỗi, hôm đấy mình không tới được :(',
-    submit: 'Gửi Xác Nhận',
+    submit: 'Gửi Lời Chúc',
     sending: 'Đang gửi...',
     error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
     thanks: 'Cảm ơn bạn! Lời chúc của bạn đã được ghi nhận.',
@@ -100,11 +110,17 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'BUI MINH ANH',
-        number: '203704070018671',
-        bank: 'HDBank',
+        holder: 'DAO QUANG HUNG',
+        number: '88803091987',
+        bank: 'TPBank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-hdbank.png',
+        qr: '/images/qr-tpbank.png',
+      },
+      {
+        holder: 'PHAN THI LONG',
+        number: '1015788082',
+        bank: 'Vietcombank',
+        qr: '/images/qr-vietcombank.png',
       },
     ],
   },
@@ -116,7 +132,7 @@ export const content = {
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */
   music: {
-    src: '/music/music.mp3',
+    src: '/music/i-do.mp3',
     /** 0–1 */
     volume: 0.45,
   },

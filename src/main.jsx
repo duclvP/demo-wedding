@@ -346,7 +346,7 @@ function FallingEffects({ active }) {
   );
 }
 
-/** Rèm đỏ che thiệp, tự kéo sang hai bên (hoặc khi chạm con dấu 囍) */
+/** Rèm đỏ che thiệp, chỉ kéo sang hai bên khi khách chạm — cú chạm này cũng mở khóa nhạc nền */
 function OpeningCurtain({ onOpen, onDone }) {
   const [opening, setOpening] = useState(false);
 
@@ -356,11 +356,6 @@ function OpeningCurtain({ onOpen, onDone }) {
       return true;
     });
   }, [onOpen]);
-
-  useEffect(() => {
-    const t = setTimeout(open, 1500);
-    return () => clearTimeout(t);
-  }, [open]);
 
   useEffect(() => {
     if (!opening) return;
@@ -460,12 +455,55 @@ function mapUrl(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-/** Tên khách lấy từ link ?khach=..., không có thì dùng mặc định */
+/** Từ xưng hô gõ không dấu ở đầu link → có dấu: /co-lan → "Cô Lan"; không có thì thêm "Bạn" */
+const GUEST_TITLES = {
+  "gia dinh": "Gia Đình",
+  ban: "Bạn",
+  anh: "Anh",
+  chi: "Chị",
+  em: "Em",
+  co: "Cô",
+  chu: "Chú",
+  bac: "Bác",
+  thim: "Thím",
+  di: "Dì",
+  duong: "Dượng",
+  cau: "Cậu",
+  mo: "Mợ",
+  ong: "Ông",
+  ba: "Bà",
+  thay: "Thầy",
+  "vo chong": "Vợ Chồng",
+};
+
+/**
+ * Tên khách lấy từ link ?khach=Tên%20Khách (giữ nguyên) hoặc đường dẫn /hoa (→ "Bạn Hoa"),
+ * không có thì dùng mặc định
+ */
 function useGuestName(fallback) {
   return useState(() => {
     try {
-      const name = new URLSearchParams(window.location.search).get("khach");
-      return name?.trim() || fallback;
+      const fromQuery = new URLSearchParams(window.location.search).get("khach")?.trim();
+      if (fromQuery) return fromQuery;
+      const base = String(import.meta.env.BASE_URL || "/");
+      const path = window.location.pathname.startsWith(base)
+        ? window.location.pathname.slice(base.length)
+        : window.location.pathname;
+      const slug = decodeURIComponent(path.split("/").filter(Boolean).pop() || "");
+      if (!slug || /\.html?$/i.test(slug)) return fallback;
+      let rest = slug.replace(/[-_+]+/g, " ").trim();
+      const titles = [];
+      for (;;) {
+        const t = Object.keys(GUEST_TITLES).find((k) => rest.toLowerCase().startsWith(`${k} `));
+        if (!t) break;
+        titles.push(GUEST_TITLES[t]);
+        rest = rest.slice(t.length + 1);
+      }
+      /** Không có xưng hô → mặc định "Bạn" */
+      if (!titles.length) titles.push(GUEST_TITLES.ban);
+      return [...titles, rest]
+        .join(" ")
+        .replace(/(^|\s)(\p{L})/gu, (_, sp, ch) => sp + ch.toUpperCase());
     } catch {
       return fallback;
     }
@@ -482,7 +520,9 @@ function FamilySide({ side }) {
       {side.mother && (
         <p className="font-oswald font-medium text-[15px] uppercase mb-2">Mẹ: {side.mother}</p>
       )}
-      <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
+      {side.address && (
+        <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
+      )}
     </div>
   );
 }
@@ -500,7 +540,7 @@ function EventCard({ item, mapLabel }) {
             <p className="font-avo uppercase text-lg mb-1">{place.label}</p>
             <p className="text-sm opacity-90 mb-3">{place.address}</p>
             <a
-              href={mapUrl(place.address)}
+              href={mapUrl(place.mapQuery ?? place.address)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block rounded-full bg-white px-8 py-1.5 font-lora text-primary text-base shadow transition hover:scale-105"
@@ -590,8 +630,8 @@ function RsvpForm({ c }) {
         body: new URLSearchParams({
           name: form.name.trim(),
           message: form.message.trim(),
-          attend: form.attend === "yes" ? c.attendYes : c.attendNo,
-          guestCount: form.attend === "yes" ? form.guestCount || "1" : "0",
+          attend: !c.askAttend ? "" : form.attend === "yes" ? c.attendYes : c.attendNo,
+          guestCount: !c.askAttend ? "" : form.attend === "yes" ? form.guestCount || "1" : "0",
         }),
       });
       setSent(true);
@@ -614,19 +654,21 @@ function RsvpForm({ c }) {
         <form onSubmit={handleSubmit} className="space-y-3">
           <input required value={form.name} onChange={update("name")} placeholder={c.placeholders.name} className={inputCls} />
           <input value={form.message} onChange={update("message")} placeholder={c.placeholders.message} className={inputCls} />
-          <select
-            required
-            value={form.attend}
-            onChange={update("attend")}
-            className={`${inputCls} ${form.attend ? "" : "text-foreground/50"}`}
-          >
-            <option value="" disabled>
-              {c.placeholders.attend}
-            </option>
-            <option value="yes">{c.attendYes}</option>
-            <option value="no">{c.attendNo}</option>
-          </select>
-          {form.attend !== "no" && (
+          {c.askAttend && (
+            <select
+              required
+              value={form.attend}
+              onChange={update("attend")}
+              className={`${inputCls} ${form.attend ? "" : "text-foreground/50"}`}
+            >
+              <option value="" disabled>
+                {c.placeholders.attend}
+              </option>
+              <option value="yes">{c.attendYes}</option>
+              <option value="no">{c.attendNo}</option>
+            </select>
+          )}
+          {c.askAttend && form.attend !== "no" && (
             <input
               type="number"
               min={1}
@@ -812,12 +854,11 @@ function WeddingPage() {
               </div>
             </Reveal>
             <div className="grid grid-cols-2 gap-4 mb-10">
-              <Reveal variant="left">
-                <FamilySide side={c.families.groomSide} />
-              </Reveal>
-              <Reveal variant="right">
-                <FamilySide side={c.families.brideSide} />
-              </Reveal>
+              {c.families.sides.map((side, i) => (
+                <Reveal key={side.label} variant={i ? "right" : "left"}>
+                  <FamilySide side={side} />
+                </Reveal>
+              ))}
             </div>
             <Reveal variant="left">
               <p className="font-script text-5xl">{c.families.fullNames[0]}</p>
@@ -865,20 +906,24 @@ function WeddingPage() {
           </section>
 
           {/* Lịch */}
-          <section className="pb-12 -mx-2">
-            <Reveal variant="right">
-              <h2 className="text-center font-lora text-3xl text-primary uppercase mb-1">{c.calendar.title}</h2>
-              <MonthCalendar dateIso={c.calendar.dateIso} />
-            </Reveal>
-          </section>
+          {c.calendar.dateIso && (
+            <section className="pb-12 -mx-2">
+              <Reveal variant="right">
+                <h2 className="text-center font-lora text-3xl text-primary uppercase mb-1">{c.calendar.title}</h2>
+                <MonthCalendar dateIso={c.calendar.dateIso} />
+              </Reveal>
+            </section>
+          )}
 
           {/* Xác nhận + mừng cưới */}
           <section className="pb-10 -mx-2">
-            <Reveal>
-              <RsvpForm c={c.rsvp} />
-            </Reveal>
+            {c.rsvp.show && (
+              <Reveal>
+                <RsvpForm c={c.rsvp} />
+              </Reveal>
+            )}
             {c.gift.accounts.length > 0 && (
-              <Reveal className="text-center mt-8">
+              <Reveal className={`text-center ${c.rsvp.show ? "mt-8" : ""}`}>
                 <button
                   type="button"
                   onClick={() => setGiftOpen(true)}
@@ -901,13 +946,19 @@ function WeddingPage() {
           </section>
 
           {/* Thank you */}
-          <section className="relative -mx-2 mb-10 overflow-hidden">
+          <section className="relative -mx-2 overflow-hidden">
             <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-            <Reveal variant="up" className="absolute inset-x-0 bottom-0 px-4 pb-6 text-center text-white">
-              <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>
-              <p className="text-sm leading-relaxed drop-shadow">{c.thanks.text}</p>
-            </Reveal>
+            {/* Định vị ở lớp ngoài — Reveal quan sát lớp bọc của nó, lớp đó phải có chiều cao thật */}
+            <div className="absolute inset-x-0 bottom-0">
+              <Reveal variant="up" className="px-4 pb-14 text-center text-white">
+                <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>
+                <p className="text-sm leading-relaxed drop-shadow">{c.thanks.text}</p>
+                <p className="font-script text-4xl mt-4 drop-shadow-lg">
+                  {c.families.fullNames[0]} &amp; {c.families.fullNames[1]}
+                </p>
+              </Reveal>
+            </div>
           </section>
         </div>
       </main>

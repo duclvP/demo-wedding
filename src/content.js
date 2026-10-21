@@ -99,8 +99,15 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    /** TODO: chưa có tài khoản mừng cưới */
-    accounts: [],
+    accounts: [
+      {
+        holder: 'PHAM THI NGAN',
+        number: '19036660495016',
+        bank: 'Techcombank',
+        /** Ảnh mã QR trong public/images/ — để null nếu không có */
+        qr: '/images/qr-techcombank.png',
+      },
+    ],
   },
 
   thanks: {

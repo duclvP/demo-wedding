@@ -4,22 +4,24 @@
  */
 export const images = {
   /** Ảnh dọc lớn đầu thiệp (khung vàng) */
-  hero: '/images/nau-1.jpg',
+  hero: '/images/studio-1.jpg',
   /** Ảnh dưới phần gia đình (khung vàng) */
-  couple: '/images/hoa-1.jpg',
+  couple: '/images/bien-2.jpg',
   /** 3 ảnh dải ngày cưới */
-  dateStrip: ['/images/hoa-2.jpg', '/images/nau-2.jpg', '/images/nau-3.jpg'],
+  dateStrip: ['/images/bien-3.jpg', '/images/studio-4.jpg', '/images/bien-1.jpg'],
   /** Lưới ảnh 2 cột */
   album: [
-    '/images/xam-1.jpg',
-    '/images/hoa-4.jpg',
-    '/images/xam-2.jpg',
-    '/images/sanh-1.jpg',
-    '/images/xam-3.jpg',
-    '/images/sanh-2.jpg',
+    '/images/bien-4.jpg',
+    '/images/studio-2.jpg',
+    '/images/bien-7.jpg',
+    '/images/studio-3.jpg',
+    '/images/bien-6.jpg',
+    '/images/studio-5.jpg',
+    '/images/ao-dai-1.jpg',
+    '/images/studio-6.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/nau-2.jpg',
+  gift: '/images/studio-4.jpg',
   /** Ảnh mục Thank You */
-  thankYou: '/images/hoa-3.jpg',
+  thankYou: '/images/bien-5.jpg',
 };

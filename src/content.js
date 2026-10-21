@@ -132,7 +132,7 @@ export const content = {
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */
   music: {
-    src: '/music/yes_i_do.mp3',
+    src: '/music/i-do.mp3',
     /** 0–1 */
     volume: 0.45,
   },

@@ -36,7 +36,7 @@ export const content = {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Vu Quy',
+    title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
     dateParts: ['29', '11', '2026'],
   },
@@ -45,12 +45,20 @@ export const content = {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'tiec-cuoi',
+        id: 'nha-gai',
         title: 'Tiệc Mừng Lễ Vu Quy',
         time: '11:00 - Chủ Nhật',
         date: '29. 11. 2026',
         lunar: '( Tức Ngày 21 Tháng 10 Năm Bính Ngọ )',
         places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+      },
+      {
+        id: 'nha-trai',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
+        time: '10:30 - Thứ Bảy',
+        date: '02. 01. 2027',
+        lunar: '( Tức Ngày 25 Tháng 11 Năm Bính Ngọ )',
+        places: [{ label: 'Nhà Văn Hoá Thôn Phong Hoà', address: 'Xã Đại Đồng, Tỉnh Nghệ An' }],
       },
     ],
   },
@@ -58,7 +66,8 @@ export const content = {
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
-    dateIso: '2026-11-29',
+    /** Thiệp chung: hai tiệc ở hai tháng khác nhau nên ẩn lịch (lịch chỉ hiện một tháng) */
+    dateIso: null,
   },
 
   rsvp: {

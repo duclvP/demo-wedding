@@ -949,10 +949,16 @@ function WeddingPage() {
           <section className="relative -mx-2 overflow-hidden">
             <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-            <Reveal variant="up" className="absolute inset-x-0 bottom-0 px-4 pb-6 text-center text-white">
-              <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>
-              <p className="text-sm leading-relaxed drop-shadow">{c.thanks.text}</p>
-            </Reveal>
+            {/* Định vị ở lớp ngoài — Reveal quan sát lớp bọc của nó, lớp đó phải có chiều cao thật */}
+            <div className="absolute inset-x-0 bottom-0">
+              <Reveal variant="up" className="px-4 pb-14 text-center text-white">
+                <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>
+                <p className="text-sm leading-relaxed drop-shadow">{c.thanks.text}</p>
+                <p className="font-script text-4xl mt-4 drop-shadow-lg">
+                  {c.families.fullNames[0]} &amp; {c.families.fullNames[1]}
+                </p>
+              </Reveal>
+            </div>
           </section>
         </div>
       </main>

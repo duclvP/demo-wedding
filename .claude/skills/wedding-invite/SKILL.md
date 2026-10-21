@@ -179,7 +179,16 @@ $V inspect <url-deploy> --scope leducuet-5765s-projects   # status Ready + Alias
 
 Kiểm tra link chính trả 200 cho `/`, một link tên khách (`/co-lan`) và một ảnh QR; `<title>` đúng tên. Cập nhật thiệp đã deploy = commit rồi chạy lại `deploy --prod` ở đúng nhánh.
 
-Lưu ý: `vercel link` tự nối project vào repo GitHub với production branch `main` (giống các project cũ) — push lên `main` có thể deploy đè; nhắc người dùng nếu họ định push.
+**Project mới — bắt buộc cấu hình một lần.** `vercel link` tự nối project vào repo GitHub với production branch `main` và không có Ignored Build Step → mọi push/PR build preview cho TẤT CẢ project, và merge vào `main` sẽ deploy đè mọi thiệp. Mọi project đều nối chung repo, nên project mới phải chỉ build đúng nhánh của nó (token trong `~/Library/Application Support/com.vercel.cli/auth.json`, team id `team_rqWb3mrYNxU4RpLrPW5y7on6`):
+
+```bash
+# PATCH /v9/projects/<project>?teamId=…  — chỉ bỏ qua khi biết chắc là nhánh khác (deploy CLI vẫn chạy)
+{"commandForIgnoringBuildStep": "[ -n \"$VERCEL_GIT_COMMIT_REF\" ] && [ \"$VERCEL_GIT_COMMIT_REF\" != \"<nhánh>\" ]"}
+# PATCH /v9/projects/<project>/branch?teamId=…  — nhánh phải đã có trên GitHub
+{"branch": "<nhánh>"}
+```
+
+Sau đó push nhánh → chỉ thiệp đó tự deploy production. Đọc lại `GET /v9/projects?teamId=…` để xác nhận `link.productionBranch` và `commandForIgnoringBuildStep`.
 
 ## 12. Báo cáo
 

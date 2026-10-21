@@ -952,6 +952,9 @@ function WeddingPage() {
             <Reveal variant="up" className="absolute inset-x-0 bottom-0 px-4 pb-6 text-center text-white">
               <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>
               <p className="text-sm leading-relaxed drop-shadow">{c.thanks.text}</p>
+              <p className="font-script text-4xl mt-4 drop-shadow-lg">
+                {c.families.fullNames[0]} &amp; {c.families.fullNames[1]}
+              </p>
             </Reveal>
           </section>
         </div>

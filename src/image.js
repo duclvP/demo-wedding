@@ -4,9 +4,9 @@
  */
 export const images = {
   /** Ảnh dọc lớn đầu thiệp (khung vàng) */
-  hero: '/images/vuon-1.jpg',
+  hero: '/images/studio-8.jpg',
   /** Ảnh dưới phần gia đình (khung vàng) */
-  couple: '/images/studio-8.jpg',
+  couple: '/images/vuon-1.jpg',
   /** 3 ảnh dải ngày cưới */
   dateStrip: ['/images/studio-1.jpg', '/images/vuon-2.jpg', '/images/studio-9.jpg'],
   /** Lưới ảnh 2 cột */

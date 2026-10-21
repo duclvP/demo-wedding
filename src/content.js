@@ -21,15 +21,15 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Phan Nguyệt', 'Duy Cường'],
+    names: ['Duy Cường', 'Phan Nguyệt'],
     dateLine: '29 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [BRIDE_SIDE, GROOM_SIDE],
+    sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Phan Nguyệt', 'Duy Cường'],
+    fullNames: ['Duy Cường', 'Phan Nguyệt'],
   },
 
   invitation: {

@@ -21,24 +21,24 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Duy Cường', 'Phan Nguyệt'],
-    dateLine: '02 . 01 . 2027',
+    names: ['Phan Nguyệt', 'Duy Cường'],
+    dateLine: '29 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Duy Cường', 'Phan Nguyệt'],
+    fullNames: ['Phan Nguyệt', 'Duy Cường'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Thành Hôn',
+    title: 'Tham Dự Lễ Vu Quy',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['02', '01', '2027'],
+    dateParts: ['29', '11', '2026'],
   },
 
   events: {
@@ -46,11 +46,11 @@ export const content = {
     items: [
       {
         id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Thành Hôn',
-        time: '10:30 - Thứ Bảy',
-        date: '02. 01. 2027',
-        lunar: '( Tức Ngày 25 Tháng 11 Năm Bính Ngọ )',
-        places: [{ label: 'Nhà Văn Hoá Thôn Phong Hoà', address: 'Xã Đại Đồng, Tỉnh Nghệ An' }],
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        time: '11:00 - Chủ Nhật',
+        date: '29. 11. 2026',
+        lunar: '( Tức Ngày 21 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
       },
     ],
   },
@@ -58,7 +58,7 @@ export const content = {
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
-    dateIso: '2027-01-02',
+    dateIso: '2026-11-29',
   },
 
   rsvp: {

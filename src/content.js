@@ -1,19 +1,19 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Lô 80 Khu BĐ.4 Trường Sơn 2, Phường Nha Trang, Tỉnh Khánh Hòa';
-const ADDRESS_BRIDE = 'Buôn Ea Pốc, Xã Quảng Phú, Tỉnh Đắk Lắk';
+const ADDRESS_GROOM = 'Nhà Văn Hoá Thôn Phong Hoà, Xã Đại Đồng, Tỉnh Nghệ An';
+const ADDRESS_BRIDE = 'Thôn 4, Xã Kbang, Tỉnh Gia Lai';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Đào Văn Quảng',
-  mother: 'Hồ Thị Kim Liên',
+  father: 'Nguyễn Duy Điền',
+  mother: 'Nguyễn Thị Mai',
   address: ADDRESS_GROOM,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Phan Long Lạc',
-  mother: 'Nguyễn Thị Nở',
+  father: 'Phan Duy Hiền',
+  mother: 'Nguyễn Thị Tám',
   address: ADDRESS_BRIDE,
 };
 
@@ -21,15 +21,15 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Quang Hưng', 'Thị Long'],
-    dateLine: '19 . 12 . 2026',
+    names: ['Duy Cường', 'Phan Nguyệt'],
+    dateLine: '02 . 01 . 2027',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Quang Hưng', 'Thị Long'],
+    fullNames: ['Duy Cường', 'Phan Nguyệt'],
   },
 
   invitation: {
@@ -38,33 +38,19 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['19', '12', '2026'],
+    dateParts: ['02', '01', '2027'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'le-thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '09:00 - Thứ Bảy',
-        date: '19. 12. 2026',
-        lunar: '( Tức Ngày 11 Tháng 11 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
-      },
-      {
         id: 'tiec-cuoi',
         title: 'Tiệc Mừng Lễ Thành Hôn',
-        time: '17:30 - Thứ Bảy',
-        date: '19. 12. 2026',
-        lunar: '( Tức Ngày 11 Tháng 11 Năm Bính Ngọ )',
-        places: [
-          {
-            label: 'Sảnh Như Ý - Emerald Center',
-            address: '03 Phong Châu, Nam Nha Trang, Tỉnh Khánh Hòa',
-            mapQuery: 'Emerald Center, 03 Phong Châu, Nha Trang',
-          },
-        ],
+        time: '10:30 - Thứ Bảy',
+        date: '02. 01. 2027',
+        lunar: '( Tức Ngày 25 Tháng 11 Năm Bính Ngọ )',
+        places: [{ label: 'Nhà Văn Hoá Thôn Phong Hoà', address: 'Xã Đại Đồng, Tỉnh Nghệ An' }],
       },
     ],
   },
@@ -72,7 +58,7 @@ export const content = {
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
-    dateIso: null,
+    dateIso: '2027-01-02',
   },
 
   rsvp: {
@@ -110,17 +96,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'DAO QUANG HUNG',
-        number: '88803091987',
-        bank: 'TPBank',
+        holder: 'NGUYEN DUY CUONG',
+        number: '333322699999',
+        bank: 'MB Bank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-tpbank.png',
-      },
-      {
-        holder: 'PHAN THI LONG',
-        number: '1015788082',
-        bank: 'Vietcombank',
-        qr: '/images/qr-vietcombank.png',
+        qr: '/images/qr-mb.png',
       },
     ],
   },

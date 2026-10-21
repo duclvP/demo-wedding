@@ -72,7 +72,7 @@ export const content = {
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
-    dateIso: '2026-12-19',
+    dateIso: null,
   },
 
   rsvp: {

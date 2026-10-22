@@ -1484,17 +1484,17 @@ function WeddingPage07() {
           </div>
           {/* Con dấu 囍, thẻ tên và ba hình thoi ngày-tháng-năm nằm thẳng một trục */}
           <div className="absolute right-[7%] top-[27%] w-[104px] flex flex-col items-center">
-            <div className="drop07 w-[62px] h-[62px] rounded-lg flex items-center justify-center shadow" style={{ background: RUST, color: "#ffe8d1", animationDelay: "1.5s", animationDuration: "0.7s" }}>
+            <div className="drop07 w-[62px] h-[62px] rounded-lg flex items-center justify-center shadow" style={{ background: RUST, color: "#ffe8d1", animationDelay: "3s", animationDuration: "1.1s" }}>
               <span className="text-[40px] leading-none" style={{ fontFamily: '"Noto Serif SC", "Songti SC", serif' }}>囍</span>
             </div>
-            <div className="drop07 mt-4 w-full rounded-[22px] border border-white/90 py-5 text-center text-white" style={{ background: SAGE, animationDelay: "1s", animationDuration: "0.8s" }}>
+            <div className="drop07 mt-4 w-full rounded-[22px] border border-white/90 py-5 text-center text-white" style={{ background: SAGE, animationDelay: "2.1s", animationDuration: "1.3s" }}>
               <p className="font-sig text-[34px] leading-[1.05]">{first.split(" ").map((w, i) => <span key={i} className="block">{w}</span>)}</p>
               <p className="text-[13px] my-2 leading-none">●</p>
               <p className="font-sig text-[34px] leading-[1.05]">{second.split(" ").map((w, i) => <span key={i} className="block">{w}</span>)}</p>
             </div>
             <div className="mt-2 flex flex-col items-center -space-y-1.5">
               {[dd, mm, yy].map((v, i) => (
-                <div key={v} className="drop07" style={{ animationDelay: `${0.6 + i * 0.4}s`, animationDuration: "0.6s" }}>
+                <div key={v} className="drop07" style={{ animationDelay: `${1.2 + i * 0.5}s`, animationDuration: "1s" }}>
                   <div className="w-[40px] h-[40px] rotate-45 flex items-center justify-center rounded-[3px] shadow-md" style={{ background: RUST }}>
                     <span className="-rotate-45 font-hepta text-[14px]" style={{ color: "#ffe8d1" }}>{v}</span>
                   </div>

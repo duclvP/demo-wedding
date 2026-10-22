@@ -1149,113 +1149,17 @@ function Portrait06({ src, role, name, align }) {
       </Reveal>
       <Reveal variant="zoom" className="flex-1 text-center text-[#e9e2c6]">
         <p className="font-upright text-[22px]">{role}</p>
-        <p className="font-elegant font-light text-[26px] uppercase tracking-[0.06em] leading-tight">{name}</p>
+        <p className="font-elegant text-[28px] uppercase leading-tight">{name}</p>
       </Reveal>
     </div>
   );
 }
 
-/** Một bông ly trắng nhìn nghiêng (6 cánh, nhị đỏ nâu) — gốc ở (0,0), hướng lên */
-function Lily({ x, y, r = 0, s = 1 }) {
-  const petal = "M0 0C-10-14-12-40 0-62C12-40 10-14 0 0z";
-  return (
-    <g transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}>
-      {[-58, 58, -24, 24, 0].map((a, i) => (
-        <path key={i} d={petal} transform={`rotate(${a})`} fill="url(#lily-petal)" stroke="#c9d3b6" strokeWidth="0.8" />
-      ))}
-      {[-14, -5, 5, 14].map((a) => (
-        <g key={a} transform={`rotate(${a})`}>
-          <path d="M0 0V-34" stroke="#9fb27a" strokeWidth="0.8" />
-          <ellipse cx="0" cy="-35" rx="1.6" ry="3.2" fill="#8a3b1f" />
-        </g>
-      ))}
-    </g>
-  );
-}
-
-function Leaf({ x, y, r = 0, s = 1 }) {
-  return (
-    <path
-      transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}
-      d="M0 0C14-20 14-60 0-90C-14-60-14-20 0 0z"
-      fill="url(#lily-leaf)"
-      stroke="#7d9a5a"
-      strokeWidth="0.6"
-    />
-  );
-}
-
-function Bud({ x, y, r = 0, s = 1 }) {
-  return (
-    <g transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}>
-      <path d="M0 0V-26" stroke="#7d9a5a" strokeWidth="1.4" />
-      <path d="M0-24C-7-34-6-50 0-58C6-50 7-34 0-24z" fill="#d7e3b8" stroke="#9fb27a" strokeWidth="0.7" />
-    </g>
-  );
-}
-
-/** Cụm hoa ly màu nước ở góc cửa (vẽ SVG, gốc ở góc trên trái) */
-function LilyCorner({ className = "" }) {
-  return (
-    <svg viewBox="-10 -10 240 340" className={className} aria-hidden>
-      <defs>
-        <radialGradient id="lily-petal" cx="0.5" cy="0.15" r="0.9">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="0.7" stopColor="#f6f8ee" />
-          <stop offset="1" stopColor="#dfe8cc" />
-        </radialGradient>
-        <linearGradient id="lily-leaf" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#b9cf95" />
-          <stop offset="1" stopColor="#6f8f4c" />
-        </linearGradient>
-      </defs>
-      <g opacity="0.95">
-        <Leaf x={10} y={150} r={160} s={1.5} />
-        <Leaf x={70} y={70} r={120} s={1.4} />
-        <Leaf x={20} y={40} r={205} s={1.2} />
-        <Leaf x={150} y={30} r={100} s={1.1} />
-        <Leaf x={0} y={230} r={175} s={1.1} />
-        <Bud x={185} y={60} r={75} s={1.4} />
-        <Bud x={25} y={215} r={195} s={1.3} />
-        <Lily x={75} y={45} r={135} s={1.7} />
-        <Lily x={160} y={18} r={105} s={1.25} />
-        <Lily x={22} y={125} r={165} s={1.35} />
-      </g>
-    </svg>
-  );
-}
-
-/** Con dấu sáp xanh: viền gợn sóng, vòng chìm, cỏ bốn lá dập nổi */
-function WaxSeal({ className = "" }) {
-  const edge = Array.from({ length: 36 }, (_, i) => {
-    const a = (i / 36) * Math.PI * 2;
-    const rr = 56 + (i % 3 === 0 ? 4 : i % 2 ? -1.5 : 2);
-    return `${(60 + rr * Math.cos(a)).toFixed(1)} ${(60 + rr * Math.sin(a)).toFixed(1)}`;
-  });
-  return (
-    <svg viewBox="0 0 120 120" className={className} aria-hidden>
-      <defs>
-        <radialGradient id="wax" cx="0.38" cy="0.32" r="0.8">
-          <stop offset="0" stopColor="#5fbf72" />
-          <stop offset="0.55" stopColor="#2c8a45" />
-          <stop offset="1" stopColor="#13592a" />
-        </radialGradient>
-      </defs>
-      <path d={`M${edge.join(" L")} Z`} fill="url(#wax)" stroke="#0f4a22" strokeWidth="0.8" />
-      <circle cx="60" cy="60" r="40" fill="none" stroke="#0f4a22" strokeOpacity="0.55" strokeWidth="3" />
-      <circle cx="60" cy="60" r="38" fill="none" stroke="#9be0a8" strokeOpacity="0.45" strokeWidth="1" />
-      <g fill="none" stroke="#bff0c6" strokeOpacity="0.8" strokeWidth="1.4" strokeLinejoin="round">
-        {[0, 90, 180, 270].map((a) => (
-          <path key={a} transform={`rotate(${a} 60 60)`} d="M60 58C52 50 46 42 52 36C56 32 60 36 60 40C60 36 64 32 68 36C74 42 68 50 60 58z" />
-        ))}
-        <path d="M60 60C62 70 66 78 72 84" />
-      </g>
-      <ellipse cx="44" cy="36" rx="14" ry="6" fill="#ffffff" opacity="0.18" transform="rotate(-35 44 36)" />
-    </svg>
-  );
-}
-
-/** Màn mở mẫu 06: hai cánh cửa kem có hoa ly, con dấu sáp ở giữa — chạm để mở (cũng mở khóa nhạc) */
+/**
+ * Màn mở mẫu 06: hai cánh cửa kem có hoa ly, con dấu sáp ở giữa — chạm để mở (cũng mở khóa nhạc).
+ * Ảnh cửa lấy từ mẫu gốc: mỗi ảnh có một nửa là cánh cửa, nửa kia trong suốt (cửa trái: nửa trái,
+ * kèm con dấu đè lên mép; cửa phải: nửa phải) → ảnh rộng gấp đôi cánh cửa.
+ */
 function DoorOpening06({ onOpen, onDone }) {
   const [opening, setOpening] = useState(false);
 
@@ -1278,22 +1182,19 @@ function DoorOpening06({ onOpen, onDone }) {
       onClick={open}
       aria-hidden
     >
-      <div className={`door door-left ${opening ? "is-open" : ""}`}>
-        <LilyCorner className="absolute -left-6 -top-6 w-[105%]" />
-      </div>
       <div className={`door door-right ${opening ? "is-open" : ""}`}>
-        <LilyCorner className="absolute -right-6 -bottom-6 w-[105%] rotate-180" />
+        <img src="/images/tpl06/door-right.png" alt="" className="door-img door-img-right" />
       </div>
-      <div
-        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center transition-all duration-700 ${
-          opening ? "scale-50 opacity-0" : ""
+      <div className={`door door-left ${opening ? "is-open" : ""}`}>
+        <img src="/images/tpl06/door-left.png" alt="" className="door-img" />
+      </div>
+      <p
+        className={`absolute inset-x-0 top-1/2 mt-[72px] text-center font-josefin text-[13px] tracking-[0.2em] uppercase text-[#22371a]/70 transition-opacity duration-700 ${
+          opening ? "opacity-0" : ""
         }`}
       >
-        <button type="button" className="animate-pulse-soft drop-shadow-xl" aria-label="Mở thiệp">
-          <WaxSeal className="w-28 h-28" />
-        </button>
-        <p className="mt-3 font-josefin text-[13px] tracking-[0.2em] uppercase text-[#22371a]/70">Chạm để mở thiệp</p>
-      </div>
+        Chạm để mở thiệp
+      </p>
     </div>
   );
 }
@@ -1329,13 +1230,13 @@ function WeddingPage06() {
             </div>
             <div className="px-6 pt-8 pb-14">
               <Reveal variant="down">
-                <p className="font-elegant font-extralight text-[44px] uppercase tracking-[0.08em] leading-tight text-[#ece4c8]">{first}</p>
+                <p className="font-elegant text-[46px] uppercase leading-tight text-[#ece4c8]">{first}</p>
               </Reveal>
               <Reveal variant="zoom" delay={150}>
                 <p className="font-pinyon text-[50px] leading-none my-1 text-[#ece4c8]">and</p>
               </Reveal>
               <Reveal variant="up" delay={300}>
-                <p className="font-elegant font-extralight text-[44px] uppercase tracking-[0.08em] leading-tight text-[#ece4c8]">{second}</p>
+                <p className="font-elegant text-[46px] uppercase leading-tight text-[#ece4c8]">{second}</p>
               </Reveal>
               <Reveal variant="zoom" delay={450} className="mt-10">
                 <TornBadge color="#ecebd8">
@@ -1384,9 +1285,9 @@ function WeddingPage06() {
               </Reveal>
 
               <Reveal variant="zoom" className="mt-6 text-[#22371a]">
-                <p className="font-elegant font-light text-[34px] uppercase tracking-[0.06em] leading-tight">{c.families.fullNames[0]}</p>
+                <p className="font-elegant text-[38px] uppercase leading-tight">{c.families.fullNames[0]}</p>
                 <Rings className="w-12 h-6 mx-auto my-2 opacity-80" />
-                <p className="font-elegant font-light text-[34px] uppercase tracking-[0.06em] leading-tight">{c.families.fullNames[1]}</p>
+                <p className="font-elegant text-[38px] uppercase leading-tight">{c.families.fullNames[1]}</p>
               </Reveal>
 
               <div className="mt-10 space-y-12">

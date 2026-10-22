@@ -207,23 +207,40 @@ body {
   .animate-pop { animation: none; }
 }
 
+/* Mẫu 06: font tên in hoa giống mẫu gốc (© RantauType, bản Việt hoá 1FTV) */
+@font-face {
+  font-family: "1FTV Ranoya";
+  src: url("/fonts/1ftv-ranoya.otf") format("opentype");
+  font-display: swap;
+}
+
 /* Mẫu 06: xanh rêu + kem — đổi màu chính (hộp mừng cưới) */
 .theme-06 {
   --primary: 101 36% 16%;
 }
 
-/* Màn mở mẫu 06: hai cánh cửa kem trượt sang hai bên */
+/* Màn mở mẫu 06: hai cánh cửa kem (ảnh) trượt sang hai bên */
 .door {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 50.5%;
-  overflow: hidden;
-  background: linear-gradient(180deg, #fffde6, #fdf8dc);
-  box-shadow: inset 0 0 30px rgba(120, 110, 60, 0.12);
+  /* chồng nhau 1px để không lộ khe ở giữa */
+  width: calc(50% + 1px);
   transition: transform 3s ease-in-out;
 }
-.door-left { left: 0; border-right: 1px solid rgba(34, 55, 26, 0.15); }
-.door-right { right: 0; border-left: 1px solid rgba(34, 55, 26, 0.15); }
+.door-left { left: 0; }
+.door-right { right: 0; }
 .door-left.is-open { transform: translateX(-100%); }
 .door-right.is-open { transform: translateX(100%); }
+/* Ảnh cửa: một nửa là cánh cửa, nửa kia trong suốt — cửa trái neo trái (có con dấu đè lên mép), cửa phải neo phải */
+.door-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  max-width: none;
+  object-fit: fill;
+  pointer-events: none;
+}
+.door-img-right { left: auto; right: 0; }

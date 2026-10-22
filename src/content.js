@@ -1,19 +1,19 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Lô 80 Khu BĐ.4 Trường Sơn 2, Phường Nha Trang, Tỉnh Khánh Hòa';
-const ADDRESS_BRIDE = 'Buôn Ea Pốc, Xã Quảng Phú, Tỉnh Đắk Lắk';
+const ADDRESS_GROOM = 'Bản Bó Hiềng, Xã Đoàn Kết, Tỉnh Sơn La';
+const ADDRESS_BRIDE = 'Xóm Lắc Phương, Bản Co Phương, Xã Chiềng Sơn, Tỉnh Sơn La';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Đào Văn Quảng',
-  mother: 'Hồ Thị Kim Liên',
+  father: 'Vì Văn Thiết',
+  mother: 'Lường Thị Bùi',
   address: ADDRESS_GROOM,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Phan Long Lạc',
-  mother: 'Nguyễn Thị Nở',
+  father: 'Cà Văn Inh',
+  mother: 'Lò Thị Gương',
   address: ADDRESS_BRIDE,
 };
 
@@ -21,50 +21,44 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Quang Hưng', 'Thị Long'],
-    dateLine: '19 . 12 . 2026',
+    names: ['Thanh Tùng', 'Thanh Nhàn'],
+    dateLine: '19 - 20 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Quang Hưng', 'Thị Long'],
+    fullNames: ['Thanh Tùng', 'Thanh Nhàn'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Thành Hôn',
+    title: 'Tham Dự Lễ Cưới Của Chúng Tôi',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['19', '12', '2026'],
+    dateParts: ['19 - 20', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'le-thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '09:00 - Thứ Bảy',
-        date: '19. 12. 2026',
-        lunar: '( Tức Ngày 11 Tháng 11 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
+        id: 'nha-gai',
+        title: 'Lễ Vu Quy - Nhà Gái',
+        time: '09:00 - 12:00 - Thứ Năm',
+        date: '19. 11. 2026',
+        lunar: '( Tức Ngày 11 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Nhà Văn Hóa Xóm Lắc Phương', address: ADDRESS_BRIDE }],
       },
       {
-        id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Thành Hôn',
-        time: '17:30 - Thứ Bảy',
-        date: '19. 12. 2026',
-        lunar: '( Tức Ngày 11 Tháng 11 Năm Bính Ngọ )',
-        places: [
-          {
-            label: 'Sảnh Như Ý - Emerald Center',
-            address: '03 Phong Châu, Nam Nha Trang, Tỉnh Khánh Hòa',
-            mapQuery: 'Emerald Center, 03 Phong Châu, Nha Trang',
-          },
-        ],
+        id: 'nha-trai',
+        title: 'Lễ Thành Hôn - Nhà Trai',
+        time: '16:00 - 21:00 - Thứ Sáu',
+        date: '20. 11. 2026',
+        lunar: '( Tức Ngày 12 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
     ],
   },
@@ -110,17 +104,17 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'DAO QUANG HUNG',
-        number: '88803091987',
-        bank: 'TPBank',
+        holder: 'VI VAN TUNG',
+        number: '02020032025',
+        bank: 'MB Bank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-tpbank.png',
+        qr: '/images/qr-tung.png',
       },
       {
-        holder: 'PHAN THI LONG',
-        number: '1015788082',
+        holder: 'CA THI NHAN',
+        number: '1018463298',
         bank: 'Vietcombank',
-        qr: '/images/qr-vietcombank.png',
+        qr: '/images/qr-nhan.png',
       },
     ],
   },

@@ -21,8 +21,8 @@ export default {
         oswald: ['Oswald', 'sans-serif'],
         /** Số trên lịch */
         display: ['Tinos', 'serif'],
-        /** Mẫu 06 — 1FTV Ranoya: tên in hoa */
-        unicase: ['"Cormorant Unicase"', 'serif'],
+        /** Mẫu 06 — 1FTV Ranoya: tên in hoa, nét mảnh */
+        elegant: ['"Noto Serif Display"', 'serif'],
         /** Mẫu 06 — chữ thân mảnh in hoa */
         josefin: ['"Josefin Sans"', 'sans-serif'],
         /** Mẫu 06 — UTM Candlescript: "and", "Save the date", tên tháng */

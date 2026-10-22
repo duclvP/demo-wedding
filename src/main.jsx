@@ -1066,9 +1066,9 @@ function Monogram({ a, b }) {
         <rect x="11" y="11" width="70" height="128" rx="35" strokeWidth="0.7" />
         <path d="M46 0v8M46 142v8M28 4c6 6 30 6 36 0M28 146c6-6 30-6 36 0" strokeWidth="0.9" />
       </svg>
-      <span className="absolute left-[22px] top-[26px] font-unicase text-[38px] leading-none">{a}</span>
-      <span className="absolute left-1/2 top-[64px] -translate-x-1/2 font-unicase text-xl">&amp;</span>
-      <span className="absolute right-[22px] bottom-[26px] font-unicase text-[38px] leading-none">{b}</span>
+      <span className="absolute left-[22px] top-[26px] font-elegant text-[38px] leading-none">{a}</span>
+      <span className="absolute left-1/2 top-[64px] -translate-x-1/2 font-elegant text-xl">&amp;</span>
+      <span className="absolute right-[22px] bottom-[26px] font-elegant text-[38px] leading-none">{b}</span>
     </div>
   );
 }
@@ -1149,7 +1149,7 @@ function Portrait06({ src, role, name, align }) {
       </Reveal>
       <Reveal variant="zoom" className="flex-1 text-center text-[#e9e2c6]">
         <p className="font-upright text-[22px]">{role}</p>
-        <p className="font-unicase text-[28px] uppercase leading-tight">{name}</p>
+        <p className="font-elegant font-light text-[26px] uppercase tracking-[0.06em] leading-tight">{name}</p>
       </Reveal>
     </div>
   );
@@ -1186,13 +1186,13 @@ function WeddingPage06() {
             </div>
             <div className="px-6 pt-8 pb-14">
               <Reveal variant="down">
-                <p className="font-unicase text-[44px] uppercase leading-tight">{first}</p>
+                <p className="font-elegant font-extralight text-[44px] uppercase tracking-[0.08em] leading-tight text-[#ece4c8]">{first}</p>
               </Reveal>
               <Reveal variant="zoom" delay={150}>
-                <p className="font-pinyon text-[46px] leading-none my-2">and</p>
+                <p className="font-pinyon text-[50px] leading-none my-1 text-[#ece4c8]">and</p>
               </Reveal>
               <Reveal variant="up" delay={300}>
-                <p className="font-unicase text-[44px] uppercase leading-tight">{second}</p>
+                <p className="font-elegant font-extralight text-[44px] uppercase tracking-[0.08em] leading-tight text-[#ece4c8]">{second}</p>
               </Reveal>
               <Reveal variant="zoom" delay={450} className="mt-10">
                 <TornBadge color="#ecebd8">
@@ -1241,9 +1241,9 @@ function WeddingPage06() {
               </Reveal>
 
               <Reveal variant="zoom" className="mt-6 text-[#22371a]">
-                <p className="font-unicase text-[36px] uppercase leading-tight">{c.families.fullNames[0]}</p>
+                <p className="font-elegant font-light text-[34px] uppercase tracking-[0.06em] leading-tight">{c.families.fullNames[0]}</p>
                 <Rings className="w-12 h-6 mx-auto my-2 opacity-80" />
-                <p className="font-unicase text-[36px] uppercase leading-tight">{c.families.fullNames[1]}</p>
+                <p className="font-elegant font-light text-[34px] uppercase tracking-[0.06em] leading-tight">{c.families.fullNames[1]}</p>
               </Reveal>
 
               <div className="mt-10 space-y-12">

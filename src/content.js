@@ -1,73 +1,80 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Nhà Văn Hoá Thôn Phong Hoà, Xã Đại Đồng, Tỉnh Nghệ An';
-const ADDRESS_BRIDE = 'Thôn 4, Xã Kbang, Tỉnh Gia Lai';
-
-/** father / mother / address: để null nếu không muốn hiển thị */
+/** Thiệp chỉ ghi tên bố mẹ, không ghi địa chỉ hai nhà */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Nguyễn Duy Điền',
-  mother: 'Nguyễn Thị Mai',
-  address: ADDRESS_GROOM,
+  father: 'Đỗ Văn Thu',
+  mother: 'Nguyễn Bích Thuận',
+  address: null,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Phan Duy Hiền',
-  mother: 'Nguyễn Thị Tám',
-  address: ADDRESS_BRIDE,
+  father: 'Trần Ngọc Tú',
+  mother: 'Ngô Thị Huệ',
+  address: null,
 };
 
 export const content = {
+  /** Giao diện: '01' (lovecard thiepso01, mặc định) hoặc '06' (thiepso06 — xanh rêu, mép giấy xé) */
+  template: '06',
+
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Duy Cường', 'Phan Nguyệt'],
-    dateLine: '29 . 11 . 2026',
+    names: ['Anh Tuấn', 'Thu Hồng'],
+    dateLine: '28. 10. 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Duy Cường', 'Phan Nguyệt'],
+    fullNames: ['Anh Tuấn', 'Thu Hồng'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Thành Hôn',
-    /** Chữ đè lên 3 ảnh */
-    dateParts: ['29', '11', '2026'],
+    title: 'Tới dự bữa tiệc chung vui cùng gia đình chúng tôi mừng hôn lễ',
+    /** Chữ đè lên 3 ảnh (chỉ mẫu 01) */
+    dateParts: ['28', '10', '2026'],
   },
 
   events: {
-    mapLabel: 'Xem chỉ đường',
+    mapLabel: 'Chỉ đường',
     items: [
       {
-        id: 'nha-gai',
-        title: 'Tiệc Mừng Lễ Vu Quy',
-        time: '11:00 - Chủ Nhật',
-        date: '29. 11. 2026',
-        lunar: '( Tức Ngày 21 Tháng 10 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+        id: 'tiec-cuoi',
+        title: 'Tiệc Mừng Hôn Lễ',
+        time: '18:00 - Thứ Tư',
+        date: '28. 10. 2026',
+        lunar: '( Nhằm Ngày 19 Tháng 09 Năm Bính Ngọ )',
+        places: [
+          {
+            label: 'Bể Bơi Đông Mỹ',
+            address: 'Ngõ 1 Đường Trường Thọ, Thôn 2 Đông Mỹ, Xã Nam Phù, Thanh Trì, Hà Nội (Đối diện trường THCS Đông Mỹ)',
+            /** Toạ độ ghim trong ticket */
+            mapQuery: '20.9164186,105.876153',
+          },
+        ],
       },
-      {
-        id: 'nha-trai',
-        title: 'Tiệc Mừng Lễ Thành Hôn',
-        time: '10:30 - Thứ Bảy',
-        date: '02. 01. 2027',
-        lunar: '( Tức Ngày 25 Tháng 11 Năm Bính Ngọ )',
-        places: [{ label: 'Nhà Văn Hoá Thôn Phong Hoà', address: 'Xã Đại Đồng, Tỉnh Nghệ An' }],
-      },
+    ],
+  },
+
+  /** Mục "Our Story" (chỉ mẫu 06) — để null thì ẩn */
+  story: {
+    title: 'Our Story',
+    paragraphs: [
+      'Chúng mình gặp nhau giữa những ngày rất đỗi bình thường, rồi thương nhau qua từng bữa cơm, từng chuyến đi và cả những lần giận hờn rất nhỏ. Qua bao thăng trầm, điều giữ chúng mình ở lại bên nhau là sự thấu hiểu và niềm tin dành cho nhau.',
+      'Và hôm nay, chúng mình quyết định nắm tay nhau bước sang một chương mới — cùng xây một mái nhà, cùng gọi nhau là gia đình.',
     ],
   },
 
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
-    /** Thiệp chung: hai tiệc ở hai tháng khác nhau nên ẩn lịch (lịch chỉ hiện một tháng) */
-    dateIso: null,
+    dateIso: '2026-10-28',
   },
 
   rsvp: {
@@ -105,11 +112,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'NGUYEN DUY CUONG',
-        number: '333322699999',
-        bank: 'MB Bank',
+        holder: 'DO ANH TUAN',
+        number: '8818043012',
+        bank: 'BIDV',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-mb.png',
+        qr: '/images/qr-bidv.png',
       },
     ],
   },

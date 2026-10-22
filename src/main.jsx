@@ -969,5 +969,391 @@ function WeddingPage() {
   );
 }
 
+/* ---------- Mẫu 06 (lovecard thiepso06): xanh rêu + kem, mép giấy xé ---------- */
+
+const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const WEEKDAYS_EN = ["MON", "TUE", "WED", "THUR", "FRI", "SAT", "SUN"];
+
+/** Chữ cái đầu của tên gọi (chữ cuối) — "Anh Tuấn" → "T" */
+const initialOf = (name) => name.trim().split(/\s+/).pop().charAt(0).toUpperCase();
+
+/** "18:00 - Thứ Tư" → "Vào lúc 18 giờ 00 phút - Thứ Tư" */
+function timeLine(time) {
+  const m = time.match(/^(\d{1,2}):(\d{2})\s*-\s*(.+)$/);
+  return m ? `Vào lúc ${m[1]} giờ ${m[2]} phút - ${m[3]}` : time;
+}
+
+/** Mép giấy xé — đường răng cưa cố định theo seed để không nhảy khi render lại */
+function tornPath(seed, w = 400, h = 28) {
+  let s = seed;
+  const rand = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+  const pts = [`M0 ${h}`, `L0 ${h * 0.55}`];
+  for (let x = 0; x <= w; x += 4 + rand() * 8) pts.push(`L${x.toFixed(1)} ${(h * (0.15 + rand() * 0.7)).toFixed(1)}`);
+  pts.push(`L${w} ${h * 0.5}`, `L${w} ${h}`, "Z");
+  return pts.join(" ");
+}
+
+/** Dải xé nằm ở mép trên của một section, màu = màu section bên dưới */
+function TornEdge({ color, seed = 7, flip = false }) {
+  return (
+    <svg
+      viewBox="0 0 400 28"
+      preserveAspectRatio="none"
+      className={`block w-full h-7 ${flip ? "rotate-180" : ""}`}
+      style={{ color }}
+      aria-hidden
+    >
+      <path fill="currentColor" d={tornPath(seed)} />
+    </svg>
+  );
+}
+
+/** Hình chữ nhật 400×120 có bốn cạnh răng cưa (mảnh giấy xé) */
+function badgePath(seed) {
+  let s = seed;
+  const rand = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+  const pts = [];
+  for (let x = 0; x < 400; x += 6 + rand() * 10) pts.push([x, rand() * 12]);
+  for (let y = 0; y < 120; y += 8 + rand() * 10) pts.push([388 + rand() * 12, y]);
+  for (let x = 400; x > 0; x -= 6 + rand() * 10) pts.push([x, 108 + rand() * 12]);
+  for (let y = 120; y > 0; y -= 8 + rand() * 10) pts.push([rand() * 12, y]);
+  return `M${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(" L")} Z`;
+}
+
+/** Mảnh giấy xé làm nền cho chữ ("Save the date", "Our Story") */
+function TornBadge({ color, seed = 3, className = "", children }) {
+  return (
+    <div className={`relative inline-block px-10 py-3 ${className}`}>
+      <svg viewBox="0 0 400 120" preserveAspectRatio="none" className="absolute inset-0 w-full h-full" style={{ color }} aria-hidden>
+        <path fill="currentColor" d={badgePath(seed)} />
+      </svg>
+      <div className="relative">{children}</div>
+    </div>
+  );
+}
+
+/** Cành lá vẽ nét — trang trí */
+function Sprig({ className = "" }) {
+  return (
+    <svg viewBox="0 0 80 120" className={className} fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" aria-hidden>
+      <path d="M40 118C38 80 42 45 40 4" />
+      {[20, 38, 56, 74, 92].map((y, i) => (
+        <g key={y}>
+          <path d={`M40 ${y + 6}c-12-4-20-12-22-${16 - i}c10 0 19 6 22 ${16 - i}z`} />
+          <path d={`M40 ${y + 14}c12-4 20-12 22-${16 - i}c-10 0-19 6-22 ${16 - i}z`} />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function Rings({ className = "" }) {
+  return (
+    <svg viewBox="0 0 60 30" className={className} fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
+      <ellipse cx="22" cy="17" rx="13" ry="9" />
+      <ellipse cx="38" cy="15" rx="13" ry="9" />
+      <path d="M33 6l5-4 5 4" />
+    </svg>
+  );
+}
+
+/** Khung monogram: hai chữ cái đầu trong khung bo dài, viền đôi */
+function Monogram({ a, b }) {
+  return (
+    <div className="relative mx-auto w-[92px] h-[150px] text-[#22371a]">
+      <svg viewBox="0 0 92 150" className="absolute inset-0 w-full h-full" fill="none" stroke="currentColor" aria-hidden>
+        <rect x="6" y="6" width="80" height="138" rx="40" strokeWidth="1.4" />
+        <rect x="11" y="11" width="70" height="128" rx="35" strokeWidth="0.7" />
+        <path d="M46 0v8M46 142v8M28 4c6 6 30 6 36 0M28 146c6-6 30-6 36 0" strokeWidth="0.9" />
+      </svg>
+      <span className="absolute left-[22px] top-[26px] font-unicase text-[38px] leading-none">{a}</span>
+      <span className="absolute left-1/2 top-[64px] -translate-x-1/2 font-unicase text-xl">&amp;</span>
+      <span className="absolute right-[22px] bottom-[26px] font-unicase text-[38px] leading-none">{b}</span>
+    </div>
+  );
+}
+
+function Calendar06({ dateIso }) {
+  const [y, m, d] = dateIso.split("-").map(Number);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
+  const cells = [...Array(lead).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
+
+  return (
+    <div className="text-white">
+      <div className="relative flex justify-center">
+        <Sprig className="absolute -top-6 w-14 h-24 text-[#d9cfa8]/70 -rotate-12" />
+        <p className="relative font-pinyon text-[52px] leading-tight mt-10">{MONTHS_EN[m - 1]}</p>
+      </div>
+      <div className="grid grid-cols-7 text-center font-josefin text-[13px] tracking-wide mt-6 mb-3">
+        {WEEKDAYS_EN.map((w) => (
+          <span key={w}>{w}</span>
+        ))}
+      </div>
+      <div className="grid grid-cols-7 gap-y-3 text-center font-display text-[17px]">
+        {cells.map((day, i) => (
+          <span key={i} className="relative flex items-center justify-center h-10">
+            {day === d && (
+              <svg viewBox="0 0 24 24" className="absolute w-12 h-12 animate-pulse-soft" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden>
+                <path d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 3 5 6.4 5c2 0 3.6 1.1 4.6 2.6C12 6.1 13.6 5 15.6 5 19 5 21.1 8.6 19.6 11.9 17.5 16.4 12 21 12 21z" />
+              </svg>
+            )}
+            <span className="relative">{day ?? ""}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Một sự kiện: giờ, ngày dạng "THÁNG 10 | 28 | NĂM 2026", âm lịch, địa điểm + chỉ đường */
+function Event06({ item, mapLabel }) {
+  const [d, mo, y] = item.date.split(".").map((s) => s.trim());
+  const rule = "border-y border-[#22371a]/70 py-1.5 font-josefin text-[17px] uppercase text-[#22371a]";
+  return (
+    <div className="text-center text-[#22371a]">
+      <p className="font-josefin font-semibold text-[22px] uppercase">{item.title}</p>
+      <p className="font-josefin text-[16px] uppercase mt-2 opacity-80">{timeLine(item.time)}</p>
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 mt-5">
+        <span className={`${rule} text-left pl-1`}>Tháng {mo}</span>
+        <span className="font-date text-[78px] leading-none text-[#22371a]/85">{d}</span>
+        <span className={`${rule} text-right pr-1`}>Năm {y}</span>
+      </div>
+      <p className="italic font-josefin text-[14px] mt-4 opacity-80">{item.lunar}</p>
+      {item.places.map((place) => (
+        <div key={place.label} className="mt-6">
+          <p className="font-josefin font-semibold text-[20px] uppercase">{place.label}</p>
+          <p className="font-josefin text-[14px] mt-2 px-2 text-black/75">{place.address}</p>
+          <a
+            href={mapUrl(place.mapQuery ?? place.address)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#22371a] px-7 py-2 font-upright font-semibold text-[15px] uppercase text-white shadow-lg animate-pulse-soft"
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+              <path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
+            </svg>
+            {mapLabel}
+          </a>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Portrait06({ src, role, name, align }) {
+  return (
+    <div className={`flex items-center gap-4 ${align === "right" ? "flex-row-reverse" : ""}`}>
+      <Reveal variant={align === "right" ? "right" : "left"} className="w-[46%] shrink-0">
+        <img src={src} alt={name} className="w-full aspect-[3/4] rounded-[50%] object-cover border-2 border-[#d9cfa8]/60" loading="lazy" />
+      </Reveal>
+      <Reveal variant="zoom" className="flex-1 text-center text-[#e9e2c6]">
+        <p className="font-upright text-[22px]">{role}</p>
+        <p className="font-unicase text-[28px] uppercase leading-tight">{name}</p>
+      </Reveal>
+    </div>
+  );
+}
+
+const GREEN = "#22371a";
+const CREAM = "#fffae5";
+
+function WeddingPage06() {
+  const c = content;
+  const guest = useGuestName(c.invitation.defaultGuest);
+  const [giftOpen, setGiftOpen] = useState(false);
+  const closeGift = useCallback(() => setGiftOpen(false), []);
+  const [opened, setOpened] = useState(false);
+  const [curtainGone, setCurtainGone] = useState(false);
+  const handleOpen = useCallback(() => setOpened(true), []);
+  const handleCurtainDone = useCallback(() => setCurtainGone(true), []);
+  const [first, second] = c.hero.names;
+  const [groomSide, brideSide] = [c.families.sides.find((s) => s.label === "Nhà Trai"), c.families.sides.find((s) => s.label === "Nhà Gái")];
+
+  return (
+    <div className="theme-06 min-h-screen bg-[#e9e6dc] font-josefin">
+      <BackgroundMusic src={c.music.src} volume={c.music.volume} />
+      <FallingEffects active={opened} />
+      {!curtainGone && <OpeningCurtain onOpen={handleOpen} onDone={handleCurtainDone} />}
+
+      <CurtainContext.Provider value={opened}>
+        <main className="relative mx-auto max-w-[460px] overflow-hidden shadow-2xl" style={{ background: GREEN }}>
+          {/* Ảnh đầu + tên */}
+          <section className="relative text-center text-white">
+            <img src={images.hero} alt={`${first} & ${second}`} className="w-full aspect-[1/1] object-cover object-top" />
+            <div className="-mt-6 relative">
+              <TornEdge color={GREEN} seed={5} />
+            </div>
+            <div className="px-6 pt-8 pb-14">
+              <Reveal variant="down">
+                <p className="font-unicase text-[44px] uppercase leading-tight">{first}</p>
+              </Reveal>
+              <Reveal variant="zoom" delay={150}>
+                <p className="font-pinyon text-[46px] leading-none my-2">and</p>
+              </Reveal>
+              <Reveal variant="up" delay={300}>
+                <p className="font-unicase text-[44px] uppercase leading-tight">{second}</p>
+              </Reveal>
+              <Reveal variant="zoom" delay={450} className="mt-10">
+                <TornBadge color="#ecebd8">
+                  <p className="font-pinyon text-[28px] text-[#22371a] leading-tight">Save the date</p>
+                  <p className="font-lora font-bold text-[24px] text-[#22371a] tracking-wide">{c.hero.dateLine}</p>
+                </TornBadge>
+              </Reveal>
+            </div>
+          </section>
+
+          {/* Lịch */}
+          {c.calendar.dateIso && (
+            <section className="px-6 pb-14">
+              <Reveal variant="up">
+                <Calendar06 dateIso={c.calendar.dateIso} />
+              </Reveal>
+            </section>
+          )}
+
+          {/* Monogram, gia đình, lời mời, sự kiện */}
+          <section style={{ background: CREAM }}>
+            <div style={{ background: GREEN }}>
+              <TornEdge color={CREAM} seed={9} />
+            </div>
+            <div className="px-6 pt-10 pb-16 text-center">
+              <Reveal variant="zoom">
+                <Monogram a={initialOf(first)} b={initialOf(second)} />
+              </Reveal>
+              <div className="grid grid-cols-2 gap-3 mt-10 text-[#22371a]">
+                {[groomSide, brideSide].filter(Boolean).map((side, i) => (
+                  <Reveal key={side.label} variant={i ? "right" : "left"}>
+                    <p className="font-josefin font-semibold text-[18px] uppercase">{side.label}</p>
+                    {side.father && <p className="font-josefin text-[15px] mt-2 opacity-80">Ông: {side.father}</p>}
+                    {side.mother && <p className="font-josefin text-[15px] mt-1 opacity-80">Bà: {side.mother}</p>}
+                    {side.address && <p className="font-josefin text-[13px] mt-2 opacity-70">{side.address}</p>}
+                  </Reveal>
+                ))}
+              </div>
+
+              <Reveal className="mt-10">
+                <p className="font-josefin font-semibold text-[16px] uppercase text-[#22371a]">{c.invitation.kicker}</p>
+                <p className="font-guest text-[38px] text-[#8b0000] mt-1 pb-1 border-b border-dotted border-[#22371a]/50 mx-10">
+                  {guest}
+                </p>
+                <p className="font-josefin text-[15px] uppercase text-[#22371a] mt-4 px-4">{c.invitation.title}</p>
+              </Reveal>
+
+              <Reveal variant="zoom" className="mt-6 text-[#22371a]">
+                <p className="font-unicase text-[36px] uppercase leading-tight">{c.families.fullNames[0]}</p>
+                <Rings className="w-12 h-6 mx-auto my-2 opacity-80" />
+                <p className="font-unicase text-[36px] uppercase leading-tight">{c.families.fullNames[1]}</p>
+              </Reveal>
+
+              <div className="mt-10 space-y-12">
+                {c.events.items.map((item, i) => (
+                  <Reveal key={item.id} variant={i % 2 ? "right" : "left"}>
+                    {i > 0 && <div className="w-44 h-px bg-[#22371a]/60 mx-auto -mt-4 mb-10" />}
+                    <Event06 item={item} mapLabel={c.events.mapLabel} />
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Chú rể, cô dâu, câu chuyện */}
+          <section className="pb-14">
+            <div style={{ background: CREAM }}>
+              <TornEdge color={GREEN} seed={13} />
+            </div>
+            <div className="px-6 pt-10 space-y-8">
+              <Portrait06 src={images.groom} role="Chú rể" name={c.families.fullNames[0]} align="left" />
+              <Portrait06 src={images.bride} role="Cô dâu" name={c.families.fullNames[1]} align="right" />
+            </div>
+            {c.story && (
+              <div className="px-6 mt-12 text-center">
+                <Reveal variant="zoom">
+                  <TornBadge color="#9aa58b">
+                    <p className="font-pinyon text-[34px] text-[#22371a] leading-tight">{c.story.title}</p>
+                  </TornBadge>
+                </Reveal>
+                {c.story.paragraphs.map((p, i) => (
+                  <Reveal key={i} variant="up" delay={i * 150}>
+                    <p className="font-josefin text-[15px] leading-relaxed text-[#e9e2c6] mt-5">{p}</p>
+                  </Reveal>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* Ảnh tròn + mừng cưới */}
+          <section style={{ background: CREAM }}>
+            <div style={{ background: GREEN }}>
+              <TornEdge color={CREAM} seed={17} />
+            </div>
+            <div className="px-6 pt-10 pb-14 text-center">
+              {c.rsvp.show && (
+                <Reveal className="mb-10">
+                  <RsvpForm c={c.rsvp} />
+                </Reveal>
+              )}
+              <Reveal variant="zoom">
+                <div className="mx-auto w-[64%] rounded-full p-2 border border-[#22371a]/50">
+                  <img src={images.circle} alt="" className="w-full aspect-square rounded-full object-cover" loading="lazy" />
+                </div>
+              </Reveal>
+              {c.gift.accounts.length > 0 && (
+                <Reveal className="mt-8">
+                  <button
+                    type="button"
+                    onClick={() => setGiftOpen(true)}
+                    className="inline-flex items-center gap-2 rounded-full bg-[#22371a] px-9 py-2.5 font-upright font-semibold text-[15px] uppercase text-white shadow-lg animate-pulse-soft"
+                  >
+                    <Gift className="w-5 h-5" aria-hidden />
+                    {c.gift.button}
+                  </button>
+                </Reveal>
+              )}
+            </div>
+          </section>
+
+          {/* Album */}
+          <section className="pb-6">
+            <div style={{ background: CREAM }}>
+              <TornEdge color={GREEN} seed={21} />
+            </div>
+            <Reveal variant="zoom">
+              <h2 className="text-center font-pinyon text-[40px] text-white pt-8 pb-6">Album of Love</h2>
+            </Reveal>
+            <div className="grid grid-cols-2 gap-1.5 px-1.5">
+              {images.album.map((src, i) => (
+                <Reveal key={i} variant={i % 2 ? "right" : "left"} className="border-2 border-white/80">
+                  <img src={src} alt="" className="w-full aspect-[2/3] object-cover" loading="lazy" />
+                </Reveal>
+              ))}
+            </div>
+          </section>
+
+          {/* Thank you */}
+          <section className="relative overflow-hidden">
+            <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#22371a] via-[#22371a]/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0">
+              <Reveal variant="up" className="px-5 pb-14 text-center text-white">
+                <h2 className="font-pinyon text-[56px] mb-2 drop-shadow-lg">{c.thanks.title}</h2>
+                <p className="font-josefin text-[14px] leading-relaxed drop-shadow">{c.thanks.text}</p>
+                <p className="font-pinyon text-[34px] mt-3 drop-shadow-lg">
+                  {c.families.fullNames[0]} <span className="font-upright text-[26px]">&amp;</span> {c.families.fullNames[1]}
+                </p>
+              </Reveal>
+            </div>
+          </section>
+        </main>
+      </CurtainContext.Provider>
+
+      {giftOpen && <GiftModal c={c.gift} photo={images.gift} onClose={closeGift} />}
+    </div>
+  );
+}
+
+const PAGES = { "01": WeddingPage, "06": WeddingPage06 };
+const Page = PAGES[content.template] ?? WeddingPage;
+
 /* StrictMode tắt: trong dev mount 2 lần có thể hủy thẻ audio → nhạc tắt giữa chừng. */
-createRoot(document.getElementById("root")).render(<WeddingPage />);
+createRoot(document.getElementById("root")).render(<Page />);

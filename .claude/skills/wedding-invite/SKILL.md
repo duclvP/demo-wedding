@@ -88,6 +88,7 @@ Chuỗi VietQR chứa `0006<BIN 6 số>01<2 số độ dài><STK>`. Ví dụ `�
 
 ## 4. Cập nhật nội dung (`src/content.js`, `index.html`)
 
+- **Mẫu giao diện** `content.template`: `'01'` (mặc định, lovecard thiepso01 — viền vàng, thẻ đỏ) hoặc `'06'` (thiepso06 — xanh rêu + kem, mép giấy xé, `WeddingPage06` trong `main.jsx`). Ticket ghi "mẫu 06" / link `thiepso06` → `template: '06'`. Mẫu 06 dùng thêm `content.story` (Our Story) và ảnh `images.groom`, `images.bride` (chân dung oval 3:4), `images.circle` (ảnh tròn trên nút mừng cưới); không dùng `couple`, `dateStrip`, `dateParts`. Mẫu khác chưa có → dựng thêm `WeddingPageXX` theo cách của 06 (font Google thay font gốc, trang trí vẽ SVG, không chép ảnh/asset của lovecard).
 - Hằng số đầu file: `ADDRESS_*`, `GROOM_SIDE`, `BRIDE_SIDE` (father/mother/address, `null` = ẩn).
 - `hero.names`, `families.fullNames` — bỏ họ (vd "Quang Hưng", "Minh Nguyệt"); tên một chữ thì giữ chữ đệm ("Thị Long") hoặc cả họ ("Phạm Ngân"). `families.fullNames` cũng là dòng ký tên cuối mục Thank You.
 - `families.sides` (thứ tự cột trái → phải).

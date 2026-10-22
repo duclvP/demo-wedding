@@ -1484,9 +1484,7 @@ function WeddingPage07() {
           </div>
           {/* Con dấu 囍, thẻ tên và ba hình thoi ngày-tháng-năm nằm thẳng một trục */}
           <div className="absolute right-[7%] top-[27%] w-[104px] flex flex-col items-center">
-            <div className="drop07 w-[62px] h-[62px] rounded-lg flex items-center justify-center shadow" style={{ background: RUST, color: "#ffe8d1", animationDelay: "3s", animationDuration: "1.1s" }}>
-              <span className="text-[40px] leading-none" style={{ fontFamily: '"Noto Serif SC", "Songti SC", serif' }}>囍</span>
-            </div>
+            <img src="/images/tpl07/hy.png" alt="" className="drop07 w-[62px] h-[64px] shadow-md rounded-md" style={{ animationDelay: "3s", animationDuration: "1.1s" }} />
             <div className="drop07 mt-4 w-full rounded-[22px] border border-white/90 py-5 text-center text-white" style={{ background: SAGE, animationDelay: "2.1s", animationDuration: "1.3s" }}>
               <p className="font-sig text-[34px] leading-[1.05]">{first.split(" ").map((w, i) => <span key={i} className="block">{w}</span>)}</p>
               <p className="text-[13px] my-2 leading-none">●</p>

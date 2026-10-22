@@ -1105,25 +1105,6 @@ function Event06({ item, mapLabel }) {
   );
 }
 
-function Portrait06({ src, role, name, align }) {
-  return (
-    <div className={`flex items-center gap-4 ${align === "right" ? "flex-row-reverse" : ""}`}>
-      {/* Bố cục đặt ở div ngoài — Reveal gắn className vào lớp trong, lớp bọc của nó không nhận w-/flex- */}
-      <div className="w-[46%] shrink-0">
-        <Reveal variant={align === "right" ? "right" : "left"}>
-          <img src={src} alt={name} className="w-full aspect-[3/4] rounded-[50%] object-cover border-2 border-[#d9cfa8]/60" loading="lazy" />
-        </Reveal>
-      </div>
-      <div className="flex-1">
-        <Reveal variant="zoom" className="text-center text-[#e9e2c6]">
-          <p className="font-upright text-[22px]">{role}</p>
-          <p className="font-elegant text-[28px] uppercase leading-tight">{name}</p>
-        </Reveal>
-      </div>
-    </div>
-  );
-}
-
 /**
  * Màn mở mẫu 06: hai cánh cửa kem có hoa ly, con dấu sáp ở giữa — chạm để mở (cũng mở khóa nhạc).
  * Ảnh cửa lấy từ mẫu gốc: mỗi ảnh có một nửa là cánh cửa, nửa kia trong suốt (cửa trái: nửa trái,
@@ -1275,11 +1256,25 @@ function WeddingPage06() {
             <div style={{ background: CREAM }}>
               <TornEdge color={GREEN} />
             </div>
-            <div className="relative px-6 pt-10 space-y-8">
-              <Portrait06 src={images.groom} role="Chú rể" name={c.families.fullNames[0]} align="left" />
-              <Portrait06 src={images.bride} role="Cô dâu" name={c.families.fullNames[1]} align="right" />
-              {/* Bó ly ở khoảng giữa hai ảnh chân dung (dưới-phải ảnh chú rể, trên-trái ảnh cô dâu), như mẫu gốc */}
-              <img src={TPL06("lily-bouquet")} alt="" className="absolute left-[41%] top-[36%] w-[19%] pointer-events-none" />
+            {/* Tên chú rể & cô dâu thẳng hàng, hai ảnh chân dung ngay bên dưới */}
+            <div className="relative px-5 pt-10 grid grid-cols-2 gap-x-4 gap-y-5 text-center text-[#e9e2c6]">
+              {[
+                ["Chú rể", c.families.fullNames[0]],
+                ["Cô dâu", c.families.fullNames[1]],
+              ].map(([role, name]) => (
+                <Reveal key={role} variant="zoom">
+                  <p className="font-upright text-[22px]">{role}</p>
+                  <p className="font-elegant text-[28px] uppercase leading-tight">{name}</p>
+                </Reveal>
+              ))}
+              {[
+                [images.groom, c.families.fullNames[0], "left"],
+                [images.bride, c.families.fullNames[1], "right"],
+              ].map(([src, name, side]) => (
+                <Reveal key={side} variant={side}>
+                  <img src={src} alt={name} className="w-full aspect-[3/4] rounded-[50%] object-cover border-2 border-[#d9cfa8]/60" loading="lazy" />
+                </Reveal>
+              ))}
             </div>
             {c.story && (
               <div className="px-6 mt-12 text-center">

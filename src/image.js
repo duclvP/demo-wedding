@@ -8,10 +8,10 @@ export const images = {
   /** Ảnh dưới phần gia đình (chỉ mẫu 01) */
   couple: '/images/ao-dai.jpg',
   /** 3 ảnh dải ngày cưới (chỉ mẫu 01) */
-  dateStrip: ['/images/chu-re.jpg', '/images/song-hy.jpg', '/images/co-dau.jpg'],
-  /** Mẫu 06: ảnh chân dung oval chú rể / cô dâu và ảnh tròn trên nút mừng cưới */
-  groom: '/images/chu-re.jpg',
-  bride: '/images/co-dau.jpg',
+  dateStrip: ['/images/song-hy.jpg', '/images/ao-dai.jpg', '/images/song-hy.jpg'],
+  /** Mẫu 06: hai ảnh oval dưới tên chú rể / cô dâu (ảnh đôi, không cắt) và ảnh tròn trên nút mừng cưới */
+  groom: '/images/song-hy.jpg',
+  bride: '/images/ao-dai.jpg',
   circle: '/images/ao-dai.jpg',
   /** Lưới ảnh 2 cột */
   album: ['/images/song-hy.jpg', '/images/ao-dai.jpg'],

@@ -1518,7 +1518,7 @@ function WeddingPage07() {
         <section className="px-4 pt-10">
           <Reveal variant="up">
             <div className="relative overflow-hidden rounded-[26px] aspect-[4/5] text-white" style={{ background: "#33422a" }}>
-              <img src={images.couple} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70" loading="lazy" />
+              <img src={images.couple} alt="" className="absolute inset-0 w-full h-full object-cover opacity-80" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-transparent to-transparent" />
               <div className="absolute left-6 top-6">
                 <p className="font-sig text-[40px] leading-none">Save</p>
@@ -1526,7 +1526,6 @@ function WeddingPage07() {
                 <p className="font-sig text-[46px] leading-none">Date</p>
                 <p className="font-hepta text-[17px] mt-3 tracking-wider">{c.hero.dateLine}</p>
               </div>
-              <img src={images.bride} alt="" className="absolute right-4 top-4 w-[40%] aspect-[3/4] rounded-[22px] object-cover border border-white/60" loading="lazy" />
             </div>
           </Reveal>
         </section>

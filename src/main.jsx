@@ -971,6 +971,9 @@ function WeddingPage() {
 
 /* ---------- Mẫu 06 (lovecard thiepso06): xanh rêu + kem, mép giấy xé ---------- */
 
+/** Ảnh trang trí lấy từ mẫu gốc thiepso06 */
+const TPL06 = (name) => `/images/tpl06/${name}.png`;
+
 const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const WEEKDAYS_EN = ["MON", "TUE", "WED", "THUR", "FRI", "SAT", "SUN"];
 
@@ -983,28 +986,18 @@ function timeLine(time) {
   return m ? `Vào lúc ${m[1]} giờ ${m[2]} phút - ${m[3]}` : time;
 }
 
-/** Mép giấy xé — đường răng cưa cố định theo seed để không nhảy khi render lại */
-function tornPath(seed, w = 400, h = 28) {
-  let s = seed;
-  const rand = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
-  const pts = [`M0 ${h}`, `L0 ${h * 0.55}`];
-  for (let x = 0; x <= w; x += 4 + rand() * 8) pts.push(`L${x.toFixed(1)} ${(h * (0.15 + rand() * 0.7)).toFixed(1)}`);
-  pts.push(`L${w} ${h * 0.5}`, `L${w} ${h}`, "Z");
-  return pts.join(" ");
-}
-
-/** Dải xé nằm ở mép trên của một section, màu = màu section bên dưới */
-function TornEdge({ color, seed = 7, flip = false }) {
+/**
+ * Mép giấy xé giữa hai section (ảnh của mẫu gốc): nét xé ở trên, phủ kín ở dưới.
+ * Đặt ở đầu section, màu = màu section đó, nằm trên nền section phía trước.
+ */
+function TornEdge({ color }) {
   return (
-    <svg
-      viewBox="0 0 400 28"
-      preserveAspectRatio="none"
-      className={`block w-full h-7 ${flip ? "rotate-180" : ""}`}
-      style={{ color }}
+    <img
+      src={TPL06(color === GREEN ? "torn-green" : "torn-cream")}
+      alt=""
+      className="block w-full -mb-px select-none pointer-events-none"
       aria-hidden
-    >
-      <path fill="currentColor" d={tornPath(seed)} />
-    </svg>
+    />
   );
 }
 
@@ -1032,43 +1025,16 @@ function TornBadge({ color, seed = 3, className = "", children }) {
   );
 }
 
-/** Cành lá vẽ nét — trang trí */
-function Sprig({ className = "" }) {
-  return (
-    <svg viewBox="0 0 80 120" className={className} fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" aria-hidden>
-      <path d="M40 118C38 80 42 45 40 4" />
-      {[20, 38, 56, 74, 92].map((y, i) => (
-        <g key={y}>
-          <path d={`M40 ${y + 6}c-12-4-20-12-22-${16 - i}c10 0 19 6 22 ${16 - i}z`} />
-          <path d={`M40 ${y + 14}c12-4 20-12 22-${16 - i}c-10 0-19 6-22 ${16 - i}z`} />
-        </g>
-      ))}
-    </svg>
-  );
-}
-
-function Rings({ className = "" }) {
-  return (
-    <svg viewBox="0 0 60 30" className={className} fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden>
-      <ellipse cx="22" cy="17" rx="13" ry="9" />
-      <ellipse cx="38" cy="15" rx="13" ry="9" />
-      <path d="M33 6l5-4 5 4" />
-    </svg>
-  );
-}
-
-/** Khung monogram: hai chữ cái đầu trong khung bo dài, viền đôi */
+/** Khung monogram (ảnh có lề trong suốt: khung chiếm ~76% ngang, ~62% dọc) + hai chữ cái đầu */
 function Monogram({ a, b }) {
   return (
-    <div className="relative mx-auto w-[92px] h-[150px] text-[#22371a]">
-      <svg viewBox="0 0 92 150" className="absolute inset-0 w-full h-full" fill="none" stroke="currentColor" aria-hidden>
-        <rect x="6" y="6" width="80" height="138" rx="40" strokeWidth="1.4" />
-        <rect x="11" y="11" width="70" height="128" rx="35" strokeWidth="0.7" />
-        <path d="M46 0v8M46 142v8M28 4c6 6 30 6 36 0M28 146c6-6 30-6 36 0" strokeWidth="0.9" />
-      </svg>
-      <span className="absolute left-[22px] top-[26px] font-elegant text-[38px] leading-none">{a}</span>
-      <span className="absolute left-1/2 top-[64px] -translate-x-1/2 font-elegant text-xl">&amp;</span>
-      <span className="absolute right-[22px] bottom-[26px] font-elegant text-[38px] leading-none">{b}</span>
+    <div className="relative mx-auto w-[124px] h-[220px] text-black">
+      <img src={TPL06("monogram-frame")} alt="" className="absolute inset-0 w-full h-full" />
+      <div className="absolute inset-x-[12%] inset-y-[19%]">
+        <span className="absolute left-[22%] top-[12%] font-elegant text-[36px] leading-none">{a}</span>
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-pinyon text-[20px]">&amp;</span>
+        <span className="absolute right-[22%] bottom-[12%] font-elegant text-[36px] leading-none">{b}</span>
+      </div>
     </div>
   );
 }
@@ -1081,9 +1047,9 @@ function Calendar06({ dateIso }) {
 
   return (
     <div className="text-white">
-      <div className="relative flex justify-center">
-        <Sprig className="absolute -top-6 w-14 h-24 text-[#d9cfa8]/70 -rotate-12" />
-        <p className="relative font-pinyon text-[52px] leading-tight mt-10">{MONTHS_EN[m - 1]}</p>
+      <div className="relative flex flex-col items-center pt-6">
+        <img src={TPL06("lily-gold")} alt="" className="w-[150px]" />
+        <p className="relative -mt-14 font-pinyon text-[54px] leading-tight">{MONTHS_EN[m - 1]}</p>
       </div>
       <div className="grid grid-cols-7 text-center font-josefin text-[13px] tracking-wide mt-6 mb-3">
         {WEEKDAYS_EN.map((w) => (
@@ -1094,9 +1060,7 @@ function Calendar06({ dateIso }) {
         {cells.map((day, i) => (
           <span key={i} className="relative flex items-center justify-center h-10">
             {day === d && (
-              <svg viewBox="0 0 24 24" className="absolute w-12 h-12 animate-pulse-soft" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden>
-                <path d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 3 5 6.4 5c2 0 3.6 1.1 4.6 2.6C12 6.1 13.6 5 15.6 5 19 5 21.1 8.6 19.6 11.9 17.5 16.4 12 21 12 21z" />
-              </svg>
+              <img src={TPL06("heart")} alt="" className="absolute w-12 h-12 object-contain animate-pulse-soft" />
             )}
             <span className="relative">{day ?? ""}</span>
           </span>
@@ -1200,7 +1164,7 @@ function DoorOpening06({ onOpen, onDone }) {
 }
 
 const GREEN = "#22371a";
-const CREAM = "#fffae5";
+const CREAM = "#fffdea";
 
 function WeddingPage06() {
   const c = content;
@@ -1225,8 +1189,8 @@ function WeddingPage06() {
           {/* Ảnh đầu + tên */}
           <section className="relative text-center text-white">
             <img src={images.hero} alt={`${first} & ${second}`} className="w-full aspect-[1/1] object-cover object-top" />
-            <div className="-mt-6 relative">
-              <TornEdge color={GREEN} seed={5} />
+            <div className="-mt-12 relative">
+              <TornEdge color={GREEN} />
             </div>
             <div className="px-6 pt-8 pb-14">
               <Reveal variant="down">
@@ -1259,7 +1223,7 @@ function WeddingPage06() {
           {/* Monogram, gia đình, lời mời, sự kiện */}
           <section style={{ background: CREAM }}>
             <div style={{ background: GREEN }}>
-              <TornEdge color={CREAM} seed={9} />
+              <TornEdge color={CREAM} />
             </div>
             <div className="px-6 pt-10 pb-16 text-center">
               <Reveal variant="zoom">
@@ -1286,7 +1250,7 @@ function WeddingPage06() {
 
               <Reveal variant="zoom" className="mt-6 text-[#22371a]">
                 <p className="font-elegant text-[38px] uppercase leading-tight">{c.families.fullNames[0]}</p>
-                <Rings className="w-12 h-6 mx-auto my-2 opacity-80" />
+                <img src={TPL06("rings")} alt="" className="w-14 mx-auto my-2" />
                 <p className="font-elegant text-[38px] uppercase leading-tight">{c.families.fullNames[1]}</p>
               </Reveal>
 
@@ -1304,11 +1268,13 @@ function WeddingPage06() {
           {/* Chú rể, cô dâu, câu chuyện */}
           <section className="pb-14">
             <div style={{ background: CREAM }}>
-              <TornEdge color={GREEN} seed={13} />
+              <TornEdge color={GREEN} />
             </div>
-            <div className="px-6 pt-10 space-y-8">
+            <div className="relative px-6 pt-10 space-y-8">
               <Portrait06 src={images.groom} role="Chú rể" name={c.families.fullNames[0]} align="left" />
               <Portrait06 src={images.bride} role="Cô dâu" name={c.families.fullNames[1]} align="right" />
+              {/* Bó ly giữa hai ảnh chân dung, như mẫu gốc */}
+              <img src={TPL06("lily-bouquet")} alt="" className="absolute left-[40%] top-[38%] w-[22%] pointer-events-none" />
             </div>
             {c.story && (
               <div className="px-6 mt-12 text-center">
@@ -1329,7 +1295,7 @@ function WeddingPage06() {
           {/* Ảnh tròn + mừng cưới */}
           <section style={{ background: CREAM }}>
             <div style={{ background: GREEN }}>
-              <TornEdge color={CREAM} seed={17} />
+              <TornEdge color={CREAM} />
             </div>
             <div className="px-6 pt-10 pb-14 text-center">
               {c.rsvp.show && (
@@ -1338,8 +1304,9 @@ function WeddingPage06() {
                 </Reveal>
               )}
               <Reveal variant="zoom">
-                <div className="mx-auto w-[64%] rounded-full p-2 border border-[#22371a]/50">
-                  <img src={images.circle} alt="" className="w-full aspect-square rounded-full object-cover" loading="lazy" />
+                <div className="relative mx-auto w-[70%] aspect-square">
+                  <img src={images.circle} alt="" className="absolute inset-[5%] w-[90%] h-[90%] rounded-full object-cover" loading="lazy" />
+                  <img src={TPL06("circle-frame")} alt="" className="absolute inset-0 w-full h-full" />
                 </div>
               </Reveal>
               {c.gift.accounts.length > 0 && (
@@ -1360,7 +1327,7 @@ function WeddingPage06() {
           {/* Album */}
           <section className="pb-6">
             <div style={{ background: CREAM }}>
-              <TornEdge color={GREEN} seed={21} />
+              <TornEdge color={GREEN} />
             </div>
             <Reveal variant="zoom">
               <h2 className="text-center font-pinyon text-[40px] text-white pt-8 pb-6">Album of Love</h2>

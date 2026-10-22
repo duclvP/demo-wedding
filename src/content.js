@@ -1,63 +1,66 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-/** Thiệp chỉ ghi tên bố mẹ, không ghi địa chỉ hai nhà */
+/** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Đỗ Văn Thu',
-  mother: 'Nguyễn Bích Thuận',
-  address: null,
+  father: null, // TODO: ticket chưa có tên bố mẹ nhà trai
+  mother: null,
+  address: 'Khu 11, Xã Phú Mỹ, Tỉnh Phú Thọ',
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Trần Ngọc Tú',
-  mother: 'Ngô Thị Huệ',
-  address: null,
+  father: null, // TODO: ticket chưa có tên bố mẹ nhà gái
+  mother: null,
+  address: 'Tổ dân phố Cảnh Thụy, Phường Cảnh Thụy, Thành phố Bắc Ninh',
 };
 
 export const content = {
   /** Giao diện: '01' (lovecard thiepso01, mặc định) hoặc '06' (thiepso06 — xanh rêu, mép giấy xé) */
-  template: '06',
+  template: '07',
 
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Anh Tuấn', 'Thu Hồng'],
-    dateLine: '28. 10. 2026',
+    names: ['Hà Anh', 'Ngọc Tiến'],
+    dateLine: '14 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Anh Tuấn', 'Thu Hồng'],
+    fullNames: ['Hà Anh', 'Ngọc Tiến'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tới dự bữa tiệc chung vui cùng gia đình chúng tôi mừng hôn lễ',
+    title: 'Tham Dự Lễ Vu Quy',
     /** Chữ đè lên 3 ảnh (chỉ mẫu 01) */
-    dateParts: ['28', '10', '2026'],
+    dateParts: ['14', '11', '26'],
   },
 
   events: {
     mapLabel: 'Chỉ đường',
     items: [
       {
-        id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Hôn Lễ',
-        time: '18:00 - Thứ Tư',
-        date: '28. 10. 2026',
-        lunar: '( Nhằm Ngày 19 Tháng 09 Năm Bính Ngọ )',
-        places: [
-          {
-            label: 'Bể Bơi Đông Mỹ',
-            address: 'Ngõ 1 Đường Trường Thọ, Thôn 2 Đông Mỹ, Xã Nam Phù, Thanh Trì, Hà Nội (Đối diện trường THCS Đông Mỹ)',
-            /** Toạ độ ghim trong ticket */
-            mapQuery: '20.9164186,105.876153',
-          },
-        ],
+        id: 'tiec-mung',
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        time: '15:00 - Thứ Bảy',
+        date: '14. 11. 2026',
+        lunar: '( Tức Ngày 6 Tháng 10 Năm Bính Ngọ )',
+        // TODO: ticket chưa ghi địa điểm tiệc — tạm để tư gia nhà gái
+        places: [{ label: 'Tư Gia Nhà Gái', address: BRIDE_SIDE.address }],
+      },
+      {
+        id: 'le-ruoc-dau',
+        title: 'Lễ Rước Dâu',
+        // TODO: ticket chưa ghi giờ rước dâu
+        time: 'Chủ Nhật',
+        date: '15. 11. 2026',
+        lunar: '( Tức Ngày 7 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Gái', address: BRIDE_SIDE.address }],
       },
     ],
   },
@@ -74,7 +77,7 @@ export const content = {
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
-    dateIso: '2026-10-28',
+    dateIso: '2026-11-14',
   },
 
   rsvp: {
@@ -110,15 +113,7 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    accounts: [
-      {
-        holder: 'DO ANH TUAN',
-        number: '8818043012',
-        bank: 'BIDV',
-        /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-bidv.png',
-      },
-    ],
+    accounts: [],
   },
 
   thanks: {

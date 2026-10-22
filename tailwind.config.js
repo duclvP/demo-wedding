@@ -26,6 +26,9 @@ export default {
         /** Mẫu 06 — chữ thân mảnh in hoa */
         josefin: ['"Josefin Sans"', 'sans-serif'],
         /** Mẫu 06 — UTM Candlescript: "and", "Save the date", tên tháng */
+        /** Mẫu 07 — Hepta Slab (chữ thường) + Mea Culpa (chữ ký) */
+        hepta: ['"Hepta Slab"', 'serif'],
+        sig: ['"Mea Culpa"', '"Pinyon Script"', 'cursive'],
         pinyon: ['"Pinyon Script"', 'cursive'],
       },
       colors: {

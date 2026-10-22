@@ -3,20 +3,29 @@
  * Thêm ảnh mới: bỏ file vào public/images/ rồi thêm đường dẫn vào đây.
  */
 export const images = {
-  /** Ảnh lớn đầu thiệp (mẫu 01: khung vàng 2:3; mẫu 06: vuông, trên nền xanh) */
-  hero: '/images/song-hy.jpg',
-  /** Ảnh dưới phần gia đình (chỉ mẫu 01) */
-  couple: '/images/ao-dai.jpg',
+  /** Ảnh lớn đầu thiệp */
+  hero: '/images/hero.jpg',
+  /** Mẫu 01: ảnh dưới phần gia đình · mẫu 07: ảnh nền "Save The Date" */
+  couple: '/images/couple.jpg',
   /** 3 ảnh dải ngày cưới (chỉ mẫu 01) */
-  dateStrip: ['/images/song-hy.jpg', '/images/ao-dai.jpg', '/images/song-hy.jpg'],
-  /** Mẫu 06: hai ảnh oval dưới tên chú rể / cô dâu (ảnh đôi, không cắt) và ảnh tròn trên nút mừng cưới */
-  groom: '/images/song-hy.jpg',
-  bride: '/images/ao-dai.jpg',
-  circle: '/images/ao-dai.jpg',
+  dateStrip: ['/images/strip-1.jpg', '/images/strip-2.jpg', '/images/strip-3.jpg'],
+  /** Chân dung chú rể / cô dâu (mẫu 06: oval · mẫu 07: ảnh "Wedding of") và ảnh tròn (mẫu 06) */
+  groom: '/images/strip-3.jpg',
+  bride: '/images/strip-1.jpg',
+  circle: '/images/strip-2.jpg',
   /** Lưới ảnh 2 cột */
-  album: ['/images/song-hy.jpg', '/images/ao-dai.jpg'],
+  album: [
+    '/images/album-1.jpg',
+    '/images/album-2.jpg',
+    '/images/album-3.jpg',
+    '/images/album-4.jpg',
+    '/images/album-5.jpg',
+    '/images/album-6.jpg',
+    '/images/album-7.jpg',
+    '/images/album-8.jpg',
+  ],
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/song-hy.jpg',
+  gift: '/images/gift.jpg',
   /** Ảnh mục Thank You */
-  thankYou: '/images/ao-dai.jpg',
+  thankYou: '/images/thank-you.jpg',
 };

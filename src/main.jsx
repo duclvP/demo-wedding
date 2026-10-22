@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Check, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
@@ -1363,7 +1363,284 @@ function WeddingPage06() {
   );
 }
 
-const PAGES = { "01": WeddingPage, "06": WeddingPage06 };
+/* ---------- Mẫu 07: xanh rêu nhạt + giấy kem xé mép (Nắng Wedding) ---------- */
+
+const G7 = "#3b520d";
+const SAGE = "#5d6b41";
+const PAPER = "#f5f4ef";
+const RUST = "#b5532a";
+
+/** Đa giác mép giấy xé theo px (clip-path), dùng được với mọi chiều cao */
+function tornClip(seed) {
+  let s = seed;
+  const rand = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+  const pts = [];
+  for (let x = 0; x <= 100; x += 2 + rand() * 3) pts.push(`${x.toFixed(1)}% ${(rand() * 5).toFixed(1)}px`);
+  for (let y = 4; y <= 96; y += 5 + rand() * 6) pts.push(`calc(100% - ${(rand() * 5).toFixed(1)}px) ${y.toFixed(1)}%`);
+  for (let x = 100; x >= 0; x -= 2 + rand() * 3) pts.push(`${x.toFixed(1)}% calc(100% - ${(rand() * 5).toFixed(1)}px)`);
+  for (let y = 96; y >= 4; y -= 5 + rand() * 6) pts.push(`${(rand() * 5).toFixed(1)}px ${y.toFixed(1)}%`);
+  return `polygon(${pts.join(",")})`;
+}
+
+/** Tấm giấy kem mép xé có đổ bóng */
+function PaperCard({ seed = 1, className = "", children }) {
+  const clip = useMemo(() => tornClip(seed), [seed]);
+  return (
+    <div style={{ filter: "drop-shadow(0 3px 5px rgba(60,60,40,.28))" }}>
+      <div className={`relative ${className}`} style={{ background: "#efeee9", clipPath: clip }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function useCountdown(target) {
+  const calc = () => Math.max(0, target - Date.now());
+  const [ms, setMs] = useState(calc);
+  useEffect(() => {
+    const t = setInterval(() => setMs(calc()), 1000);
+    return () => clearInterval(t);
+  }, [target]);
+  const s = Math.floor(ms / 1000);
+  return [Math.floor(s / 86400), Math.floor((s % 86400) / 3600), Math.floor((s % 3600) / 60), s % 60];
+}
+
+function Countdown07({ target }) {
+  const parts = useCountdown(target);
+  const labels = ["Days", "Hours", "Minutes", "Seconds"];
+  return (
+    <div className="flex items-start justify-center gap-2" style={{ color: G7 }}>
+      {parts.map((v, i) => (
+        <React.Fragment key={labels[i]}>
+          {i > 0 && <span className="font-hepta text-[34px] leading-[1.15]">:</span>}
+          <div className="w-[62px] text-center">
+            <p className="font-hepta text-[38px] leading-none tabular-nums">{String(v).padStart(2, "0")}</p>
+            <p className="font-hepta text-[13px] text-black/80 mt-1">{labels[i]}</p>
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+function Title07({ children, className = "" }) {
+  return <h2 className={`font-sig text-[44px] leading-tight text-center ${className}`} style={{ color: G7 }}>{children}</h2>;
+}
+
+function Event07({ item, mapLabel, seed }) {
+  return (
+    <PaperCard seed={seed} className="px-6 pt-9 pb-9 text-center">
+      <p className="font-hepta font-bold text-[21px] uppercase" style={{ color: G7 }}>{item.title}</p>
+      <p className="font-hepta text-[16px] mt-2 text-black/75">{item.time}</p>
+      <p className="font-hepta font-bold text-[30px] mt-1" style={{ color: G7 }}>{item.date}</p>
+      <p className="font-hepta italic text-[13px] mt-1 text-black/60">{item.lunar}</p>
+      {item.places.map((place) => (
+        <div key={place.label} className="mt-5">
+          <p className="font-hepta font-bold text-[17px] uppercase text-black/80">{place.label}</p>
+          <p className="font-hepta text-[14px] mt-1 px-1 text-black/70">{place.address}</p>
+          <a
+            href={mapUrl(place.mapQuery ?? place.address)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 rounded-full px-8 py-2 font-hepta font-bold text-[14px] uppercase text-white shadow"
+            style={{ background: SAGE }}
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden>
+              <path d="M12 2a7 7 0 00-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
+            </svg>
+            {mapLabel}
+          </a>
+        </div>
+      ))}
+      <p className="font-sig text-[27px] mt-6" style={{ color: G7 }}>Rất hân hạnh được đón tiếp !</p>
+    </PaperCard>
+  );
+}
+
+function WeddingPage07() {
+  const c = content;
+  const guest = useGuestName(c.invitation.defaultGuest);
+  const [first, second] = c.hero.names;
+  const [dd, mm, yy] = c.invitation.dateParts;
+  const [giftOpen, setGiftOpen] = useState(false);
+  const closeGift = useCallback(() => setGiftOpen(false), []);
+  const firstEvent = c.events.items[0];
+  const target = useMemo(() => {
+    const t = firstEvent.time.match(/(\d{1,2}):(\d{2})/);
+    return new Date(`${c.calendar.dateIso ?? "2026-01-01"}T${t ? `${t[1].padStart(2, "0")}:${t[2]}` : "00:00"}:00+07:00`).getTime();
+  }, [firstEvent, c.calendar.dateIso]);
+  const photoOf = (side) => (side.label === "Nhà Trai" ? images.groom : images.bride);
+  const [sideA, sideB] = c.families.sides;
+
+  return (
+    <div className="min-h-screen bg-[#dcdad0] font-hepta">
+      <BackgroundMusic src={c.music.src} volume={c.music.volume} />
+      <main className="relative mx-auto max-w-[460px] overflow-hidden shadow-2xl" style={{ background: PAPER }}>
+        {/* Ảnh đầu + tên + ngày */}
+        <section className="relative">
+          <div className="relative overflow-hidden rounded-b-[28px]">
+            <img src={images.hero} alt={`${first} & ${second}`} className="w-full aspect-[3/4.7] object-cover object-[60%_top]" />
+            <div className="absolute inset-[6px] rounded-b-[24px] rounded-t-sm border border-white/80 pointer-events-none" />
+          </div>
+          {/* Con dấu 囍, thẻ tên và ba hình thoi ngày-tháng-năm nằm thẳng một trục */}
+          <div className="absolute right-[7%] top-[27%] w-[104px] flex flex-col items-center">
+            <div className="w-[62px] h-[62px] rounded-lg flex items-center justify-center shadow" style={{ background: RUST, color: "#ffe8d1" }}>
+              <span className="text-[40px] leading-none" style={{ fontFamily: '"Noto Serif SC", "Songti SC", serif' }}>囍</span>
+            </div>
+            <div className="mt-4 w-full rounded-[22px] border border-white/90 py-5 text-center text-white" style={{ background: SAGE }}>
+              <Reveal variant="down">
+                <p className="font-sig text-[34px] leading-[1.05]">{first.split(" ").map((w, i) => <span key={i} className="block">{w}</span>)}</p>
+                <p className="text-[13px] my-2 leading-none">●</p>
+                <p className="font-sig text-[34px] leading-[1.05]">{second.split(" ").map((w, i) => <span key={i} className="block">{w}</span>)}</p>
+              </Reveal>
+            </div>
+            <div className="mt-2 flex flex-col items-center -space-y-1.5">
+              {[dd, mm, yy].map((v) => (
+                <div key={v} className="w-[40px] h-[40px] rotate-45 flex items-center justify-center rounded-[3px] shadow-md" style={{ background: RUST }}>
+                  <span className="-rotate-45 font-hepta text-[14px]" style={{ color: "#ffe8d1" }}>{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Đếm ngược */}
+        <section className="px-4 pt-10">
+          <Reveal variant="zoom">
+            <Title07>Our wedding day</Title07>
+          </Reveal>
+          <Reveal variant="up" className="mt-2">
+            <PaperCard seed={5} className="py-6">
+              <Countdown07 target={target} />
+            </PaperCard>
+          </Reveal>
+        </section>
+
+        {/* Save the date */}
+        <section className="px-4 pt-10">
+          <Reveal variant="up">
+            <div className="relative overflow-hidden rounded-[26px] aspect-[4/5] text-white" style={{ background: "#33422a" }}>
+              <img src={images.couple} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-transparent to-transparent" />
+              <div className="absolute left-6 top-6">
+                <p className="font-sig text-[40px] leading-none">Save</p>
+                <p className="font-hepta text-[30px] leading-none text-white/70 ml-4">The</p>
+                <p className="font-sig text-[46px] leading-none">Date</p>
+                <p className="font-hepta text-[17px] mt-3 tracking-wider">{c.hero.dateLine}</p>
+              </div>
+              <img src={images.bride} alt="" className="absolute right-4 top-4 w-[40%] aspect-[3/4] rounded-[22px] object-cover border border-white/60" loading="lazy" />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* Lời mời + sự kiện */}
+        <section className="px-4 pt-12 text-center">
+          <Reveal>
+            <p className="font-hepta font-bold text-[15px] uppercase" style={{ color: G7 }}>{c.invitation.kicker}</p>
+            <p className="font-guest text-[38px] text-[#8b0000] mt-1 pb-1 border-b border-dotted border-black/30 mx-10">{guest}</p>
+            <p className="font-hepta text-[15px] uppercase mt-4 px-4" style={{ color: G7 }}>{c.invitation.title}</p>
+          </Reveal>
+          <div className="mt-8 space-y-7">
+            {c.events.items.map((item, i) => (
+              <Reveal key={item.id} variant="up">
+                <Event07 item={item} mapLabel={c.events.mapLabel} seed={11 + i * 7} />
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        {/* Hai bên gia đình */}
+        <section className="px-4 pt-14">
+          <Reveal variant="zoom">
+            <Title07>Wedding of</Title07>
+          </Reveal>
+          <div className="relative mt-4 grid grid-cols-2 gap-4 items-start">
+            {[sideA, sideB].map((side, i) => (
+              <Reveal key={side.label} variant={i ? "right" : "left"} className={i ? "mt-14" : ""}>
+                <img src={photoOf(side)} alt={side.label} className="w-full aspect-[3/4] rounded-[22px] object-cover" loading="lazy" />
+                <div className={`mt-4 flex gap-3 ${i ? "flex-row-reverse text-right" : "text-left"}`}>
+                  <span className="mt-1 w-px self-stretch" style={{ background: G7 }} />
+                  <div>
+                    <p className="font-hepta font-bold text-[16px] uppercase" style={{ color: G7 }}>{side.label}</p>
+                    {side.father && <p className="font-hepta text-[14px] mt-1 text-black/75">Ông: {side.father}</p>}
+                    {side.mother && <p className="font-hepta text-[14px] text-black/75">Bà: {side.mother}</p>}
+                    {side.address && <p className="font-hepta text-[13px] mt-1 text-black/60">{side.address}</p>}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        {/* Our Memories + album */}
+        <section className="px-4 pt-14">
+          <Reveal variant="zoom">
+            <Title07>Our Memories</Title07>
+          </Reveal>
+          <Reveal variant="up" className="mt-2">
+            <PaperCard seed={23} className="px-6 py-6 text-center">
+              <p className="font-hepta text-[14px] leading-relaxed text-black/70">
+                Mỗi trang album là một chương nhỏ của câu chuyện tình yêu, được viết bằng những ánh mắt, nụ cười và những lần nắm tay thật chặt.
+              </p>
+            </PaperCard>
+          </Reveal>
+          <div className="grid grid-cols-2 gap-2.5 mt-6">
+            {images.album.map((src, i) => (
+              <Reveal key={i} variant={i % 2 ? "right" : "left"} className={i % 2 ? "mt-8" : ""}>
+                <img src={src} alt="" className="w-full aspect-[2/3] rounded-[20px] object-cover" loading="lazy" />
+              </Reveal>
+            ))}
+          </div>
+          <Reveal variant="zoom">
+            <Title07 className="mt-6">Forever</Title07>
+          </Reveal>
+        </section>
+
+        {/* RSVP / mừng cưới (ẩn nếu không bật) */}
+        {(c.rsvp.show || c.gift.accounts.length > 0) && (
+          <section className="px-6 pt-10 text-center">
+            {c.rsvp.show && (
+              <Reveal className="mb-6">
+                <RsvpForm c={c.rsvp} />
+              </Reveal>
+            )}
+            {c.gift.accounts.length > 0 && (
+              <Reveal>
+                <button
+                  type="button"
+                  onClick={() => setGiftOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-full px-9 py-2.5 font-hepta text-[15px] uppercase text-white shadow-lg"
+                  style={{ background: SAGE }}
+                >
+                  <Gift className="w-5 h-5" aria-hidden />
+                  {c.gift.button}
+                </button>
+              </Reveal>
+            )}
+          </section>
+        )}
+
+        {/* Thank you */}
+        <section className="relative mt-10 overflow-hidden">
+          <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#2b3a1c] via-[#2b3a1c]/25 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0">
+            <Reveal variant="up" className="px-5 pb-12 text-center text-white">
+              <p className="font-hepta text-[14px] leading-relaxed drop-shadow">{c.thanks.text}</p>
+              <h2 className="font-sig text-[52px] mt-2 drop-shadow-lg">{c.thanks.title}!</h2>
+              <p className="font-sig text-[30px] drop-shadow-lg">
+                {c.families.fullNames[0]} <span className="font-upright text-[24px]">&amp;</span> {c.families.fullNames[1]}
+              </p>
+            </Reveal>
+          </div>
+        </section>
+      </main>
+      {giftOpen && <GiftModal c={c.gift} photo={images.gift} onClose={closeGift} />}
+    </div>
+  );
+}
+
+const PAGES = { "01": WeddingPage, "06": WeddingPage06, "07": WeddingPage07 };
 const Page = PAGES[content.template] ?? WeddingPage;
 
 /* StrictMode tắt: trong dev mount 2 lần có thể hủy thẻ audio → nhạc tắt giữa chừng. */

@@ -174,7 +174,11 @@ $V whoami                    # "Logged out" → chạy `$V login` NỀN, đọc 
 git branch --show-current && git status --short          # đúng nhánh, đã commit
 $V project ls --scope leducuet-5765s-projects             # đã có project của nhánh này chưa
 $V link --yes --project <tên-nhánh> --scope leducuet-5765s-projects   # tạo mới hoặc link project có sẵn
-$V deploy --prod --yes --scope leducuet-5765s-projects
+# KHÔNG deploy dựa vào .vercel/project.json — nhiều phiên dùng chung thư mục, file có thể vừa bị
+# link sang project khác → deploy đè thiệp của cặp khác. Luôn chỉ định project bằng ID:
+PID=$(python3 -c "import json;print(json.load(open('.vercel/project.json'))['projectId'])")   # ngay sau link, kiểm tra projectName đúng
+VERCEL_ORG_ID=team_rqWb3mrYNxU4RpLrPW5y7on6 VERCEL_PROJECT_ID=$PID $V deploy --prod --yes
+# Lỡ deploy nhầm project: $V promote <url bản production đúng trước đó> --yes --scope leducuet-5765s-projects
 $V inspect <url-deploy> --scope leducuet-5765s-projects   # status Ready + Aliases → link chính
 ```
 

@@ -1108,13 +1108,18 @@ function Event06({ item, mapLabel }) {
 function Portrait06({ src, role, name, align }) {
   return (
     <div className={`flex items-center gap-4 ${align === "right" ? "flex-row-reverse" : ""}`}>
-      <Reveal variant={align === "right" ? "right" : "left"} className="w-[46%] shrink-0">
-        <img src={src} alt={name} className="w-full aspect-[3/4] rounded-[50%] object-cover border-2 border-[#d9cfa8]/60" loading="lazy" />
-      </Reveal>
-      <Reveal variant="zoom" className="flex-1 text-center text-[#e9e2c6]">
-        <p className="font-upright text-[22px]">{role}</p>
-        <p className="font-elegant text-[28px] uppercase leading-tight">{name}</p>
-      </Reveal>
+      {/* Bố cục đặt ở div ngoài — Reveal gắn className vào lớp trong, lớp bọc của nó không nhận w-/flex- */}
+      <div className="w-[46%] shrink-0">
+        <Reveal variant={align === "right" ? "right" : "left"}>
+          <img src={src} alt={name} className="w-full aspect-[3/4] rounded-[50%] object-cover border-2 border-[#d9cfa8]/60" loading="lazy" />
+        </Reveal>
+      </div>
+      <div className="flex-1">
+        <Reveal variant="zoom" className="text-center text-[#e9e2c6]">
+          <p className="font-upright text-[22px]">{role}</p>
+          <p className="font-elegant text-[28px] uppercase leading-tight">{name}</p>
+        </Reveal>
+      </div>
     </div>
   );
 }
@@ -1273,8 +1278,8 @@ function WeddingPage06() {
             <div className="relative px-6 pt-10 space-y-8">
               <Portrait06 src={images.groom} role="Chú rể" name={c.families.fullNames[0]} align="left" />
               <Portrait06 src={images.bride} role="Cô dâu" name={c.families.fullNames[1]} align="right" />
-              {/* Bó ly giữa hai ảnh chân dung, như mẫu gốc */}
-              <img src={TPL06("lily-bouquet")} alt="" className="absolute left-[40%] top-[38%] w-[22%] pointer-events-none" />
+              {/* Bó ly ở khoảng giữa hai ảnh chân dung (dưới-phải ảnh chú rể, trên-trái ảnh cô dâu), như mẫu gốc */}
+              <img src={TPL06("lily-bouquet")} alt="" className="absolute left-[41%] top-[36%] w-[19%] pointer-events-none" />
             </div>
             {c.story && (
               <div className="px-6 mt-12 text-center">

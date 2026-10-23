@@ -835,8 +835,13 @@ function WeddingPage() {
   const handleOpen = useCallback(() => setOpened(true), []);
   const [first, second] = c.hero.names;
 
-  /** Khóa cuộn trang cho tới khi khách mở phong bì */
+  /**
+   * Khóa cuộn trang cho tới khi khách mở phong bì. Chrome giữ vị trí cuộn khi reload → nếu không kéo về
+   * đầu trang, phong bì nằm ngoài màn hình mà khách lại không cuộn lên được.
+   */
   useEffect(() => {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    if (!opened) window.scrollTo(0, 0);
     document.body.style.overflow = opened ? "" : "hidden";
     return () => {
       document.body.style.overflow = "";

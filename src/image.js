@@ -10,7 +10,7 @@ export const images = {
   /** 3 ảnh dải ngày cưới: chú rể (ô "25"), ảnh đôi, cô dâu */
   dateStrip: ['/images/vuon-1.jpg', '/images/studio-3.jpg', '/images/co-dau.jpg'],
   /** Ảnh polaroid cạnh lịch */
-  polaroid: '/images/studio-1.jpg',
+  polaroid: '/images/studio-2.jpg',
   /** Ảnh tròn trên nút mừng cưới */
   circle: '/images/studio-4.jpg',
   /** Lưới ảnh 2 cột, xếp so le */
@@ -18,7 +18,7 @@ export const images = {
     '/images/ao-dai-2.jpg',
     '/images/vuon-2.jpg',
     '/images/vuon-3.jpg',
-    '/images/studio-2.jpg',
+    '/images/studio-1.jpg',
     '/images/vuon-4.jpg',
     '/images/vuon-5.jpg',
     '/images/vuon-7.jpg',

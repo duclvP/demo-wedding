@@ -558,13 +558,14 @@ function Rings({ className = "" }) {
   );
 }
 
+/** Khối một bên gia đình — cỡ chữ theo mẫu: tên bên 18px đậm, bố mẹ 13px đậm in hoa, địa chỉ 12px */
 function FamilySide({ side }) {
   return (
-    <div className="text-left">
-      <h3 className="font-oswald font-medium text-[22px] uppercase leading-tight">{side.label}</h3>
-      {side.father && <p className="font-oswald font-medium text-[15px] uppercase mt-2">Ông {side.father}</p>}
-      {side.mother && <p className="font-oswald font-medium text-[15px] uppercase">Bà {side.mother}</p>}
-      {side.address && <p className="text-[13px] leading-snug text-foreground/80 mt-1">{side.address}</p>}
+    <div className="text-left font-avo">
+      <h3 className="font-bold uppercase text-[18px] leading-[28.8px] mb-[7px]">{side.label}</h3>
+      {side.father && <p className="font-bold uppercase text-[13px] leading-[20.8px]">Ông {side.father}</p>}
+      {side.mother && <p className="font-bold uppercase text-[13px] leading-[20.8px]">Bà {side.mother}</p>}
+      {side.address && <p className="font-sans text-[12px] leading-[19.2px] mt-[2px]">{side.address}</p>}
     </div>
   );
 }
@@ -875,53 +876,58 @@ function WeddingPage() {
             />
           </section>
 
-          {/* Gia đình hai bên */}
-          <section className="relative px-5 pt-6 pb-10">
+          {/* Gia đình hai bên — bố cục theo tọa độ mẫu (khung 420): vạch dọc trái, "Thư Mời Cưới" rồi hai nhà xếp dọc, ô đỏ bên phải */}
+          <section className="relative mx-auto w-full max-w-[420px] pt-8 pb-[53px]">
+            <div className="relative ml-4 mr-[128px] min-h-[461px]">
+              <span className="absolute left-0 top-0 h-[66px] w-px bg-black" aria-hidden />
+              <Reveal variant="right" duration={4} className="pt-[58px]">
+                <p className="font-upright text-[30px] leading-[48px]">
+                  Thư
+                  <br />
+                  Mời
+                  <br />
+                  Cưới
+                </p>
+              </Reveal>
+              <span className="absolute left-0 top-[188px] bottom-0 w-px bg-black" aria-hidden />
+              <div className="mt-[22px] ml-[9px] space-y-[29px]">
+                {c.families.sides.map((side) => (
+                  <Reveal key={side.label} variant="right" duration={4}>
+                    <FamilySide side={side} />
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+            <div className="absolute right-[18px] top-[97px] h-[244px] w-[87px] bg-[#7d1f2a] text-white">
+              <img src={images.deco.nhanVang} alt="" className="absolute left-[27px] top-[14px] h-8 w-8" />
+              <Reveal variant="up" duration={4} className="absolute inset-x-0 top-[152px] text-center">
+                <span className="font-display font-bold text-[64px] leading-[77px]">囍</span>
+              </Reveal>
+            </div>
             <img
               src={images.deco.hoaSen}
               alt=""
-              className="pointer-events-none absolute -right-2 -bottom-16 w-[158px] -rotate-[17deg] opacity-25"
+              className="pointer-events-none absolute left-[262px] top-[410px] z-10 w-[158px] -rotate-[17deg] opacity-25"
               loading="lazy"
             />
-            <Reveal className="relative flex min-h-[330px]">
-              <div className="w-[62px] shrink-0 pt-10 font-upright text-[26px] leading-[2.1] text-left">
-                Thư
-                <br />
-                Mời
-                <br />
-                Cưới
-              </div>
-              <div className="flex-1 border-l border-foreground/80 pl-3 pr-[96px] space-y-6 py-1">
-                {c.families.sides.map((side) => (
-                  <FamilySide key={side.label} side={side} />
-                ))}
-              </div>
-              <div className="absolute right-0 top-8 flex h-[244px] w-[87px] flex-col items-center justify-between bg-[#7d1f2a] py-5 text-white">
-                <div className="relative h-9 w-12">
-                  <img src={images.deco.nhanVang} alt="" className="absolute left-0 top-1 h-8 w-8" />
-                  <Heart className="absolute right-0 top-0 h-5 w-5 text-[#e0303a]" />
-                </div>
-                <span className="font-display font-bold text-[56px] leading-none">囍</span>
-              </div>
-            </Reveal>
           </section>
 
           {/* Báo tin */}
           <section className="px-3 pb-12 text-center">
             <Reveal>
-              <p className="font-lora text-[14px] uppercase tracking-wide text-foreground/60">
-                {c.invitation.announce[0]} <span className="text-[#c0262d] font-bold">{c.invitation.announce[1]}</span>{" "}
+              <p className="font-lora text-[16px] leading-[25.6px] uppercase text-black">
+                {c.invitation.announce[0]} <span className="text-[#9c0505] font-bold">{c.invitation.announce[1]}</span>{" "}
                 {c.invitation.announce[2]}
               </p>
             </Reveal>
-            <Reveal variant="left" className="mt-8">
-              <p className="font-script text-[44px] leading-tight text-[#d79ca5]">{c.families.fullNames[0]}</p>
+            <Reveal variant="right" duration={4} className="mt-[11px]">
+              <p className="font-script text-[40px] leading-[64px] text-[#9c0505]">{c.families.fullNames[0]}</p>
             </Reveal>
-            <Reveal variant="bounce" delay={300}>
-              <p className="font-script text-[34px] text-[#b01427] leading-none">&</p>
+            <Reveal variant="bounce" duration={2} className="-my-4">
+              <p className="font-script text-[39px] leading-[62px] text-[#9c0505]">&</p>
             </Reveal>
-            <Reveal variant="right">
-              <p className="font-script text-[44px] leading-tight text-[#d79ca5]">{c.families.fullNames[1]}</p>
+            <Reveal variant="left" duration={4}>
+              <p className="font-script text-[40px] leading-[64px] text-[#9c0505]">{c.families.fullNames[1]}</p>
             </Reveal>
             <Reveal variant="up" duration={2} className="mt-6">
               <img

@@ -49,7 +49,7 @@ export const content = {
     items: [
       {
         id: 'ruoc-dau',
-        title: 'Lễ Rước Dâu',
+        title: 'Tiệc Mừng Cưới - Nhà Gái',
         hour: '08 giờ 00',
         weekday: 'Thứ Năm',
         day: '26',

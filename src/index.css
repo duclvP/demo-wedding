@@ -38,17 +38,17 @@ body {
   background: linear-gradient(135deg, #b8862b 0%, #f7e08b 25%, #c99a3a 50%, #fbe9a6 75%, #a8761f 100%);
 }
 
-/* Hiện dần khi cuộn tới (component Reveal) — chậm & quãng dài như mẫu */
+/* Hiện dần khi cuộn tới (component Reveal) — theo mẫu: dịch 20–40px, 2–5s ease (--d) */
 .reveal {
   opacity: 0;
   transition:
-    opacity 1.6s ease-out,
-    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--d, 4s) ease,
+    transform var(--d, 4s) ease;
 }
-.reveal-up { transform: translateY(80px); }
-.reveal-down { transform: translateY(-80px); }
-.reveal-left { transform: translateX(-100%); }
-.reveal-right { transform: translateX(100%); }
+.reveal-up { transform: translateY(20px); }
+.reveal-down { transform: translateY(-20px); }
+.reveal-left { transform: translateX(-20px); }
+.reveal-right { transform: translateX(40px); }
 .reveal-zoom { transform: scale(0.7); }
 .reveal.is-visible {
   opacity: 1;
@@ -56,7 +56,7 @@ body {
 }
 .reveal-bounce { transition: none; }
 .reveal-bounce.is-visible {
-  animation: bounce-in 1.6s both;
+  animation: bounce-in var(--d, 4s) both;
 }
 
 @keyframes bounce-in {
@@ -65,6 +65,24 @@ body {
   70% { transform: scale(0.9); }
   100% { opacity: 1; transform: scale(1); }
 }
+
+/* Màn phong bì: chạy ngay khi tải trang (không chờ mở) */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: none; }
+}
+.anim-fade-up-4 { animation: fade-in-up 4s ease both; }
+.anim-fade-down-3 { animation: fade-in-down 3s ease both; }
+
+/* Ảnh cưới trượt lên khỏi phong bì: mẫu dịch 300px trên ảnh cao 380px */
+@keyframes move-up {
+  to { transform: translateY(-79%); }
+}
+.env-photo { animation: move-up 2s ease-in-out forwards; }
 
 /* Tuyết & tim rơi */
 .falling {
@@ -166,7 +184,7 @@ body {
   50% { transform: scale(1.1); }
 }
 .animate-pulse-soft {
-  animation: pulse-soft 1.8s ease-in-out infinite;
+  animation: pulse-soft 3s ease infinite;
 }
 
 @keyframes swing {

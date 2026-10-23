@@ -239,7 +239,7 @@ const BackgroundMusic = memo(function BackgroundMusic({ src, volume }) {
 /** Hiện dần khi cuộn tới — variant: up | down | left | right | zoom | bounce */
 const CurtainContext = React.createContext(true);
 
-function Reveal({ as: Tag = "div", variant = "up", delay = 0, className = "", children }) {
+function Reveal({ as: Tag = "div", variant = "up", delay = 0, duration = 4, className = "", children }) {
   const ref = useRef(null);
   const [seen, setSeen] = useState(false);
   /** Không chạy hiệu ứng khi rèm còn che — tránh phần đầu thiệp "diễn" trước khi khách thấy */
@@ -273,7 +273,7 @@ function Reveal({ as: Tag = "div", variant = "up", delay = 0, className = "", ch
   return (
     <div ref={ref}>
       <Tag
-        style={{ transitionDelay: `${delay}ms`, animationDelay: `${delay}ms` }}
+        style={{ "--d": `${duration}s`, transitionDelay: `${delay}ms`, animationDelay: `${delay}ms` }}
         className={`reveal reveal-${variant} ${visible ? "is-visible" : ""} ${className}`}
       >
         {children}
@@ -421,111 +421,108 @@ function useGuestName(fallback) {
   })[0];
 }
 
-/* ---------- Mẫu 05: phong bì đỏ đô, chữ vạn vàng ---------- */
+/* ---------- Mẫu 05: phong bì đỏ đô, hoa văn vàng (ảnh PNG của mẫu gốc, xem image.js → deco) ---------- */
 
-/** Góc hoa văn vàng ở đỉnh thiệp (lật ngang cho góc phải) */
-function GoldCorner({ flip = false, className = "" }) {
-  return (
-    <svg viewBox="0 0 90 100" className={`${className} ${flip ? "-scale-x-100" : ""}`} aria-hidden>
-      <defs>
-        <linearGradient id={`gc${flip ? "r" : "l"}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#e9c75a" />
-          <stop offset="0.5" stopColor="#fbeaa0" />
-          <stop offset="1" stopColor="#c99a2e" />
-        </linearGradient>
-      </defs>
-      <g fill="none" stroke={`url(#gc${flip ? "r" : "l"})`} strokeWidth="7" strokeLinecap="butt">
-        <path d="M0 4 H78 V28 H48 V50" />
-        <path d="M4 0 V88 H34 V62 H62" />
-      </g>
-      <g fill={`url(#gc${flip ? "r" : "l"})`}>
-        <rect x="58" y="44" width="14" height="14" />
-        <rect x="10" y="94" width="14" height="6" />
-      </g>
-    </svg>
-  );
-}
+/**
+ * Màn đầu dựng theo tọa độ của mẫu gốc trên khung 420×870, quy ra % để co theo màn hình.
+ * Mỗi ảnh của mẫu bị cắt khung (background cover + offset) → img đặt tuyệt đối trong hộp overflow-hidden
+ * với width/left/top đúng tỉ lệ cắt của mẫu.
+ */
+const CANVAS = { w: 420, h: 870 };
+const box = (x, y, w, h) => ({
+  left: `${(x / CANVAS.w) * 100}%`,
+  top: `${(y / CANVAS.h) * 100}%`,
+  width: `${(w / CANVAS.w) * 100}%`,
+  aspectRatio: `${w} / ${h}`,
+});
 
-/** Chữ 囍 vàng ánh kim */
-function GoldHappiness({ className = "" }) {
+/** Ảnh trang trí cắt khung: crop = { w, l, t } tính theo % hộp (w, l theo chiều rộng; t theo chiều cao) */
+function Cropped({ src, crop, className = "", style, alt = "" }) {
   return (
-    <span
-      className={`font-display font-bold leading-none bg-gradient-to-b from-[#c9a13a] via-[#f5e6a0] to-[#c9a13a] bg-clip-text text-transparent ${className}`}
-      aria-hidden
-    >
-      囍
-    </span>
-  );
-}
-
-function WaxSeal({ className = "" }) {
-  return (
-    <svg viewBox="0 0 70 70" className={className} aria-hidden>
-      <defs>
-        <radialGradient id="wax" cx="0.4" cy="0.35" r="0.8">
-          <stop offset="0" stopColor="#d9a77a" />
-          <stop offset="0.6" stopColor="#a8703f" />
-          <stop offset="1" stopColor="#8a5a30" />
-        </radialGradient>
-      </defs>
-      <path
-        d="M35 3c6 0 8 4 13 5 5 1 10 3 12 8 2 5-1 9 1 14 2 5 6 8 4 13-2 5-7 6-10 10-3 4-3 10-9 12-6 2-9-2-15-2s-10 4-15 1c-5-3-4-8-7-13-3-5-9-6-9-12 0-6 6-8 7-13 1-5-1-10 3-14 4-4 9-2 13-4 4-2 8-5 12-5z"
-        fill="url(#wax)"
-        stroke="#7a4d28"
-        strokeWidth="1"
+    <div className={`absolute overflow-hidden ${className}`} style={style} aria-hidden={!alt}>
+      <img
+        src={src}
+        alt={alt}
+        className="absolute max-w-none"
+        style={{ width: `${crop.w}%`, left: `${crop.l}%`, top: `${crop.t}%` }}
       />
-      <circle cx="35" cy="35" r="22" fill="none" stroke="#c99564" strokeWidth="1.2" />
-      <g fill="none" stroke="#6e4423" strokeWidth="1.6" strokeLinecap="round">
-        <path d="M35 52 C35 40 35 30 36 20" />
-        <path d="M35 44 C29 42 27 38 28 34 C33 35 35 40 35 44Z" />
-        <path d="M35 36 C41 34 43 30 42 26 C37 27 35 32 35 36Z" />
-        <path d="M35 28 C30 26 29 22 30 19 C34 20 35 24 35 28Z" />
-      </g>
-    </svg>
+    </div>
   );
 }
 
-/** Phong bì: bấm → nắp mở, ảnh trượt lên */
-function Envelope({ open, photo, alt }) {
+/**
+ * Phong bì: trước khi mở là ảnh phong bì đóng; bấm → đổi sang bộ ảnh phong bì mở (mặt sau + ảnh cưới + mặt trước),
+ * ảnh cưới trượt lên 300px trong 2s (đúng hiệu ứng moveUp của mẫu).
+ */
+function EnvelopeCover({ open, photo, alt, hint, names, dateLines }) {
+  const d = images.deco;
   return (
-    <div className="relative mx-auto aspect-[342/240] w-[min(342px,calc(100%-40px))] [perspective:900px]">
-      {/* Ảnh trượt lên — lớp ngoài cắt phần chui xuống dưới đáy phong bì */}
-      <div className="absolute inset-0" style={{ clipPath: "inset(-200% -10% 0 -10%)" }}>
-        <div
-          className="absolute inset-x-[4%] top-0 h-[120%] overflow-hidden rounded-2xl border border-black/10 bg-white shadow-lg transition-transform duration-[1600ms] ease-[cubic-bezier(0.22,1,0.36,1)] delay-500"
-          style={{ transform: open ? "translateY(-62%)" : "translateY(0)" }}
-        >
-          <img src={photo} alt={alt} className="h-full w-full object-cover object-top" />
+    <div className="relative mx-auto w-full max-w-[420px]" style={{ aspectRatio: `${CANVAS.w} / ${CANVAS.h}` }}>
+      {/* Góc hoa văn vàng — ảnh vuông bị kéo thành 69×97 như mẫu */}
+      <img src={d.gocVang} alt="" className="absolute left-0 top-0 h-auto" style={{ ...box(0, 0, 69, 97) }} />
+      <img src={d.gocVang} alt="" className="absolute top-0 -scale-x-100" style={{ ...box(351, 0, 69, 97) }} />
+      {/* Chữ "Thiệp Mời Cưới" (ảnh) — nhích lên 8px sau khi mở */}
+      <img
+        src={d.thiepMoiCuoi}
+        alt="Thiệp mời cưới"
+        className={`absolute transition-[top] duration-500 ${open ? "anim-fade-down-3" : ""}`}
+        style={{ ...box(124, open ? 13 : 21, 172, 95) }}
+      />
+
+      {!open ? (
+        <>
+          <Cropped src={d.hyVang} crop={{ w: 92.5, l: 2, t: 5.5 }} className="anim-fade-up-4" style={box(160, 148.5, 100, 108.5)} />
+          <Cropped src={d.pbDong} crop={{ w: 107.34, l: -3.62, t: -47.5 }} style={box(33, 292, 350, 255.5)} />
+          <p
+            className="absolute inset-x-0 text-center font-lora text-[18px] leading-[1.6] text-[#9c0505] animate-pulse-soft"
+            style={{ top: `${(554.5 / CANVAS.h) * 100}%` }}
+          >
+            - {hint} -
+          </p>
+        </>
+      ) : (
+        <>
+          <Cropped src={d.pbMoSau} crop={{ w: 102.2, l: -3.62, t: 3.58 }} style={box(34.5, 157.8, 366.5, 390.6)} />
+          <div className="absolute left-0 top-0 w-full overflow-hidden" style={{ height: `${(538 / CANVAS.h) * 100}%` }}>
+            <div
+              className="env-photo absolute overflow-hidden rounded-[20px] border-2 border-[#a6a6a6] bg-white"
+              style={{ ...box(55.1, 421.9, 305.4, 380), top: `${(421.9 / 538) * 100}%` }}
+            >
+              <img src={photo} alt={alt} className="h-full w-full object-cover object-top" />
+            </div>
+          </div>
+          <Cropped src={d.pbMoTruoc} crop={{ w: 103.4, l: -1.54, t: -37.1 }} style={box(26.4, 271, 363.5, 271.1)} />
+        </>
+      )}
+
+      {/* Tên + ngày + 囍 hồng: chỉ gắn vào trang sau khi mở (mẫu gốc đổi tab) */}
+      {open && (
+      <div className="absolute inset-x-0" style={{ top: `${(584.5 / CANVAS.h) * 100}%` }}>
+        <div className="border-y-[3px] border-[#b2bca3]/30 py-2 relative">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-5 px-1">
+            <Reveal variant="left" duration={4} className="text-right">
+              <span className="font-script text-[clamp(30px,10vw,42px)] leading-[1.6] whitespace-nowrap">{names[0]}</span>
+            </Reveal>
+            <Reveal variant="bounce" duration={5}>
+              <Heart className="h-[38px] w-[39px] text-[#b9051a]" />
+            </Reveal>
+            <Reveal variant="right" duration={5} className="text-left">
+              <span className="font-script text-[clamp(30px,10vw,42px)] leading-[1.6] whitespace-nowrap">{names[1]}</span>
+            </Reveal>
+          </div>
         </div>
+        <Reveal variant="down" duration={5} className="mt-2 text-center">
+          <p className="font-lora text-[48px] leading-[1.3]">{dateLines[0]}</p>
+          <p className="font-lora text-[50px] leading-[1.3] -mt-3">{dateLines[1]}</p>
+        </Reveal>
       </div>
-      {/* Thân phong bì (khuyết hình tam giác ở trên để thấy ảnh) */}
-      <svg viewBox="0 0 342 240" className="absolute inset-0 z-20 h-full w-full drop-shadow-md" aria-hidden>
-        <defs>
-          <linearGradient id="env" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#8a1c2d" />
-            <stop offset="1" stopColor="#7a1727" />
-          </linearGradient>
-        </defs>
-        <path d="M0 0 L171 130 L342 0 L342 240 L0 240 Z" fill="url(#env)" />
-        <g stroke="#e8cdbf" strokeWidth="1" fill="none">
-          <path d="M0 0 L171 130 L342 0" />
-          <path d="M0 240 L171 130 L342 240" />
-        </g>
-      </svg>
-      {/* Nắp phong bì */}
-      <div
-        className="absolute inset-x-0 top-0 z-30 h-[54%] origin-top bg-[#8f1f31] transition-[transform,opacity] duration-700"
-        style={{
-          clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-          transform: open ? "rotateX(180deg)" : "rotateX(0)",
-          opacity: open ? 0 : 1,
-          transitionProperty: "transform, opacity",
-          transitionDelay: open ? "0s, 0.45s" : "0s",
-        }}
-      />
-      <WaxSeal
-        className={`absolute left-1/2 top-[54%] z-40 h-[26%] -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ${open ? "scale-90 opacity-100" : "animate-pulse-soft"}`}
-      />
+      )}
+      {open && (
+        <>
+          <img src={d.hyHong} alt="" className="absolute opacity-30" style={box(28, 766, 88, 88)} />
+          <img src={d.hyHong} alt="" className="absolute opacity-30" style={box(308.5, 766, 88, 88)} />
+        </>
+      )}
     </div>
   );
 }
@@ -541,15 +538,15 @@ function Heart({ className = "" }) {
   );
 }
 
+/** Nhẫn đôi (ảnh của mẫu, cắt khung 69×56) */
 function Rings({ className = "" }) {
   return (
-    <svg viewBox="0 0 64 36" className={className} aria-hidden>
-      <g fill="none" stroke="#9a8f90" strokeWidth="1.6">
-        <circle cx="22" cy="21" r="12" />
-        <circle cx="40" cy="21" r="12" />
-        <path d="M17 9 L22 3 L27 9 Z" />
-      </g>
-    </svg>
+    <Cropped
+      src={images.deco.nhanDoi}
+      crop={{ w: 158.5, l: -48.1, t: -109.4 }}
+      className={`relative ${className}`}
+      style={{ aspectRatio: "69.5 / 56" }}
+    />
   );
 }
 
@@ -854,38 +851,25 @@ function WeddingPage() {
       <CurtainContext.Provider value={opened}>
         <main className="relative mx-auto max-w-[460px] bg-white overflow-hidden shadow-2xl">
           {/* Phong bì + tên + ngày */}
-          <section className="relative pt-3 pb-14 text-center" onClick={handleOpen}>
-            <GoldCorner className="absolute left-0 top-0 h-[96px] w-[86px]" />
-            <GoldCorner flip className="absolute right-0 top-0 h-[96px] w-[86px]" />
-            <p className="font-lora text-[22px] uppercase leading-none tracking-wide">Thiệp</p>
-            <p className="font-guest text-[58px] leading-[0.9]">Mời Cưới</p>
-            <div className="flex h-[190px] items-center justify-center">
-              <GoldHappiness className="text-[104px]" />
-            </div>
-            <Envelope open={opened} photo={images.hero} alt={`${first} & ${second}`} />
-            <p
-              className={`mt-4 font-lora text-[17px] tracking-wide text-[#a30d0d] transition-opacity duration-500 ${opened ? "opacity-0" : ""}`}
-            >
-              - {c.hero.hint} -
-            </p>
-            <Reveal className="mt-8 relative">
-              <div className="border-y border-foreground/15 py-4 flex items-center justify-center gap-4">
-                <span className="font-script text-[32px] leading-tight">{first}</span>
-                <Heart className="h-9 w-9 text-[#b01427]" />
-                <span className="font-script text-[32px] leading-tight">{second}</span>
-              </div>
-              <p className="font-lora text-[46px] leading-[1.1] mt-3">
-                {c.hero.dateLines[0]}
-                <br />
-                {c.hero.dateLines[1]}
-              </p>
-              <GoldHappiness className="absolute left-3 -bottom-14 text-[84px] opacity-25 !from-[#d7a6b2] !via-[#e8cfd6] !to-[#d7a6b2]" />
-              <GoldHappiness className="absolute right-3 -bottom-14 text-[84px] opacity-25 !from-[#d7a6b2] !via-[#e8cfd6] !to-[#d7a6b2]" />
-            </Reveal>
+          <section className="relative cursor-pointer" onClick={handleOpen}>
+            <EnvelopeCover
+              open={opened}
+              photo={images.hero}
+              alt={`${first} & ${second}`}
+              hint={c.hero.hint}
+              names={c.hero.names}
+              dateLines={c.hero.dateLines}
+            />
           </section>
 
           {/* Gia đình hai bên */}
-          <section className="relative px-5 pt-10 pb-10">
+          <section className="relative px-5 pt-6 pb-10">
+            <img
+              src={images.deco.hoaSen}
+              alt=""
+              className="pointer-events-none absolute -right-2 -bottom-16 w-[158px] -rotate-[17deg] opacity-25"
+              loading="lazy"
+            />
             <Reveal className="relative flex min-h-[330px]">
               <div className="w-[62px] shrink-0 pt-10 font-upright text-[26px] leading-[2.1] text-left">
                 Thư
@@ -899,11 +883,11 @@ function WeddingPage() {
                   <FamilySide key={side.label} side={side} />
                 ))}
               </div>
-              <div className="absolute right-0 top-8 flex h-[240px] w-[84px] flex-col items-center justify-between bg-primary py-5 text-white">
-                <svg viewBox="0 0 32 32" className="h-9 w-9" aria-hidden>
-                  <circle cx="13" cy="19" r="9" fill="none" stroke="#e8c36a" strokeWidth="3" />
-                  <circle cx="21" cy="12" r="5" fill="#e0303a" />
-                </svg>
+              <div className="absolute right-0 top-8 flex h-[244px] w-[87px] flex-col items-center justify-between bg-[#7d1f2a] py-5 text-white">
+                <div className="relative h-9 w-12">
+                  <img src={images.deco.nhanVang} alt="" className="absolute left-0 top-1 h-8 w-8" />
+                  <Heart className="absolute right-0 top-0 h-5 w-5 text-[#e0303a]" />
+                </div>
                 <span className="font-display font-bold text-[56px] leading-none">囍</span>
               </div>
             </Reveal>
@@ -926,11 +910,11 @@ function WeddingPage() {
             <Reveal variant="right">
               <p className="font-script text-[44px] leading-tight text-[#d79ca5]">{c.families.fullNames[1]}</p>
             </Reveal>
-            <Reveal variant="up" className="mt-6">
+            <Reveal variant="up" duration={2} className="mt-6">
               <img
                 src={images.wide}
                 alt=""
-                className="w-full aspect-[16/10] rounded-2xl border border-foreground/15 object-cover object-[center_30%] shadow-md"
+                className="w-full aspect-[387/240] rounded-[15px] border-2 border-[#d9d9d9] object-cover object-[center_30%]"
                 loading="lazy"
               />
             </Reveal>
@@ -938,7 +922,10 @@ function WeddingPage() {
 
           {/* Lời mời + sự kiện */}
           <section className="pb-12 text-center">
-            <Reveal>
+            <Reveal className="relative">
+              <Reveal variant="right" duration={3} className="absolute right-8 -top-5">
+                <img src={images.deco.timVanTay} alt="" className="h-10 w-10" loading="lazy" />
+              </Reveal>
               <p className="font-lora font-bold uppercase text-[19px] text-[#a30d0d]">{c.invitation.kicker}</p>
               <p className="font-guest text-[44px] leading-tight text-[#a30d0d] mt-1 mx-12 border-b border-dotted border-foreground/60">
                 {guest}
@@ -959,14 +946,19 @@ function WeddingPage() {
               <p className="font-lora font-bold uppercase text-[22px] text-[#a30d0d]">{c.invitation.title}</p>
               <div className="mt-2 flex items-center justify-center gap-4">
                 <span className="font-script text-[26px] text-[#d79ca5]">{first}</span>
-                <Rings className="h-10 w-16" />
+                <Rings className="w-[70px]" />
                 <span className="font-script text-[26px] text-[#d79ca5]">{second}</span>
               </div>
             </Reveal>
             <div className="mt-8 space-y-12 px-4">
               {c.events.items.map((item, i) => (
                 <Reveal key={item.id} variant="up">
-                  {i > 0 && <div className="mx-auto mb-10 h-px w-40 bg-primary/40" />}
+                  {i > 0 && (
+                    <div className="mx-auto mb-10 flex w-48 items-center">
+                      <img src={images.deco.timVanTay} alt="" className="h-8 w-8" loading="lazy" />
+                      <div className="h-px flex-1 bg-primary/40" />
+                    </div>
+                  )}
                   <EventBlock item={item} mapLabel={c.events.mapLabel} />
                 </Reveal>
               ))}
@@ -994,8 +986,9 @@ function WeddingPage() {
               </Reveal>
             )}
             <Reveal variant="zoom" className="mt-4 flex justify-center">
-              <div className="relative h-[190px] w-[190px] rounded-full border border-[#8a5a3a]/70 p-2.5">
-                <img src={images.circle} alt="" className="h-full w-full rounded-full object-cover object-top" loading="lazy" />
+              <div className="relative h-[199px] w-[199px]">
+                <img src={images.circle} alt="" className="absolute inset-[14px] h-[171px] w-[171px] rounded-full object-cover object-top" loading="lazy" />
+                <img src={images.deco.vongLa} alt="" className="absolute inset-0 h-full w-full" loading="lazy" />
               </div>
             </Reveal>
             {c.gift.accounts.length > 0 && (

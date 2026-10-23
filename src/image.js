@@ -28,4 +28,20 @@ export const images = {
   gift: '/images/studio-3.jpg',
   /** Ảnh mục Thank You */
   thankYou: '/images/ao-dai-1.jpg',
+
+  /** Ảnh trang trí của mẫu 05 (lovecard thiepso05) — dùng chung cho mọi cặp đôi, không cần đổi */
+  deco: {
+    pbDong: '/images/deco-pb-dong.png',
+    pbMoSau: '/images/deco-pb-mo-sau.png',
+    pbMoTruoc: '/images/deco-pb-mo-truoc.png',
+    gocVang: '/images/deco-goc-vang.png',
+    hyVang: '/images/deco-hy-vang.png',
+    hyHong: '/images/deco-hy-hong.png',
+    thiepMoiCuoi: '/images/deco-thiep-moi-cuoi.png',
+    nhanVang: '/images/deco-nhan-vang.png',
+    nhanDoi: '/images/deco-nhan-doi.png',
+    hoaSen: '/images/deco-hoa-sen.png',
+    timVanTay: '/images/deco-tim-van-tay.png',
+    vongLa: '/images/deco-vong-la.png',
+  },
 };

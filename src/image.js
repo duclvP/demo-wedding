@@ -4,18 +4,18 @@
  */
 export const images = {
   /** Ảnh trong phong bì lúc mở thiệp (khung 4:3 dọc, object-top) */
-  hero: '/images/studio-1.jpg',
+  hero: '/images/studio-5.jpg',
   /** Ảnh ngang bo góc dưới "Trân trọng báo tin" */
-  wide: '/images/vuon-6.jpg',
-  /** 3 ảnh dải ngày cưới */
-  dateStrip: ['/images/ao-dai-2.jpg', '/images/studio-3.jpg', '/images/co-dau.jpg'],
+  wide: '/images/studio-1.jpg',
+  /** 3 ảnh dải ngày cưới: chú rể (ô "25"), ảnh đôi, cô dâu */
+  dateStrip: ['/images/vuon-1.jpg', '/images/studio-3.jpg', '/images/co-dau.jpg'],
   /** Ảnh polaroid cạnh lịch */
-  polaroid: '/images/studio-4.jpg',
+  polaroid: '/images/studio-1.jpg',
   /** Ảnh tròn trên nút mừng cưới */
-  circle: '/images/studio-5.jpg',
+  circle: '/images/studio-4.jpg',
   /** Lưới ảnh 2 cột, xếp so le */
   album: [
-    '/images/vuon-1.jpg',
+    '/images/ao-dai-2.jpg',
     '/images/vuon-2.jpg',
     '/images/vuon-3.jpg',
     '/images/studio-2.jpg',

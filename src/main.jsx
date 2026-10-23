@@ -936,7 +936,7 @@ function WeddingPage() {
                 <img
                   src={images.wide}
                   alt=""
-                  className="w-full aspect-[387/240] rounded-[15px] border-2 border-[#d9d9d9] object-cover object-[center_30%]"
+                  className="w-full aspect-[387/240] rounded-[15px] border-2 border-[#d9d9d9] object-cover object-[center_22%]"
                   loading="lazy"
                 />
               </Reveal>

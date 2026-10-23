@@ -30,7 +30,7 @@ export const content = {
     /** Tên đầy đủ + vai vế (dòng nhỏ dưới tên) */
     couple: [
       { name: 'Michael Bằng Nguyễn', role: 'Thứ Nam' },
-      { name: 'Lê Thị Kim Nhung', role: 'Thứ Nữ' },
+      { name: 'Maria Lê Thị Kim Nhung', role: 'Thứ Nữ' },
     ],
   },
 

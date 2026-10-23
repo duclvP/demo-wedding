@@ -23,7 +23,7 @@ export const content = {
     /** Hiển thị theo đúng thứ tự này */
     names: ['Thu Hồng', 'Trọng Hoàng'],
     /** Hai dòng dưới tên: ngày.tháng / năm */
-    dateLines: ['25.11', '2026'],
+    dateLines: ['26.11', '2026'],
     hint: 'NHẤP VÀO THIỆP ĐỂ MỞ',
   },
 
@@ -41,22 +41,12 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Cưới',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['25', '11', '2026'],
+    dateParts: ['26', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Chỉ đường',
     items: [
-      {
-        id: 'tiec-nha-gai',
-        title: 'Tiệc Mừng Nhà Gái',
-        hour: '15 giờ 00',
-        weekday: 'Thứ Tư',
-        day: '25',
-        monthYear: '11 - 2026',
-        lunar: '( Tức ngày 17 tháng 10 năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
-      },
       {
         id: 'ruoc-dau',
         title: 'Lễ Rước Dâu',
@@ -70,8 +60,7 @@ export const content = {
       {
         id: 'thanh-hon-nha-trai',
         title: 'Lễ Thành Hôn - Nhà Trai',
-        // TODO: chưa có giờ cưới nhà trai — hỏi lại khách. hour: null = ẩn dòng "Vào lúc"
-        hour: null,
+        hour: '15 giờ 00',
         weekday: 'Chủ Nhật',
         day: '29',
         monthYear: '11 - 2026',
@@ -83,7 +72,7 @@ export const content = {
 
   calendar: {
     /** Các ngày được đánh dấu trên lịch (cùng một tháng) — để [] thì ẩn lịch */
-    dateIso: ['2026-11-25', '2026-11-26', '2026-11-29'],
+    dateIso: ['2026-11-26', '2026-11-29'],
     photoCaption: 'My Love',
   },
 

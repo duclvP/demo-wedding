@@ -863,7 +863,7 @@ function WeddingPage() {
       <FallingEffects active={opened} />
 
       <CurtainContext.Provider value={opened}>
-        <main className="relative mx-auto max-w-[460px] bg-white overflow-hidden shadow-2xl">
+        <main className="relative mx-auto min-h-screen max-w-[460px] bg-white overflow-hidden shadow-2xl">
           {/* Phong bì + tên + ngày */}
           <section className="relative cursor-pointer" onClick={handleOpen}>
             <EnvelopeCover
@@ -876,189 +876,194 @@ function WeddingPage() {
             />
           </section>
 
-          {/* Gia đình hai bên — bố cục theo tọa độ mẫu (khung 420): vạch dọc trái, "Thư Mời Cưới" rồi hai nhà xếp dọc, ô đỏ bên phải */}
-          <section className="relative mx-auto w-full max-w-[420px] pt-8 pb-[53px]">
-            <div className="relative ml-4 mr-[128px] min-h-[461px]">
-              <span className="absolute left-0 top-0 h-[66px] w-px bg-black" aria-hidden />
-              <Reveal variant="right" duration={4} className="pt-[58px]">
-                <p className="font-upright text-[30px] leading-[48px]">
-                  Thư
-                  <br />
-                  Mời
-                  <br />
-                  Cưới
+          {/* Phần còn lại chỉ gắn vào trang sau khi mở phong bì — màn hình cao hơn khung 870px sẽ không thấy ló mục dưới */}
+          {opened && (
+            <div className="anim-fade-in-500">
+            {/* Gia đình hai bên — bố cục theo tọa độ mẫu (khung 420): vạch dọc trái, "Thư Mời Cưới" rồi hai nhà xếp dọc, ô đỏ bên phải */}
+            <section className="relative mx-auto w-full max-w-[420px] pt-8 pb-[53px]">
+              <div className="relative ml-4 mr-[128px] min-h-[461px]">
+                <span className="absolute left-0 top-0 h-[66px] w-px bg-black" aria-hidden />
+                <Reveal variant="right" duration={4} className="pt-[58px]">
+                  <p className="font-upright text-[30px] leading-[48px]">
+                    Thư
+                    <br />
+                    Mời
+                    <br />
+                    Cưới
+                  </p>
+                </Reveal>
+                <span className="absolute left-0 top-[188px] bottom-0 w-px bg-black" aria-hidden />
+                <div className="mt-[22px] ml-[9px] space-y-[29px]">
+                  {c.families.sides.map((side) => (
+                    <Reveal key={side.label} variant="right" duration={4}>
+                      <FamilySide side={side} />
+                    </Reveal>
+                  ))}
+                </div>
+              </div>
+              <div className="absolute right-[18px] top-[97px] h-[244px] w-[87px] bg-[#7d1f2a] text-white">
+                <img src={images.deco.nhanVang} alt="" className="absolute left-[27px] top-[14px] h-8 w-8" />
+                <Reveal variant="up" duration={4} className="absolute inset-x-0 top-[152px] text-center">
+                  <span className="font-display font-bold text-[64px] leading-[77px]">囍</span>
+                </Reveal>
+              </div>
+              <img
+                src={images.deco.hoaSen}
+                alt=""
+                className="pointer-events-none absolute left-[262px] top-[410px] z-10 w-[158px] -rotate-[17deg] opacity-25"
+                loading="lazy"
+              />
+            </section>
+
+            {/* Báo tin */}
+            <section className="px-3 pb-12 text-center">
+              <Reveal>
+                <p className="font-lora text-[16px] leading-[25.6px] uppercase text-black">
+                  {c.invitation.announce[0]} <span className="text-[#9c0505] font-bold">{c.invitation.announce[1]}</span>{" "}
+                  {c.invitation.announce[2]}
                 </p>
               </Reveal>
-              <span className="absolute left-0 top-[188px] bottom-0 w-px bg-black" aria-hidden />
-              <div className="mt-[22px] ml-[9px] space-y-[29px]">
-                {c.families.sides.map((side) => (
-                  <Reveal key={side.label} variant="right" duration={4}>
-                    <FamilySide side={side} />
+              <Reveal variant="right" duration={4} className="mt-[11px]">
+                <p className="font-script text-[40px] leading-[64px] text-[#9c0505]">{c.families.fullNames[0]}</p>
+              </Reveal>
+              <Reveal variant="bounce" duration={2} className="-my-4">
+                <p className="font-script text-[39px] leading-[62px] text-[#9c0505]">&</p>
+              </Reveal>
+              <Reveal variant="left" duration={4}>
+                <p className="font-script text-[40px] leading-[64px] text-[#9c0505]">{c.families.fullNames[1]}</p>
+              </Reveal>
+              <Reveal variant="up" duration={2} className="mt-6">
+                <img
+                  src={images.wide}
+                  alt=""
+                  className="w-full aspect-[387/240] rounded-[15px] border-2 border-[#d9d9d9] object-cover object-[center_30%]"
+                  loading="lazy"
+                />
+              </Reveal>
+            </section>
+
+            {/* Lời mời + sự kiện */}
+            <section className="pb-12 text-center">
+              <Reveal className="relative">
+                <Reveal variant="right" duration={3} className="absolute right-8 -top-5">
+                  <img src={images.deco.timVanTay} alt="" className="h-10 w-10" loading="lazy" />
+                </Reveal>
+                <p className="font-lora font-bold uppercase text-[19px] text-[#a30d0d]">{c.invitation.kicker}</p>
+                <p className="font-guest text-[44px] leading-tight text-[#a30d0d] mt-1 mx-12 border-b border-dotted border-foreground/60">
+                  {guest}
+                </p>
+              </Reveal>
+              <div className="grid grid-cols-3 gap-1.5 mt-6 px-1.5">
+                {images.dateStrip.map((src, i) => (
+                  <Reveal key={i} variant="up" delay={i * 150} className="relative border-[3px] border-[#e4c8cd]">
+                    <img src={src} alt="" className="w-full aspect-[3/5] object-cover" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent" />
+                    <span className="absolute bottom-2 inset-x-0 text-center font-lora font-bold text-[32px] text-white/90 drop-shadow">
+                      {c.invitation.dateParts[i]}
+                    </span>
                   </Reveal>
                 ))}
               </div>
-            </div>
-            <div className="absolute right-[18px] top-[97px] h-[244px] w-[87px] bg-[#7d1f2a] text-white">
-              <img src={images.deco.nhanVang} alt="" className="absolute left-[27px] top-[14px] h-8 w-8" />
-              <Reveal variant="up" duration={4} className="absolute inset-x-0 top-[152px] text-center">
-                <span className="font-display font-bold text-[64px] leading-[77px]">囍</span>
-              </Reveal>
-            </div>
-            <img
-              src={images.deco.hoaSen}
-              alt=""
-              className="pointer-events-none absolute left-[262px] top-[410px] z-10 w-[158px] -rotate-[17deg] opacity-25"
-              loading="lazy"
-            />
-          </section>
-
-          {/* Báo tin */}
-          <section className="px-3 pb-12 text-center">
-            <Reveal>
-              <p className="font-lora text-[16px] leading-[25.6px] uppercase text-black">
-                {c.invitation.announce[0]} <span className="text-[#9c0505] font-bold">{c.invitation.announce[1]}</span>{" "}
-                {c.invitation.announce[2]}
-              </p>
-            </Reveal>
-            <Reveal variant="right" duration={4} className="mt-[11px]">
-              <p className="font-script text-[40px] leading-[64px] text-[#9c0505]">{c.families.fullNames[0]}</p>
-            </Reveal>
-            <Reveal variant="bounce" duration={2} className="-my-4">
-              <p className="font-script text-[39px] leading-[62px] text-[#9c0505]">&</p>
-            </Reveal>
-            <Reveal variant="left" duration={4}>
-              <p className="font-script text-[40px] leading-[64px] text-[#9c0505]">{c.families.fullNames[1]}</p>
-            </Reveal>
-            <Reveal variant="up" duration={2} className="mt-6">
-              <img
-                src={images.wide}
-                alt=""
-                className="w-full aspect-[387/240] rounded-[15px] border-2 border-[#d9d9d9] object-cover object-[center_30%]"
-                loading="lazy"
-              />
-            </Reveal>
-          </section>
-
-          {/* Lời mời + sự kiện */}
-          <section className="pb-12 text-center">
-            <Reveal className="relative">
-              <Reveal variant="right" duration={3} className="absolute right-8 -top-5">
-                <img src={images.deco.timVanTay} alt="" className="h-10 w-10" loading="lazy" />
-              </Reveal>
-              <p className="font-lora font-bold uppercase text-[19px] text-[#a30d0d]">{c.invitation.kicker}</p>
-              <p className="font-guest text-[44px] leading-tight text-[#a30d0d] mt-1 mx-12 border-b border-dotted border-foreground/60">
-                {guest}
-              </p>
-            </Reveal>
-            <div className="grid grid-cols-3 gap-1.5 mt-6 px-1.5">
-              {images.dateStrip.map((src, i) => (
-                <Reveal key={i} variant="up" delay={i * 150} className="relative border-[3px] border-[#e4c8cd]">
-                  <img src={src} alt="" className="w-full aspect-[3/5] object-cover" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent" />
-                  <span className="absolute bottom-2 inset-x-0 text-center font-lora font-bold text-[32px] text-white/90 drop-shadow">
-                    {c.invitation.dateParts[i]}
-                  </span>
-                </Reveal>
-              ))}
-            </div>
-            <Reveal className="mt-8">
-              <p className="font-lora font-bold uppercase text-[22px] text-[#a30d0d]">{c.invitation.title}</p>
-              <div className="mt-2 flex items-center justify-center gap-4">
-                <span className="font-script text-[26px] text-[#d79ca5]">{first}</span>
-                <Rings className="w-[70px]" />
-                <span className="font-script text-[26px] text-[#d79ca5]">{second}</span>
-              </div>
-            </Reveal>
-            <div className="mt-8 space-y-12 px-4">
-              {c.events.items.map((item, i) => (
-                <Reveal key={item.id} variant="up">
-                  {i > 0 && (
-                    <div className="mx-auto mb-10 flex w-48 items-center">
-                      <img src={images.deco.timVanTay} alt="" className="h-8 w-8" loading="lazy" />
-                      <div className="h-px flex-1 bg-primary/40" />
-                    </div>
-                  )}
-                  <EventBlock item={item} mapLabel={c.events.mapLabel} />
-                </Reveal>
-              ))}
-            </div>
-          </section>
-
-          {/* Lịch */}
-          {c.calendar.dateIso.length > 0 && (
-            <Reveal className="bg-primary px-3 py-6">
-              <div className="grid grid-cols-[132px_1fr] items-center gap-3">
-                <div className="bg-white p-2 pb-1 shadow-md">
-                  <img src={images.polaroid} alt="" className="w-full aspect-[3/4] object-cover object-top" loading="lazy" />
-                  <p className="font-script text-[22px] text-center text-foreground/70 leading-tight">{c.calendar.photoCaption}</p>
+              <Reveal className="mt-8">
+                <p className="font-lora font-bold uppercase text-[22px] text-[#a30d0d]">{c.invitation.title}</p>
+                <div className="mt-2 flex items-center justify-center gap-4">
+                  <span className="font-script text-[26px] text-[#d79ca5]">{first}</span>
+                  <Rings className="w-[70px]" />
+                  <span className="font-script text-[26px] text-[#d79ca5]">{second}</span>
                 </div>
-                <MonthCalendar dateIso={c.calendar.dateIso} />
+              </Reveal>
+              <div className="mt-8 space-y-12 px-4">
+                {c.events.items.map((item, i) => (
+                  <Reveal key={item.id} variant="up">
+                    {i > 0 && (
+                      <div className="mx-auto mb-10 flex w-48 items-center">
+                        <img src={images.deco.timVanTay} alt="" className="h-8 w-8" loading="lazy" />
+                        <div className="h-px flex-1 bg-primary/40" />
+                      </div>
+                    )}
+                    <EventBlock item={item} mapLabel={c.events.mapLabel} />
+                  </Reveal>
+                ))}
               </div>
-            </Reveal>
-          )}
+            </section>
 
-          {/* Xác nhận + mừng cưới */}
-          <section className="px-4 pt-12 pb-10">
-            {c.rsvp.show && (
-              <Reveal>
-                <RsvpForm c={c.rsvp} />
+            {/* Lịch */}
+            {c.calendar.dateIso.length > 0 && (
+              <Reveal className="bg-primary px-3 py-6">
+                <div className="grid grid-cols-[132px_1fr] items-center gap-3">
+                  <div className="bg-white p-2 pb-1 shadow-md">
+                    <img src={images.polaroid} alt="" className="w-full aspect-[3/4] object-cover object-top" loading="lazy" />
+                    <p className="font-script text-[22px] text-center text-foreground/70 leading-tight">{c.calendar.photoCaption}</p>
+                  </div>
+                  <MonthCalendar dateIso={c.calendar.dateIso} />
+                </div>
               </Reveal>
             )}
-            <Reveal variant="zoom" className="mt-4 flex justify-center">
-              <div className="relative h-[199px] w-[199px]">
-                <img src={images.circle} alt="" className="absolute inset-[14px] h-[171px] w-[171px] rounded-full object-cover object-top" loading="lazy" />
-                <img src={images.deco.vongLa} alt="" className="absolute inset-0 h-full w-full" loading="lazy" />
-              </div>
-            </Reveal>
-            {c.gift.accounts.length > 0 && (
-              <Reveal className="mt-6 text-center">
-                <button
-                  type="button"
-                  onClick={() => setGiftOpen(true)}
-                  className="inline-flex items-center gap-2.5 rounded-full bg-[#8a5a2b] px-9 py-3 font-lora font-semibold uppercase text-[15px] text-white shadow-lg animate-pulse-soft"
-                >
-                  <Gift className="h-5 w-5" aria-hidden />
-                  {c.gift.button}
-                </button>
-              </Reveal>
-            )}
-          </section>
 
-          {/* Our memories + album */}
-          <section className="pb-4">
-            <Reveal variant="left" className="px-4">
-              <h2 className="font-script text-[50px] leading-none text-[#a30d0d] flex items-end gap-2">
-                {c.story.title}
-                <span className="mb-2 h-px flex-1 bg-[#a30d0d]" />
-              </h2>
-            </Reveal>
-            <Reveal className="mt-3 px-5 font-script text-[19px] leading-relaxed text-[#a30d0d]">
-              {c.story.text}
-            </Reveal>
-            <div className="mt-5 grid grid-cols-2 gap-2 px-2">
-              {images.album.map((src, i) => (
-                <Reveal key={i} variant={i % 2 ? "right" : "left"} className={i % 2 ? "mt-6" : ""}>
-                  <img src={src} alt="" className="w-full aspect-[2/3] object-cover border border-black/10" loading="lazy" />
+            {/* Xác nhận + mừng cưới */}
+            <section className="px-4 pt-12 pb-10">
+              {c.rsvp.show && (
+                <Reveal>
+                  <RsvpForm c={c.rsvp} />
                 </Reveal>
-              ))}
-            </div>
-          </section>
-
-          {/* Thank you */}
-          <section className="relative mx-2 mt-6 mb-0 overflow-hidden">
-            <img src={images.thankYou} alt="" className="block w-full aspect-[3/4] object-cover object-top" loading="lazy" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#8a0f1a] via-[#d98a95]/40 to-transparent" />
-            {/* Định vị ở lớp ngoài — Reveal quan sát lớp bọc của nó, lớp đó phải có chiều cao thật */}
-            <div className="absolute inset-x-0 bottom-0">
-              <Reveal variant="up" className="px-5 pb-8 text-center text-white">
-                <h2 className="font-script text-[60px] leading-tight text-white/80 drop-shadow-lg">{c.thanks.title}</h2>
-                <p className="text-[13px] leading-relaxed drop-shadow">{c.thanks.text}</p>
-                <p className="font-script text-[34px] mt-3 drop-shadow-lg">
-                  {c.families.fullNames[0]} &amp; {c.families.fullNames[1]}
-                </p>
+              )}
+              <Reveal variant="zoom" className="mt-4 flex justify-center">
+                <div className="relative h-[199px] w-[199px]">
+                  <img src={images.circle} alt="" className="absolute inset-[14px] h-[171px] w-[171px] rounded-full object-cover object-top" loading="lazy" />
+                  <img src={images.deco.vongLa} alt="" className="absolute inset-0 h-full w-full" loading="lazy" />
+                </div>
               </Reveal>
+              {c.gift.accounts.length > 0 && (
+                <Reveal className="mt-6 text-center">
+                  <button
+                    type="button"
+                    onClick={() => setGiftOpen(true)}
+                    className="inline-flex items-center gap-2.5 rounded-full bg-[#8a5a2b] px-9 py-3 font-lora font-semibold uppercase text-[15px] text-white shadow-lg animate-pulse-soft"
+                  >
+                    <Gift className="h-5 w-5" aria-hidden />
+                    {c.gift.button}
+                  </button>
+                </Reveal>
+              )}
+            </section>
+
+            {/* Our memories + album */}
+            <section className="pb-4">
+              <Reveal variant="left" className="px-4">
+                <h2 className="font-script text-[50px] leading-none text-[#a30d0d] flex items-end gap-2">
+                  {c.story.title}
+                  <span className="mb-2 h-px flex-1 bg-[#a30d0d]" />
+                </h2>
+              </Reveal>
+              <Reveal className="mt-3 px-5 font-script text-[19px] leading-relaxed text-[#a30d0d]">
+                {c.story.text}
+              </Reveal>
+              <div className="mt-5 grid grid-cols-2 gap-2 px-2">
+                {images.album.map((src, i) => (
+                  <Reveal key={i} variant={i % 2 ? "right" : "left"} className={i % 2 ? "mt-6" : ""}>
+                    <img src={src} alt="" className="w-full aspect-[2/3] object-cover border border-black/10" loading="lazy" />
+                  </Reveal>
+                ))}
+              </div>
+            </section>
+
+            {/* Thank you */}
+            <section className="relative mx-2 mt-6 mb-0 overflow-hidden">
+              <img src={images.thankYou} alt="" className="block w-full aspect-[3/4] object-cover object-top" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#8a0f1a] via-[#d98a95]/40 to-transparent" />
+              {/* Định vị ở lớp ngoài — Reveal quan sát lớp bọc của nó, lớp đó phải có chiều cao thật */}
+              <div className="absolute inset-x-0 bottom-0">
+                <Reveal variant="up" className="px-5 pb-8 text-center text-white">
+                  <h2 className="font-script text-[60px] leading-tight text-white/80 drop-shadow-lg">{c.thanks.title}</h2>
+                  <p className="text-[13px] leading-relaxed drop-shadow">{c.thanks.text}</p>
+                  <p className="font-script text-[34px] mt-3 drop-shadow-lg">
+                    {c.families.fullNames[0]} &amp; {c.families.fullNames[1]}
+                  </p>
+                </Reveal>
+              </div>
+            </section>
             </div>
-          </section>
+          )}
         </main>
       </CurtainContext.Provider>
 

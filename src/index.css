@@ -79,6 +79,7 @@ body {
   to { opacity: 1; }
 }
 .anim-fade-in-300 { animation: fade-in 0.3s ease both; }
+.anim-fade-in-500 { animation: fade-in 0.5s ease both; }
 
 /* Ảnh cưới trượt lên khỏi phong bì: mẫu dịch 300px trên ảnh cao 380px */
 @keyframes move-up {

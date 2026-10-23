@@ -22,24 +22,24 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Thu Uyên', 'Ngọc Hưng'],
-    dateLine: '01 . 11 . 2026',
+    names: ['Ngọc Hưng', 'Thu Uyên'],
+    dateLine: '02 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [BRIDE_SIDE, GROOM_SIDE],
+    sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Thu Uyên', 'Ngọc Hưng'],
+    fullNames: ['Ngọc Hưng', 'Thu Uyên'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Vu Quy',
+    title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['01', '11', '2026'],
+    dateParts: ['02', '11', '2026'],
   },
 
   events: {
@@ -47,7 +47,7 @@ export const content = {
     items: [
       {
         id: 'vu-quy',
-        title: 'Tiệc Mừng Lễ Vu Quy',
+        title: 'Lễ Vu Quy',
         time: '17:00 - Chủ Nhật',
         date: '01. 11. 2026',
         lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
@@ -105,11 +105,10 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'BUI THI THU UYEN',
-        number: '100011092004',
+        holder: 'NGUYEN NGOC HUNG',
+        number: '6309072003',
         bank: 'MB Bank',
-        /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-uyen.png',
+        qr: '/images/qr-hung.png',
       },
     ],
   },

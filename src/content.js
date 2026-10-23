@@ -1,10 +1,10 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Thôn Xuân Me, Xã Liên Hòa, Tỉnh Phú Thọ';
-const ADDRESS_BRIDE = 'Thôn Bì La, Xã Tiên Lữ, Tỉnh Phú Thọ';
+const ADDRESS_GROOM = 'Xã Ngân Sơn, Tỉnh Thái Nguyên';
+const ADDRESS_BRIDE = 'Xóm Khuổi Sá, Xã Cốc Pàng, Tỉnh Cao Bằng';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
-// TODO: ticket #17 chưa có tên bố mẹ hai bên — hỏi lại khách
+// TODO: ticket #18 chưa có tên bố mẹ hai bên — hỏi lại khách
 const GROOM_SIDE = {
   label: 'Nhà Trai',
   father: null,
@@ -20,54 +20,65 @@ const BRIDE_SIDE = {
 
 export const content = {
   hero: {
-    subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Thu Uyên', 'Ngọc Hưng'],
-    dateLine: '01 . 11 . 2026',
+    names: ['Thu Hồng', 'Trọng Hoàng'],
+    /** Hai dòng dưới tên: ngày.tháng / năm */
+    dateLines: ['25.11', '2026'],
+    hint: 'NHẤP VÀO THIỆP ĐỂ MỞ',
   },
 
   families: {
-    /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
+    /** Hai khối gia đình, từ trên xuống theo thứ tự này */
     sides: [BRIDE_SIDE, GROOM_SIDE],
-    /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Thu Uyên', 'Ngọc Hưng'],
+    /** Tên cô dâu & chú rể (dòng "Trân trọng báo tin" và ký tên cuối trang) */
+    fullNames: ['Thu Hồng', 'Trọng Hoàng'],
   },
 
   invitation: {
+    announce: ['Trân Trọng Báo Tin', 'Lễ Thành Hôn', 'Của'],
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Vu Quy',
+    title: 'Tham Dự Lễ Cưới',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['01', '11', '2026'],
+    dateParts: ['25', '11', '2026'],
   },
 
   events: {
-    mapLabel: 'Xem chỉ đường',
+    mapLabel: 'Chỉ đường',
     items: [
       {
-        id: 'vu-quy',
-        title: 'Tiệc Mừng Lễ Vu Quy',
-        time: '17:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
+        id: 'tiec-nha-gai',
+        title: 'Tiệc Mừng Nhà Gái',
+        hour: '15 giờ 00',
+        weekday: 'Thứ Tư',
+        day: '25',
+        monthYear: '11 - 2026',
+        lunar: '( Tức ngày 17 tháng 10 năm Bính Ngọ )',
         places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
       },
       {
-        id: 'thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '09:00 - Thứ Hai',
-        date: '02. 11. 2026',
-        lunar: '( Tức Ngày 24 Tháng 09 Năm Bính Ngọ )',
+        id: 'ruoc-dau',
+        title: 'Lễ Rước Dâu - Thành Hôn',
+        hour: '08 giờ 00',
+        weekday: 'Thứ Năm',
+        day: '26',
+        monthYear: '11 - 2026',
+        lunar: '( Tức ngày 18 tháng 10 năm Bính Ngọ )',
         places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
     ],
   },
 
   calendar: {
-    title: 'Save The Date',
-    /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */
-    dateIso: null,
+    /** Các ngày được đánh dấu trên lịch (cùng một tháng) — để [] thì ẩn lịch */
+    dateIso: ['2026-11-25', '2026-11-26'],
+    photoCaption: 'My Love',
+  },
+
+  story: {
+    title: 'Our memories',
+    text: '"Từ những lần gặp gỡ đầu tiên đến hôm nay, chúng tôi đã tìm thấy một nửa của mình. Đây là câu chuyện tình yêu được viết nên bằng những khoảnh khắc đẹp nhất."',
   },
 
   rsvp: {
@@ -105,11 +116,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'BUI THI THU UYEN',
-        number: '100011092004',
-        bank: 'MB Bank',
+        holder: 'NONG THI SEO',
+        number: '42744768888',
+        bank: 'TPBank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-uyen.png',
+        qr: '/images/qr-tpbank.png',
       },
     ],
   },

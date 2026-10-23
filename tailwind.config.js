@@ -17,6 +17,8 @@ export default {
         /** UTM Avo — thẻ sự kiện, "Trân Trọng Kính Mời" */
         avo: ['Montserrat', 'sans-serif'],
         lora: ['Lora', 'serif'],
+        /** "SAVE THE DATE" mẫu 10 */
+        yeseva: ['"Yeseva One"', 'serif'],
         upright: ['"Cormorant Upright"', 'serif'],
         oswald: ['Oswald', 'sans-serif'],
         /** Số trên lịch */

@@ -118,6 +118,12 @@ Mẫu 05 (`thuhong_tronghoang_nha_gai`) có `content.js` / `image.js` khác mẫ
 - `image.js`: `hero` (ảnh trong phong bì, dọc, object-top), `wide` (ảnh ngang 387×240), `dateStrip` 3 ảnh, `polaroid` (cạnh lịch), `circle` (ảnh tròn trong vòng lá), `album` số chẵn, `gift`, `thankYou`, và `deco` (ảnh trang trí của mẫu — không đổi theo cặp).
 - Chưa có tên bố mẹ → cột gia đình vẫn giữ chiều cao mẫu (`min-h-[461px]`), khi điền tên sẽ vừa khít.
 
+Mẫu 10 (`kimnhung_bang`):
+- `*_SIDE.lines[]` là các dòng tự do (`'Cố phụ: Giuse Nguyễn Bé'`, `'Ông: …'`) — hợp với thiệp Công giáo / bố mẹ đã mất ("Cố phụ / Cố mẫu").
+- `hero.names` (dòng viết tay trên tranh, ≤ ~24 ký tự), `families.couple[] = { name, role }` (tên đầy đủ + "Thứ Nam / Thứ Nữ"), `families.announce`, `event` (weekday/hour/day/month/year/lunar — **một** buổi), `calendar.dateIso` (một ngày, `null` = ẩn), `venue` (+ `mapQuery` cho nút chỉ đường và bản đồ nhúng), `closing`.
+- `image.js` chỉ có `deco` (nền 囍, tranh cô dâu chú rể, 囍 đỏ, tim) + `gift` → ticket không có ảnh cưới thì dùng mẫu này được ngay.
+- Thiệp **đính hôn**: tiêu đề `Engagement Invitation`, "Trân Trọng Báo Tin Lễ Đính Hôn Của", meta `Thiệp đính hôn …`.
+
 ## 5. Nhánh
 
 **Mỗi ticket một nhánh**, tạo từ nhánh **mới nhất của cùng mẫu** (để mang theo các bản sửa chung: `vercel.json`, skill này, các fix hiệu ứng) — không tạo từ `main` (main là bản app cũ). Mỗi mẫu một `main.jsx` riêng, không trộn:
@@ -128,6 +134,7 @@ Mẫu 05 (`thuhong_tronghoang_nha_gai`) có `content.js` / `image.js` khác mẫ
 | 05 / thiepso05 | phong bì đỏ đô bấm mở, hoa văn vàng, lịch nền đỏ, "Our memories" | `thuhong_tronghoang_nha_gai` |
 | 06 | xanh rêu, mép giấy xé | `tuan_hong` |
 | 07 | Nắng Wedding: xanh rêu nhạt, giấy xé, đếm ngược | `haanh_07` (nhà gái), `ngoctien_haanh` (nhà trai) |
+| 10 / thiep-moi-10 | nền đỏ 囍 + **tranh vẽ** cô dâu chú rể (không cần ảnh cưới), thẻ kem bấm lỗ như vé, bản đồ nhúng, không có màn bấm mở | `kimnhung_bang` (thiệp đính hôn) |
 
 Mẫu chưa có trong bảng → dựng theo §13 rồi thêm vào bảng. Tìm nhánh của một mẫu: `git log --all --format='%h %D %s' | grep -i "mẫu 0N"`.
 
@@ -195,6 +202,8 @@ node $K/open-seq.cjs $S/pw http://localhost:5173/ $S/t18/d 1916 1054   # desktop
 ```
 
 Soát: màn đóng **không** ló mục bên dưới (desktop); 5 khung sau khi bấm không có gì chớp tắt / nhảy vị trí; mở xong có tên + ngày; cuộn tới cuối đủ mọi mục. Nghi phần tử nào giật thì **đo** bằng playwright (`getBoundingClientRect` / `getComputedStyle` của nó tại 50/150/300/600ms sau khi bấm) thay vì nhìn ảnh.
+
+Đổi `tailwind.config.js` (thêm font…) thì dev server đang chạy **không** nạp lại → ảnh chụp sai font. Kiểm tra trên bản build: `npx vite preview --port 4174 --strictPort &` rồi chụp `http://localhost:4174/`, xong `pkill -f "vite preview --port 4174"`; nhắc người dùng khởi động lại `npm run dev`.
 
 Rồi `npm run build` (phải thành công), grep `dist/index.html` thấy đúng tên/ngày, `ls dist/images` không còn ảnh cũ/ảnh mẫu (`deco-*.png` của mẫu 05 thì giữ).
 

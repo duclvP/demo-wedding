@@ -1,84 +1,74 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Xã Ngân Sơn, Tỉnh Thái Nguyên';
-const ADDRESS_BRIDE = 'Xóm Khuổi Sá, Xã Cốc Pàng, Tỉnh Cao Bằng';
+const ADDRESS = 'Thôn Hà Úc, Xã Phú Vinh, TP Huế';
 
-/** father / mother / address: để null nếu không muốn hiển thị */
-// TODO: ticket #18 chưa có tên bố mẹ hai bên — hỏi lại khách
+/** lines: các dòng tên bố mẹ (để [] nếu không hiển thị); address: null = ẩn */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: null,
-  mother: null,
-  address: ADDRESS_GROOM,
+  lines: ['Cố phụ: Giuse Nguyễn Bé', 'Cố mẫu: Trương Thị Hảo'],
+  address: ADDRESS,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: null,
-  mother: null,
-  address: ADDRESS_BRIDE,
+  lines: ['Ông: Giuse Lê Thành Tâm', 'Bà: Madalena Hồ Thị Bi'],
+  address: ADDRESS,
 };
 
 export const content = {
   hero: {
-    /** Hiển thị theo đúng thứ tự này */
-    names: ['Thu Hồng', 'Trọng Hoàng'],
-    /** Hai dòng dưới tên: ngày.tháng / năm */
-    dateLines: ['26.11', '2026'],
-    hint: 'NHẤP VÀO THIỆP ĐỂ MỞ',
+    kicker: 'Save The Date',
+    dateLine: '01 . 01 . 2027',
+    /** Dòng chữ viết tay trên tranh cô dâu chú rể */
+    names: ['Michael Bằng', 'Kim Nhung'],
   },
 
   families: {
-    /** Hai khối gia đình, từ trên xuống theo thứ tự này */
-    sides: [BRIDE_SIDE, GROOM_SIDE],
-    /** Tên cô dâu & chú rể (dòng "Trân trọng báo tin" và ký tên cuối trang) */
-    fullNames: ['Thu Hồng', 'Trọng Hoàng'],
-  },
-
-  invitation: {
-    announce: ['Trân Trọng Báo Tin', 'Lễ Thành Hôn', 'Của'],
-    kicker: 'Trân Trọng Kính Mời',
-    /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
-    defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Cưới',
-    /** Chữ đè lên 3 ảnh */
-    dateParts: ['26', '11', '2026'],
-  },
-
-  events: {
-    mapLabel: 'Chỉ đường',
-    items: [
-      {
-        id: 'ruoc-dau',
-        title: 'Tiệc Mừng Cưới - Nhà Gái',
-        hour: '08 giờ 00',
-        weekday: 'Thứ Năm',
-        day: '26',
-        monthYear: '11 - 2026',
-        lunar: '( Tức ngày 18 tháng 10 năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
-      },
-      {
-        id: 'thanh-hon-nha-trai',
-        title: 'Lễ Thành Hôn - Nhà Trai',
-        hour: '15 giờ 00',
-        weekday: 'Chủ Nhật',
-        day: '29',
-        monthYear: '11 - 2026',
-        lunar: '( Tức ngày 21 tháng 10 năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
-      },
+    title: 'Engagement Invitation',
+    /** Hai cột gia đình, trái → phải */
+    sides: [GROOM_SIDE, BRIDE_SIDE],
+    announce: 'Trân Trọng Báo Tin Lễ Đính Hôn Của',
+    /** Tên đầy đủ + vai vế (dòng nhỏ dưới tên) */
+    couple: [
+      { name: 'Michael Bằng Nguyễn', role: 'Thứ Nam' },
+      { name: 'Maria Lê Thị Kim Nhung', role: 'Thứ Nữ' },
     ],
   },
 
-  calendar: {
-    /** Các ngày được đánh dấu trên lịch (cùng một tháng) — để [] thì ẩn lịch */
-    dateIso: ['2026-11-26', '2026-11-29'],
-    photoCaption: 'My Love',
+  invitation: {
+    kicker: 'Trân Trọng Kính Mời',
+    /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
+    defaultGuest: 'Quý khách',
+    title: 'Đến Dự Buổi Tiệc Chung Vui',
+    timeLabel: 'Vào Lúc',
   },
 
-  story: {
-    title: 'Our memories',
-    text: '"Từ những lần gặp gỡ đầu tiên đến hôm nay, chúng tôi đã tìm thấy một nửa của mình. Đây là câu chuyện tình yêu được viết nên bằng những khoảnh khắc đẹp nhất."',
+  /** Khối ngày giờ chính */
+  event: {
+    weekday: 'Thứ Sáu',
+    hour: '10 Giờ 30',
+    day: '01',
+    month: 'Tháng 01',
+    year: 'Năm 2027',
+    lunar: '( Tức Ngày 24 Tháng 11 Năm Bính Ngọ )',
+  },
+
+  calendar: {
+    /** Ngày đánh dấu trái tim trên lịch — để null thì ẩn lịch */
+    dateIso: '2027-01-01',
+  },
+
+  venue: {
+    title: 'Địa Điểm Tổ Chức',
+    label: 'Tư Gia',
+    address: ADDRESS,
+    /** Từ khóa tìm trên Google Maps cho nút chỉ đường + bản đồ nhúng */
+    mapQuery: 'Hà Úc, Phú Vinh, Huế',
+    mapLabel: 'Xem chỉ đường',
+  },
+
+  closing: {
+    note: 'Sự hiện diện của quý khách là niềm vinh dự của gia đình chúng tôi.',
+    title: 'Rất Hân Hạnh Được Đón Tiếp!',
   },
 
   rsvp: {
@@ -91,8 +81,8 @@ export const content = {
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: false,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
-    askAttend: false,
-    title: 'Gửi Lời Chúc',
+    askAttend: true,
+    title: 'Gửi Lời Chúc & Xác Nhận',
     placeholders: {
       name: 'Tên của bạn là gì ?',
       message: 'Gửi lời chúc cho cô dâu & chú rể',
@@ -101,7 +91,7 @@ export const content = {
     },
     attendYes: 'Có, mình sẽ đến',
     attendNo: 'Xin lỗi, hôm đấy mình không tới được :(',
-    submit: 'Gửi Lời Chúc',
+    submit: 'Gửi Xác Nhận',
     sending: 'Đang gửi...',
     error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
     thanks: 'Cảm ơn bạn! Lời chúc của bạn đã được ghi nhận.',
@@ -114,25 +104,12 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    accounts: [
-      {
-        holder: 'NONG THI SEO',
-        number: '42744768888',
-        bank: 'TPBank',
-        /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-tpbank.png',
-      },
-    ],
-  },
-
-  thanks: {
-    title: 'Thank You',
-    text: 'Từ tận đáy lòng, chúng mình cảm ơn bạn đã dành tình cảm và sự hiện diện cho ngày vui này. Chính bạn đã góp phần làm nên một kỷ niệm hạnh phúc mà chúng mình sẽ luôn trân trọng.',
+    accounts: [],
   },
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */
   music: {
-    src: '/music/i-do.mp3',
+    src: '/music/mai-mai-ben-nhau.mp3',
     /** 0–1 */
     volume: 0.45,
   },

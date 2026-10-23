@@ -52,6 +52,9 @@ body {
 .reveal-left { transform: translateX(-20px); }
 .reveal-right { transform: translateX(40px); }
 .reveal-zoom { transform: scale(0.7); }
+/* slideInLeft/Right của mẫu 10: trượt vào từ mép */
+.reveal-slide-left { transform: translateX(-100%); }
+.reveal-slide-right { transform: translateX(100%); }
 .reveal.is-visible {
   opacity: 1;
   transform: none;
@@ -80,6 +83,12 @@ body {
 }
 .anim-fade-in-300 { animation: fade-in 0.3s ease both; }
 .anim-fade-in-500 { animation: fade-in 0.5s ease both; }
+@keyframes fade-in-right {
+  from { opacity: 0; translate: 40px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+/* translate riêng (không đụng transform) để giữ -translate-x/y-1/2 của Tailwind */
+.anim-fade-in-right { animation: fade-in-right 5s ease both; }
 
 /* Ảnh cưới trượt lên khỏi phong bì: mẫu dịch 300px trên ảnh cao 380px */
 @keyframes move-up {

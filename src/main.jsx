@@ -456,21 +456,28 @@ function Cropped({ src, crop, className = "", style, alt = "" }) {
  */
 function EnvelopeCover({ open, photo, alt, hint, names, dateLines }) {
   const d = images.deco;
+  /** Lớp phong bì đóng mờ dần 300ms rồi mới gỡ — đổi ảnh tức thì như mẫu gốc nhìn bị giật */
+  const [closedGone, setClosedGone] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const t = setTimeout(() => setClosedGone(true), 400);
+    return () => clearTimeout(t);
+  }, [open]);
   return (
     <div className="relative mx-auto w-full max-w-[420px]" style={{ aspectRatio: `${CANVAS.w} / ${CANVAS.h}` }}>
       {/* Góc hoa văn vàng — ảnh vuông bị kéo thành 69×97 như mẫu */}
       <img src={d.gocVang} alt="" className="absolute left-0 top-0 h-auto" style={{ ...box(0, 0, 69, 97) }} />
       <img src={d.gocVang} alt="" className="absolute top-0 -scale-x-100" style={{ ...box(351, 0, 69, 97) }} />
-      {/* Chữ "Thiệp Mời Cưới" (ảnh) — nhích lên 8px sau khi mở */}
+      {/* Chữ "Thiệp Mời Cưới" (ảnh) — đứng yên, chỉ nhích lên 8px sau khi mở (mẫu cho chạy lại fadeInDown → chớp tắt) */}
       <img
         src={d.thiepMoiCuoi}
         alt="Thiệp mời cưới"
-        className={`absolute transition-[top] duration-500 ${open ? "anim-fade-down-3" : ""}`}
+        className="absolute transition-[top] duration-700 ease-out"
         style={{ ...box(124, open ? 13 : 21, 172, 95) }}
       />
 
-      {!open ? (
-        <>
+      {!closedGone && (
+        <div className={`transition-opacity duration-300 ${open ? "opacity-0 pointer-events-none" : ""}`}>
           <Cropped src={d.hyVang} crop={{ w: 92.5, l: 2, t: 5.5 }} className="anim-fade-up-4" style={box(160, 148.5, 100, 108.5)} />
           <Cropped src={d.pbDong} crop={{ w: 107.34, l: -3.62, t: -47.5 }} style={box(33, 292, 350, 255.5)} />
           <p
@@ -479,9 +486,10 @@ function EnvelopeCover({ open, photo, alt, hint, names, dateLines }) {
           >
             - {hint} -
           </p>
-        </>
-      ) : (
-        <>
+        </div>
+      )}
+      {open && (
+        <div className="anim-fade-in-300">
           <Cropped src={d.pbMoSau} crop={{ w: 102.2, l: -3.62, t: 3.58 }} style={box(34.5, 157.8, 366.5, 390.6)} />
           <div className="absolute left-0 top-0 w-full overflow-hidden" style={{ height: `${(538 / CANVAS.h) * 100}%` }}>
             <div
@@ -492,7 +500,7 @@ function EnvelopeCover({ open, photo, alt, hint, names, dateLines }) {
             </div>
           </div>
           <Cropped src={d.pbMoTruoc} crop={{ w: 103.4, l: -1.54, t: -37.1 }} style={box(26.4, 271, 363.5, 271.1)} />
-        </>
+        </div>
       )}
 
       {/* Tên + ngày + 囍 hồng: chỉ gắn vào trang sau khi mở (mẫu gốc đổi tab) */}

@@ -22,7 +22,7 @@ export const content = {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
     names: ['Thanh Tùng', 'Thanh Nhàn'],
-    dateLine: '19 - 20 . 11 . 2026',
+    dateLine: '20 . 11 . 2026',
   },
 
   families: {
@@ -36,9 +36,9 @@ export const content = {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Cưới Của Chúng Tôi',
+    title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['19 - 20', '11', '2026'],
+    dateParts: ['20', '11', '2026'],
   },
 
   events: {
@@ -46,7 +46,7 @@ export const content = {
     items: [
       {
         id: 'nha-gai',
-        title: 'Lễ Vu Quy - Nhà Gái',
+        title: 'Lễ Vu Quy',
         time: '09:00 - 12:00 - Thứ Năm',
         date: '19. 11. 2026',
         lunar: '( Tức Ngày 11 Tháng 10 Năm Bính Ngọ )',
@@ -54,7 +54,7 @@ export const content = {
       },
       {
         id: 'nha-trai',
-        title: 'Lễ Thành Hôn - Nhà Trai',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
         time: '16:00 - 21:00 - Thứ Sáu',
         date: '20. 11. 2026',
         lunar: '( Tức Ngày 12 Tháng 10 Năm Bính Ngọ )',
@@ -109,12 +109,6 @@ export const content = {
         bank: 'MB Bank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
         qr: '/images/qr-tung.png',
-      },
-      {
-        holder: 'CA THI NHAN',
-        number: '1018463298',
-        bank: 'Vietcombank',
-        qr: '/images/qr-nhan.png',
       },
     ],
   },

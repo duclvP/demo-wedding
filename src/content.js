@@ -59,12 +59,23 @@ export const content = {
       },
       {
         id: 'ruoc-dau',
-        title: 'Lễ Rước Dâu - Thành Hôn',
+        title: 'Lễ Rước Dâu',
         hour: '08 giờ 00',
         weekday: 'Thứ Năm',
         day: '26',
         monthYear: '11 - 2026',
         lunar: '( Tức ngày 18 tháng 10 năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+      },
+      {
+        id: 'thanh-hon-nha-trai',
+        title: 'Lễ Thành Hôn - Nhà Trai',
+        // TODO: chưa có giờ cưới nhà trai — hỏi lại khách. hour: null = ẩn dòng "Vào lúc"
+        hour: null,
+        weekday: 'Chủ Nhật',
+        day: '29',
+        monthYear: '11 - 2026',
+        lunar: '( Tức ngày 21 tháng 10 năm Bính Ngọ )',
         places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
     ],
@@ -72,7 +83,7 @@ export const content = {
 
   calendar: {
     /** Các ngày được đánh dấu trên lịch (cùng một tháng) — để [] thì ẩn lịch */
-    dateIso: ['2026-11-25', '2026-11-26'],
+    dateIso: ['2026-11-25', '2026-11-26', '2026-11-29'],
     photoCaption: 'My Love',
   },
 

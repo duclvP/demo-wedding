@@ -575,7 +575,7 @@ function EventBlock({ item, mapLabel }) {
   return (
     <div className="text-center">
       <p className="font-oswald font-medium text-[18px] uppercase tracking-wide text-[#a30d0d]">{item.title}</p>
-      <p className="font-avo font-semibold uppercase text-[15px] text-primary mt-3">Vào lúc {item.hour}</p>
+      {item.hour && <p className="font-avo font-semibold uppercase text-[15px] text-primary mt-3">Vào lúc {item.hour}</p>}
       <div className="mt-3 flex items-center justify-center gap-3">
         <span className={`${lineCls} text-[17px]`}>{item.weekday}</span>
         <span className="font-lora font-bold text-[64px] leading-none text-[#a30d0d]">{item.day}</span>

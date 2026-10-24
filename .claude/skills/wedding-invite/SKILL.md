@@ -23,6 +23,7 @@ Thiếu scope thì **hỏi người dùng số issue**, đừng đoán. Link boa
 $K/fetch-issue.sh 9 $S/t9      # issue.md (body + MỌI comment) + i10.bin, i11.bin… + p*.jpg xem thử
 ```
 
+- **Máy Linux** (không có zsh / sips nên `fetch-issue.sh` không chạy): `gh issue view <số> --repo duclvP/demo-wedding --json title,body,comments`; ảnh / file `.zip` đính kèm tải bằng `curl -sL -H "Authorization: token $(gh auth token)" -o $S/a.zip <link user-attachments>` rồi `unzip`; xử lý ảnh bằng Python PIL thay cho sips.
 - **Luôn đọc cả bình luận** — ảnh cưới, QR hay được bổ sung trong comment sau khi tạo ticket. Khi người dùng nói "ảnh đã đẩy lên rồi", chạy lại `fetch-issue.sh` (comment mới).
 - `.bin` có thể là PNG hoặc JPEG — Read không đọc được `.bin`, dùng `p*.jpg` hoặc `sips -s format png`.
 - md5 trùng = ảnh trùng, bỏ bớt.
@@ -32,6 +33,8 @@ $K/fetch-issue.sh 9 $S/t9      # issue.md (body + MỌI comment) + i10.bin, i11.
   |---|---|---|
   | lovecard.click/thiepso01 (hoặc không có link) | rèm đỏ 囍, viền vàng, tuyết/tim rơi — bản nhà trai / nhà gái riêng (§5) | nhánh thiệp lovecard mới nhất |
   | ziuwedding.site/… (LadiPage "HIME WEDDING INVITATION") | phong bì đỏ dấu sáp + tên khách, nền giấy kem ngọc trai, chữ #9e3745 — **thiệp chung** hai họ: 4 sự kiện, form có "khách mời của ai", 2 nút Mừng cưới nhà trai / nhà gái, album trình chiếu | `ngoc_an` (issue #20) |
+  | lovecard.click/mau31 | xanh rêu #415e34 + nền giấy, bìa ảnh mờ dần vào nền xanh + 2 tên viết tay chéo + SAVE THE DATE + lịch tháng (tim vẽ tay quanh ngày), hoa ly trắng (SVG `Lily`), thẻ ảnh cô dâu / chú rể bo góc nghiêng, thẻ sự kiện xám-xanh, ảnh dán băng keo, ảnh tròn, banner "Album of Love" — cùng cấu trúc `content.js` với lovecard (thêm `couple.groom/bride`), `image.js` có `groom`, `bride`, `polaroid`, `circle` | `thuy_tuananh` (issue #21) |
+  | mẫu lovecard khác (mauNN) | thường cùng các mục với thiepso01 — lấy nhánh lovecard gần nhất, chỉ dựng lại giao diện (`WeddingPage`, họa tiết, `index.css`); logic nhạc / Reveal / tên khách / form / mừng cưới giữ nguyên | nhánh lovecard mới nhất |
   | mẫu khác chưa có | dựng mới theo mẫu (vẽ hoa văn bằng CSS/SVG, không lấy ảnh của trang mẫu), báo người dùng | — |
 
   Mẫu Hime: `content.js` khác cấu trúc lovecard (`envelope`, `hero.shortNames`, `events.items[].place/address`, `gift.accounts[].button`, `rsvp.guestOfOptions`), `image.js` có `hero`, `wide`, `happyBg`, `happyPair`, `album`, `gift`.
@@ -116,9 +119,8 @@ Chuỗi VietQR chứa `0006<BIN 6 số>01<2 số độ dài><STK>`. Ví dụ `�
   ```bash
   $K/og-image.sh public/images/<hero>.jpg <vị-trí-dọc-%> "Ngọc Hưng ♥ Thu Uyên" "Thứ Hai, 02 . 11 . 2026" public/images/og.jpg
   ```
-  `vị-trí-dọc-%` ≈ 4–15 khi mặt nằm ở phần trên ảnh dọc. Read ảnh ra kiểm tra mặt không bị cắt, chữ không đè mặt. Nhánh cũ chưa có script → `git show ngoc_an:.claude/skills/wedding-invite/scripts/og-image.sh > $S/og-image.sh` (đừng chạy đường dẫn không tồn tại trong chuỗi `;` — lệnh sau vẫn chạy và commit thiếu). Thêm vào `<head>` sau `og:locale` — URL **tuyệt đối** `https://<tên-project>.vercel.app` (§11; `deploy.sh` chặn nếu sai domain):
+  `vị-trí-dọc-%` ≈ 4–15 khi mặt nằm ở phần trên ảnh dọc. Read ảnh ra kiểm tra mặt không bị cắt, chữ không đè mặt. Nhánh cũ chưa có script → `git show ngoc_an:.claude/skills/wedding-invite/scripts/og-image.sh > $S/og-image.sh` (đừng chạy đường dẫn không tồn tại trong chuỗi `;` — lệnh sau vẫn chạy và commit thiếu). **Không** thêm `og:url` (Facebook coi là link gốc → bấm thẻ của link `?khach=` có thể mở trang chủ, mất tên khách). Thêm vào `<head>` sau `og:locale` — URL **tuyệt đối** `https://<tên-project>.vercel.app` (§11; `deploy.sh` chặn nếu sai domain):
   ```html
-  <meta property="og:url" content="https://<domain>/" />
   <meta property="og:image" content="https://<domain>/images/og.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />

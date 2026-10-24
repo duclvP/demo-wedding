@@ -4,7 +4,8 @@ const ADDRESS_GROOM = 'Số Nhà 333, Thôn Quýt, Xã Yên Bài, TP. Hà Nội'
 /** Địa chỉ cũ trước sáp nhập — để Google Maps tìm dễ hơn */
 const MAP_GROOM = 'Thôn Quýt, Yên Bài, Ba Vì, Hà Nội';
 const ADDRESS_BRIDE = 'Số Nhà 10, Thôn Hoắc Châu, Xã Cổ Đô, TP. Hà Nội';
-const MAP_BRIDE = 'Hoắc Châu, Cổ Đô, Ba Vì, Hà Nội';
+/** Ghim Google Maps tư gia nhà gái (khách gửi) — nút chỉ đường mở đúng vị trí này */
+const MAP_BRIDE = '21.267030,105.429795';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {

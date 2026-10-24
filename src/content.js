@@ -1,8 +1,8 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout (mẫu Hime: phong bì + thiệp chung hai họ) */
 
 const ADDRESS_GROOM = 'Số Nhà 333, Thôn Quýt, Xã Yên Bài, TP. Hà Nội';
-/** Địa chỉ cũ trước sáp nhập — để Google Maps tìm dễ hơn */
-const MAP_GROOM = 'Thôn Quýt, Yên Bài, Ba Vì, Hà Nội';
+/** Ghim Google Maps tư gia nhà trai (khách gửi) — nút chỉ đường mở đúng vị trí này */
+const MAP_GROOM = '21.0417276,105.4198949';
 const ADDRESS_BRIDE = 'Số Nhà 10, Thôn Hoắc Châu, Xã Cổ Đô, TP. Hà Nội';
 /** Ghim Google Maps tư gia nhà gái (khách gửi) — nút chỉ đường mở đúng vị trí này */
 const MAP_BRIDE = '21.267030,105.429795';

@@ -16,6 +16,7 @@ import {
 import { content } from "./content.js";
 import { images } from "./image.js";
 import "./index.css";
+import GuestLinksPage, { isGuestLinksPage } from "./GuestLinks.jsx";
 
 function publicAssetUrl(path) {
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
@@ -1011,4 +1012,4 @@ function WeddingPage() {
 }
 
 /* StrictMode tắt: trong dev mount 2 lần có thể hủy thẻ audio → nhạc tắt giữa chừng. */
-createRoot(document.getElementById("root")).render(<WeddingPage />);
+createRoot(document.getElementById("root")).render(isGuestLinksPage() ? <GuestLinksPage /> : <WeddingPage />);

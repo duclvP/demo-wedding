@@ -152,6 +152,7 @@ Nếu lỡ cherry-pick bị xung đột `dist/`: xóa `dist/assets/index-*.js`, 
 - `/hoa` → "Bạn Hoa" (không có xưng hô → thêm "Bạn"); `/co-lan` → "Cô Lan"; `/gia-dinh-bac-hung` → "Gia Đình Bác Hung"; `/đức` → "Bạn Đức".
 - `?khach=Tên` giữ nguyên chữ người dùng gõ, ưu tiên hơn đường dẫn.
 - Từ xưng hô không dấu → có dấu: bảng `GUEST_TITLES` trong `src/main.jsx`. Tên riêng không tự thêm dấu được.
+- **Trang tạo link `/tao-link`** (`src/GuestLinks.jsx`, gắn ở dòng `createRoot(...)` cuối `main.jsx`: `isGuestLinksPage() ? <GuestLinksPage /> : <WeddingPage />`): dán tên khách mỗi dòng một người → link `?khach=` cho từng người, nút Xem / Sao chép / Chép tất cả (kèm tên), danh sách lưu localStorage. Đưa người dùng link `https://<project>.vercel.app/tao-link`. Có ở `ngoc_an` (và `thuhong_tronghoang_nha_gai`, `kimnhung_bang` — hai nhánh này chỉ có trên máy Mac, chưa push); nhánh khác chưa có thì `git checkout ngoc_an -- src/GuestLinks.jsx` rồi sửa dòng `createRoot` + thêm import.
 - `vercel.json` rewrite mọi đường dẫn về `index.html` (đã có trên các nhánh thiệp; Vite dev tự làm).
 
 ## 9. Kiểm tra trên trình duyệt (trước khi commit)

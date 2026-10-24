@@ -24,49 +24,41 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Hồng Ngọc', 'Trường An'],
-    dateLine: '27 . 11 . 2026',
+    names: ['Trường An', 'Hồng Ngọc'],
+    dateLine: '28 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [BRIDE_SIDE, GROOM_SIDE],
+    sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Hồng Ngọc', 'Trường An'],
+    fullNames: ['Trường An', 'Hồng Ngọc'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Vu Quy',
+    title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['27', '11', '2026'],
+    dateParts: ['28', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'tiec-vu-quy',
-        title: 'Tiệc Mừng Lễ Vu Quy',
-        time: '16:00 - Thứ Sáu',
-        date: '27. 11. 2026',
-        lunar: '( Tức Ngày 19 Tháng 10 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: MAP_BRIDE }],
-      },
-      {
-        id: 'vu-quy',
-        title: 'Lễ Vu Quy',
-        time: '11:30 - Thứ Bảy',
-        date: '28. 11. 2026',
-        lunar: '( Tức Ngày 20 Tháng 10 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: MAP_BRIDE }],
-      },
-      {
         id: 'thanh-hon',
         title: 'Lễ Thành Hôn',
         time: '13:00 - Thứ Bảy',
+        date: '28. 11. 2026',
+        lunar: '( Tức Ngày 20 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM }],
+      },
+      {
+        id: 'tiec-thanh-hon',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
+        time: '16:00 - Thứ Bảy',
         date: '28. 11. 2026',
         lunar: '( Tức Ngày 20 Tháng 10 Năm Bính Ngọ )',
         places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM }],
@@ -77,8 +69,8 @@ export const content = {
   /** Bộ đếm ngược — để null thì ẩn */
   countdown: {
     title: 'Đếm Ngược Ngày Vui',
-    /** Giờ Việt Nam (+07:00) — Tiệc Mừng Lễ Vu Quy 16:00 27/11/2026 */
-    target: '2026-11-27T16:00:00+07:00',
+    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 13:00 28/11/2026 */
+    target: '2026-11-28T13:00:00+07:00',
     labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
   },
 
@@ -123,11 +115,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'NGUYEN THI HONG NGOC',
-        number: '233087939',
-        bank: 'VPBank',
+        holder: 'NGUYEN TRUONG AN',
+        number: '1252575141',
+        bank: 'BIDV',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-ngoc.png',
+        qr: '/images/qr-an.png',
       },
     ],
   },

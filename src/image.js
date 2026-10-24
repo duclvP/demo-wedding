@@ -7,8 +7,8 @@ export const images = {
   hero: '/images/studio-2.jpg',
   /** Ảnh dưới phần gia đình (khung vàng) */
   couple: '/images/ao-dai-1.jpg',
-  /** 3 ảnh dải ngày cưới: cô dâu, ảnh đôi, chú rể */
-  dateStrip: ['/images/co-dau.jpg', '/images/studio-6.jpg', '/images/studio-4.jpg'],
+  /** 3 ảnh dải ngày cưới: chú rể, ảnh đôi, cô dâu */
+  dateStrip: ['/images/studio-4.jpg', '/images/studio-6.jpg', '/images/co-dau.jpg'],
   /** Lưới ảnh 2 cột */
   album: [
     '/images/studio-1.jpg',

@@ -1,6 +1,8 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
 const ADDRESS_GROOM = 'Thôn Xuân Me, Xã Liên Hòa, Tỉnh Phú Thọ';
+/** Ghim Google Maps tư gia nhà trai — nút "Xem chỉ đường" mở đúng vị trí này */
+const MAP_GROOM = '21.39711951615813,105.4964274124075';
 const ADDRESS_BRIDE = 'Thôn Bì La, Xã Tiên Lữ, Tỉnh Phú Thọ';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
@@ -50,7 +52,7 @@ export const content = {
         time: '17:00 - Chủ Nhật',
         date: '01. 11. 2026',
         lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM }],
       },
       {
         id: 'thanh-hon',
@@ -58,7 +60,7 @@ export const content = {
         time: '09:00 - Thứ Hai',
         date: '02. 11. 2026',
         lunar: '( Tức Ngày 24 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM }],
       },
     ],
   },

@@ -103,6 +103,7 @@ Chuỗi VietQR chứa `0006<BIN 6 số>01<2 số độ dài><STK>`. Ví dụ `�
 - `events.items`: theo thứ tự thời gian; mỗi sự kiện có `places[]` (nút chỉ đường theo `mapQuery ?? address`; `mapQuery` = địa chỉ cũ trước sáp nhập / tên địa danh dễ tìm).
 - `gift.accounts`: holder (IN HOA không dấu như app ngân hàng), number (không dấu cách), bank, qr. `[]` = ẩn nút mừng cưới.
 - `rsvp.endpoint: ''` cho cặp mới (endpoint cũ là Google Sheet của cặp khác). `rsvp.show: false` đang là mặc định.
+- Form lời chúc của **mọi mẫu** phải gửi đúng các trường `name`, `message`, `attend`, `guestCount` (số người; không đi = 0, bỏ trống = 1) — `google-apps-script/Code.gs` chuẩn chỉ đọc 4 trường này (cột Tên / Lời chúc / Tham dự / Số người). Mẫu dựng mới mà thêm ô khác (vd "khách mời của ai" của mẫu Hime — đang ẩn bằng `guestOfOptions: []`) thì script không lưu, khách phải sửa Apps Script → tránh thêm.
 - `index.html`: `<title>`, description, og:*, twitter:* — tên theo thứ tự của bản đó + thứ, ngày chính.
 - **Ngày ở xem trước link / Save The Date có thể khác ngày Lễ Thành Hôn**: khách được mời dự tiệc (vd Lễ Mừng Cưới tư gia CN 01/11) chứ không phải lễ chính (T2 02/11). Mỗi chỗ ngày là một trường riêng — chỉ sửa đúng chỗ khách khoanh, báo lại các chỗ còn lại:
   | Chỗ | Trường |

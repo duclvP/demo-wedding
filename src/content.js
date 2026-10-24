@@ -123,13 +123,14 @@ export const content = {
     endpoint: 'https://script.google.com/macros/s/AKfycbyVgetdZEbZ2Dyoj2wyLfoFgLCtf8ZWygbCTyG8fkShgGgKoNR9OFBqAk9XACnFCGwv/exec',
     /** false = tạm ẩn toàn bộ form gửi lời nhắn & xác nhận */
     show: true,
-    /** false = tạm ẩn ô xác nhận tham dự & khách mời của ai, chỉ nhận lời nhắn */
+    /** false = tạm ẩn ô xác nhận tham dự, số người & khách mời của ai, chỉ nhận lời nhắn */
     askAttend: true,
     intro:
       'Hãy xác nhận sự có mặt của bạn để chúng mình chuẩn bị đón tiếp một cách chu đáo nhất. Trân trọng!',
     placeholders: {
       name: 'Tên của bạn',
       message: 'Lời nhắn của bạn đến cô dâu, chú rể',
+      guestCount: 'Bạn đi bao nhiêu người ?',
       guestOf: 'Bạn là khách mời của ai',
     },
     attendYes: 'Mình sẽ tham dự',

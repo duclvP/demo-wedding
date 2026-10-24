@@ -596,7 +596,7 @@ function RsvpForm({ c }) {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
-  const [form, setForm] = useState({ name: "", message: "", attend: "", guestOf: "" });
+  const [form, setForm] = useState({ name: "", message: "", attend: "", guestCount: "", guestOf: "" });
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -620,6 +620,8 @@ function RsvpForm({ c }) {
           name: form.name.trim(),
           message: form.message.trim(),
           attend: !c.askAttend ? "" : form.attend === "yes" ? c.attendYes : c.attendNo,
+          /** Cùng tên trường với mẫu lovecard → dùng chung Code.gs (cột "Số người") */
+          guestCount: !c.askAttend ? "" : form.attend === "yes" ? form.guestCount || "1" : "0",
           guestOf: c.askAttend ? form.guestOf : "",
         }),
       });
@@ -663,6 +665,17 @@ function RsvpForm({ c }) {
                   </label>
                 ))}
               </div>
+              {form.attend !== "no" && (
+                <input
+                  type="number"
+                  min={1}
+                  max={20}
+                  value={form.guestCount}
+                  onChange={update("guestCount")}
+                  placeholder={c.placeholders.guestCount}
+                  className={box}
+                />
+              )}
               {c.guestOfOptions.length > 0 && (
               <select
                 required

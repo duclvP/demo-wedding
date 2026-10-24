@@ -87,9 +87,9 @@ export const content = {
      */
     endpoint: '',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
-    show: false,
+    show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
-    askAttend: false,
+    askAttend: true,
     title: 'Gửi Lời Chúc',
     placeholders: {
       name: 'Tên của bạn là gì ?',

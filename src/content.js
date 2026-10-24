@@ -85,7 +85,7 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: '',
+    endpoint: 'https://script.google.com/macros/s/AKfycby0QrOLn3cawueiLHHhWu814VRFSdkh475WRePAVvYSTvrN3CkWH5s0-iBG5g28w0o/exec',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */

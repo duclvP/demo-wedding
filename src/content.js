@@ -4,17 +4,16 @@ const ADDRESS_BRIDE = 'Thôn Hải Phú, Xã Quỳnh Phú, Tỉnh Nghệ An';
 const ADDRESS_GROOM = 'TDP Khánh Trung - Ninh Khang 2, Phường Hoa Lư, Tỉnh Ninh Bình';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
-// TODO: ticket chưa có tên bố mẹ hai bên — hỏi khách
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: null,
-  mother: null,
+  father: 'Trần Đức Tuệ',
+  mother: 'Trần Thị Thuỷ',
   address: ADDRESS_BRIDE,
 };
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: null,
-  mother: null,
+  father: 'Đinh Vạn Ka',
+  mother: 'Đinh Thị Nhàn',
   address: ADDRESS_GROOM,
 };
 
@@ -65,7 +64,7 @@ export const content = {
         time: '07:30 | Thứ Tư',
         date: '28. 10. 2026',
         lunar: '( Tức Ngày 19 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Hải Phú, Quỳnh Phú, Nghệ An' }],
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Ninh Khang, Hoa Lư, Ninh Bình' }],
       },
     ],
   },

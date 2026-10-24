@@ -169,7 +169,7 @@ Rồi `npm run build` (phải thành công), grep `dist/index.html` thấy đún
 
 ## 10. Commit
 
-Commit message tiếng Việt, kiểu `feat: thiệp <Tên> & <Tên> — bản nhà trai (issue #9)`. Chưa cần push ngay sau commit, nhưng **trước mỗi lần deploy bắt buộc push** (§11). Không commit `.gitignore` / `.env.local` do Vercel CLI sinh ra.
+Commit message tiếng Việt, kiểu `feat: thiệp <Tên> & <Tên> — bản nhà trai (issue #9)`. Commit thoải mái nhưng **chỉ push một lần, ngay trước khi deploy** (§11) — không push lẻ từng commit. Không commit `.gitignore` / `.env.local` do Vercel CLI sinh ra.
 
 ## 11. Deploy Vercel (khi người dùng yêu cầu)
 
@@ -184,13 +184,18 @@ git push -u origin HEAD                                   # BẮT BUỘC trướ
 git status -sb | head -1                                  # phải là "## <nhánh>...origin/<nhánh>", không có [ahead N]
 $V project ls --scope leducuet-5765s-projects             # đã có project của nhánh này chưa
 $V link --yes --project <tên-nhánh> --scope leducuet-5765s-projects   # tạo mới hoặc link project có sẵn
+$V git disconnect --yes                                   # BẮT BUỘC ngay sau link: link tự nối GitHub → mỗi push build lại MỌI project
 $V deploy --prod --yes --scope leducuet-5765s-projects
 $V inspect <url-deploy> --scope leducuet-5765s-projects   # status Ready + Aliases → link chính
 ```
 
 Kiểm tra link chính trả 200 cho `/`, một link tên khách (`/co-lan`) và một ảnh QR; `<title>` đúng tên. Cập nhật thiệp đã deploy = commit → **push** → chạy lại `deploy --prod` ở đúng nhánh.
 
-Lưu ý: `vercel link` tự nối project vào repo GitHub với production branch `main` (giống các project cũ) — push lên `main` có thể deploy đè; nhắc người dùng nếu họ định push.
+**Hạn mức Vercel free: 100 deployment/ngày cho cả team** (lỗi `api-deployments-free-per-day`, phải đợi 24h). Ngày 24/10/2026 hết hạn mức vì ~21 project cùng nối GitHub repo này: mỗi push sinh ~21 preview deployment vô ích (5 push = 99). Phòng chống:
+- Mọi project **không nối GitHub** (`vercel git disconnect` sau khi link; kiểm tra Settings → Git). Backup cấu hình cũ: `~/vercel-projects-git-backup-2026-10-24.json` trên máy Linux.
+- `vercel.json` có `"git": { "deploymentEnabled": false }` (đã có từ nhánh `ngoc_an`) — project nào lỡ còn nối GitHub cũng không tự build khi push nhánh chứa file này. Nhánh mới tạo từ nhánh mới nhất nên tự có; đừng xóa dòng này.
+- Chỉ deploy production bằng CLI; xem thử bằng dev server trên máy, không dùng preview Vercel.
+- Ngắt GitHub không ảnh hưởng thiệp đang chạy (bản deploy lưu sẵn trên Vercel); cập nhật project cũ = CLI deploy từ đúng nhánh.
 
 ## 12. Báo cáo
 

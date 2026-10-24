@@ -24,7 +24,7 @@ export const content = {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
     names: ['Ngọc Hưng', 'Thu Uyên'],
-    dateLine: '02 . 11 . 2026',
+    dateLine: '01 . 11 . 2026',
   },
 
   families: {

@@ -104,11 +104,19 @@ Chuỗi VietQR chứa `0006<BIN 6 số>01<2 số độ dài><STK>`. Ví dụ `�
 - `gift.accounts`: holder (IN HOA không dấu như app ngân hàng), number (không dấu cách), bank, qr. `[]` = ẩn nút mừng cưới.
 - `rsvp.endpoint: ''` cho cặp mới (endpoint cũ là Google Sheet của cặp khác). `rsvp.show: false` đang là mặc định.
 - `index.html`: `<title>`, description, og:*, twitter:* — tên theo thứ tự của bản đó + thứ, ngày chính.
+- **Ngày ở xem trước link / Save The Date có thể khác ngày Lễ Thành Hôn**: khách được mời dự tiệc (vd Lễ Mừng Cưới tư gia CN 01/11) chứ không phải lễ chính (T2 02/11). Mỗi chỗ ngày là một trường riêng — chỉ sửa đúng chỗ khách khoanh, báo lại các chỗ còn lại:
+  | Chỗ | Trường |
+  |---|---|
+  | Mô tả xem trước link | `index.html` description + og:description + twitter:description |
+  | Ảnh xem trước | dòng ngày trong `og.jpg` (chạy lại `og-image.sh`) |
+  | "Save The Date" đầu thiệp | `hero.dateLine` |
+  | Ngày đè trên 3 ảnh | `invitation.dateParts` (đi cùng `invitation.title`) |
+  | Đếm ngược / lịch | `countdown.target`, `calendar.dateIso` |
 - **Ảnh xem trước link (bắt buộc)** — thiếu `og:image` thì Messenger/Zalo chỉ hiện chữ, không có ảnh. Tạo `public/images/og.jpg` 1200×630 từ ảnh `hero` (cắt ngang + tên ♥ tên + ngày):
   ```bash
   $K/og-image.sh public/images/<hero>.jpg <vị-trí-dọc-%> "Ngọc Hưng ♥ Thu Uyên" "Thứ Hai, 02 . 11 . 2026" public/images/og.jpg
   ```
-  `vị-trí-dọc-%` ≈ 4–15 khi mặt nằm ở phần trên ảnh dọc. Read ảnh ra kiểm tra mặt không bị cắt, chữ không đè mặt. Thêm vào `<head>` sau `og:locale` — URL **tuyệt đối** theo domain Vercel của project (§11; chưa có project thì đoán `https://<tên-nhánh-bỏ-gạch-dưới>.vercel.app`, sau deploy kiểm tra lại alias):
+  `vị-trí-dọc-%` ≈ 4–15 khi mặt nằm ở phần trên ảnh dọc. Read ảnh ra kiểm tra mặt không bị cắt, chữ không đè mặt. Nhánh cũ chưa có script → `git show ngoc_an:.claude/skills/wedding-invite/scripts/og-image.sh > $S/og-image.sh` (đừng chạy đường dẫn không tồn tại trong chuỗi `;` — lệnh sau vẫn chạy và commit thiếu). Thêm vào `<head>` sau `og:locale` — URL **tuyệt đối** `https://<tên-project>.vercel.app` (§11; `deploy.sh` chặn nếu sai domain):
   ```html
   <meta property="og:url" content="https://<domain>/" />
   <meta property="og:image" content="https://<domain>/images/og.jpg" />
@@ -165,7 +173,7 @@ Nếu lỡ cherry-pick bị xung đột `dist/`: xóa `dist/assets/index-*.js`, 
 - `/hoa` → "Bạn Hoa" (không có xưng hô → thêm "Bạn"); `/co-lan` → "Cô Lan"; `/gia-dinh-bac-hung` → "Gia Đình Bác Hung"; `/đức` → "Bạn Đức".
 - `?khach=Tên` giữ nguyên chữ người dùng gõ, ưu tiên hơn đường dẫn.
 - Từ xưng hô không dấu → có dấu: bảng `GUEST_TITLES` trong `src/main.jsx`. Tên riêng không tự thêm dấu được.
-- **Trang tạo link `/tao-link`** (`src/GuestLinks.jsx`, gắn ở dòng `createRoot(...)` cuối `main.jsx`: `isGuestLinksPage() ? <GuestLinksPage /> : <WeddingPage />`): dán tên khách mỗi dòng một người → link `?khach=` cho từng người, nút Xem / Sao chép / Chép tất cả (kèm tên), danh sách lưu localStorage. Đưa người dùng link `https://<project>.vercel.app/tao-link`. Có ở `ngoc_an` (và `thuhong_tronghoang_nha_gai`, `kimnhung_bang` — hai nhánh này chỉ có trên máy Mac, chưa push); nhánh khác chưa có thì `git checkout ngoc_an -- src/GuestLinks.jsx` rồi sửa dòng `createRoot` + thêm import.
+- **Trang tạo link `/tao-link`** (`src/GuestLinks.jsx`, gắn ở dòng `createRoot(...)` cuối `main.jsx`: `isGuestLinksPage() ? <GuestLinksPage /> : <WeddingPage />`): dán tên khách mỗi dòng một người → link `?khach=` cho từng người, nút Xem / Sao chép / Chép tất cả (kèm tên), danh sách lưu localStorage. Đưa người dùng link `https://<project>.vercel.app/tao-link`. Có ở `ngoc_an` (mẫu Hime), `uyen_hung_nha_trai` (mẫu lovecard — chạy tốt, chỉ cần lấy file), và `thuhong_tronghoang_nha_gai`, `kimnhung_bang` (chỉ trên máy Mac, chưa push). Nhánh chưa có: `git checkout ngoc_an -- src/GuestLinks.jsx`, thêm `import GuestLinksPage, { isGuestLinksPage } from "./GuestLinks.jsx";` sau `import "./index.css";`, đổi `render(<WeddingPage />)` → `render(isGuestLinksPage() ? <GuestLinksPage /> : <WeddingPage />)`. Hỏi "phần tạo link có chưa" = kiểm tra `ls src/GuestLinks.jsx`; thiệp mới nên có sẵn.
 - `vercel.json` rewrite mọi đường dẫn về `index.html` (đã có trên các nhánh thiệp; Vite dev tự làm).
 
 ## 9. Kiểm tra trên trình duyệt (trước khi commit)
@@ -186,29 +194,35 @@ Commit message tiếng Việt, kiểu `feat: thiệp <Tên> & <Tên> — bản n
 
 ## 11. Deploy Vercel (khi người dùng yêu cầu)
 
-Team: `leducuet-5765s-projects` (https://vercel.com/leducuet-5765s-projects). Mỗi thiệp **một project, tên = tên nhánh** (`gam_ngoc` → gamngoc.vercel.app). Vercel CLI deploy từ thư mục trên máy (không lấy từ GitHub), nên **bắt buộc commit + push nhánh lên GitHub trước khi deploy** — nếu không, code chỉ nằm trên một máy + Vercel, máy khác clone về không thấy (đã xảy ra: trang `/tao-link` và nhánh `thuhong_tronghoang_nha_gai` chỉ có trên máy Mac). Push không được (chưa đăng nhập `gh`, sai tài khoản) → **dừng, không deploy**, báo người dùng.
+**Từ 24/10/2026 mọi thiệp deploy vào team `ducs-projects-2e3ef64b`** (https://vercel.com/ducs-projects-2e3ef64b, tài khoản Vercel **xduclv**). Team cũ `leducuet-5765s-projects` bỏ, không deploy nữa — thiệp cũ cần sửa thì chuyển sang team mới (link đổi, báo người dùng gửi link mới cho khách). Đăng nhập lưu riêng ở `~/.config/vercel-ducs` (không đụng đăng nhập mặc định của CLI; **không** để trong scratchpad — mất khi hết phiên):
 
 ```bash
-V="npx -y vercel@65.0.0"     # máy không cài vercel global
-$V whoami                    # "Logged out" → chạy `$V login` NỀN, đọc log lấy link
-                             # https://vercel.com/oauth/device?user_code=XXXX-XXXX, đưa người dùng bấm xác nhận
-git branch --show-current && git status --short          # đúng nhánh, sạch (đã commit hết)
-git push -u origin HEAD                                   # BẮT BUỘC trước khi deploy (gh đăng nhập tài khoản duclvP)
-git status -sb | head -1                                  # phải là "## <nhánh>...origin/<nhánh>", không có [ahead N]
-$V project ls --scope leducuet-5765s-projects             # đã có project của nhánh này chưa
-$V link --yes --project <tên-nhánh> --scope leducuet-5765s-projects   # tạo mới hoặc link project có sẵn
-$V git disconnect --yes                                   # BẮT BUỘC ngay sau link: link tự nối GitHub → mỗi push build lại MỌI project
-$V deploy --prod --yes --scope leducuet-5765s-projects
-$V inspect <url-deploy> --scope leducuet-5765s-projects   # status Ready + Aliases → link chính
+V="npx -y vercel@65.0.0 --global-config ~/.config/vercel-ducs"
+$V whoami        # phải ra xduclv. Lỗi → chạy NỀN `$V login > ~/.config/vercel-ducs/login.log 2>&1`,
+                 # grep link https://vercel.com/oauth/device?user_code=XXXX-XXXX, đưa người dùng (đăng nhập xduclv)
 ```
 
-Kiểm tra link chính trả 200 cho `/`, một link tên khách (`/co-lan`) và một ảnh QR; `<title>` đúng tên. Cập nhật thiệp đã deploy = commit → **push** → chạy lại `deploy --prod` ở đúng nhánh.
+**Tên project** = `<tencodau>-<tenchure>` (gạch ngang, vd `thuuyen-ngochung`, `truongan-hongngoc`) → domain `https://<tên>.vercel.app`. Tên `.vercel.app` là toàn cầu: nếu đã có người dùng, Vercel gán tên có hậu tố ngẫu nhiên → og:image sai domain. `deploy.sh` tự kiểm tra (`DEPLOYMENT_NOT_FOUND` = còn trống).
 
-**Hạn mức Vercel free: 100 deployment/ngày cho cả team** (lỗi `api-deployments-free-per-day`, phải đợi 24h). Ngày 24/10/2026 hết hạn mức vì ~21 project cùng nối GitHub repo này: mỗi push sinh ~21 preview deployment vô ích (5 push = 99). Phòng chống:
-- Mọi project **không nối GitHub** (`vercel git disconnect` sau khi link; kiểm tra Settings → Git). Backup cấu hình cũ: `~/vercel-projects-git-backup-2026-10-24.json` trên máy Linux.
-- `vercel.json` có `"git": { "deploymentEnabled": false }` (đã có từ nhánh `ngoc_an`) — project nào lỡ còn nối GitHub cũng không tự build khi push nhánh chứa file này. Nhánh mới tạo từ nhánh mới nhất nên tự có; đừng xóa dòng này.
-- Chỉ deploy production bằng CLI; xem thử bằng dev server trên máy, không dùng preview Vercel.
-- Ngắt GitHub không ảnh hưởng thiệp đang chạy (bản deploy lưu sẵn trên Vercel); cập nhật project cũ = CLI deploy từ đúng nhánh.
+**Deploy = một lệnh** (ở gốc repo, đúng nhánh, đã commit hết):
+
+```bash
+$K/deploy.sh <tên-project> --check   # chỉ kiểm tra, không tốn lượt — chạy trước khi báo người dùng "sẵn sàng"
+$K/deploy.sh <tên-project>           # kiểm tra → push GitHub → link + ngắt GitHub → deploy --prod → curl kiểm tra
+```
+
+Script dừng **trước khi tốn lượt** nếu: chưa đăng nhập; còn file chưa commit (kể cả file mới chưa track — Vercel CLI upload cả thư mục); `dist/` không khớp mã nguồn (build lại thấy khác = quên build trước commit); og:image không trỏ đúng domain thật của project; thiếu `og.jpg`; `vercel.json` thiếu `deploymentEnabled: false`; hết hạn mức; push GitHub lỗi. Sau deploy in mã HTTP cho `/`, `/co-lan`, `/tao-link`, `/images/og.jpg` + `<title>`. Thiệp đã deploy cập nhật = sửa → commit → `deploy.sh` lại. Dừng ở bước nào thì sửa đúng lỗi đó rồi chạy lại, không deploy tay vòng qua script.
+
+### Hạn mức 100 deployment / 24h (Hobby, cho cả team)
+
+Cửa sổ **trượt 24h** (không reset nửa đêm): lượt thứ N có lại đúng 24h sau khi nó được tạo. `$K/quota.sh [số-lượt-cần]` in số đã dùng / còn lại và giờ có lại lượt. Lỗi `api-deployments-free-per-day` = hết; tạo project mới **cùng team không giúp gì** (chung hạn mức) — chỉ team khác mới có 100 lượt riêng.
+
+Ngày 24/10/2026 team cũ hết hạn mức vì ~21 project cùng nối GitHub repo này: mỗi push sinh ~21 preview deployment (5 push ≈ 100). Quy tắc tiết kiệm:
+- **Một yêu cầu của khách = một lần deploy.** Gom mọi chỉnh sửa (ngày, ảnh, chữ, og.jpg…) → soát trên dev server `localhost:5173` + `npm run build` → deploy một lần. Khách gửi liên tiếp nhiều sửa nhỏ → làm hết rồi mới deploy; đừng deploy "để xem thử" — xem bằng dev server (`vite preview` nếu cần bản build).
+- Không bao giờ nối GitHub: `deploy.sh` luôn `git disconnect` sau link; `vercel.json` giữ `"git": { "deploymentEnabled": false }` (nhánh mới tạo từ nhánh mới nhất nên tự có — nhánh cũ thiếu thì `git checkout ngoc_an -- vercel.json`).
+- Không dùng preview deployment, không `vercel deploy` không có `--prod`.
+- Sửa nhiều thiệp một lúc: `quota.sh <số thiệp>` trước, đủ lượt mới làm.
+- Xem trước link (Messenger/Zalo) bị cache: link cũ đã gửi không tự đổi; dán link vào https://developers.facebook.com/tools/debug/ → "Scrape Again" — việc này không tốn lượt deploy.
 
 ## 12. Báo cáo
 

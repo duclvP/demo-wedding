@@ -4,17 +4,16 @@ const ADDRESS_GROOM = 'Thôn Xuân Me, Xã Liên Hòa, Tỉnh Phú Thọ';
 const ADDRESS_BRIDE = 'Thôn Bì La, Xã Tiên Lữ, Tỉnh Phú Thọ';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
-// TODO: ticket #17 chưa có tên bố mẹ hai bên — hỏi lại khách
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: null,
-  mother: null,
+  father: 'Nguyễn Văn Hải',
+  mother: 'Phan Thị Lệ Thuỷ',
   address: ADDRESS_GROOM,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: null,
-  mother: null,
+  father: 'Bùi Quang Nam',
+  mother: 'Trần Thị Nguyệt',
   address: ADDRESS_BRIDE,
 };
 
@@ -46,12 +45,12 @@ export const content = {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'vu-quy',
-        title: 'Lễ Vu Quy',
+        id: 'mung-cuoi',
+        title: 'Lễ Mừng Cưới',
         time: '17:00 - Chủ Nhật',
         date: '01. 11. 2026',
         lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
       {
         id: 'thanh-hon',

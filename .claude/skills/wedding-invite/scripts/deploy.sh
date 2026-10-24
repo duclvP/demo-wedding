@@ -40,7 +40,7 @@ else:
   print(min(a,key=len) if a else '')")
 if [ -z "$DOMAIN" ]; then
   DOMAIN="$P.vercel.app"
-  curl -s "https://$DOMAIN/" | grep -q DEPLOYMENT_NOT_FOUND \
+  curl -s -m 30 "https://$DOMAIN/" | grep -q DEPLOYMENT_NOT_FOUND \
     || die "Project mới nhưng $DOMAIN đã có người dùng → Vercel sẽ gán tên khác, og:image sai. Chọn tên project khác."
   echo "• Project mới: $P → https://$DOMAIN"
 else
@@ -72,7 +72,11 @@ echo "• Đã deploy: $ALIAS"
 [ "$ALIAS" = "https://$DOMAIN" ] || echo "⚠ Alias ($ALIAS) khác domain trong og:image (https://$DOMAIN) — sửa index.html rồi deploy lại."
 
 # 8. Kiểm tra bản thật
-for p in / /co-lan /tao-link /images/og.jpg; do
-  printf '  %-16s %s\n' "$p" "$(curl -s -o /dev/null -w '%{http_code}' "https://$DOMAIN$p")"
+# HEAD + giới hạn thời gian: mạng chậm từng làm script treo khi tải ảnh. og.jpg so etag với md5 file local.
+for p in / /co-lan /tao-link; do
+  printf '  %-16s %s\n' "$p" "$(curl -s -m 30 -o /dev/null -w '%{http_code}' "https://$DOMAIN$p" || echo timeout)"
 done
-echo "  title: $(curl -s "https://$DOMAIN/" | grep -o '<title>[^<]*' | sed 's/<title>//')"
+ETAG=$(curl -sI -m 30 "https://$DOMAIN/images/og.jpg" | tr -d '\r"' | awk -F': ' 'tolower($1)=="etag"{print $2}')
+MD5=$(md5sum public/images/og.jpg 2>/dev/null | cut -d' ' -f1 || md5 -q public/images/og.jpg)
+[ "$ETAG" = "$MD5" ] && echo "  /images/og.jpg   khớp file local" || echo "  ⚠ /images/og.jpg etag=$ETAG ≠ md5 local=$MD5"
+echo "  title: $(curl -s -m 30 "https://$DOMAIN/" | grep -o '<title>[^<]*' | sed 's/<title>//')"

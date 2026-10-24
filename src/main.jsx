@@ -663,6 +663,7 @@ function RsvpForm({ c }) {
                   </label>
                 ))}
               </div>
+              {c.guestOfOptions.length > 0 && (
               <select
                 required
                 value={form.guestOf}
@@ -678,6 +679,7 @@ function RsvpForm({ c }) {
                   </option>
                 ))}
               </select>
+              )}
             </>
           )}
           {error && <p className="text-center text-sm text-hime">{error}</p>}

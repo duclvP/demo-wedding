@@ -134,7 +134,8 @@ export const content = {
     },
     attendYes: 'Mình sẽ tham dự',
     attendNo: 'Thật tiếc mình bận mất rồi',
-    guestOfOptions: ['Cô Dâu', 'Chú Rể'],
+    /** Ô "Bạn là khách mời của ai" — để [] thì ẩn (bảng tính hiện chưa có cột này) */
+    guestOfOptions: [],
     submit: 'Gửi Lời Nhắn Và Xác Nhận',
     sending: 'Đang gửi...',
     error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',

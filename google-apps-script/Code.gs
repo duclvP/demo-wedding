@@ -9,7 +9,7 @@ const SPREADSHEET_ID = '1XwhRDn7PfDaBaISLrrIx1xXh2dMezu_cBYwuMfKqlDU';
 /** Email nhận thông báo — để '' nếu không muốn nhận email */
 const NOTIFY_EMAIL = 'leducuet@gmail.com';
 
-const HEADERS = ['Thời gian', 'Tên khách', 'Lời chúc', 'Tham dự', 'Số người', 'Khách mời của'];
+const HEADERS = ['Thời gian', 'Tên khách', 'Lời chúc', 'Tham dự', 'Số người'];
 
 function doPost(e) {
   const p = (e && e.parameter) || {};
@@ -19,8 +19,6 @@ function doPost(e) {
     clean(p.message, 1000),
     clean(p.attend, 100),
     Number(p.guestCount) || 0,
-    /** Mẫu Hime gửi guestOf (Cô Dâu / Chú Rể) thay cho số người */
-    clean(p.guestOf, 50),
   ];
 
   if (!row[1]) return json({ ok: false, error: 'missing name' });
@@ -32,10 +30,6 @@ function doPost(e) {
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(HEADERS);
       sheet.setFrozenRows(1);
-    } else {
-      /** Bảng tính tạo từ bản script cũ thiếu cột (vd "Khách mời của") → ghi lại dòng tiêu đề */
-      const head = sheet.getRange(1, 1, 1, HEADERS.length);
-      if (head.getValues()[0].join('|') !== HEADERS.join('|')) head.setValues([HEADERS]);
     }
     sheet.appendRow(row);
   } finally {
@@ -50,7 +44,6 @@ function doPost(e) {
         `Tên: ${row[1]}`,
         `Tham dự: ${row[3]}`,
         `Số người: ${row[4]}`,
-        `Khách mời của: ${row[5] || '(không ghi)'}`,
         '',
         `Lời chúc: ${row[2] || '(không có)'}`,
         '',

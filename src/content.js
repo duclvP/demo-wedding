@@ -64,7 +64,10 @@ export const content = {
         time: '07:30 | Thứ Tư',
         date: '28. 10. 2026',
         lunar: '( Tức Ngày 19 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Ninh Khang, Hoa Lư, Ninh Bình' }],
+        places: [
+          { label: 'Đón Dâu Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Hải Phú, Quỳnh Phú, Nghệ An' },
+          { label: 'Rước Về Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Ninh Khang, Hoa Lư, Ninh Bình' },
+        ],
       },
     ],
   },

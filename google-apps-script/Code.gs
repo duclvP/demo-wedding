@@ -4,12 +4,12 @@
  */
 
 /** Bảng tính nhận lời chúc (phần giữa /d/ và /edit trong link Google Sheets) */
-const SPREADSHEET_ID = '1X-WX-8jNLtsvy4NxqRXtnGK6iLE9yKEJvXWDn-yIJ7M';
+const SPREADSHEET_ID = '1XwhRDn7PfDaBaISLrrIx1xXh2dMezu_cBYwuMfKqlDU';
 
 /** Email nhận thông báo — để '' nếu không muốn nhận email */
 const NOTIFY_EMAIL = 'leducuet@gmail.com';
 
-const HEADERS = ['Thời gian', 'Tên khách', 'Lời chúc', 'Tham dự', 'Số người'];
+const HEADERS = ['Thời gian', 'Tên khách', 'Lời chúc', 'Tham dự', 'Số người', 'Khách mời của'];
 
 function doPost(e) {
   const p = (e && e.parameter) || {};
@@ -19,6 +19,8 @@ function doPost(e) {
     clean(p.message, 1000),
     clean(p.attend, 100),
     Number(p.guestCount) || 0,
+    /** Mẫu Hime gửi guestOf (Cô Dâu / Chú Rể) thay cho số người */
+    clean(p.guestOf, 50),
   ];
 
   if (!row[1]) return json({ ok: false, error: 'missing name' });
@@ -44,6 +46,7 @@ function doPost(e) {
         `Tên: ${row[1]}`,
         `Tham dự: ${row[3]}`,
         `Số người: ${row[4]}`,
+        `Khách mời của: ${row[5] || '(không ghi)'}`,
         '',
         `Lời chúc: ${row[2] || '(không có)'}`,
         '',

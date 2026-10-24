@@ -9,7 +9,7 @@ export const images = {
   groom: '/images/studio-07.jpg',
   bride: '/images/studio-02.jpg',
   /** 3 ảnh dải ngày cưới (chữ ngày / tháng / năm đè lên) */
-  dateStrip: ['/images/studio-03.jpg', '/images/studio-04.jpg', '/images/studio-13.jpg'],
+  dateStrip: ['/images/studio-03.jpg', '/images/studio-04.jpg', '/images/studio-07.jpg'],
   /** Ảnh dán băng keo dưới các thẻ sự kiện */
   polaroid: '/images/studio-05.jpg',
   /** Ảnh tròn cạnh nút mừng cưới */

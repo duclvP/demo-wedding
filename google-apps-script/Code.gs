@@ -7,7 +7,7 @@
 const SPREADSHEET_ID = '1X-WX-8jNLtsvy4NxqRXtnGK6iLE9yKEJvXWDn-yIJ7M';
 
 /** Email nhận thông báo — để '' nếu không muốn nhận email */
-const NOTIFY_EMAIL = '';
+const NOTIFY_EMAIL = 'leducuet@gmail.com';
 
 const HEADERS = ['Thời gian', 'Tên khách', 'Lời chúc', 'Tham dự', 'Số người'];
 

@@ -116,8 +116,15 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    // TODO: chưa có QR / số tài khoản — hỏi khách
-    accounts: [],
+    accounts: [
+      {
+        holder: 'TRAN THI THUY',
+        number: '102000721630',
+        bank: 'VietinBank',
+        /** Ảnh mã QR trong public/images/ — để null nếu không có */
+        qr: '/images/qr-vietinbank.png',
+      },
+    ],
   },
 
   thanks: {

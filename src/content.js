@@ -177,8 +177,8 @@ export const content = {
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */
   music: {
-    /** TODO: khách muốn bài "Bài Này Không Để Đi Diễn" (Anh Tú Atus) — chờ file mp3 */
-    src: '/music/beautiful-in-white.mp3',
+    /** "Bài Này Không Để Đi Diễn" — Anh Tú Atus (khách chọn) */
+    src: '/music/bai-nay-khong-de-di-dien.mp3',
     /** 0–1 */
     volume: 0.45,
   },

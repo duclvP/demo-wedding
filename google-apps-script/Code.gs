@@ -32,6 +32,10 @@ function doPost(e) {
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(HEADERS);
       sheet.setFrozenRows(1);
+    } else {
+      /** Bảng tính tạo từ bản script cũ thiếu cột (vd "Khách mời của") → ghi lại dòng tiêu đề */
+      const head = sheet.getRange(1, 1, 1, HEADERS.length);
+      if (head.getValues()[0].join('|') !== HEADERS.join('|')) head.setValues([HEADERS]);
     }
     sheet.appendRow(row);
   } finally {

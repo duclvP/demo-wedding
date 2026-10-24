@@ -27,6 +27,14 @@ $K/fetch-issue.sh 9 $S/t9      # issue.md (body + MỌI comment) + i10.bin, i11.
 - `.bin` có thể là PNG hoặc JPEG — Read không đọc được `.bin`, dùng `p*.jpg` hoặc `sips -s format png`.
 - md5 trùng = ảnh trùng, bỏ bớt.
 - Ticket hay có các mục: "thông tin thiệp" (ảnh chụp văn bản Word), "ảnh cưới và mã qr", "làm theo mẫu" (lovecard.click/thiepso01 = đúng giao diện repo này), "bỏ phần này" (ảnh chụp phần cần ẩn — xem §6).
+- **Link mẫu trong ticket / comment quyết định giao diện — luôn mở ra xem** (chụp bằng Chrome headless, bấm qua màn mở đầu) trước khi chọn nhánh gốc:
+  | Mẫu | Giao diện | Nhánh gốc |
+  |---|---|---|
+  | lovecard.click/thiepso01 (hoặc không có link) | rèm đỏ 囍, viền vàng, tuyết/tim rơi — bản nhà trai / nhà gái riêng (§5) | nhánh thiệp lovecard mới nhất |
+  | ziuwedding.site/… (LadiPage "HIME WEDDING INVITATION") | phong bì đỏ dấu sáp + tên khách, nền giấy kem ngọc trai, chữ #9e3745 — **thiệp chung** hai họ: 4 sự kiện, form có "khách mời của ai", 2 nút Mừng cưới nhà trai / nhà gái, album trình chiếu | `ngoc_an` (issue #20) |
+  | mẫu khác chưa có | dựng mới theo mẫu (vẽ hoa văn bằng CSS/SVG, không lấy ảnh của trang mẫu), báo người dùng | — |
+
+  Mẫu Hime: `content.js` khác cấu trúc lovecard (`envelope`, `hero.shortNames`, `events.items[].place/address`, `gift.accounts[].button`, `rsvp.guestOfOptions`), `image.js` có `hero`, `wide`, `happyBg`, `happyPair`, `album`, `gift`.
 
 ## 1. Thu thập thông tin từ ảnh
 

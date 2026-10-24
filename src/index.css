@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  /* Đỏ đô truyền thống */
+  /* Đỏ rượu vang của mẫu Hime */
   --background: 0 0% 100%;
   --foreground: 0 0% 12%;
   --primary: 0 100% 27%;
@@ -24,18 +24,6 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-}
-
-/* Viền hoa văn chữ vạn vàng chạy dọc mép thiệp */
-.key-border {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M1 15V1h14v11H4V4h8v5H7' fill='none' stroke='%23f0d070' stroke-width='1.4'/%3E%3C/svg%3E");
-  background-size: 16px 16px;
-  background-repeat: repeat-y;
-}
-
-/* Khung ảnh viền vàng ánh kim */
-.gold-frame {
-  background: linear-gradient(135deg, #b8862b 0%, #f7e08b 25%, #c99a3a 50%, #fbe9a6 75%, #a8761f 100%);
 }
 
 /* Hiện dần khi cuộn tới (component Reveal) — chậm & quãng dài như mẫu */
@@ -66,78 +54,80 @@ body {
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* Tuyết & tim rơi */
-.falling {
-  position: fixed;
-  top: -10%;
-  z-index: 140;
-  pointer-events: none;
-  user-select: none;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.falling-snowflake {
-  color: #fff;
-  font-family: Arial, sans-serif;
-  text-shadow: 0 0 5px #000;
-  animation-name: fall-snow;
-}
-.falling-heart {
-  color: #ff3366;
-  font-weight: 700;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  animation-name: fall-heart;
-}
-@keyframes fall-snow {
-  from { transform: translate(0, -10%) rotate(0deg); opacity: 1; }
-  to { transform: translate(calc(-50vw + 100vw * var(--rand-x)), 110vh) rotate(360deg); opacity: 0.2; }
-}
-@keyframes fall-heart {
-  from { transform: translate(0, -10%) scale(0.7); opacity: 1; }
-  to { transform: translate(calc(-50vw + 100vw * var(--rand-x)), 110vh) scale(1.2); opacity: 0.2; }
-}
-
-/* Rèm mở thiệp: nền đỏ + hoa văn mây vàng */
-.curtain {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50.5%;
-  background-color: #b3000c;
+/* Nền giấy kem có vân hoa nổi mờ (mẫu Hime) */
+.paper {
+  background-color: #f8f6f2;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cg fill='none' stroke='%23e8b866' stroke-opacity='.55' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M8 38c0-10 8-18 18-18s18 8 18 18c0 6-5 11-11 11s-10-4-10-9c0-4 3-7 7-7s5 2 5 5'/%3E%3Cpath d='M44 38c0-8 7-14 15-14 9 0 16 7 16 16'/%3E%3Cpath d='M50 78c0-9 7-16 16-16s16 7 16 16c0 5-4 9-9 9s-8-3-8-8c0-3 2-6 6-6'/%3E%3Cpath d='M2 80c6-8 16-10 24-5s10 15 4 20'/%3E%3Cpath d='M60 6c4-5 12-6 17-1s5 13-1 16c-4 2-8 0-8-4'/%3E%3C/g%3E%3C/svg%3E"),
-    radial-gradient(ellipse at center, #d4141f 0%, #a1000a 70%, #7d0008 100%);
-  background-size: 90px 90px, 100% 100%;
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.35);
-  transition: transform 3s ease-in-out;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='none' stroke='%23d9d2ca' stroke-opacity='.45' stroke-width='1.2'%3E%3Cpath d='M40 60c-14-10-14-32 0-38 14 6 14 28 0 38zm0 0c10-14 32-14 38 0-6 14-28 14-38 0zm0 0c14 10 14 32 0 38-14-6-14-28 0-38zm0 0c-10 14-32 14-38 0 6-14 28-14 38 0z'/%3E%3Cpath d='M160 150c-12-9-12-28 0-34 12 6 12 25 0 34zm0 0c9-12 28-12 34 0-6 12-25 12-34 0zm0 0c12 9 12 28 0 34-12-6-12-25 0-34zm0 0c-9 12-28 12-34 0 6-12 25-12 34 0z'/%3E%3Cpath d='M78 60c30 10 50 40 48 70M126 130c-4 30 10 50 34 54' /%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px, 160px 160px;
 }
-.curtain-left { left: 0; border-right: 3px solid #e2b55a; }
-.curtain-right { right: 0; border-left: 3px solid #e2b55a; }
-.curtain-left.is-open { transform: translateX(-100%); }
-.curtain-right.is-open { transform: translateX(100%); }
 
-/* Con dấu 囍 vuông viền vàng */
-.seal {
+/* Ảnh bìa mờ dần vào nền giấy */
+.hero-fade {
+  background: linear-gradient(to bottom, rgba(248, 246, 242, 0), rgba(248, 246, 242, 0.85) 55%, #f8f6f2);
+}
+
+/* Chữ "Nhà Có Hỷ" viền trắng nổi trên ảnh */
+.hy-text {
+  text-shadow: 0 0 2px #fff, 0 0 2px #fff, 0 0 6px rgba(255, 255, 255, 0.9);
+}
+
+/* Hạt ngọc trai */
+.pearl {
+  display: inline-block;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #f7eff3 30%, #e2d2da 65%, #b9a2ae 100%);
+  box-shadow: 0 1px 2px rgba(90, 50, 65, 0.35);
+}
+
+/* Phong bì đỏ đô, nắp gập lật lên khi mở */
+.envelope {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, #a8101a, #7a0710);
-  border: 2px solid #d9a94a;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 0 0 6px #8c0a12, inset 0 0 0 7px #d9a94a;
-  cursor: pointer;
+  aspect-ratio: 1.42;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, #8f1f2c, #7a1622);
+  box-shadow: 0 10px 25px rgba(80, 20, 30, 0.35);
+  perspective: 900px;
+}
+.envelope::before {
+  /* Hai vạt chéo phía dưới */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top right, transparent 49.6%, rgba(0, 0, 0, 0.12) 50%, transparent 50.6%),
+    linear-gradient(to top left, transparent 49.6%, rgba(0, 0, 0, 0.12) 50%, transparent 50.6%);
+}
+.envelope-flap {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 62%;
+  background: linear-gradient(180deg, #86202d, #9a2a37);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 1.1s ease-in-out;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.3));
+}
+.envelope.is-open .envelope-flap {
+  transform: rotateX(180deg);
 }
 
-/* Nền hộp quà: loang xanh nhạt trên nền trắng */
-.gift-card {
-  background:
-    radial-gradient(ellipse at 15% 10%, rgba(176, 196, 222, 0.45), transparent 55%),
-    radial-gradient(ellipse at 85% 30%, rgba(200, 210, 230, 0.5), transparent 50%),
-    radial-gradient(ellipse at 30% 85%, rgba(186, 200, 225, 0.45), transparent 55%),
-    linear-gradient(160deg, #ffffff, #eef2f8);
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@keyframes tap {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-4px, -4px) scale(0.9); }
 }
+.animate-tap { animation: tap 1.2s ease-in-out infinite; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.animate-bob { animation: bob 1.6s ease-in-out infinite; }
 
 /* Nút nhạc: sóng lan ra khi đang phát, nhún khi bấm */
 .music-ripple {
@@ -197,8 +187,9 @@ body {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .reveal-bounce.is-visible,
-  .curtain,
-  .falling,
+  .envelope-flap,
+  .animate-tap,
+  .animate-bob,
   .music-ripple,
   .animate-pulse-soft,
   .animate-swing,

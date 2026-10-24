@@ -1,6 +1,18 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Check, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Copy,
+  Download,
+  MapPin,
+  Pointer,
+  Volume2,
+  VolumeX,
+  X,
+} from "lucide-react";
 import { content } from "./content.js";
 import { images } from "./image.js";
 import "./index.css";
@@ -242,7 +254,7 @@ const CurtainContext = React.createContext(true);
 function Reveal({ as: Tag = "div", variant = "up", delay = 0, className = "", children }) {
   const ref = useRef(null);
   const [seen, setSeen] = useState(false);
-  /** Không chạy hiệu ứng khi rèm còn che — tránh phần đầu thiệp "diễn" trước khi khách thấy */
+  /** Không chạy hiệu ứng khi phong bì còn che — tránh phần đầu thiệp "diễn" trước khi khách thấy */
   const curtainOpen = React.useContext(CurtainContext);
   const visible = seen && curtainOpen;
 
@@ -281,175 +293,6 @@ function Reveal({ as: Tag = "div", variant = "up", delay = 0, className = "", ch
     </div>
   );
 }
-
-/** Tuyết ❆ và tim ❤ rơi khắp màn hình, giống mẫu lovecard */
-const FALLING = [
-  { kind: "snowflake", chars: ["❆", "❅"], every: 2500, burst: 8, size: [0.8, 0.6], duration: [15, 5] },
-  { kind: "heart", chars: ["❤"], every: 4000, burst: 6, size: [1.2, 1], duration: [10, 5] },
-];
-
-/** Bắt đầu khi `active` = true (rèm đã mở): rơi một đợt ngay, sau đó rơi đều */
-function FallingEffects({ active }) {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    if (!active) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-    let seq = 0;
-    const timeouts = new Set();
-
-    function spawn(cfg, delay = 0) {
-      const id = seq++;
-      const duration = cfg.duration[0] + Math.random() * cfg.duration[1];
-      const item = {
-        id,
-        kind: cfg.kind,
-        char: cfg.chars[Math.floor(Math.random() * cfg.chars.length)],
-        style: {
-          left: `${Math.random() * 100}%`,
-          fontSize: `${cfg.size[0] + Math.random() * cfg.size[1]}em`,
-          animationDuration: `${duration}s`,
-          animationDelay: `${delay}s`,
-          "--rand-x": Math.random(),
-        },
-      };
-      setItems((list) => [...list, item]);
-      const t = setTimeout(() => {
-        timeouts.delete(t);
-        setItems((list) => list.filter((x) => x.id !== id));
-      }, (duration + delay) * 1000);
-      timeouts.add(t);
-    }
-
-    FALLING.forEach((cfg) => {
-      for (let i = 0; i < cfg.burst; i++) spawn(cfg, Math.random() * 3);
-    });
-    const timers = FALLING.map((cfg) =>
-      setInterval(() => {
-        if (document.visibilityState !== "hidden") spawn(cfg);
-      }, cfg.every),
-    );
-    return () => {
-      timers.forEach(clearInterval);
-      timeouts.forEach(clearTimeout);
-    };
-  }, [active]);
-
-  return (
-    <div aria-hidden>
-      {items.map((x) => (
-        <span key={x.id} className={`falling falling-${x.kind}`} style={x.style}>
-          {x.char}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-/** Rèm đỏ che thiệp, chỉ kéo sang hai bên khi khách chạm — cú chạm này cũng mở khóa nhạc nền */
-function OpeningCurtain({ onOpen, onDone }) {
-  const [opening, setOpening] = useState(false);
-
-  const open = useCallback(() => {
-    setOpening((was) => {
-      if (!was) onOpen();
-      return true;
-    });
-  }, [onOpen]);
-
-  useEffect(() => {
-    if (!opening) return;
-    const t = setTimeout(onDone, 3000);
-    return () => clearTimeout(t);
-  }, [opening, onDone]);
-
-  return (
-    <div
-      className={`fixed inset-0 z-[160] mx-auto max-w-[460px] overflow-hidden ${opening ? "pointer-events-none" : ""}`}
-      onClick={open}
-      aria-hidden
-    >
-      <div className={`curtain curtain-left ${opening ? "is-open" : ""}`} />
-      <div className={`curtain curtain-right ${opening ? "is-open" : ""}`} />
-      <div
-        className={`absolute left-1/2 top-[38%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center transition-all duration-700 ${
-          opening ? "scale-50 opacity-0" : ""
-        }`}
-      >
-        <button type="button" className="seal animate-pulse-soft" aria-label="Mở thiệp">
-          <span className="font-display font-bold text-[64px] leading-none text-[#f3d27a]">囍</span>
-        </button>
-        <p className="mt-4 font-lora text-sm tracking-widest uppercase text-[#f8e4a6] drop-shadow">
-          Chạm để mở thiệp
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Họa tiết trang trí (SVG vẽ tay, không cần file ảnh) ---------- */
-
-function DoubleHappiness({ className = "" }) {
-  return (
-    <div
-      className={`flex items-center justify-center rounded-full border-2 border-primary/80 text-primary font-display font-bold ${className}`}
-      aria-hidden
-    >
-      囍
-    </div>
-  );
-}
-
-function Knot({ className = "" }) {
-  return (
-    <svg viewBox="0 0 40 90" className={className} aria-hidden>
-      <g fill="none" stroke="#e0782f" strokeWidth="2">
-        <line x1="20" y1="0" x2="20" y2="14" />
-        <path d="M20 14 L32 26 L20 38 L8 26 Z" />
-        <path d="M14 20 L26 32 M26 20 L14 32" />
-        <circle cx="8" cy="26" r="3" />
-        <circle cx="32" cy="26" r="3" />
-        <line x1="20" y1="38" x2="20" y2="48" />
-      </g>
-      <path d="M16 48 h8 l2 34 h-12 z" fill="#e0782f" opacity="0.85" />
-    </svg>
-  );
-}
-
-function Lantern({ className = "" }) {
-  return (
-    <svg viewBox="0 0 40 70" className={className} aria-hidden>
-      <line x1="20" y1="0" x2="20" y2="10" stroke="#b8860b" strokeWidth="1.5" />
-      <rect x="13" y="10" width="14" height="4" rx="1" fill="#b8860b" />
-      <ellipse cx="20" cy="32" rx="16" ry="18" fill="#d6262b" />
-      <path d="M20 14 Q8 32 20 50 M20 14 Q32 32 20 50" stroke="#a01519" strokeWidth="1.2" fill="none" />
-      <rect x="13" y="49" width="14" height="4" rx="1" fill="#b8860b" />
-      <path d="M17 53 h6 l1 14 h-8 z" fill="#d6262b" />
-    </svg>
-  );
-}
-
-/** Viền hoa văn vàng chạy dọc mép thiệp */
-function KeyBorder({ side }) {
-  return (
-    <div
-      className={`key-border pointer-events-none absolute inset-y-0 ${side === "left" ? "left-1.5" : "right-1.5"} w-4 z-20`}
-      aria-hidden
-    />
-  );
-}
-
-function GoldFrame({ src, alt, className = "", imgClass = "" }) {
-  return (
-    <div className={`gold-frame p-[6px] shadow-xl ${className}`}>
-      <div className="bg-white p-1.5">
-        <img src={src} alt={alt} className={`w-full object-cover ${imgClass}`} loading="lazy" />
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Các khối nội dung ---------- */
 
 function mapUrl(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
@@ -510,45 +353,198 @@ function useGuestName(fallback) {
   })[0];
 }
 
-function FamilySide({ side }) {
+/* ---------- Họa tiết trang trí (CSS / SVG vẽ tay, không cần file ảnh) ---------- */
+
+/** Hạt ngọc trai */
+function Pearl({ size = 14, className = "", style }) {
+  return <span className={`pearl ${className}`} style={{ width: size, height: size, ...style }} aria-hidden />;
+}
+
+/** Chuỗi ngọc trai rủ xuống, hạt nhỏ dần */
+function PearlString({ count = 12, from = 9, to = 5, className = "" }) {
   return (
-    <div className="text-center">
-      <h3 className="font-upright font-semibold text-[28px] text-foreground mb-1">{side.label}</h3>
-      {side.father && (
-        <p className="font-oswald font-medium text-[15px] uppercase">Bố: {side.father}</p>
-      )}
-      {side.mother && (
-        <p className="font-oswald font-medium text-[15px] uppercase mb-2">Mẹ: {side.mother}</p>
-      )}
-      {side.address && (
-        <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
-      )}
+    <div className={`flex flex-col items-center gap-[2px] ${className}`} aria-hidden>
+      {Array.from({ length: count }, (_, i) => (
+        <Pearl key={i} size={from - ((from - to) * i) / Math.max(1, count - 1)} />
+      ))}
     </div>
   );
 }
 
-function EventCard({ item, mapLabel }) {
+/** Hoa trắng năm cánh, nhụy ngọc trai */
+function Flower({ size = 64, className = "", style }) {
   return (
-    <div className="rounded-[28px] bg-primary text-primary-foreground px-6 py-7 text-center shadow-lg shadow-primary/25">
-      <h3 className="font-avo font-semibold uppercase text-lg mb-2">{item.title}</h3>
-      <p className="font-avo text-base mb-1">{item.time}</p>
-      <p className="font-avo font-semibold text-3xl mb-1">{item.date}</p>
-      <p className="italic text-xs opacity-85 mb-5">{item.lunar}</p>
-      <div className="space-y-5">
-        {item.places.map((place) => (
-          <div key={place.label}>
-            <p className="font-avo uppercase text-lg mb-1">{place.label}</p>
-            <p className="text-sm opacity-90 mb-3">{place.address}</p>
-            <a
-              href={mapUrl(place.mapQuery ?? place.address)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block rounded-full bg-white px-8 py-1.5 font-lora text-primary text-base shadow transition hover:scale-105"
-            >
-              {mapLabel}
-            </a>
-          </div>
+    <svg viewBox="0 0 100 100" width={size} height={size} className={className} style={style} aria-hidden>
+      <defs>
+        <radialGradient id="petal" cx="50%" cy="85%" r="90%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="60%" stopColor="#f6f2f3" />
+          <stop offset="100%" stopColor="#d9cfd3" />
+        </radialGradient>
+        <radialGradient id="core" cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="55%" stopColor="#efe4ea" />
+          <stop offset="100%" stopColor="#bba5b1" />
+        </radialGradient>
+      </defs>
+      <g style={{ filter: "drop-shadow(0 2px 2px rgba(80,40,50,.25))" }}>
+        {[0, 72, 144, 216, 288].map((r) => (
+          <path
+            key={r}
+            transform={`rotate(${r} 50 50)`}
+            d="M50 50 C30 38 30 10 50 6 C70 10 70 38 50 50 Z"
+            fill="url(#petal)"
+            stroke="#e3d9dd"
+            strokeWidth="1"
+          />
         ))}
+        <circle cx="50" cy="50" r="11" fill="url(#core)" />
+      </g>
+    </svg>
+  );
+}
+
+/** Dấu sáp vàng viền gợn sóng, hoa ở giữa */
+function WaxSeal({ className = "" }) {
+  const bumps = 14;
+  const d = Array.from({ length: bumps * 2 }, (_, i) => {
+    const a = (Math.PI * i) / bumps;
+    const r = i % 2 ? 44 : 48;
+    return `${i ? "L" : "M"}${(50 + r * Math.cos(a)).toFixed(2)} ${(50 + r * Math.sin(a)).toFixed(2)}`;
+  }).join(" ");
+  return (
+    <svg viewBox="0 0 100 100" className={className} aria-hidden>
+      <defs>
+        <radialGradient id="wax" cx="38%" cy="32%" r="75%">
+          <stop offset="0%" stopColor="#f6dc8c" />
+          <stop offset="45%" stopColor="#c9952f" />
+          <stop offset="100%" stopColor="#7d5410" />
+        </radialGradient>
+      </defs>
+      <path d={`${d} Z`} fill="url(#wax)" style={{ filter: "drop-shadow(0 3px 3px rgba(0,0,0,.35))" }} />
+      <circle cx="50" cy="50" r="33" fill="none" stroke="#8a5d15" strokeWidth="1.5" opacity=".7" />
+      <g fill="none" stroke="#7a520f" strokeWidth="2" strokeLinecap="round" opacity=".85">
+        {[0, 60, 120, 180, 240, 300].map((r) => (
+          <path key={r} transform={`rotate(${r} 50 50)`} d="M50 50 C44 42 44 32 50 28 C56 32 56 42 50 50" />
+        ))}
+        <circle cx="50" cy="50" r="4" />
+      </g>
+    </svg>
+  );
+}
+
+/* ---------- Màn phong bì ---------- */
+
+function Envelope({ c, guest, onOpen, onDone }) {
+  const [opening, setOpening] = useState(false);
+
+  const open = useCallback(() => {
+    setOpening((was) => {
+      if (!was) onOpen();
+      return true;
+    });
+  }, [onOpen]);
+
+  useEffect(() => {
+    if (!opening) return;
+    const t = setTimeout(onDone, 2200);
+    return () => clearTimeout(t);
+  }, [opening, onDone]);
+
+  return (
+    <div
+      className={`paper fixed inset-0 z-[160] mx-auto flex max-w-[460px] flex-col items-center overflow-hidden px-6 pt-[8vh] transition-[opacity,transform] duration-1000 delay-1000 ${
+        opening ? "pointer-events-none scale-105 opacity-0" : ""
+      }`}
+      onClick={open}
+    >
+      <p className="font-display text-[26px] uppercase text-hime">{c.kicker}</p>
+      <p className="mt-6 w-full border-b border-dotted border-hime pb-2 text-center font-names text-[38px] leading-tight text-hime">
+        {guest}
+      </p>
+
+      <div className="relative mt-[10vh] w-[82%]">
+        <div className={`envelope ${opening ? "is-open" : ""}`}>
+          <div className="envelope-flap" />
+        </div>
+        <button
+          type="button"
+          aria-label="Mở thiệp"
+          className={`absolute left-1/2 top-[52%] w-[30%] -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ${
+            opening ? "scale-75 opacity-0" : "animate-pulse-soft"
+          }`}
+        >
+          <WaxSeal className="w-full" />
+          <Pointer className="absolute -bottom-2 -right-3 h-9 w-9 text-white drop-shadow animate-tap" aria-hidden />
+        </button>
+        {/* Hoa & chuỗi ngọc hai góc */}
+        <div className="absolute -left-6 -top-4 flex flex-col items-center">
+          <Flower size={70} />
+          <Flower size={46} className="-mt-3 ml-8" />
+          <PearlString count={14} className="-mt-1 -ml-4" />
+        </div>
+        <div className="absolute -right-5 -top-6 flex flex-col items-center">
+          <div className="flex items-end">
+            <Flower size={66} />
+            <Flower size={40} className="-ml-2 -mt-6" />
+          </div>
+          <Flower size={40} className="-mt-2 ml-6" />
+          <div className="flex gap-2">
+            <PearlString count={18} />
+            <PearlString count={22} from={8} to={4} />
+          </div>
+        </div>
+      </div>
+
+      <p className="mt-[9vh] font-display text-[30px] text-hime">{c.dateLine}</p>
+      <p className="mt-2 font-display text-xs uppercase tracking-[0.3em] text-hime/60">{c.hint}</p>
+    </div>
+  );
+}
+
+/* ---------- Các khối nội dung ---------- */
+
+function FamilySide({ side, c, align }) {
+  return (
+    <div className={align === "right" ? "text-right" : "text-left"}>
+      <h3 className="mb-1 font-display text-[15px] font-bold uppercase text-hime">{side.label}</h3>
+      {side.father && <p className="font-display text-[15px] text-hime">{c.fatherLabel}: {side.father}</p>}
+      {side.mother && <p className="font-display text-[15px] text-hime">{c.motherLabel}: {side.mother}</p>}
+      {side.address && <p className="mt-2 font-display text-[14px] leading-snug text-hime/90">{side.address}</p>}
+    </div>
+  );
+}
+
+function EventRow({ item, mapLabel, flip }) {
+  const details = (
+    <div className={`min-w-0 flex-1 font-display text-[15px] leading-relaxed text-hime ${flip ? "text-right" : "text-left"}`}>
+      <p className="uppercase">{item.time}</p>
+      <p>{item.date}</p>
+      <p className="whitespace-nowrap text-[13px] italic text-hime/70">{item.lunar}</p>
+      <p>{item.place}</p>
+      <p className="text-[13px] text-hime/75">{item.address}</p>
+    </div>
+  );
+  const map = (
+    <a
+      href={mapUrl(item.mapQuery ?? item.address)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex shrink-0 flex-col items-center gap-2 whitespace-nowrap font-elegant text-[16px] font-semibold uppercase text-hime transition hover:scale-105"
+    >
+      <MapPin className="h-8 w-8 animate-bob fill-hime text-hime [&>circle]:fill-white [&>circle]:stroke-white" aria-hidden />
+      {mapLabel}
+    </a>
+  );
+  return (
+    <div>
+      <div className={`flex items-center gap-3 ${flip ? "flex-row-reverse" : ""}`}>
+        <span className="h-px flex-1 bg-hime/70" />
+        <h3 className="font-elegant text-[24px] uppercase leading-none text-hime">{item.title}</h3>
+      </div>
+      <div className={`mt-4 flex items-center justify-between gap-4 ${flip ? "flex-row-reverse" : ""}`}>
+        {details}
+        {map}
       </div>
     </div>
   );
@@ -569,13 +565,13 @@ function useCountdown(targetIso) {
 function Countdown({ c }) {
   const parts = useCountdown(c.target);
   return (
-    <div className="text-center">
-      <h2 className="font-lora text-3xl text-primary uppercase mb-5">{c.title}</h2>
-      <div className="grid grid-cols-4 gap-2.5">
+    <div className="text-center text-white">
+      <h2 className="font-elegant text-[30px] uppercase tracking-wide">{c.title}</h2>
+      <div className="mt-2 grid grid-cols-4">
         {parts.map((v, i) => (
-          <div key={c.labels[i]} className="rounded-2xl bg-primary text-primary-foreground py-3 shadow-lg shadow-primary/25">
-            <p className="font-avo font-semibold text-3xl leading-none tabular-nums">{String(v).padStart(2, "0")}</p>
-            <p className="font-avo text-xs uppercase mt-1.5 opacity-90">{c.labels[i]}</p>
+          <div key={c.labels[i]}>
+            <p className="font-display text-[34px] leading-tight tabular-nums">{String(v).padStart(2, "0")}</p>
+            <p className="font-display text-[15px]">{c.labels[i]}</p>
           </div>
         ))}
       </div>
@@ -583,48 +579,14 @@ function Countdown({ c }) {
   );
 }
 
-const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
-
-function MonthCalendar({ dateIso }) {
-  const [y, m, d] = dateIso.split("-").map(Number);
-  const daysInMonth = new Date(y, m, 0).getDate();
-  /** Lịch bắt đầu từ Thứ Hai */
-  const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
-  const cells = [
-    ...Array(lead).fill(null),
-    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-  ];
-
+/** Hàng ngọc trai viền mép khối ảnh */
+function PearlRow({ className = "" }) {
+  const sizes = [16, 22, 26, 20, 14, 12, 10];
   return (
-    <div>
-      <p className="text-center font-date text-xl text-primary uppercase mb-4">
-        Tháng {m} - {y}
-      </p>
-      <div className="grid grid-cols-7 bg-primary text-primary-foreground text-center font-semibold text-sm py-2.5">
-        {WEEKDAYS.map((w) => (
-          <span key={w}>{w}</span>
-        ))}
-      </div>
-      <div className="grid grid-cols-7 gap-y-2 text-center font-display text-lg mt-3">
-        {cells.map((day, i) =>
-          day === d ? (
-            <span key={i} className="relative flex items-center justify-center h-10">
-              <svg viewBox="0 0 24 24" className="absolute w-11 h-11 text-[#e0303a] animate-pulse-soft" aria-hidden>
-                <path
-                  fill="currentColor"
-                  opacity="0.85"
-                  d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 3 5 6.4 5c2 0 3.6 1.1 4.6 2.6C12 6.1 13.6 5 15.6 5 19 5 21.1 8.6 19.6 11.9 17.5 16.4 12 21 12 21z"
-                />
-              </svg>
-              <span className="relative font-bold text-white">{day}</span>
-            </span>
-          ) : (
-            <span key={i} className="flex items-center justify-center h-10">
-              {day ?? ""}
-            </span>
-          ),
-        )}
-      </div>
+    <div className={`pointer-events-none absolute flex items-center ${className}`} aria-hidden>
+      {sizes.map((s, i) => (
+        <Pearl key={i} size={s} className="-ml-1" />
+      ))}
     </div>
   );
 }
@@ -633,7 +595,7 @@ function RsvpForm({ c }) {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
-  const [form, setForm] = useState({ name: "", message: "", attend: "", guestCount: "" });
+  const [form, setForm] = useState({ name: "", message: "", attend: "", guestOf: "" });
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -642,17 +604,14 @@ function RsvpForm({ c }) {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!c.endpoint) {
-      console.warn("Chưa cấu hình rsvp.endpoint trong content.js — lời chúc không được lưu.", form);
+      console.warn("Chưa cấu hình rsvp.endpoint trong content.js — lời nhắn không được lưu.", form);
       setSent(true);
       return;
     }
     setSending(true);
     setError(null);
     try {
-      /**
-       * Google Apps Script không trả header CORS → gửi no-cors (không đọc được phản hồi).
-       * Lỗi mạng vẫn bị bắt ở catch.
-       */
+      /** Google Apps Script không trả header CORS → gửi no-cors (không đọc được phản hồi) */
       await fetch(c.endpoint, {
         method: "POST",
         mode: "no-cors",
@@ -660,7 +619,7 @@ function RsvpForm({ c }) {
           name: form.name.trim(),
           message: form.message.trim(),
           attend: !c.askAttend ? "" : form.attend === "yes" ? c.attendYes : c.attendNo,
-          guestCount: !c.askAttend ? "" : form.attend === "yes" ? form.guestCount || "1" : "0",
+          guestOf: c.askAttend ? form.guestOf : "",
         }),
       });
       setSent(true);
@@ -671,61 +630,77 @@ function RsvpForm({ c }) {
     }
   }
 
-  const inputCls =
-    "w-full bg-white px-3 py-2.5 font-lora text-[15px] text-foreground placeholder:text-foreground/50 outline-none focus:ring-2 focus:ring-white/60";
+  const box = "w-full rounded-[14px] border border-hime bg-white/60 px-3 py-2.5 font-sans text-[14px] text-hime outline-none placeholder:text-hime/70 focus:ring-2 focus:ring-hime/30";
 
   return (
-    <div className="rounded-[28px] bg-primary px-4 py-8 shadow-lg shadow-primary/25">
-      <h2 className="font-script text-[clamp(24px,8vw,36px)] leading-tight whitespace-nowrap text-white text-center mb-6">{c.title}</h2>
+    <div>
+      <p className="text-center font-display text-[17px] leading-relaxed text-hime">{c.intro}</p>
       {sent ? (
-        <p className="text-center text-white font-lora text-lg py-6">{c.thanks}</p>
+        <p className="py-8 text-center font-display text-lg text-hime">{c.thanks}</p>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <input required value={form.name} onChange={update("name")} placeholder={c.placeholders.name} className={inputCls} />
-          <input value={form.message} onChange={update("message")} placeholder={c.placeholders.message} className={inputCls} />
+        <form onSubmit={handleSubmit} className="mt-6 space-y-3">
+          <input required value={form.name} onChange={update("name")} placeholder={c.placeholders.name} className={box} />
+          <input value={form.message} onChange={update("message")} placeholder={c.placeholders.message} className={box} />
           {c.askAttend && (
-            <select
-              required
-              value={form.attend}
-              onChange={update("attend")}
-              className={`${inputCls} ${form.attend ? "" : "text-foreground/50"}`}
-            >
-              <option value="" disabled>
-                {c.placeholders.attend}
-              </option>
-              <option value="yes">{c.attendYes}</option>
-              <option value="no">{c.attendNo}</option>
-            </select>
+            <>
+              <div className={`${box} space-y-1`}>
+                {[
+                  ["yes", c.attendYes],
+                  ["no", c.attendNo],
+                ].map(([v, label]) => (
+                  <label key={v} className="flex cursor-pointer items-center gap-2">
+                    <input
+                      type="radio"
+                      name="attend"
+                      value={v}
+                      required
+                      checked={form.attend === v}
+                      onChange={update("attend")}
+                      className="accent-hime"
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+              <select
+                required
+                value={form.guestOf}
+                onChange={update("guestOf")}
+                className={`${box} appearance-none bg-[url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0h12L6 8z' fill='%239e3745'/%3E%3C/svg%3E")] bg-[length:10px] bg-[right_14px_center] bg-no-repeat`}
+              >
+                <option value="" disabled>
+                  {c.placeholders.guestOf}
+                </option>
+                {c.guestOfOptions.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+            </>
           )}
-          {c.askAttend && form.attend !== "no" && (
-            <input
-              type="number"
-              min={1}
-              max={20}
-              value={form.guestCount}
-              onChange={update("guestCount")}
-              placeholder={c.placeholders.guestCount}
-              className={inputCls}
-            />
-          )}
-          <div className="text-center pt-3">
-            {error && <p className="text-sm text-white/90 mb-3">{error}</p>}
-            <button
-              type="submit"
-              disabled={sending}
-              className="rounded-full bg-white px-12 py-2 font-bold uppercase text-sm text-primary shadow transition hover:scale-105 disabled:opacity-70 disabled:hover:scale-100 animate-pulse-soft"
-            >
-              {sending ? c.sending : c.submit}
-            </button>
-          </div>
+          {error && <p className="text-center text-sm text-hime">{error}</p>}
+          <button
+            type="submit"
+            disabled={sending}
+            className="w-full rounded-[14px] border border-hime bg-white/60 py-2 font-oswald text-[19px] uppercase text-hime transition hover:bg-hime hover:text-white disabled:opacity-70"
+          >
+            {sending ? c.sending : c.submit}
+          </button>
         </form>
       )}
     </div>
   );
 }
 
-function GiftAccount({ account, c }) {
+function GiftModal({ c, account, photo, onClose }) {
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   async function copy() {
     try {
@@ -738,87 +713,123 @@ function GiftAccount({ account, c }) {
   }
 
   return (
-    <div className="flex flex-col items-center text-center">
-      {account.qr && (
-        <img
-          src={account.qr}
-          alt={`Mã QR chuyển khoản ${account.bank} ${account.number}`}
-          className="w-36 h-36 rounded-xl border-2 border-foreground/80 bg-white p-1.5 shadow-md"
-        />
-      )}
-      <dl className="mt-3 space-y-1 font-lora font-bold text-[13px] uppercase text-primary">
-        <div><dt className="inline">CTK: </dt><dd className="inline">{account.holder}</dd></div>
-        <div><dt className="inline">STK: </dt><dd className="inline tracking-wide">{account.number}</dd></div>
-        <div><dt className="inline">NH: </dt><dd className="inline">{account.bank}</dd></div>
-      </dl>
-      <div className="mt-3 flex flex-wrap justify-center gap-2">
-        <button
-          type="button"
-          onClick={copy}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-foreground/45 px-4 py-1.5 font-lora text-sm text-white shadow transition hover:bg-foreground/60 animate-pulse-soft"
-        >
-          {copied ? <Check className="w-3.5 h-3.5" aria-hidden /> : <Copy className="w-3.5 h-3.5" aria-hidden />}
-          {copied ? c.copiedLabel : c.copyLabel}
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/55 px-4" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={account.button}
+        onClick={(e) => e.stopPropagation()}
+        className="paper relative max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-3xl px-5 pb-6 pt-5 shadow-2xl animate-pop"
+      >
+        <button type="button" onClick={onClose} aria-label="Đóng" className="absolute right-4 top-4 text-hime/70 hover:text-hime">
+          <X className="h-6 w-6" />
         </button>
-        {account.qr && (
-          /** Khách mở thiệp trên chính điện thoại thì không quét được — lưu ảnh rồi chọn trong app ngân hàng */
-          <a
-            href={account.qr}
-            download={`QR-${account.bank}-${account.number}.png`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-primary/40 px-4 py-1.5 font-lora text-sm text-primary transition hover:bg-primary hover:text-white"
-          >
-            <Download className="w-3.5 h-3.5" aria-hidden />
-            {c.saveQrLabel}
-          </a>
-        )}
+        <h2 className="px-6 text-center font-names text-[34px] leading-tight text-hime">{c.title}</h2>
+        <p className="text-center font-oswald text-lg uppercase text-hime/80">{account.button}</p>
+        <div className="my-4 h-px bg-hime/20" />
+        <div className="grid grid-cols-[1fr_1.15fr] items-center gap-3">
+          <img src={photo} alt="" className="aspect-[3/4] w-full rounded-2xl border-2 border-white object-cover shadow-lg" />
+          <div className="flex flex-col items-center text-center">
+            {account.qr && (
+              <img
+                src={account.qr}
+                alt={`Mã QR chuyển khoản ${account.bank} ${account.number}`}
+                className="h-36 w-36 rounded-xl border-2 border-hime/70 bg-white p-1.5 shadow-md"
+              />
+            )}
+            <dl className="mt-3 space-y-1 font-display text-[13px] font-bold uppercase text-hime">
+              <div><dt className="inline">CTK: </dt><dd className="inline">{account.holder}</dd></div>
+              <div><dt className="inline">STK: </dt><dd className="inline tracking-wide">{account.number}</dd></div>
+              <div><dt className="inline">NH: </dt><dd className="inline">{account.bank}</dd></div>
+            </dl>
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              <button
+                type="button"
+                onClick={copy}
+                className="inline-flex items-center gap-1.5 rounded-full bg-hime px-4 py-1.5 font-display text-sm text-white shadow transition hover:opacity-90"
+              >
+                {copied ? <Check className="h-3.5 w-3.5" aria-hidden /> : <Copy className="h-3.5 w-3.5" aria-hidden />}
+                {copied ? c.copiedLabel : c.copyLabel}
+              </button>
+              {account.qr && (
+                /** Khách mở thiệp trên chính điện thoại thì không quét được — lưu ảnh rồi chọn trong app ngân hàng */
+                <a
+                  href={account.qr}
+                  download={`QR-${account.bank}-${account.number}.png`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-hime/50 px-4 py-1.5 font-display text-sm text-hime transition hover:bg-hime hover:text-white"
+                >
+                  <Download className="h-3.5 w-3.5" aria-hidden />
+                  {c.saveQrLabel}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function GiftModal({ c, photo, onClose }) {
+/** Album: ảnh lớn bên phải, cột ảnh nhỏ bên trái; tự chuyển, vuốt / bấm mũi tên để đổi */
+function Album({ list }) {
+  const [idx, setIdx] = useState(0);
+  const thumbsRef = useRef(null);
+  const touchX = useRef(null);
+  const go = useCallback((d) => setIdx((i) => (i + d + list.length) % list.length), [list.length]);
+
   useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && onClose();
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [onClose]);
+    const t = setInterval(() => document.visibilityState !== "hidden" && go(1), 4000);
+    return () => clearInterval(t);
+  }, [go, idx]);
+
+  useEffect(() => {
+    const box = thumbsRef.current;
+    const el = box?.children[idx];
+    if (box && el) box.scrollTo({ top: el.offsetTop - box.clientHeight / 2 + el.clientHeight / 2, behavior: "smooth" });
+  }, [idx]);
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/55 px-4" onClick={onClose}>
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={c.title}
-        onClick={(e) => e.stopPropagation()}
-        className="gift-card relative w-full max-w-[400px] max-h-[90vh] overflow-hidden rounded-3xl shadow-2xl animate-pop"
-      >
-        <div className="relative max-h-[90vh] overflow-y-auto px-4 pt-5 pb-6">
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Đóng"
-            className="absolute right-4 top-4 text-foreground/70 hover:text-foreground"
-          >
-            <X className="w-6 h-6" />
-          </button>
-          <div className="flex justify-center">
-            <DoubleHappiness className="w-12 h-12 text-2xl bg-white/70" />
-          </div>
-          <h2 className="font-vibes text-[42px] leading-tight whitespace-nowrap text-primary text-center mt-1">{c.title}</h2>
-          <div className="h-px bg-foreground/15 my-4" />
-          <div className="grid grid-cols-[1fr_1.1fr] items-center gap-3">
-            <img
-              src={photo}
-              alt=""
-              className="w-full aspect-[3/4] object-cover rounded-2xl border-2 border-white shadow-lg"
-            />
-            <div className="space-y-6">
-              {c.accounts.map((account) => (
-                <GiftAccount key={account.number} account={account} c={c} />
-              ))}
-            </div>
-          </div>
+    <div className="grid grid-cols-[1fr_2.9fr] gap-2">
+      <div className="relative">
+        <div ref={thumbsRef} className="no-scrollbar absolute inset-0 space-y-2 overflow-y-auto">
+          {list.map((src, i) => (
+            <button
+              key={src + i}
+              type="button"
+              onClick={() => setIdx(i)}
+              className={`block w-full overflow-hidden transition ${i === idx ? "ring-2 ring-hime" : "opacity-80"}`}
+            >
+              <img src={src} alt="" className="aspect-square w-full object-cover" loading="lazy" />
+            </button>
+          ))}
         </div>
+        <ChevronUp className="pointer-events-none absolute left-1/2 top-1 h-6 w-6 -translate-x-1/2 text-white drop-shadow" aria-hidden />
+      </div>
+      <div
+        className="relative aspect-[2/3] overflow-hidden"
+        onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+        onTouchEnd={(e) => {
+          if (touchX.current == null) return;
+          const dx = e.changedTouches[0].clientX - touchX.current;
+          if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+          touchX.current = null;
+        }}
+      >
+        {list.map((src, i) => (
+          <img
+            key={src + i}
+            src={src}
+            alt=""
+            loading={i === 0 ? "eager" : "lazy"}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${i === idx ? "opacity-100" : "opacity-0"}`}
+          />
+        ))}
+        <button type="button" aria-label="Ảnh trước" onClick={() => go(-1)} className="absolute left-1 top-1/2 -translate-y-1/2 p-2 text-white drop-shadow">
+          <ChevronLeft className="h-8 w-8" />
+        </button>
+        <button type="button" aria-label="Ảnh sau" onClick={() => go(1)} className="absolute right-1 top-1/2 -translate-y-1/2 p-2 text-white drop-shadow">
+          <ChevronRight className="h-8 w-8" />
+        </button>
       </div>
     </div>
   );
@@ -827,182 +838,174 @@ function GiftModal({ c, photo, onClose }) {
 function WeddingPage() {
   const c = content;
   const guest = useGuestName(c.invitation.defaultGuest);
-  const [giftOpen, setGiftOpen] = useState(false);
-  const closeGift = useCallback(() => setGiftOpen(false), []);
-  /** opened: rèm bắt đầu kéo ra; curtainGone: rèm đã kéo xong, gỡ khỏi trang */
+  const [gift, setGift] = useState(null);
+  const closeGift = useCallback(() => setGift(null), []);
+  /** opened: phong bì bắt đầu mở; envelopeGone: đã mở xong, gỡ khỏi trang */
   const [opened, setOpened] = useState(false);
-  const [curtainGone, setCurtainGone] = useState(false);
+  const [envelopeGone, setEnvelopeGone] = useState(false);
   const handleOpen = useCallback(() => setOpened(true), []);
-  const handleCurtainDone = useCallback(() => setCurtainGone(true), []);
-  const [first, second] = c.hero.names;
+  const handleEnvelopeDone = useCallback(() => setEnvelopeGone(true), []);
+  const [first, second] = c.hero.shortNames;
+  const [groomName, brideName] = c.families.fullNames;
 
   return (
-    <div className="min-h-screen bg-[#f3eeee] text-foreground font-sans">
+    <div className="min-h-screen bg-[#e9e4df] font-display text-hime">
       <BackgroundMusic src={c.music.src} volume={c.music.volume} />
-      <FallingEffects active={opened} />
-      {!curtainGone && <OpeningCurtain onOpen={handleOpen} onDone={handleCurtainDone} />}
+      {!envelopeGone && <Envelope c={c.envelope} guest={guest} onOpen={handleOpen} onDone={handleEnvelopeDone} />}
 
       <CurtainContext.Provider value={opened}>
-      <main className="relative mx-auto max-w-[460px] bg-white overflow-hidden shadow-2xl">
-        <KeyBorder side="left" />
-        <KeyBorder side="right" />
-
-        <div className="px-8">
-          {/* Save the date */}
-          <section className="relative pt-10 pb-12 text-center">
-            <Reveal variant="down">
-              <h2 className="font-lora text-[32px] uppercase">{c.hero.subtitle}</h2>
-            </Reveal>
-            <Reveal variant="zoom" delay={150}>
-              <p className="font-script text-[clamp(28px,9vw,42px)] leading-tight whitespace-nowrap text-foreground mt-4">
-                {first} & {second}
-              </p>
-            </Reveal>
-            <Reveal variant="zoom" delay={300} className="relative mt-6 flex items-center justify-center">
-              <Knot className="absolute left-6 top-0 w-9 h-20 animate-swing" />
-              <DoubleHappiness className="w-14 h-14 text-3xl animate-pulse-soft" />
-              <Knot className="absolute right-6 top-0 w-9 h-20 animate-swing [animation-delay:0.8s]" />
-            </Reveal>
-            <Reveal delay={400}>
-              <p className="font-date text-[32px] mt-12 mb-6">{c.hero.dateLine}</p>
-            </Reveal>
-            <Reveal variant="left" delay={500}>
-              <GoldFrame src={images.hero} alt={`${first} & ${second}`} imgClass="aspect-[2/3]" />
-            </Reveal>
-            <Lantern className="absolute -right-2 bottom-0 w-9 h-16 animate-swing" />
-            <Lantern className="absolute right-6 bottom-8 w-7 h-12 animate-swing [animation-delay:0.6s]" />
+        <main className="paper relative mx-auto max-w-[460px] overflow-hidden shadow-2xl">
+          {/* Ảnh bìa */}
+          <section className="relative">
+            <img src={images.hero} alt={`${groomName} & ${brideName}`} className="aspect-[2/3] w-full object-cover" />
+            <div className="hero-fade absolute inset-x-0 bottom-0 h-[45%]" />
+            <div className="absolute inset-x-0 bottom-6 text-center">
+              <Reveal variant="zoom" delay={300}>
+                <p className="font-names text-[64px] leading-none text-hime">
+                  {first} <span className="text-[44px]">&amp;</span> {second}
+                </p>
+              </Reveal>
+              <Reveal delay={600}>
+                <p className="mt-5 font-display text-[16px] uppercase tracking-[0.45em] text-hime">{c.hero.subtitle}</p>
+                <p className="mt-1 font-display text-[20px] tracking-[0.3em] text-hime">{c.hero.dateLine}</p>
+              </Reveal>
+            </div>
+            <Pearl size={22} className="absolute -bottom-3 right-3" />
           </section>
 
           {/* Gia đình hai bên */}
-          <section className="pb-12 text-center">
-            <Reveal variant="down" className="mb-10">
-              <div className="flex flex-col items-center animate-swing">
-              <span className="w-px h-6 bg-primary/70" />
-              <DoubleHappiness className="w-16 h-16 text-3xl" />
-              <Knot className="w-8 h-16 -mt-1" />
-              </div>
-            </Reveal>
-            <div className="grid grid-cols-2 gap-4 mb-10">
+          <section className="relative px-5 pt-8 text-center">
+            <div className="grid grid-cols-2 gap-5">
               {c.families.sides.map((side, i) => (
                 <Reveal key={side.label} variant={i ? "right" : "left"}>
-                  <FamilySide side={side} />
+                  <FamilySide side={side} c={c.families} align={i ? "left" : "right"} />
                 </Reveal>
               ))}
             </div>
-            <Reveal variant="left">
-              <p className="font-script text-5xl">{c.families.fullNames[0]}</p>
+            <Pearl size={18} className="absolute left-3 top-2" />
+            <Reveal className="mt-8">
+              <p className="font-elegant text-[19px] uppercase text-hime">{c.invitation.kicker}</p>
+              <p className="mx-6 mt-2 border-b border-dotted border-hime/60 pb-1 font-names text-[38px] leading-tight text-hime">{guest}</p>
+              <p className="mt-3 font-elegant text-[19px] uppercase text-hime">{c.invitation.title}</p>
             </Reveal>
-            <Reveal variant="bounce" delay={300}>
-              <p className="font-script text-4xl my-1">&</p>
-            </Reveal>
-            <Reveal variant="right">
-              <p className="font-script text-5xl">{c.families.fullNames[1]}</p>
-            </Reveal>
-            <Reveal variant="up" className="mt-10">
-              <GoldFrame src={images.couple} alt="" imgClass="aspect-[4/5] object-top" />
-            </Reveal>
+            <div className="mx-auto mt-5 h-14 w-px bg-hime/70" />
+            <div className="py-6">
+              <Reveal variant="left">
+                <p className="font-names text-[56px] leading-tight text-hime">{groomName}</p>
+              </Reveal>
+              <Reveal variant="bounce" delay={300}>
+                <p className="font-names text-[40px] leading-none text-hime">&amp;</p>
+              </Reveal>
+              <Reveal variant="right">
+                <p className="font-names text-[56px] leading-tight text-hime">{brideName}</p>
+              </Reveal>
+            </div>
           </section>
 
-          {/* Lời mời */}
-          <section className="pb-8 text-center">
-            <Reveal>
-              <p className="font-avo uppercase text-xl text-foreground/75 font-medium">{c.invitation.kicker}</p>
-              <p className="font-guest text-[40px] text-primary mt-3 pb-1 border-b border-dashed border-foreground/30 mx-8">
-                {guest}
-              </p>
-              <p className="font-lora uppercase text-xl mt-4">{c.invitation.title}</p>
+          {/* Ảnh ngang "Nhà Có Hỷ" */}
+          <section className="relative">
+            <Reveal variant="zoom">
+              <div className="relative">
+                <img src={images.wide} alt="" className="aspect-[3/2] w-full object-cover object-[50%_25%]" loading="lazy" />
+                <p className="hy-text absolute left-3 top-1/2 -translate-y-1/2 font-names text-[54px] leading-[0.95] text-[#c8102e]">
+                  {c.invitation.photoText.split(" ").map((w) => (
+                    <span key={w} className="block odd:ml-0 even:ml-6">
+                      {w}
+                    </span>
+                  ))}
+                </p>
+              </div>
             </Reveal>
-            <div className="grid grid-cols-3 gap-1.5 mt-6 -mx-4">
-              {images.dateStrip.map((src, i) => (
-                <Reveal key={i} variant="up" delay={i * 150} className="relative border-[3px] border-[#ecc8c8]">
-                  <img src={src} alt="" className="w-full aspect-[3/5] object-cover" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
-                  <span className="absolute bottom-2 inset-x-0 text-center font-lora font-bold text-3xl text-white drop-shadow">
-                    {c.invitation.dateParts[i]}
-                  </span>
-                </Reveal>
-              ))}
-            </div>
+            <Pearl size={28} className="absolute -bottom-3 left-2" />
           </section>
 
           {/* Sự kiện */}
-          <section className="space-y-3 pb-12">
+          <section className="space-y-10 px-5 py-12">
             {c.events.items.map((item, i) => (
               <Reveal key={item.id} variant={i % 2 ? "right" : "left"}>
-                <EventCard item={item} mapLabel={c.events.mapLabel} />
+                <EventRow item={item} mapLabel={c.events.mapLabel} flip={i % 2 === 1} />
               </Reveal>
             ))}
           </section>
 
-          {/* Đếm ngược */}
-          {c.countdown && (
-            <section className="pb-12">
-              <Reveal variant="zoom">
-                <Countdown c={c.countdown} />
+          {/* Happy Wedding + đếm ngược */}
+          <section className="relative overflow-hidden px-5 pb-10 pt-12">
+            <img src={images.happyBg} alt="" className="absolute inset-0 h-full w-full scale-110 object-cover blur-[6px]" loading="lazy" />
+            <div className="absolute inset-0 bg-[#5c5c5c]/55" />
+            <PearlRow className="right-0 top-1" />
+            <div className="relative">
+              <Reveal variant="zoom" className="text-center text-white">
+                <p className="font-display text-[32px] leading-none">{c.happy.top}</p>
+                <p className="-mt-2 font-names text-[84px] leading-none">{c.happy.script}</p>
               </Reveal>
-            </section>
-          )}
-
-          {/* Lịch */}
-          {c.calendar.dateIso && (
-            <section className="pb-12 -mx-2">
-              <Reveal variant="right">
-                <h2 className="text-center font-lora text-3xl text-primary uppercase mb-1">{c.calendar.title}</h2>
-                <MonthCalendar dateIso={c.calendar.dateIso} />
+              <div className="mt-4 grid grid-cols-2 gap-6">
+                {images.happyPair.map((src, i) => (
+                  <Reveal key={src} variant={i ? "right" : "left"}>
+                    <img src={src} alt="" className="aspect-[2/3] w-full object-cover shadow-lg" loading="lazy" />
+                  </Reveal>
+                ))}
+              </div>
+              <Reveal>
+                <p className="mt-6 text-center font-display text-[13px] italic leading-relaxed text-white">{c.happy.quote}</p>
               </Reveal>
-            </section>
-          )}
+              {c.countdown && (
+                <Reveal variant="zoom" className="mt-6">
+                  <Countdown c={c.countdown} />
+                </Reveal>
+              )}
+            </div>
+            <PearlRow className="bottom-1 left-2 flex-row-reverse" />
+          </section>
 
           {/* Xác nhận + mừng cưới */}
-          <section className="pb-10 -mx-2">
+          <section className="relative px-5 pt-10">
             {c.rsvp.show && (
               <Reveal>
                 <RsvpForm c={c.rsvp} />
               </Reveal>
             )}
-            {c.gift.accounts.length > 0 && (
-              <Reveal className={`text-center ${c.rsvp.show ? "mt-8" : ""}`}>
-                <button
-                  type="button"
-                  onClick={() => setGiftOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-10 py-2.5 font-upright font-semibold text-lg uppercase text-white shadow-lg shadow-primary/30 animate-pulse-soft"
-                >
-                  <Gift className="w-5 h-5" aria-hidden />
-                  {c.gift.button}
-                </button>
-              </Reveal>
-            )}
+            <div className="mt-4 space-y-3">
+              {c.gift.accounts.map((account, i) => (
+                <Reveal key={account.number} variant={i % 2 ? "right" : "left"}>
+                  <button
+                    type="button"
+                    onClick={() => setGift(account)}
+                    className="w-full rounded-full bg-[#a5404c] py-2 font-oswald text-[24px] uppercase text-white shadow-[0_4px_10px_rgba(120,30,45,.35)] transition hover:scale-[1.02] active:scale-95"
+                  >
+                    {account.button}
+                  </button>
+                </Reveal>
+              ))}
+            </div>
+            <Pearl size={30} className="absolute -bottom-10 right-6" />
+            <Pearl size={14} className="absolute -bottom-3 right-12" />
           </section>
 
           {/* Album */}
-          <section className="grid grid-cols-2 gap-1.5 pb-3 -mx-2">
-            {images.album.map((src, i) => (
-              <Reveal key={i} variant={i % 2 ? "right" : "left"} className="border-2 border-[#e6e6e6]">
-                <img src={src} alt="" className="w-full aspect-[2/3] object-cover" loading="lazy" />
-              </Reveal>
-            ))}
+          <section className="px-3 pt-16">
+            <Reveal className="mb-5 text-center">
+              <h2 className="font-elegant text-[42px] uppercase leading-none text-hime">{c.album.title}</h2>
+              <p className="mt-1 font-elegant text-[26px] uppercase text-hime">{c.album.subtitle}</p>
+            </Reveal>
+            <Reveal variant="up">
+              <Album list={images.album} />
+            </Reveal>
           </section>
 
           {/* Thank you */}
-          <section className="relative -mx-2 overflow-hidden">
-            <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-            {/* Định vị ở lớp ngoài — Reveal quan sát lớp bọc của nó, lớp đó phải có chiều cao thật */}
-            <div className="absolute inset-x-0 bottom-0">
-              <Reveal variant="up" className="px-4 pb-14 text-center text-white">
-                <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>
-                <p className="text-sm leading-relaxed drop-shadow">{c.thanks.text}</p>
-                <p className="font-script text-4xl mt-4 drop-shadow-lg">
-                  {c.families.fullNames[0]} &amp; {c.families.fullNames[1]}
-                </p>
-              </Reveal>
-            </div>
+          <section className="px-6 pb-20 pt-6 text-center">
+            <Reveal>
+              <p className="font-display text-[17px] leading-relaxed tracking-wide text-hime">{c.thanks.text}</p>
+              <p className="mt-2 font-names text-[46px] leading-tight text-hime">{c.thanks.title}</p>
+              <p className="mt-3 font-names text-[30px] text-hime/80">
+                {groomName} &amp; {brideName}
+              </p>
+            </Reveal>
           </section>
-        </div>
-      </main>
+        </main>
       </CurtainContext.Provider>
 
-      {giftOpen && <GiftModal c={c.gift} photo={images.gift} onClose={closeGift} />}
+      {gift && <GiftModal c={c.gift} account={gift} photo={images.gift} onClose={closeGift} />}
     </div>
   );
 }

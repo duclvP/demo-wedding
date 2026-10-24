@@ -19,8 +19,12 @@ export default {
         lora: ['Lora', 'serif'],
         upright: ['"Cormorant Upright"', 'serif'],
         oswald: ['Oswald', 'sans-serif'],
-        /** Số trên lịch */
+        /** Chữ thường của mẫu Hime (Times) */
         display: ['Tinos', 'serif'],
+        /** Tên cô dâu chú rể, tên khách, "Wedding", "Thank you!" */
+        names: ['"Great Vibes"', 'cursive'],
+        /** Tiêu đề mảnh: tên sự kiện, Our Album (thay Beautique Display) */
+        elegant: ['"Cormorant Garamond"', 'serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -42,6 +46,8 @@ export default {
           foreground: 'hsl(var(--card-foreground))',
         },
         border: 'hsl(var(--border))',
+        /** Đỏ rượu vang chủ đạo của mẫu Hime — rgb(158, 55, 69) */
+        hime: '#9e3745',
       },
     },
   },

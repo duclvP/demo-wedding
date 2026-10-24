@@ -104,6 +104,19 @@ Chuỗi VietQR chứa `0006<BIN 6 số>01<2 số độ dài><STK>`. Ví dụ `�
 - `gift.accounts`: holder (IN HOA không dấu như app ngân hàng), number (không dấu cách), bank, qr. `[]` = ẩn nút mừng cưới.
 - `rsvp.endpoint: ''` cho cặp mới (endpoint cũ là Google Sheet của cặp khác). `rsvp.show: false` đang là mặc định.
 - `index.html`: `<title>`, description, og:*, twitter:* — tên theo thứ tự của bản đó + thứ, ngày chính.
+- **Ảnh xem trước link (bắt buộc)** — thiếu `og:image` thì Messenger/Zalo chỉ hiện chữ, không có ảnh. Tạo `public/images/og.jpg` 1200×630 từ ảnh `hero` (cắt ngang + tên ♥ tên + ngày):
+  ```bash
+  $K/og-image.sh public/images/<hero>.jpg <vị-trí-dọc-%> "Ngọc Hưng ♥ Thu Uyên" "Thứ Hai, 02 . 11 . 2026" public/images/og.jpg
+  ```
+  `vị-trí-dọc-%` ≈ 4–15 khi mặt nằm ở phần trên ảnh dọc. Read ảnh ra kiểm tra mặt không bị cắt, chữ không đè mặt. Thêm vào `<head>` sau `og:locale` — URL **tuyệt đối** theo domain Vercel của project (§11; chưa có project thì đoán `https://<tên-nhánh-bỏ-gạch-dưới>.vercel.app`, sau deploy kiểm tra lại alias):
+  ```html
+  <meta property="og:url" content="https://<domain>/" />
+  <meta property="og:image" content="https://<domain>/images/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:image" content="https://<domain>/images/og.jpg" />   <!-- sau twitter:description -->
+  ```
+  Messenger lưu bản xem trước cũ: sau deploy, dán link vào https://developers.facebook.com/tools/debug/ → "Scrape Again".
 - Sửa nhiều chuỗi một lần: file JSON `[[cũ, mới], …]` + script python assert mỗi chuỗi cũ xuất hiện đúng 1 lần, chạy `python3 -I`.
 
 ## 5. Nhánh

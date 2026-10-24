@@ -178,8 +178,8 @@ export const content = {
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */
   music: {
-    /** "Bài Này Không Để Đi Diễn" — Anh Tú Atus (khách chọn) */
-    src: '/music/bai-nay-khong-de-di-dien.mp3',
+    /** "Em Đồng Ý (I Do)" — Đức Phúc x 911 */
+    src: '/music/i-do.mp3',
     /** 0–1 */
     volume: 0.45,
   },

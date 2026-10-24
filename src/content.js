@@ -65,6 +65,14 @@ export const content = {
     ],
   },
 
+  /** Bộ đếm ngược — để null thì ẩn */
+  countdown: {
+    title: 'Đếm Ngược Ngày Vui',
+    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 09:00 02/11/2026 */
+    target: '2026-11-02T09:00:00+07:00',
+    labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
+  },
+
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch — để null thì ẩn lịch */

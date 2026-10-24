@@ -554,6 +554,35 @@ function EventCard({ item, mapLabel }) {
   );
 }
 
+function useCountdown(targetIso) {
+  const target = new Date(targetIso).getTime();
+  const calc = () => Math.max(0, target - Date.now());
+  const [ms, setMs] = useState(calc);
+  useEffect(() => {
+    const t = setInterval(() => setMs(calc()), 1000);
+    return () => clearInterval(t);
+  }, [target]);
+  const s = Math.floor(ms / 1000);
+  return [Math.floor(s / 86400), Math.floor((s % 86400) / 3600), Math.floor((s % 3600) / 60), s % 60];
+}
+
+function Countdown({ c }) {
+  const parts = useCountdown(c.target);
+  return (
+    <div className="text-center">
+      <h2 className="font-lora text-3xl text-primary uppercase mb-5">{c.title}</h2>
+      <div className="grid grid-cols-4 gap-2.5">
+        {parts.map((v, i) => (
+          <div key={c.labels[i]} className="rounded-2xl bg-primary text-primary-foreground py-3 shadow-lg shadow-primary/25">
+            <p className="font-avo font-semibold text-3xl leading-none tabular-nums">{String(v).padStart(2, "0")}</p>
+            <p className="font-avo text-xs uppercase mt-1.5 opacity-90">{c.labels[i]}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
 function MonthCalendar({ dateIso }) {
@@ -904,6 +933,15 @@ function WeddingPage() {
               </Reveal>
             ))}
           </section>
+
+          {/* Đếm ngược */}
+          {c.countdown && (
+            <section className="pb-12">
+              <Reveal variant="zoom">
+                <Countdown c={c.countdown} />
+              </Reveal>
+            </section>
+          )}
 
           {/* Lịch */}
           {c.calendar.dateIso && (

@@ -4,24 +4,24 @@
  */
 export const images = {
   /** Ảnh dọc lớn đầu thiệp (khung vàng) */
-  hero: '/images/studio-1.jpg',
+  hero: '/images/studio-2.jpg',
   /** Ảnh dưới phần gia đình (khung vàng) */
-  couple: '/images/vuon-1.jpg',
-  /** 3 ảnh dải ngày cưới: chú rể, ảnh đôi, cô dâu */
-  dateStrip: ['/images/chu-re.jpg', '/images/studio-2.jpg', '/images/co-dau.jpg'],
+  couple: '/images/ao-dai-1.jpg',
+  /** 3 ảnh dải ngày cưới: cô dâu, ảnh đôi, chú rể */
+  dateStrip: ['/images/co-dau.jpg', '/images/studio-6.jpg', '/images/studio-4.jpg'],
   /** Lưới ảnh 2 cột */
   album: [
-    '/images/vuon-2.jpg',
-    '/images/vuon-3.jpg',
-    '/images/voan-1.jpg',
-    '/images/voan-2.jpg',
-    '/images/voan-3.jpg',
-    '/images/ao-dai-1.jpg',
-    '/images/studio-2.jpg',
+    '/images/studio-1.jpg',
     '/images/studio-3.jpg',
+    '/images/vuon-1.jpg',
+    '/images/vuon-3.jpg',
+    '/images/ao-dai-3.jpg',
+    '/images/studio-5.jpg',
+    '/images/vuon-2.jpg',
+    '/images/phong-1.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/studio-3.jpg',
+  gift: '/images/studio-5.jpg',
   /** Ảnh mục Thank You */
-  thankYou: '/images/sanh-1.jpg',
+  thankYou: '/images/ao-dai-2.jpg',
 };

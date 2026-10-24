@@ -1,21 +1,22 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Thôn Xuân Me, Xã Liên Hòa, Tỉnh Phú Thọ';
-/** Ghim Google Maps tư gia nhà trai — nút "Xem chỉ đường" mở đúng vị trí này */
-const MAP_GROOM = '21.39711951615813,105.4964274124075';
-const ADDRESS_BRIDE = 'Thôn Bì La, Xã Tiên Lữ, Tỉnh Phú Thọ';
+const ADDRESS_GROOM = 'Số Nhà 333, Thôn Quýt, Xã Yên Bài, TP. Hà Nội';
+/** Địa chỉ cũ trước sáp nhập — để Google Maps tìm dễ hơn */
+const MAP_GROOM = 'Thôn Quýt, Yên Bài, Ba Vì, Hà Nội';
+const ADDRESS_BRIDE = 'Số Nhà 10, Thôn Hoắc Châu, Xã Cổ Đô, TP. Hà Nội';
+const MAP_BRIDE = 'Hoắc Châu, Cổ Đô, Ba Vì, Hà Nội';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Nguyễn Văn Hải',
-  mother: 'Phan Thị Lệ Thuỷ',
+  father: 'Nguyễn Chiến Công',
+  mother: 'Phùng Thị Nguyệt',
   address: ADDRESS_GROOM,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Bùi Quang Nam',
-  mother: 'Trần Thị Nguyệt',
+  father: 'Nguyễn Văn Thành',
+  mother: 'Phùng Thị Dũng',
   address: ADDRESS_BRIDE,
 };
 
@@ -23,43 +24,51 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Ngọc Hưng', 'Thu Uyên'],
-    dateLine: '02 . 11 . 2026',
+    names: ['Hồng Ngọc', 'Trường An'],
+    dateLine: '27 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Ngọc Hưng', 'Thu Uyên'],
+    fullNames: ['Hồng Ngọc', 'Trường An'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Thành Hôn',
+    title: 'Tham Dự Lễ Vu Quy',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['02', '11', '2026'],
+    dateParts: ['27', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'mung-cuoi',
-        title: 'Lễ Mừng Cưới',
-        time: '17:00 - Chủ Nhật',
-        date: '01. 11. 2026',
-        lunar: '( Tức Ngày 23 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM }],
+        id: 'tiec-vu-quy',
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        time: '16:00 - Thứ Sáu',
+        date: '27. 11. 2026',
+        lunar: '( Tức Ngày 19 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: MAP_BRIDE }],
+      },
+      {
+        id: 'vu-quy',
+        title: 'Lễ Vu Quy',
+        time: '11:30 - Thứ Bảy',
+        date: '28. 11. 2026',
+        lunar: '( Tức Ngày 20 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: MAP_BRIDE }],
       },
       {
         id: 'thanh-hon',
         title: 'Lễ Thành Hôn',
-        time: '09:00 - Thứ Hai',
-        date: '02. 11. 2026',
-        lunar: '( Tức Ngày 24 Tháng 09 Năm Bính Ngọ )',
+        time: '13:00 - Thứ Bảy',
+        date: '28. 11. 2026',
+        lunar: '( Tức Ngày 20 Tháng 10 Năm Bính Ngọ )',
         places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM }],
       },
     ],
@@ -68,8 +77,8 @@ export const content = {
   /** Bộ đếm ngược — để null thì ẩn */
   countdown: {
     title: 'Đếm Ngược Ngày Vui',
-    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 09:00 02/11/2026 */
-    target: '2026-11-02T09:00:00+07:00',
+    /** Giờ Việt Nam (+07:00) — Tiệc Mừng Lễ Vu Quy 16:00 27/11/2026 */
+    target: '2026-11-27T16:00:00+07:00',
     labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
   },
 
@@ -85,9 +94,9 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: 'https://script.google.com/macros/s/AKfycby0QrOLn3cawueiLHHhWu814VRFSdkh475WRePAVvYSTvrN3CkWH5s0-iBG5g28w0o/exec',
+    endpoint: '',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
-    show: true,
+    show: false,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
     askAttend: true,
     title: 'Gửi Lời Chúc',
@@ -114,11 +123,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'NGUYEN NGOC HUNG',
-        number: '6309072003',
-        bank: 'MB Bank',
+        holder: 'NGUYEN THI HONG NGOC',
+        number: '233087939',
+        bank: 'VPBank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-hung.png',
+        qr: '/images/qr-ngoc.png',
       },
     ],
   },

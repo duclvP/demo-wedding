@@ -169,27 +169,29 @@ Rồi `npm run build` (phải thành công), grep `dist/index.html` thấy đún
 
 ## 10. Commit
 
-Commit message tiếng Việt, kiểu `feat: thiệp <Tên> & <Tên> — bản nhà trai (issue #9)`. **Không push** trừ khi được yêu cầu. Không commit `.gitignore` / `.env.local` do Vercel CLI sinh ra.
+Commit message tiếng Việt, kiểu `feat: thiệp <Tên> & <Tên> — bản nhà trai (issue #9)`. Chưa cần push ngay sau commit, nhưng **trước mỗi lần deploy bắt buộc push** (§11). Không commit `.gitignore` / `.env.local` do Vercel CLI sinh ra.
 
 ## 11. Deploy Vercel (khi người dùng yêu cầu)
 
-Team: `leducuet-5765s-projects` (https://vercel.com/leducuet-5765s-projects). Mỗi thiệp **một project, tên = tên nhánh** (`gam_ngoc` → gamngoc.vercel.app). Deploy production thẳng từ code nhánh hiện tại trên máy (không cần push).
+Team: `leducuet-5765s-projects` (https://vercel.com/leducuet-5765s-projects). Mỗi thiệp **một project, tên = tên nhánh** (`gam_ngoc` → gamngoc.vercel.app). Vercel CLI deploy từ thư mục trên máy (không lấy từ GitHub), nên **bắt buộc commit + push nhánh lên GitHub trước khi deploy** — nếu không, code chỉ nằm trên một máy + Vercel, máy khác clone về không thấy (đã xảy ra: trang `/tao-link` và nhánh `thuhong_tronghoang_nha_gai` chỉ có trên máy Mac). Push không được (chưa đăng nhập `gh`, sai tài khoản) → **dừng, không deploy**, báo người dùng.
 
 ```bash
 V="npx -y vercel@65.0.0"     # máy không cài vercel global
 $V whoami                    # "Logged out" → chạy `$V login` NỀN, đọc log lấy link
                              # https://vercel.com/oauth/device?user_code=XXXX-XXXX, đưa người dùng bấm xác nhận
-git branch --show-current && git status --short          # đúng nhánh, đã commit
+git branch --show-current && git status --short          # đúng nhánh, sạch (đã commit hết)
+git push -u origin HEAD                                   # BẮT BUỘC trước khi deploy (gh đăng nhập tài khoản duclvP)
+git status -sb | head -1                                  # phải là "## <nhánh>...origin/<nhánh>", không có [ahead N]
 $V project ls --scope leducuet-5765s-projects             # đã có project của nhánh này chưa
 $V link --yes --project <tên-nhánh> --scope leducuet-5765s-projects   # tạo mới hoặc link project có sẵn
 $V deploy --prod --yes --scope leducuet-5765s-projects
 $V inspect <url-deploy> --scope leducuet-5765s-projects   # status Ready + Aliases → link chính
 ```
 
-Kiểm tra link chính trả 200 cho `/`, một link tên khách (`/co-lan`) và một ảnh QR; `<title>` đúng tên. Cập nhật thiệp đã deploy = commit rồi chạy lại `deploy --prod` ở đúng nhánh.
+Kiểm tra link chính trả 200 cho `/`, một link tên khách (`/co-lan`) và một ảnh QR; `<title>` đúng tên. Cập nhật thiệp đã deploy = commit → **push** → chạy lại `deploy --prod` ở đúng nhánh.
 
 Lưu ý: `vercel link` tự nối project vào repo GitHub với production branch `main` (giống các project cũ) — push lên `main` có thể deploy đè; nhắc người dùng nếu họ định push.
 
 ## 12. Báo cáo
 
-Tiếng Việt: bảng thông tin đã lấy; cách xếp ảnh; **các điểm tự quyết định / suy luận** (thứ tự tên, bản nhà trai/chung, họ suy ra, ảnh bỏ đi…); thông tin còn thiếu cần hỏi khách; commit hash từng nhánh; nhánh đang đứng; link Vercel nếu đã deploy.
+Tiếng Việt: bảng thông tin đã lấy; cách xếp ảnh; **các điểm tự quyết định / suy luận** (thứ tự tên, bản nhà trai/chung, họ suy ra, ảnh bỏ đi…); thông tin còn thiếu cần hỏi khách; commit hash từng nhánh; nhánh đang đứng; đã push chưa; link Vercel nếu đã deploy.

@@ -39,6 +39,14 @@ else:
   a=[x for x in (p.get('targets',{}).get('production',{}) or {}).get('alias',[]) if x.endswith('.vercel.app') and '-$SCOPE' not in x]
   print(min(a,key=len) if a else '')")
 if [ -z "$DOMAIN" ]; then
+  # Chưa có deploy production nào thành công (vd bị BLOCKED) → alias rỗng; hỏi thẳng danh sách domain của project
+  DOMAIN=$(curl -s -H "Authorization: Bearer $TOKEN" "https://api.vercel.com/v9/projects/$P/domains?teamId=$TEAM" \
+    | python3 -c "
+import json,sys; d=json.load(sys.stdin)
+a=[x['name'] for x in d.get('domains',[]) if x['name'].endswith('.vercel.app')]
+print(min(a,key=len) if a else '')" 2>/dev/null || true)
+fi
+if [ -z "$DOMAIN" ]; then
   DOMAIN="$P.vercel.app"
   curl -s -m 30 "https://$DOMAIN/" | grep -q DEPLOYMENT_NOT_FOUND \
     || die "Project mới nhưng $DOMAIN đã có người dùng → Vercel sẽ gán tên khác, og:image sai. Chọn tên project khác."

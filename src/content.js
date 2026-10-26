@@ -1,19 +1,21 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_BRIDE = 'Thôn Hải Phú, Xã Quỳnh Phú, Tỉnh Nghệ An';
-const ADDRESS_GROOM = 'TDP Khánh Trung - Ninh Khang 2, Phường Hoa Lư, Tỉnh Ninh Bình';
+const ADDRESS_BRIDE = 'Số nhà 35, Đường Tân Lập, Thôn Thống Nhất, Xã Nông Cống, Tỉnh Thanh Hoá';
+const ADDRESS_GROOM = 'Số nhà 274, Đường 520, Thôn Văn Phú, Xã Tượng Lĩnh, Tỉnh Thanh Hoá';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Trần Đức Tuệ',
-  mother: 'Trần Thị Thuỷ',
+  // TODO: chưa có tên bố mẹ cô dâu
+  father: null,
+  mother: null,
   address: ADDRESS_BRIDE,
 };
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Đinh Vạn Ka',
-  mother: 'Đinh Thị Nhàn',
+  // TODO: chưa có tên bố mẹ chú rể
+  father: null,
+  mother: null,
   address: ADDRESS_GROOM,
 };
 
@@ -21,21 +23,21 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Phương Thuý', 'Tuấn Anh'],
-    dateLine: '27 . 10 . 2026',
+    names: ['Minh Hiền', 'Đức Thành'],
+    dateLine: '20 . 12 . 2026',
   },
 
   /** Thẻ ảnh chú rể / cô dâu */
   couple: {
-    groom: { role: 'Chú rể', name: 'Tuấn Anh' },
-    bride: { role: 'Cô dâu', name: 'Phương Thuý' },
+    groom: { role: 'Chú rể', name: 'Đức Thành' },
+    bride: { role: 'Cô dâu', name: 'Minh Hiền' },
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Tên cô dâu & chú rể — dòng ký tên cuối mục Thank You */
-    fullNames: ['Phương Thuý', 'Tuấn Anh'],
+    fullNames: ['Minh Hiền', 'Đức Thành'],
   },
 
   invitation: {
@@ -44,30 +46,30 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Đến Dự Và Chia Sẻ Niềm Vui',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['27', '10', '2026'],
+    dateParts: ['20', '12', '2026'],
   },
 
   events: {
     mapLabel: 'Xem vị trí',
     items: [
       {
-        id: 'vu-quy',
-        title: 'Tiệc Mừng Lễ Vu Quy',
-        time: '10:00 | Thứ Ba',
-        date: '27. 10. 2026',
-        lunar: '( Tức Ngày 18 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Hải Phú, Quỳnh Phú, Nghệ An' }],
+        id: 'tiec-cuoi',
+        title: 'Tiệc Mừng Cưới',
+        time: '17:00 | Thứ Bảy',
+        date: '19. 12. 2026',
+        lunar: '( Tức Ngày 11 Tháng 11 Năm Bính Ngọ )',
+        places: [
+          { label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Thống Nhất, Nông Cống, Thanh Hoá' },
+          { label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Văn Phú, Tượng Lĩnh, Nông Cống, Thanh Hoá' },
+        ],
       },
       {
-        id: 'ruoc-dau',
-        title: 'Lễ Rước Dâu',
-        time: '07:30 | Thứ Tư',
-        date: '28. 10. 2026',
-        lunar: '( Tức Ngày 19 Tháng 09 Năm Bính Ngọ )',
-        places: [
-          { label: 'Đón Dâu Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Hải Phú, Quỳnh Phú, Nghệ An' },
-          { label: 'Rước Về Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Ninh Khang, Hoa Lư, Ninh Bình' },
-        ],
+        id: 'thanh-hon',
+        title: 'Lễ Thành Hôn',
+        time: '09:00 | Chủ Nhật',
+        date: '20. 12. 2026',
+        lunar: '( Tức Ngày 12 Tháng 11 Năm Bính Ngọ )',
+        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Văn Phú, Tượng Lĩnh, Nông Cống, Thanh Hoá' }],
       },
     ],
   },
@@ -75,15 +77,15 @@ export const content = {
   /** Bộ đếm ngược — để null thì ẩn */
   countdown: {
     title: 'Đếm Ngược Ngày Vui',
-    /** Giờ Việt Nam (+07:00) — Tiệc Vu Quy 10:00 27/10/2026 */
-    target: '2026-10-27T10:00:00+07:00',
+    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 09:00 20/12/2026 */
+    target: '2026-12-20T09:00:00+07:00',
     labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
   },
 
   calendar: {
     title: 'Save The Date',
     /** Ngày khoanh tim trên lịch tháng ở đầu thiệp — để null thì ẩn lịch */
-    dateIso: '2026-10-27',
+    dateIso: '2026-12-20',
   },
 
   rsvp: {
@@ -121,11 +123,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'TRAN THI THUY',
-        number: '102000721630',
-        bank: 'VietinBank',
+        holder: 'LUONG THI HIEN',
+        number: '0001277112789',
+        bank: 'MB Bank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-vietinbank.png',
+        qr: '/images/qr-mbbank.png',
       },
     ],
   },

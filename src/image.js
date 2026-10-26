@@ -4,27 +4,27 @@
  */
 export const images = {
   /** Ảnh bìa tràn màn hình, mờ dần xuống nền xanh (tên + Save The Date đè lên nửa dưới) */
-  hero: '/images/studio-06.jpg',
+  hero: '/images/vay-1.jpg',
   /** Thẻ ảnh chú rể / cô dâu (bo góc, phủ tên) */
-  groom: '/images/studio-07.jpg',
-  bride: '/images/studio-02.jpg',
+  groom: '/images/chu-re.jpg',
+  bride: '/images/co-dau.jpg',
   /** 3 ảnh dải ngày cưới (chữ ngày / tháng / năm đè lên) */
-  dateStrip: ['/images/studio-03.jpg', '/images/studio-04.jpg', '/images/studio-07.jpg'],
+  dateStrip: ['/images/ao-1.jpg', '/images/ao-3.jpg', '/images/ao-5.jpg'],
   /** Ảnh dán băng keo dưới các thẻ sự kiện */
-  polaroid: '/images/studio-05.jpg',
+  polaroid: '/images/vay-4.jpg',
   /** Ảnh tròn cạnh nút mừng cưới */
-  circle: '/images/studio-12.jpg',
+  circle: '/images/ao-4.jpg',
   /** Album of Love — lưới 2 cột, số chẵn ảnh */
   album: [
-    '/images/studio-10.jpg',
-    '/images/studio-01.jpg',
-    '/images/studio-11.jpg',
-    '/images/studio-09.jpg',
-    '/images/studio-12.jpg',
-    '/images/studio-06.jpg',
+    '/images/vay-3.jpg',
+    '/images/ao-2.jpg',
+    '/images/ao-6.jpg',
+    '/images/nhan.jpg',
+    '/images/ao-7.jpg',
+    '/images/vay-1.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/studio-12.jpg',
+  gift: '/images/ao-4.jpg',
   /** Ảnh mục Thank You */
-  thankYou: '/images/studio-08.jpg',
+  thankYou: '/images/vay-2.jpg',
 };

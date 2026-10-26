@@ -152,7 +152,7 @@ export const content = {
   thanks: {
     title: 'Thank You',
     /** Lời cảm ơn của bố mẹ hai bên (thiệp do bố mẹ mời) */
-    text: 'Thay mặt gia đình hai họ, xin gửi lời cảm ơn sâu sắc nhất tới Quý khách đã đến chung vui và chúc phúc trong ngày trọng đại của hai con chúng tôi.\nVợ chồng tôi xin chân thành cảm ơn.',
+    text: 'Thay mặt gia đình hai họ, xin gửi lời cảm ơn sâu sắc nhất tới Quý khách đã đến chung vui và chúc phúc trong ngày trọng đại của hai con chúng tôi.\nVợ chồng tôi xin chân thành cảm ơn!',
     sign: 'Dương Quang Sơn - Nguyễn Thị Tuyết Nhài',
   },
 

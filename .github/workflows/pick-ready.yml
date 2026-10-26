@@ -1,0 +1,43 @@
+name: Nhận ticket Ready → In progress
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: "Số issue cần nhận (để trống = nhận tất cả ticket đang Ready)"
+        required: false
+        type: string
+
+env:
+  OWNER: duclvP
+  PROJECT_NUMBER: 1
+  GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+
+jobs:
+  pick:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chuyển ticket Ready sang In progress
+        run: |
+          set -euo pipefail
+          PROJECT_ID=$(gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json --jq .id)
+          FIELDS=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json)
+          FIELD_ID=$(jq -r '.fields[] | select(.name=="Status") | .id' <<<"$FIELDS")
+          TO_ID=$(jq -r '.fields[] | select(.name=="Status") | .options[] | select(.name=="In progress") | .id' <<<"$FIELDS")
+
+          ITEMS=$(gh project item-list "$PROJECT_NUMBER" --owner "$OWNER" --format json -L 200 \
+            | jq -c --arg n "${{ inputs.issue }}" \
+              '.items[] | select(.status=="Ready" and .content.number != null and ($n=="" or (.content.number|tostring)==$n))')
+
+          if [ -z "$ITEMS" ]; then echo "Không có ticket nào ở Ready."; exit 0; fi
+
+          while IFS= read -r item; do
+            ITEM_ID=$(jq -r .id <<<"$item")
+            NUM=$(jq -r .content.number <<<"$item")
+            TITLE=$(jq -r .content.title <<<"$item")
+            gh project item-edit --id "$ITEM_ID" --project-id "$PROJECT_ID" \
+              --field-id "$FIELD_ID" --single-select-option-id "$TO_ID"
+            gh issue comment "$NUM" --repo "${{ github.repository }}" \
+              --body "Đã nhận làm ticket này (Ready → In progress) từ GitHub Action."
+            echo "#$NUM $TITLE → In progress"
+          done <<<"$ITEMS"

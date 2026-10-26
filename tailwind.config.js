@@ -12,13 +12,14 @@ export default {
         vibes: ['"Great Vibes"', 'cursive'],
         /** Ed Drayton — chữ "Quý khách" */
         guest: ['"Imperial Script"', 'cursive'],
-        /** 1FTV VIP Askilon — ngày tháng */
-        date: ['Prata', 'serif'],
+        /** 1FTV VIP Askilon — ngày tháng (khách muốn chữ nhẹ nhàng hơn: Prata → Cormorant Garamond) */
+        date: ['"Cormorant Garamond"', 'serif'],
         /** UTM Avo — thẻ sự kiện, "Trân Trọng Kính Mời" */
         avo: ['Montserrat', 'sans-serif'],
-        lora: ['Lora', 'serif'],
+        /** Lora / Oswald của mẫu → Cormorant Garamond nét mảnh (khách muốn chữ nhẹ nhàng hơn) */
+        lora: ['"Cormorant Garamond"', 'serif'],
         upright: ['"Cormorant Upright"', 'serif'],
-        oswald: ['Oswald', 'sans-serif'],
+        oswald: ['"Cormorant Garamond"', 'serif'],
         /** Số trên lịch */
         display: ['Tinos', 'serif'],
       },

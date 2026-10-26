@@ -24,6 +24,8 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  /* Cormorant Garamond mặc định dùng số kiểu cổ — đổi sang số thẳng hàng */
+  font-variant-numeric: lining-nums;
 }
 
 /* Nền giấy mỹ thuật: trắng ngà + vân sợi mờ */

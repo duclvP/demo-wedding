@@ -587,7 +587,7 @@ function Countdown({ c }) {
       <div className="grid grid-cols-4 gap-2.5">
         {parts.map((v, i) => (
           <div key={c.labels[i]} className="rounded-2xl bg-primary text-white py-3 shadow-lg shadow-primary/25">
-            <p className="font-lora font-semibold text-3xl leading-none tabular-nums">{String(v).padStart(2, "0")}</p>
+            <p className="font-lora font-semibold text-3xl leading-none lining-nums tabular-nums">{String(v).padStart(2, "0")}</p>
             <p className="font-lora text-xs uppercase mt-1.5 opacity-90">{c.labels[i]}</p>
           </div>
         ))}

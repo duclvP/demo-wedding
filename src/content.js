@@ -105,13 +105,13 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: '',
+    endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
     /** Mã cặp đôi (duy nhất) — script dùng chung tự tạo Google Sheet riêng cho mỗi mã */
     coupleId: 'khong-thuy-duc-duy',
     /** Tên đặt cho Sheet */
     coupleName: 'Khổng Thủy & Đức Duy',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
-    show: false,
+    show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
     askAttend: true,
     title: 'Xác Nhận Tham Dự',

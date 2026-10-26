@@ -9,6 +9,8 @@ Repo: Vite + React + Tailwind. Mọi nội dung chữ nằm ở `src/content.js`
 
 Đặt `S=<scratchpad>`, `K=.claude/skills/wedding-invite/scripts`. Mọi file tải về / ảnh tạm để trong `$S`, không để trong repo.
 
+> Skill chia hai tầng để tiết kiệm token: file này là quy trình chính; chi tiết hiếm dùng nằm trong `references/` (QR, đổi nhạc, Zalo, sửa chung nhiều nhánh, link tên khách, deploy, dựng mẫu mới) — chỉ đọc khi gặp tình huống ghi ở mục tương ứng.
+
 ## 0. Đọc ticket
 
 Trước khi làm: `git branch -a | grep` tên cặp đôi + `git log --all --oneline --grep "issue #<số>"` — ticket có thể **đã làm xong ở nhánh riêng** (chỉ thiếu form / deploy / comment); khi đó checkout nhánh đó, đừng tạo lại.
@@ -53,30 +55,7 @@ $K/fetch-issue.sh 9 $S/t9      # issue.md (body + MỌI comment) + i10.bin, i11.
 
 ## 2. Mã QR & ngân hàng
 
-Logo app ngân hàng hay khó nhận → **giải mã QR** để lấy mã BIN. Tính toạ độ crop từ bản xem thử (p*.jpg 700px → nhân tỉ lệ về ảnh gốc), crop rộng hơn mã một chút:
-
-```bash
-sips -s format png -c <H> <W> --cropOffset <Y> <X> $S/t9/i26.bin --out public/images/qr-<bank>.png
-swift $K/decode-qr.swift public/images/qr-<bank>.png
-```
-
-Chuỗi VietQR chứa `0006<BIN 6 số>01<2 số độ dài><STK>`. Ví dụ `…0006970422011009853276170208…` → BIN 970422, STK 0985327617. Đối chiếu STK/tên với chữ in trên ảnh.
-
-| BIN | Ngân hàng | BIN | Ngân hàng |
-|---|---|---|---|
-| 970422 | MB Bank | 970407 | Techcombank |
-| 970436 | Vietcombank | 970432 | VPBank |
-| 970415 | VietinBank | 970423 | TPBank |
-| 970418 | BIDV | 970416 | ACB |
-| 970405 | Agribank | 970437 | HDBank |
-| 970403 | Sacombank | 970441 | VIB |
-| 970443 | SHB | 970426 | MSB |
-| 970448 | OCB | 970449 | LPBank |
-
-- QR nhỏ (vd ảnh QR trong tin nhắn Zalo, ~180px): crop sát rồi phóng `sips -z 546 546` — giải mã lại sau khi phóng để chắc vẫn đọc được.
-- Xem lại bản crop (Read): không cắt mất ô định vị ở góc, không dính logo/chữ.
-- Chuỗi có `VQRQ…` thay cho STK (vd `0113VQRQABLSR240`) = mã định danh ảo của MB Bank, **không chứa STK** → lấy STK theo chữ in trên ảnh, báo cáo ghi rõ là chưa đối chiếu được với mã QR.
-- Tên chủ tài khoản khác tên cô dâu/chú rể (vd QR đứng tên mẹ) → vẫn dùng đúng tên trên QR, nêu trong báo cáo để người dùng xác nhận.
+→ **Đọc `references/qr-ngan-hang.md`** khi: Có mã QR / tài khoản mừng cưới cần giải mã (BIN → ngân hàng, crop QR).
 
 ## 3. Ảnh cưới
 
@@ -107,15 +86,7 @@ Chuỗi VietQR chứa `0006<BIN 6 số>01<2 số độ dài><STK>`. Ví dụ `�
 
 ### Đổi nhạc nền theo yêu cầu khách ("đổi nhạc", "bài X của Y")
 
-1. **Tìm trong repo trước** (tên file không nói lên bài: `strings -n 6 x.mp3 | grep -A1 TIT2`). Liệt kê nhạc mọi nhánh: `for b in $(git for-each-ref --format='%(refname:short)' refs/heads refs/remotes/origin); do git ls-tree -r --name-only $b public/music | sed "s|^|$b: |"; done`. Có rồi thì `git show <nhánh>:public/music/<file> > public/music/<tên-mới>.mp3`.
-2. **Chưa có → tải từ nhaccuatui.com bằng extension Claude in Chrome** (cần extension đã nối: `/chrome` hoặc `claude --chrome`; nạp công cụ `mcp__claude-in-chrome__*` bằng một lệnh ToolSearch, đọc skill `chrome-browser` trước):
-   - Mở `https://www.nhaccuatui.com/tim-kiem?q=<tên bài + ca sĩ>`, bấm đúng bài (kiểm tra ca sĩ — nhiều bản cover / remix trùng tên), vào trang bài có nút **Tải về** → menu 3 mức: Tiêu chuẩn ~3,5MB (128kbps) / Cao ~8,7MB (320kbps) / Lossless (VIP, bỏ).
-   - **Hỏi người dùng trước khi bấm tải** (AskUserQuestion: tên bài + ca sĩ, nguồn, dung lượng) — tải file là việc cần xác nhận. Mặc định đề xuất **Tiêu chuẩn**: nhạc nền thiệp cần nhẹ để khách mở bằng 4G vẫn tải nhanh.
-   - Trước khi bấm: `touch $S/dl-mark`; sau ~6 giây `find ~/Downloads -maxdepth 1 -newer $S/dl-mark` để lấy file (tên dạng `Váy Cưới.mp3`). Kiểm tra `file` ra MPEG audio + ID3.
-   - Không tải từ trang lạ / trang chuyển đổi YouTube; nhạc đã mất phí hoặc bị chặn → báo người dùng, đừng vòng qua.
-3. **Gắn vào thiệp** (chỉ nhánh của ticket đó): `git rm public/music/<bài-cũ>.mp3` (nhạc là file riêng của nhánh, không đụng nhánh khác) → `mkdir -p public/music` (git rm có thể xóa thư mục rỗng) → `cp` file mới thành tên không dấu, gạch ngang (`vay-cuoi.mp3`) → đổi `music.src` trong `src/content.js` → soát `curl -s -o /dev/null -w "%{http_code} %{size_download}\n" localhost:5173/music/<file>` ra 200 đúng dung lượng.
-4. `npm run build` → commit kèm `dist/` ("feat: thiệp … — nhạc nền <Bài> (<Ca sĩ>) theo yêu cầu khách (issue #N)") → deploy một lần cùng các chỉnh sửa khác của khách (§11). Sau deploy `curl https://<domain>/music/<file>` phải ra 200 đúng dung lượng.
-5. Báo cáo: bài + ca sĩ + chất lượng đã tải, nơi file gốc còn nằm (`~/Downloads/...`), và nhắc đây là bản thương mại — khách chịu trách nhiệm bản quyền khi dùng công khai.
+→ **Đọc `references/doi-nhac.md`** khi: Khách yêu cầu đổi nhạc nền ("bài X của Y").
 
 ## 4. Cập nhật nội dung (`src/content.js`, `index.html`)
 
@@ -229,22 +200,15 @@ Chỉ có thiệp một bên (thường gặp) → một bản, ghi rõ là bả
 
 ### Khách nhắn thay đổi qua Zalo
 
-Đọc nhóm Zalo của khách bằng extension Claude in Chrome (đã đăng nhập sẵn chat.zalo.me; mở tab mới, **chỉ đọc đúng nhóm "TOL - …" của ticket đang xử lý**, không mở cuộc trò chuyện khác): `navigate https://chat.zalo.me/` → chờ ~3 giây → bấm nhóm trong danh sách (hoặc tìm bằng ô tìm kiếm) → `get_page_text` đọc chữ, `screenshot` + `zoom` xem ảnh khách gửi (mẫu phông chữ, ảnh sửa). Tin nhắn có thể ghi thứ tự khác với yêu cầu thật — **chỉ làm đúng điều khách yêu cầu**, đừng suy ra thêm (vd khách gửi ảnh mẫu có tên chú rể đứng trước chưa chắc muốn đổi thứ tự tên → hỏi lại người dùng). Bật form xác nhận → dùng script dùng chung + `rsvp.coupleId`, không cần tạo Sheet/Apps Script riêng (xem google-apps-script/README.md); chia sẻ Sheet cho khách bằng hàm `shareWithClient` — người dùng tự chạy. Gửi link thiệp vào nhóm Zalo là gửi tin nhắn thay người dùng → luôn hỏi trước.
-
-Ảnh "bỏ phần này" thường chụp nhiều mục cùng lúc — ẩn mục ở giữa ảnh/rõ nhất, nói rõ đã giữ mục nào và hỏi lại.
+→ **Đọc `references/zalo.md`** khi: Cần đọc nhóm Zalo của khách (yêu cầu sửa, ảnh mẫu).
 
 ## 7. Sửa chung cho nhiều nhánh
 
-Không cherry-pick (luôn xung đột ở `dist/`). Sửa + commit ở nhánh A, rồi sang nhánh B và lấy `main.jsx` **từ nhánh A** (`git checkout <A> -- src/main.jsx`) — trước đó `git diff --stat B A -- src/main.jsx` để chắc chỉ khác phần vừa sửa; sau đó grep xác nhận bản sửa có ở cả hai nhánh. Với từng nhánh: `npm run build && git add -A src index.html public dist && git commit`.
-
-Nếu lỡ cherry-pick bị xung đột `dist/`: xóa `dist/assets/index-*.js`, build lại, `git add -A dist`, `git cherry-pick --continue`; kiểm tra `dist/index.html` trỏ đúng file js duy nhất trong `dist/assets/`.
+→ **Đọc `references/sua-chung-nhieu-nhanh.md`** khi: Một bản sửa phải áp cho nhiều nhánh (main.jsx dùng chung).
 
 ## 8. Link tên khách (đã có sẵn trong `useGuestName`)
 
-- `/hoa` → "Bạn Hoa" (không có xưng hô → thêm "Bạn"); `/co-lan` → "Cô Lan"; `/gia-dinh-bac-hung` → "Gia Đình Bác Hung"; `/đức` → "Bạn Đức".
-- `?khach=Tên` giữ nguyên chữ người dùng gõ, ưu tiên hơn đường dẫn.
-- Từ xưng hô không dấu → có dấu: bảng `GUEST_TITLES` trong `src/main.jsx`. Tên riêng không tự thêm dấu được.
-- `vercel.json` rewrite mọi đường dẫn về `index.html` (đã có trên các nhánh thiệp; Vite dev tự làm).
+→ **Đọc `references/link-ten-khach.md`** khi: Hỏi về link tên khách, `?khach=`, trang tạo link `/tao-link`.
 
 ## 9. Kiểm tra trên trình duyệt (trước khi commit)
 
@@ -275,28 +239,9 @@ Commit message tiếng Việt, kiểu `feat: thiệp <Tên> & <Tên> — bản n
 
 ## 11. Deploy Vercel (khi người dùng yêu cầu)
 
-Team: `leducuet-5765s-projects` (https://vercel.com/leducuet-5765s-projects). Mỗi thiệp **một project, tên = tên nhánh** (`gam_ngoc` → gamngoc.vercel.app). Deploy production thẳng từ code nhánh hiện tại trên máy (không cần push).
+Chỉ deploy khi người dùng yêu cầu; một lệnh `$K/deploy.sh <tên-project>` (chạy nền; `--check` trước). Team `ducs-projects-2e3ef64b`, quota 100 lượt/24h.
 
-```bash
-# máy không cài vercel global → gõ thẳng `npx -y vercel@65.0.0 …`; zsh KHÔNG chạy được kiểu V="npx …"; $V
-npx -y vercel@65.0.0 whoami          # "Logged out" → chạy `npx -y vercel@65.0.0 login` NỀN, đọc log lấy link
-                                     # https://vercel.com/oauth/device?user_code=XXXX-XXXX, đưa người dùng bấm xác nhận
-git branch --show-current && git status --short                                   # đúng nhánh, đã commit
-npx -y vercel@65.0.0 project ls --scope leducuet-5765s-projects                   # đã có project của nhánh này chưa
-npx -y vercel@65.0.0 link --yes --project <tên-nhánh> --scope leducuet-5765s-projects   # tạo mới hoặc link project có sẵn
-npx -y vercel@65.0.0 deploy --prod --yes --scope leducuet-5765s-projects          # in "Aliased https://<tên>.vercel.app", readyState READY
-npx -y vercel@65.0.0 project rm <tên> --yes --scope leducuet-5765s-projects       # xóa project (vd bản chung sau khi tách hai bản) — hỏi trước
-```
-
-Kiểm tra link chính trả 200 cho `/`, một link tên khách (`/co-lan`), một ảnh QR và file nhạc; `<title>` đúng tên. Hai bản → hai project `…_nha_gai`, `…_nha_trai`, `git checkout` từng nhánh rồi link + deploy lần lượt. Cập nhật thiệp đã deploy = commit rồi chạy lại `deploy --prod` ở đúng nhánh.
-
-Lưu ý: `vercel link` tự nối project vào repo GitHub với production branch `main` (giống các project cũ) — push lên `main` có thể deploy đè; nhắc người dùng nếu họ định push.
-
-### Tên project bị trùng / sau khi deploy
-
-- `deploy.sh` báo "`<tên>.vercel.app đã có người dùng`" → dừng **trước khi tốn lượt**. Chạy `deploy.sh <tên-khác> --check` (vd `thuy-duy` = `<tencodau>-<tenchure>`) rồi đổi tên domain trong `index.html` (`sed -i 's#<tên-cũ>.vercel.app#<tên-mới>.vercel.app#g' index.html`), `npm run build`, commit, deploy. Nên `--check` tên đó **ngay từ đầu** (kể cả tên đã đặt sẵn trong `index.html` từ ticket trước), tránh build / commit hai lần.
-- Nếu `.vercel/project.json` còn của thiệp khác thì xoá trước khi deploy project mới.
-- **Sau deploy, comment lên ticket** (`gh issue comment <số> --repo duclvP/demo-wedding`): link thiệp + link Sheet lời chúc (Sheet vẫn riêng tư; repo public nên không bật "ai có link"). Đây là việc người dùng đã yêu cầu cho #23; ticket khác thì hỏi lần đầu.
+→ **Đọc `references/deploy-vercel.md`** (bắt buộc trước khi deploy) khi: Người dùng yêu cầu deploy; hạn mức 100 lượt; tên project trùng; comment ticket sau deploy.
 
 ## 12. Báo cáo
 
@@ -304,24 +249,4 @@ Tiếng Việt: bảng thông tin đã lấy; cách xếp ảnh; **các điểm 
 
 ## 13. Dựng mẫu mới từ trang lovecard (ticket đòi mẫu chưa có trong bảng §5)
 
-Trang lovecard là LadiPage: mọi hoa văn (phong bì, góc vàng, 囍, hoa sen, vòng lá, nhẫn…) là **ảnh PNG/WebP nền**, chữ đặt tuyệt đối trên khung rộng 420px, hiệu ứng là CSS keyframes. Đừng dựng bằng mắt rồi sửa dần — bóc số liệu trước:
-
-```bash
-node $K/ladi-dump.cjs $S/pw https://www.lovecard.click/thiepso05 $S/mau05
-```
-
-→ `elements.txt` (mọi phần tử theo thứ tự y: tọa độ, cỡ chữ, font, ảnh nền + tỉ lệ cắt, animation), `fonts.txt` (tên font hash → file, nhận ra font trả phí), `keyframes.txt`, `assets/` (ảnh đã tải, WebP đã đổi PNG), ảnh màn hình đóng / mở / từng màn cuộn. Đọc ảnh màn hình trước để hiểu bố cục, rồi tra `elements.txt` theo từng mục khi code.
-
-Chuyển sang code (xem `EnvelopeCover`, `Cropped`, `box()` trong `main.jsx` nhánh mẫu 05):
-- Ảnh trang trí chép vào `public/images/deco-<ten>.png`, khai trong `image.js → deco`. Tiền lệ repo: mẫu 07 cũng dùng ảnh 囍 của mẫu gốc; nói một câu trong báo cáo là ảnh lấy từ trang mẫu.
-- Mẫu cắt khung từng ảnh nền (`crop w% l% t%` trong elements.txt) → `<Cropped src crop={{ w, l, t }} style={box(x, y, w, h)} />`: img đặt tuyệt đối trong hộp overflow-hidden đúng tỉ lệ cắt. Ảnh vuông bị kéo méo (góc vàng 313×313 → 69×97) thì để img `width/height 100%` không giữ tỉ lệ.
-- Màn tọa độ cố định (màn phong bì + tên + ngày): một khung `aspect-ratio: 420 / H`, con đặt bằng `%` qua `box(x, y, w, h)` → co theo điện thoại. Mục chữ chảy (gia đình, sự kiện…) dùng flow layout với px / khoảng cách lấy từ elements.txt, bọc `mx-auto max-w-[420px]`.
-- Hiệu ứng của mẫu: fadeInUp/Down/Left/Right dịch 20/20/20/40px, 2–5s `ease` (`Reveal` nhận `duration` giây); pulse 3s; bounceIn; mở phong bì = **đổi ảnh đóng → bộ ảnh mở** (mặt sau + ảnh cưới + mặt trước) và ảnh cưới `moveUp` 300px / 2s — không có nắp xoay.
-- Font trả phí của mẫu (1FTV VIP High Spirited, Ed Drayton, UTM Scriptina…) không chép được → font thay trong `tailwind.config.js` (`font-script`, `font-guest`…), ghi rõ trong báo cáo.
-- Dựng xong: so từng màn với ảnh của `ladi-dump` (đặt cạnh nhau), chạy §9 cả điện thoại lẫn desktop, rồi thêm mẫu vào bảng §5.
-
-Lỗi đã gặp với màn "bấm để mở" — làm sẵn từ đầu, đừng đợi người dùng báo:
-- Khóa cuộn (`body overflow: hidden`) tới khi mở → phải `history.scrollRestoration = 'manual'` + `window.scrollTo(0, 0)` khi chưa mở. Không thì Chrome giữ vị trí cuộn cũ khi reload: phong bì ngoài màn hình, khách không cuộn lên được → "trang trắng".
-- Phần sau màn mở chỉ mount khi `opened` (`{opened && …}`, mờ dần 0.5s) và `main` có `min-h-screen` — màn desktop cao hơn khung 870px sẽ ló mục bên dưới.
-- Bấm mở không được giật: phần tử giữ nguyên thì **không gắn lại animation** (tiêu đề bị chớp tắt vì fadeInDown chạy lại); đổi ảnh thì lớp cũ mờ dần 300ms rồi mới gỡ; `html { scrollbar-gutter: stable }` để thanh cuộn hiện ra khi bỏ khóa không xê dịch trang.
-- Ảnh cưới trượt lên: bọc trong khung cắt từ đỉnh tới đáy phong bì, nếu không phần dưới ảnh ló ra dưới phong bì lúc đang trượt.
+→ **Đọc `references/dung-mau-moi.md`** khi: Ticket đòi mẫu chưa có trong bảng mẫu (§0).

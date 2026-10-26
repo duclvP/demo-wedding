@@ -11,6 +11,8 @@ Repo: Vite + React + Tailwind. Mọi nội dung chữ nằm ở `src/content.js`
 
 ## 0. Đọc ticket
 
+Trước khi làm: `git branch -a | grep` tên cặp đôi + `git log --all --oneline --grep "issue #<số>"` — ticket có thể **đã làm xong ở nhánh riêng** (chỉ thiếu form / deploy / comment); khi đó checkout nhánh đó, đừng tạo lại.
+
 Board: https://github.com/users/duclvP/projects/1 (kanban). Đọc cột **Ready**:
 
 ```bash
@@ -123,7 +125,13 @@ Chuỗi VietQR chứa `0006<BIN 6 số>01<2 số độ dài><STK>`. Ví dụ `�
 - `invitation.title`, `invitation.dateParts`, `hero.dateLine`, `calendar.dateIso`.
 - `events.items`: theo thứ tự thời gian; mỗi sự kiện có `places[]` (nút chỉ đường theo `mapQuery ?? address`; `mapQuery` = địa chỉ cũ trước sáp nhập / tên địa danh dễ tìm).
 - `gift.accounts`: holder (IN HOA không dấu như app ngân hàng), number (không dấu cách), bank, qr. `[]` = ẩn nút mừng cưới.
-- `rsvp.endpoint: ''` cho cặp mới (endpoint cũ là Google Sheet của cặp khác). Khi bật form: dùng URL script dùng chung (xem google-apps-script/README.md, hỏi người dùng URL `/exec` nếu chưa biết) + đặt `rsvp.coupleId` (slug duy nhất) và `rsvp.coupleName`; Sheet riêng tự tạo, không cần Apps Script mới. `rsvp.show: false` đang là mặc định.
+- `rsvp` (form lời chúc / xác nhận) — **dùng script Google dùng chung, đừng tạo Sheet / Apps Script riêng** (chi tiết: google-apps-script/README.md):
+  - `endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec'` (URL chung, tài khoản leducuet@gmail.com; endpoint của thiệp cũ là Sheet riêng của cặp khác → không copy).
+  - `coupleId`: slug duy nhất mỗi thiệp (vd `khong-thuy-duc-duy`), `coupleName`: tên Sheet (vd `Khổng Thủy & Đức Duy`) — **không đổi coupleId sau khi đã có lời chúc** (mất liên kết với Sheet cũ). `show: true` mới hiện form.
+  - Sheet riêng tự tạo ở lời chúc đầu tiên (thư mục Drive "Thiệp cưới - Lời chúc"), mặc định **chỉ chủ tài khoản mở được**. Muốn tạo ngay không chờ khách: gửi thử `curl -s -X POST "$URL" --data-urlencode couple=<id> --data-urlencode coupleName=<tên> --data-urlencode name="TEST" --data-urlencode message=thử` (trả 302 là đã chạy — `curl -L` ra 404 là bình thường vì gọi lại POST), rồi nhắc người dùng xoá dòng TEST.
+  - Nhánh cũ chưa có `coupleId` trong `RsvpForm` (`src/main.jsx`): `if (!c.endpoint || !c.coupleId)` và thêm `couple: c.coupleId, coupleName: c.coupleName || ""` vào `URLSearchParams`; thêm `coupleId`, `coupleName` vào `rsvp` trong `content.js`.
+  - Lấy link Sheet gửi khách: Chrome extension → `drive.google.com/drive/search?q=Lời chúc - <tên>` → ID trong `data-id`; link `https://docs.google.com/spreadsheets/d/<ID>/edit`. Chia sẻ cho khách bằng hàm `shareWithClient` trong Apps Script (điền email khách; không bật "ai có link" cho repo public) — việc cấp quyền tài khoản Google do người dùng tự bấm (popup OAuth nằm ngoài tab extension điều khiển).
+  - Cần triển khai lại script (URL mới): dán Code.gs vào script.google.com bằng `monaco.editor.getModels()[0].setValue(code)` qua javascript_tool, Triển khai → Ứng dụng web → Bất kỳ ai; popup cấp quyền người dùng tự bấm. Sửa script cũ: Quản lý bản triển khai → phiên bản mới để giữ URL.
 - Form lời chúc của **mọi mẫu** phải gửi đúng các trường `name`, `message`, `attend`, `guestCount` (số người; không đi = 0, bỏ trống = 1) — `google-apps-script/Code.gs` chuẩn chỉ đọc 4 trường này (cột Tên / Lời chúc / Tham dự / Số người). Mẫu dựng mới mà thêm ô khác (vd "khách mời của ai" của mẫu Hime — đang ẩn bằng `guestOfOptions: []`) thì script không lưu, khách phải sửa Apps Script → tránh thêm.
 - `index.html`: `<title>`, description, og:*, twitter:* — tên theo thứ tự của bản đó + thứ, ngày chính.
 - **Ngày ở xem trước link / Save The Date có thể khác ngày Lễ Thành Hôn**: khách được mời dự tiệc (vd Lễ Mừng Cưới tư gia CN 01/11) chứ không phải lễ chính (T2 02/11). Mỗi chỗ ngày là một trường riêng — chỉ sửa đúng chỗ khách khoanh, báo lại các chỗ còn lại:
@@ -283,6 +291,12 @@ npx -y vercel@65.0.0 project rm <tên> --yes --scope leducuet-5765s-projects    
 Kiểm tra link chính trả 200 cho `/`, một link tên khách (`/co-lan`), một ảnh QR và file nhạc; `<title>` đúng tên. Hai bản → hai project `…_nha_gai`, `…_nha_trai`, `git checkout` từng nhánh rồi link + deploy lần lượt. Cập nhật thiệp đã deploy = commit rồi chạy lại `deploy --prod` ở đúng nhánh.
 
 Lưu ý: `vercel link` tự nối project vào repo GitHub với production branch `main` (giống các project cũ) — push lên `main` có thể deploy đè; nhắc người dùng nếu họ định push.
+
+### Tên project bị trùng / sau khi deploy
+
+- `deploy.sh` báo "`<tên>.vercel.app đã có người dùng`" → dừng **trước khi tốn lượt**. Chạy `deploy.sh <tên-khác> --check` (vd `thuy-duy` = `<tencodau>-<tenchure>`) rồi đổi tên domain trong `index.html` (`sed -i 's#<tên-cũ>.vercel.app#<tên-mới>.vercel.app#g' index.html`), `npm run build`, commit, deploy. Nên `--check` tên đó **ngay từ đầu** (kể cả tên đã đặt sẵn trong `index.html` từ ticket trước), tránh build / commit hai lần.
+- Nếu `.vercel/project.json` còn của thiệp khác thì xoá trước khi deploy project mới.
+- **Sau deploy, comment lên ticket** (`gh issue comment <số> --repo duclvP/demo-wedding`): link thiệp + link Sheet lời chúc (Sheet vẫn riêng tư; repo public nên không bật "ai có link"). Đây là việc người dùng đã yêu cầu cho #23; ticket khác thì hỏi lần đầu.
 
 ## 12. Báo cáo
 

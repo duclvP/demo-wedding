@@ -1,23 +1,37 @@
-# Nhận lời chúc qua Google Sheets + email
+# Nhận lời chúc qua Google Sheets + email (một script dùng chung cho mọi thiệp)
 
-Làm một lần, khoảng 5 phút.
+Mọi thiệp gửi về **cùng một URL**. Script tự tạo một Google Sheet **riêng cho từng cặp đôi**
+(trong thư mục Drive "Thiệp cưới - Lời chúc") ở lời chúc đầu tiên, nên khách này không thấy được dữ liệu khách khác.
 
-1. Mở bảng tính [Lời chúc](https://docs.google.com/spreadsheets/d/15V6U85vRkfvhvhlzQ2pR2GL2NMnvsB8KUIsOOy04OAE/edit)
-   (đã gắn sẵn trong `SPREADSHEET_ID` của Code.gs; dùng bảng tính khác thì sửa ID đó).
-2. Trên menu chọn **Tiện ích mở rộng → Apps Script** (Extensions → Apps Script).
-3. Xoá hết code có sẵn, dán toàn bộ nội dung file [Code.gs](Code.gs) vào.
-   Sửa dòng `NOTIFY_EMAIL` thành Gmail của bạn. Bấm biểu tượng 💾 để lưu.
-4. Bấm **Triển khai → Tùy chọn triển khai mới** (Deploy → New deployment):
-   - Chọn loại (bánh răng ⚙️): **Ứng dụng web** (Web app)
-   - Thực thi dưới dạng (Execute as): **Tôi** (Me)
-   - Ai có quyền truy cập (Who has access): **Bất kỳ ai** (Anyone)
-   - Bấm **Triển khai**, rồi **Cấp quyền truy cập** và chọn tài khoản Google của bạn.
-     Nếu thấy "Google chưa xác minh ứng dụng này", bấm **Nâng cao → Đi tới … (không an toàn)**.
-     Đây là script của chính bạn nên không sao.
-5. Copy **URL ứng dụng web** (dạng `https://script.google.com/macros/s/.../exec`).
-6. Dán vào `rsvp.endpoint` trong [src/content.js](../src/content.js), rồi build và deploy lại thiệp.
+## Làm một lần duy nhất (~5 phút)
 
-Gửi thử một lời chúc trên thiệp. Bảng tính sẽ có thêm một dòng và bạn nhận được email.
+1. Vào <https://script.google.com> → **Dự án mới**, xoá code có sẵn, dán toàn bộ [Code.gs](Code.gs). Sửa `NOTIFY_EMAIL`. Lưu 💾.
+2. **Triển khai → Tùy chọn triển khai mới** → loại **Ứng dụng web**:
+   - Thực thi dưới dạng: **Tôi**
+   - Ai có quyền truy cập: **Bất kỳ ai**
+   - Triển khai, **Cấp quyền** (Drive + Sheets + Gmail). Nếu thấy "chưa xác minh" → **Nâng cao → Đi tới … (không an toàn)**.
+3. Copy **URL ứng dụng web** (`https://script.google.com/macros/s/.../exec`) — dùng cho mọi thiệp.
 
-**Sửa code trong Apps Script sau này:** vào **Triển khai → Quản lý các bản triển khai → ✏️ → Phiên bản: Phiên bản mới**.
-Làm như vậy thì URL giữ nguyên, không cần sửa lại thiệp.
+## Mỗi thiệp mới (không cần đụng Apps Script)
+
+Trong `src/content.js` mục `rsvp`:
+
+```js
+endpoint: 'https://script.google.com/macros/s/.../exec', // URL chung
+coupleId: 'minh-hien-duc-thanh',                         // duy nhất cho mỗi cặp
+coupleName: 'Minh Hiền & Đức Thành',
+show: true,
+```
+
+Sheet tự được tạo khi có lời chúc đầu tiên; email thông báo kèm link Sheet.
+
+## Chia sẻ cho khách (chỉ thấy Sheet của họ)
+
+Trong Apps Script, mở hàm `shareWithClient`, điền `COUPLE_ID` và `EMAIL` của khách (hoặc để `EMAIL = ''` để ai có link cũng **chỉ xem** được), chọn hàm → **Chạy**, link nằm ở **Nhật ký thực thi**.
+`listCouples` liệt kê mọi cặp và link Sheet. Mặc định Sheet riêng tư, chỉ bạn xem được.
+
+## Sửa code sau này
+
+**Triển khai → Quản lý các bản triển khai → ✏️ → Phiên bản: Phiên bản mới.** URL giữ nguyên, thiệp cũ không phải sửa.
+
+> Thiệp cũ đang dùng URL riêng của từng cặp vẫn chạy bình thường (script cũ độc lập), không bị ảnh hưởng.

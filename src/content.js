@@ -82,7 +82,7 @@ export const content = {
   timeline: {
     title: 'Timeline',
     items: [
-      { time: '09:10 - 27/11', label: 'Rước dâu', icon: 'bouquet' },
+      /** Chỉ các mốc ngày 28/11 (ngày khách dự tiệc) — bỏ rước dâu 27/11 để khỏi nhầm ngày */
       { time: '10:00 - 28/11', label: 'Đón khách', icon: 'toast' },
       { time: '10:30 - 28/11', label: 'Lễ thành hôn', icon: 'rings' },
       { time: '11:00 - 28/11', label: 'Khai tiệc', icon: 'fork' },

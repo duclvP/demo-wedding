@@ -702,8 +702,9 @@ function Timeline({ t }) {
       <div style={b(64, 76, 331, 549)}>
         <img src={images.deco.timeline} alt="" className="absolute" style={{ width: "74.3%", left: "3%", top: "0.9%" }} />
       </div>
-      {t.items.slice(0, 4).map((item, i) => {
-        const s = TIMELINE_SLOTS[i];
+      {t.items.slice(0, 4).map((item, i, list) => {
+        /** 3 mốc: bỏ ô đầu để đường cong vẫn kín, mốc đầu rơi vào ô thứ 2 */
+        const s = TIMELINE_SLOTS[i + 4 - list.length];
         return (
           <React.Fragment key={item.time}>
             <span className="rounded-full" style={{ ...b(s.dot[0], s.dot[1], 10, 10), background: RED, height: "auto", aspectRatio: "1" }} />

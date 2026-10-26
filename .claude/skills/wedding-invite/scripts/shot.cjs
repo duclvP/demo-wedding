@@ -7,7 +7,9 @@
 const path = require('path');
 const { chromium } = require(path.join(process.argv[2], 'node_modules/playwright-core'));
 const [mode, a, b, ...rest] = process.argv.slice(3);
-const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const CHROME =
+  process.env.CHROME ||
+  (process.platform === 'darwin' ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' : '/usr/bin/google-chrome');
 
 (async () => {
   const browser = await chromium.launch({ executablePath: CHROME });

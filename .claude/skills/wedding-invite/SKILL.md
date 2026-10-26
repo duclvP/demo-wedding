@@ -242,7 +242,7 @@ Rồi `npm run build` (phải thành công), grep `dist/index.html` thấy đún
 
 Commit message tiếng Việt, kiểu `feat: thiệp <Tên> & <Tên> — bản nhà trai (issue #9)`. **Không push** trừ khi được yêu cầu. Không commit `.gitignore` / `.env.local` do Vercel CLI sinh ra.
 
-**Email tác giả commit phải là `duc.le@xaiondata.co.jp`** (email của tài khoản Vercel trong team; repo đã cấu hình sẵn — đừng ghi đè bằng `-c user.email=…`). Commit bằng email khác (vd `leducuet@gmail.com`) → Vercel trả `BLOCKED` "commit author doesn't have permission" và tốn lượt. Lỡ commit sai: `git rebase <commit-trước> --exec 'git commit --amend --no-edit --reset-author -q'` rồi `push --force-with-lease` (người dùng tự chạy nếu bị chặn quyền). Sau deploy chỉ báo link cho người dùng; **không** tự comment vào ticket trừ khi được yêu cầu.
+**Email tác giả commit phải là `duc.le@xaiondata.co.jp`** (email của tài khoản Vercel trong team; repo đã cấu hình sẵn — đừng ghi đè bằng `-c user.email=…`). Commit bằng email khác (vd `leducuet@gmail.com`) → Vercel trả `BLOCKED` "commit author doesn't have permission" và tốn lượt. Lỡ commit sai: `git rebase <commit-trước> --exec 'git commit --amend --no-edit --reset-author -q'` rồi `push --force-with-lease` (người dùng tự chạy nếu bị chặn quyền). Sau deploy comment link thiệp lên ticket (xem `references/deploy-vercel.md`).
 
 ## 11. Deploy Vercel (khi người dùng yêu cầu)
 

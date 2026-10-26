@@ -565,7 +565,7 @@ function RsvpForm({ c }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!c.endpoint) {
+    if (!c.endpoint || !c.coupleId) {
       console.warn("Chưa cấu hình rsvp.endpoint trong content.js — lời chúc không được lưu.", form);
       setSent(true);
       return;
@@ -581,6 +581,8 @@ function RsvpForm({ c }) {
         method: "POST",
         mode: "no-cors",
         body: new URLSearchParams({
+          couple: c.coupleId,
+          coupleName: c.coupleName || "",
           name: form.name.trim(),
           message: form.message.trim(),
           attend: !c.askAttend ? "" : form.attend === "yes" ? c.attendYes : c.attendNo,

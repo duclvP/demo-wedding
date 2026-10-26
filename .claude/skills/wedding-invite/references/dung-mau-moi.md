@@ -21,3 +21,10 @@ Lỗi đã gặp với màn "bấm để mở" — làm sẵn từ đầu, đừ
 - Phần sau màn mở chỉ mount khi `opened` (`{opened && …}`, mờ dần 0.5s) và `main` có `min-h-screen` — màn desktop cao hơn khung 870px sẽ ló mục bên dưới.
 - Bấm mở không được giật: phần tử giữ nguyên thì **không gắn lại animation** (tiêu đề bị chớp tắt vì fadeInDown chạy lại); đổi ảnh thì lớp cũ mờ dần 300ms rồi mới gỡ; `html { scrollbar-gutter: stable }` để thanh cuộn hiện ra khi bỏ khóa không xê dịch trang.
 - Ảnh cưới trượt lên: bọc trong khung cắt từ đỉnh tới đáy phong bì, nếu không phần dưới ảnh ló ra dưới phong bì lúc đang trượt.
+
+### Giao cho subagent Opus (khi phiên chính không phải Opus)
+
+Dựng mẫu mới là phần khó nhất (nhìn hình, bóc bố cục, viết lại `WeddingPage` / CSS, lặp nhiều vòng) nên chạy bằng `Agent` `model: "opus"`:
+- Prompt phải **tự chứa**: link mẫu, nhánh gốc, `$S` / `$K`, quy tắc "không lấy ảnh của trang mẫu nếu không có phép — vẽ lại bằng CSS/SVG khi được", logic nhạc / Reveal / tên khách / form / mừng cưới giữ nguyên, không push / deploy.
+- Yêu cầu trả về: nhánh, hash commit, các file đã sửa, dòng cần thêm vào bảng mẫu §5, chỗ chưa làm được.
+- Phiên chính đọc kết quả, chạy `npm run build`, soát bằng ảnh chụp (§9) rồi mới tiếp tục.

@@ -152,8 +152,8 @@ export const content = {
   thanks: {
     title: 'Thank You',
     /** Lời cảm ơn của bố mẹ hai bên (thiệp do bố mẹ mời) */
-    text: 'Gia đình chúng tôi xin chân thành cảm ơn quý khách đã dành thời gian, tình cảm và sự hiện diện chung vui cùng gia đình trong ngày vui của hai con.',
-    sign: 'Gia đình hai họ',
+    text: 'Thay mặt gia đình hai họ, xin gửi lời cảm ơn sâu sắc nhất tới Quý khách đã đến chung vui và chúc phúc trong ngày trọng đại của hai con chúng tôi. Vợ chồng tôi xin chân thành cảm ơn.',
+    sign: 'Dương Quang Sơn - Nguyễn Thị Tuyết Nhài',
   },
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */

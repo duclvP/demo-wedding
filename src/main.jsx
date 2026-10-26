@@ -1126,7 +1126,7 @@ function ThankYou({ t }) {
       <p className="font-cormorant text-center leading-[1.6]" style={{ ...b(48, 366, 324, 90), fontSize: fz(15) }}>
         {t.text}
       </p>
-      <p className="font-pinyon text-center leading-[1.6]" style={{ ...b(0, 462, 420, 44), fontSize: fz(26) }}>
+      <p className="font-pinyon text-center leading-[1.6]" style={{ ...b(0, 484, 420, 44), fontSize: fz(t.sign.length > 24 ? 19 : 26) }}>
         {t.sign}
       </p>
     </Frame>

@@ -571,9 +571,9 @@ function MonthCalendar({ dateIso }) {
   );
 }
 
-function FamilySide({ side, align }) {
+function FamilySide({ side }) {
   return (
-    <div className={`font-lora uppercase ${align}`} style={{ color: RED }}>
+    <div className="font-lora uppercase text-center" style={{ color: RED }}>
       <h3 className="font-bold leading-[1.6]" style={{ fontSize: fz(15) }}>{side.label}</h3>
       {side.father && (
         <p className="leading-[1.6] mt-0.5" style={{ fontSize: fz(12) }}>Ông {side.father}</p>
@@ -601,8 +601,24 @@ function Ruled({ children, variant }) {
 
 function EventBlock({ item, mapLabel }) {
   const [dd, mm, yyyy] = item.date.split(/\.\s*/);
+  if (item.compact) {
+    return (
+      <div className="text-center font-lora opacity-80" style={{ color: RED }}>
+        <h3 className="font-bold uppercase leading-[1.6]" style={{ fontSize: fz(16) }}>{item.title}</h3>
+        <p className="uppercase leading-[1.6]" style={{ fontSize: fz(14) }}>
+          {item.time} · {dd}.{mm}.{yyyy}
+        </p>
+        <p className="font-quicksand italic leading-[1.6]" style={{ fontSize: fz(12) }}>{item.lunar}</p>
+      </div>
+    );
+  }
   return (
     <div className="text-center font-lora" style={{ color: RED }}>
+      {item.badge && (
+        <p className="mx-auto mb-2 inline-block rounded-full px-[5%] py-[0.6%] font-bold uppercase tracking-wider text-white" style={{ background: RED, fontSize: fz(13) }}>
+          {item.badge}
+        </p>
+      )}
       <Reveal variant="left" duration={3}>
         <h3 className="font-bold uppercase leading-[1.6]" style={{ fontSize: fz(22) }}>{item.title}</h3>
       </Reveal>
@@ -1086,7 +1102,7 @@ function CirclePhoto({ gift, onGift }) {
 }
 
 /** Thank You: ảnh lớn loang đỏ rượu ở dưới, chữ cảm ơn + ký tên */
-function ThankYou({ t, names }) {
+function ThankYou({ t }) {
   /** Cao hơn mẫu (472) để dòng ký tên không nằm dưới nút nhạc */
   const H = 580;
   const b = boxIn(H);
@@ -1103,7 +1119,7 @@ function ThankYou({ t, names }) {
         {t.text}
       </p>
       <p className="font-pinyon text-center leading-[1.6]" style={{ ...b(0, 462, 420, 44), fontSize: fz(26) }}>
-        {names[0]} &amp; {names[1]}
+        {t.sign}
       </p>
     </Frame>
   );
@@ -1143,7 +1159,7 @@ function WeddingPage() {
         <section className="grid grid-cols-2 gap-x-[12.8%] px-[1%] pt-[14%]">
           {c.families.sides.map((side, i) => (
             <Reveal key={side.label} variant={i ? "right" : "left"} duration={3}>
-              <FamilySide side={side} align={i ? "text-left" : "text-right"} />
+              <FamilySide side={side} />
             </Reveal>
           ))}
         </section>
@@ -1204,7 +1220,7 @@ function WeddingPage() {
           <CirclePhoto gift={c.gift.accounts.length > 0 ? c.gift.button : null} onGift={() => setGiftOpen(true)} />
         </section>
 
-        <ThankYou t={c.thanks} names={c.families.fullNames} />
+        <ThankYou t={c.thanks} />
       </main>
 
       {giftOpen && <GiftModal c={c.gift} photo={images.gift} onClose={closeGift} />}

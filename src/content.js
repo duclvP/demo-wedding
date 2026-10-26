@@ -3,7 +3,7 @@
 /** TODO: ticket chưa có địa chỉ nhà gái — hỏi lại khách */
 const ADDRESS_BRIDE = null;
 /** Địa chỉ duy nhất trong ticket (người đặt là mẹ chú rể) → coi là tư gia nhà trai */
-const ADDRESS_GROOM = '296 Minh Khai, Từ Sơn, Bắc Ninh';
+const ADDRESS_GROOM = null; /* khách yêu cầu bỏ địa chỉ nhà trai */
 const VENUE = 'Phân hiệu 1 (Trường Tiểu học Đình Bảng 2 cũ), Từ Sơn, Bắc Ninh';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
@@ -27,7 +27,7 @@ export const content = {
     names: ['Hùng Mạnh', 'Quỳnh Nhi'],
     dateLine: '28 . 11 . 2026',
     /** Câu tiếng Anh dưới chữ lồng */
-    quote: 'We step into a new chapter together, hand in hand, ready to build our home and embrace a lifetime of love.',
+    quote: 'With joy, our families warmly invite you to celebrate the wedding of our children.',
   },
 
   families: {
@@ -41,7 +41,7 @@ export const content = {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Buổi Tiệc Cưới Cùng\nGia Đình Chúng Tôi',
+    title: 'Tham Dự Tiệc Mừng Lễ Thành Hôn\nCủa Hai Con Chúng Tôi',
     /** Chữ đè lên 3 ảnh */
     dateParts: ['28', '11', '2026'],
   },
@@ -50,22 +50,27 @@ export const content = {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'ruoc-dau',
-        title: 'Lễ Rước Dâu',
-        time: '09:10, Thứ Sáu',
-        /** dd. mm. yyyy */
-        date: '27. 11. 2026',
-        lunar: '( Tức Ngày 19 Tháng 10 Năm Bính Ngọ )',
-        /** Ticket không ghi nơi tổ chức rước dâu — tạm ghi tư gia nhà trai, hỏi lại */
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: '296 Minh Khai, Từ Sơn, Bắc Ninh' }],
-      },
-      {
         id: 'tiec-cuoi',
+        /** Ngày chính khách được mời — làm nổi bật */
+        highlight: true,
+        badge: 'Ngày Dự Tiệc Cưới',
         title: 'Tiệc Cưới',
         time: '10:00, Thứ Bảy',
         date: '28. 11. 2026',
         lunar: '( Tức Ngày 20 Tháng 10 Năm Bính Ngọ )',
         places: [{ label: 'Trường Tiểu Học Từ Sơn 2', address: VENUE, mapQuery: 'Trường Tiểu học Đình Bảng 2, Từ Sơn, Bắc Ninh' }],
+      },
+      {
+        id: 'ruoc-dau',
+        /** Phụ: thu nhỏ để khách không nhầm với ngày tiệc 28/11 */
+        compact: true,
+        title: 'Lễ Rước Dâu',
+        time: '09:10, Thứ Sáu',
+        /** dd. mm. yyyy */
+        date: '27. 11. 2026',
+        lunar: '( Tức Ngày 19 Tháng 10 Năm Bính Ngọ )',
+        /** Khách yêu cầu bỏ địa chỉ nhà trai → không hiện nơi rước dâu */
+        places: [],
       },
     ],
   },
@@ -144,7 +149,9 @@ export const content = {
 
   thanks: {
     title: 'Thank You',
-    text: 'Từ tận đáy lòng, chúng mình cảm ơn bạn đã dành tình cảm và sự hiện diện cho ngày vui này. Chính bạn đã góp phần làm nên một kỷ niệm hạnh phúc mà chúng mình sẽ luôn trân trọng.',
+    /** Lời cảm ơn của bố mẹ hai bên (thiệp do bố mẹ mời) */
+    text: 'Gia đình chúng tôi xin chân thành cảm ơn quý khách đã dành thời gian, tình cảm và sự hiện diện chung vui cùng gia đình trong ngày vui của hai con.',
+    sign: 'Gia đình hai họ',
   },
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */

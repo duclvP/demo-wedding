@@ -734,19 +734,59 @@ function TakeoffIntro() {
   if (done) return null;
   return (
     <div className="takeoff pointer-events-none fixed inset-x-0 top-0 z-[170] mx-auto h-[100vh] max-w-[430px]" aria-hidden>
-      <div className="absolute inset-x-0 bottom-[150px] top-[-120vh] bg-gradient-to-b from-[#f4f3f1] via-[#f4f3f1] to-[#f4f3f1]/0" />
-      <svg viewBox="0 0 200 260" className="absolute bottom-0 left-1/2 w-[46%] -translate-x-1/2">
+      <svg viewBox="0 0 400 900" className="absolute bottom-[-470px] left-0 w-full overflow-visible" style={{ filter: "drop-shadow(0 26px 18px rgba(30,40,55,.28))" }}>
         <defs>
-          <linearGradient id="trail" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0" stopColor="#fff" stopOpacity=".95" />
-            <stop offset="1" stopColor="#f4f3f1" stopOpacity="1" />
+          <linearGradient id="fus" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stopColor="#aeb8c3" />
+            <stop offset=".22" stopColor="#eef1f4" />
+            <stop offset=".5" stopColor="#ffffff" />
+            <stop offset=".78" stopColor="#e6eaee" />
+            <stop offset="1" stopColor="#a9b4bf" />
+          </linearGradient>
+          <linearGradient id="wingL" x1="1" x2="0" y1="0" y2="0.35">
+            <stop offset="0" stopColor="#dfe4ea" />
+            <stop offset="1" stopColor="#f7f8fa" />
+          </linearGradient>
+          <linearGradient id="wingR" x1="0" x2="1" y1="0" y2="0.35">
+            <stop offset="0" stopColor="#dfe4ea" />
+            <stop offset="1" stopColor="#f7f8fa" />
+          </linearGradient>
+          <linearGradient id="eng" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stopColor="#b9c2cc" />
+            <stop offset=".5" stopColor="#ffffff" />
+            <stop offset="1" stopColor="#b9c2cc" />
+          </linearGradient>
+          <linearGradient id="contrail" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stopColor="#fff" stopOpacity=".85" />
+            <stop offset="1" stopColor="#fff" stopOpacity="0" />
           </linearGradient>
         </defs>
-        <path d="M82 0 H118 V120 H82 Z" fill="url(#trail)" />
-        <g transform="translate(100 170) scale(2.6) translate(-32 -32)" filter="drop-shadow(0 2px 2px rgba(0,0,0,.25))">
-          <path fill="#ffffff" stroke="#c9c9c9" strokeWidth="0.6" d="M32 2c2.6 0 4 3.4 4 7.5V24l23 13.5v6L36 36.5V49l8 6v4.5L32 56l-12 3.5V55l8-6V36.5L5 43.5v-6L28 24V9.5C28 5.4 29.4 2 32 2z" />
-          <circle cx="32" cy="8" r="1.4" fill="#9fb4c8" />
-        </g>
+        {/* vệt mây sau 4 động cơ */}
+        {[82, 142, 258, 318].map((x) => (
+          <rect key={x} x={x - 5} y="230" width="10" height="620" fill="url(#contrail)" opacity=".55" style={{ filter: "blur(3px)" }} />
+        ))}
+        {/* cánh đuôi ngang */}
+        <path d="M176 330 L104 374 L104 392 L176 378 Z" fill="url(#wingL)" stroke="#b7c0ca" strokeWidth=".8" />
+        <path d="M224 330 L296 374 L296 392 L224 378 Z" fill="url(#wingR)" stroke="#b7c0ca" strokeWidth=".8" />
+        {/* cánh chính xuôi sau */}
+        <path d="M176 112 L2 232 L0 264 L176 252 Z" fill="url(#wingL)" stroke="#b7c0ca" strokeWidth=".8" />
+        <path d="M224 112 L398 232 L400 264 L224 252 Z" fill="url(#wingR)" stroke="#b7c0ca" strokeWidth=".8" />
+        <path d="M176 140 L40 232 M224 140 L360 232" stroke="#c3cbd4" strokeWidth=".8" fill="none" />
+        {/* động cơ */}
+        {[[120, 152], [52, 200], [280, 152], [348, 200]].map(([x, y]) => (
+          <g key={x}>
+            <rect x={x - 9} y={y} width="18" height="40" rx="9" fill="url(#eng)" stroke="#aab4bf" strokeWidth=".8" />
+            <ellipse cx={x} cy={y + 4} rx="6.5" ry="3.4" fill="#4a5664" />
+          </g>
+        ))}
+        {/* thân */}
+        <path d="M200 0 C187 0 178 24 176 54 L176 322 C176 350 190 384 200 398 C210 384 224 350 224 322 L224 54 C222 24 213 0 200 0 Z" fill="url(#fus)" stroke="#b3bdc8" strokeWidth=".8" />
+        {/* kính buồng lái */}
+        <path d="M189 40 Q200 30 211 40 L208 47 Q200 41 192 47 Z" fill="#2f3f52" />
+        {/* hàng cửa sổ */}
+        <path d="M187 62 V316 M213 62 V316" stroke="#3b4756" strokeWidth="2.2" strokeDasharray="1.8 4.6" />
+        <circle cx="200" cy="74" r="1.8" fill="#c0392b" />
+        <path d="M200 100 V330" stroke="#c9d0d8" strokeWidth=".8" />
       </svg>
     </div>
   );

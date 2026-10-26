@@ -4,23 +4,23 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        /* Font thay thế gần nhất cho font của mẫu lovecard (ghi chú: font gốc) */
-        sans: ['Quicksand', 'system-ui', 'sans-serif'],
-        /** 1FTV VIP High Spirited */
-        script: ['Ephesis', 'cursive'],
-        /** Tiêu đề hộp quà mừng cưới */
-        vibes: ['"Great Vibes"', 'cursive'],
-        /** Ed Drayton — chữ "Quý khách" */
-        guest: ['"Imperial Script"', 'cursive'],
-        /** 1FTV VIP Askilon — ngày tháng */
-        date: ['Prata', 'serif'],
-        /** UTM Avo — thẻ sự kiện, "Trân Trọng Kính Mời" */
-        avo: ['Montserrat', 'sans-serif'],
+        /* Font thay thế (Google Fonts) cho font trả phí của mẫu lovecard mau-49 (ghi chú: font gốc) */
+        sans: ['Lora', 'serif'],
+        /** Lora (font gốc của mẫu) — chữ thường, sự kiện, gia đình */
         lora: ['Lora', 'serif'],
-        upright: ['"Cormorant Upright"', 'serif'],
-        oswald: ['Oswald', 'sans-serif'],
-        /** Số trên lịch */
-        display: ['Tinos', 'serif'],
+        /** "SAVE DATE", chữ lồng, ngày trên ảnh, tên hai người (font gốc: 1FTV VIP Askilon / font hash) */
+        didot: ['"Cormorant Garamond"', 'serif'],
+        cormorant: ['"Cormorant Garamond"', 'serif'],
+        /** "the", Timeline, Countdown, Two hearts…, Moments (font gốc: script trả phí) */
+        pinyon: ['"Pinyon Script"', 'cursive'],
+        /** Ed Drayton — tên tháng, "Quý khách", Thank You, Xác Nhận Tham Dự */
+        guest: ['"Imperial Script"', 'cursive'],
+        quicksand: ['Quicksand', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
+        taviraj: ['Taviraj', 'serif'],
+        trirong: ['Trirong', 'serif'],
+        notoserif: ['"Noto Serif"', 'serif'],
+        tinos: ['Tinos', 'serif'],
       },
       colors: {
         background: 'hsl(var(--background))',

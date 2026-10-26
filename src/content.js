@@ -59,8 +59,8 @@ export const content = {
         date: '19. 12. 2026',
         lunar: '( Tức Ngày 11 Tháng 11 Năm Bính Ngọ )',
         places: [
-          { label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Thống Nhất, Nông Cống, Thanh Hoá' },
-          { label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Văn Phú, Tượng Lĩnh, Nông Cống, Thanh Hoá' },
+          { label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: '19.636683,105.693596' },
+          { label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: '19.589083,105.720333' },
         ],
       },
       {
@@ -69,7 +69,7 @@ export const content = {
         time: '09:00 | Chủ Nhật',
         date: '20. 12. 2026',
         lunar: '( Tức Ngày 12 Tháng 11 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Văn Phú, Tượng Lĩnh, Nông Cống, Thanh Hoá' }],
+        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: '19.589083,105.720333' }],
       },
     ],
   },

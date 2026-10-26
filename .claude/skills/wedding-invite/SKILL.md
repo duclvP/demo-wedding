@@ -97,6 +97,18 @@ Chuỗi VietQR chứa `0006<BIN 6 số>01<2 số độ dài><STK>`. Ví dụ `�
   - `thankYou`: chữ "Thank You" + lời cảm ơn + ký tên phủ **nửa dưới** ảnh → chọn ảnh mặt nằm ở **1/3 trên** (cận cảnh), đừng chọn ảnh toàn thân / ngồi.
 - Không có ảnh cưới thì tạm dùng ảnh mẫu `demo-*.jpg` từ nhánh `demo_v2` (`git checkout demo_v2 -- public/images/ src/image.js`) và nói rõ trong báo cáo.
 
+### Đổi nhạc nền theo yêu cầu khách ("đổi nhạc", "bài X của Y")
+
+1. **Tìm trong repo trước** (tên file không nói lên bài: `strings -n 6 x.mp3 | grep -A1 TIT2`). Liệt kê nhạc mọi nhánh: `for b in $(git for-each-ref --format='%(refname:short)' refs/heads refs/remotes/origin); do git ls-tree -r --name-only $b public/music | sed "s|^|$b: |"; done`. Có rồi thì `git show <nhánh>:public/music/<file> > public/music/<tên-mới>.mp3`.
+2. **Chưa có → tải từ nhaccuatui.com bằng extension Claude in Chrome** (cần extension đã nối: `/chrome` hoặc `claude --chrome`; nạp công cụ `mcp__claude-in-chrome__*` bằng một lệnh ToolSearch, đọc skill `chrome-browser` trước):
+   - Mở `https://www.nhaccuatui.com/tim-kiem?q=<tên bài + ca sĩ>`, bấm đúng bài (kiểm tra ca sĩ — nhiều bản cover / remix trùng tên), vào trang bài có nút **Tải về** → menu 3 mức: Tiêu chuẩn ~3,5MB (128kbps) / Cao ~8,7MB (320kbps) / Lossless (VIP, bỏ).
+   - **Hỏi người dùng trước khi bấm tải** (AskUserQuestion: tên bài + ca sĩ, nguồn, dung lượng) — tải file là việc cần xác nhận. Mặc định đề xuất **Tiêu chuẩn**: nhạc nền thiệp cần nhẹ để khách mở bằng 4G vẫn tải nhanh.
+   - Trước khi bấm: `touch $S/dl-mark`; sau ~6 giây `find ~/Downloads -maxdepth 1 -newer $S/dl-mark` để lấy file (tên dạng `Váy Cưới.mp3`). Kiểm tra `file` ra MPEG audio + ID3.
+   - Không tải từ trang lạ / trang chuyển đổi YouTube; nhạc đã mất phí hoặc bị chặn → báo người dùng, đừng vòng qua.
+3. **Gắn vào thiệp** (chỉ nhánh của ticket đó): `git rm public/music/<bài-cũ>.mp3` (nhạc là file riêng của nhánh, không đụng nhánh khác) → `mkdir -p public/music` (git rm có thể xóa thư mục rỗng) → `cp` file mới thành tên không dấu, gạch ngang (`vay-cuoi.mp3`) → đổi `music.src` trong `src/content.js` → soát `curl -s -o /dev/null -w "%{http_code} %{size_download}\n" localhost:5173/music/<file>` ra 200 đúng dung lượng.
+4. `npm run build` → commit kèm `dist/` ("feat: thiệp … — nhạc nền <Bài> (<Ca sĩ>) theo yêu cầu khách (issue #N)") → deploy một lần cùng các chỉnh sửa khác của khách (§11). Sau deploy `curl https://<domain>/music/<file>` phải ra 200 đúng dung lượng.
+5. Báo cáo: bài + ca sĩ + chất lượng đã tải, nơi file gốc còn nằm (`~/Downloads/...`), và nhắc đây là bản thương mại — khách chịu trách nhiệm bản quyền khi dùng công khai.
+
 ## 4. Cập nhật nội dung (`src/content.js`, `index.html`)
 
 - Hằng số đầu file: `ADDRESS_*`, `GROOM_SIDE`, `BRIDE_SIDE` (father/mother/address, `null` = ẩn).
@@ -161,6 +173,13 @@ Chỉ có thiệp một bên (thường gặp) → một bản, ghi rõ là bả
 | Chỉ nhận lời chúc, bỏ xác nhận tham dự | `rsvp.askAttend: false` |
 | Ẩn nút "Gửi mừng cưới" | `gift.accounts: []` |
 | Ẩn bố/mẹ/địa chỉ một bên | giá trị `null` trong `*_SIDE` |
+| Đổi nhạc nền | quy trình ở §3 "Đổi nhạc nền theo yêu cầu khách" (tìm trong repo → tải nhaccuatui.com → `music.src`) |
+| Đổi phông chữ "nhẹ nhàng hơn" | `tailwind.config.js` `fontFamily` (`date` / `lora` / `oswald` đang là font dày) → Cormorant Garamond nét mảnh; nhớ đổi `<link>` Google Fonts trong `index.html`, thêm `font-variant-numeric: lining-nums` ở `body` (số kiểu cổ) và `lining-nums` cạnh `tabular-nums` (class này ghi đè). Chọn font viết tay có tiếng Việt: kiểm tra `curl -A "<UA Chrome đầy đủ>" "https://fonts.googleapis.com/css2?family=X" \| grep "/\* vietnamese \*/"`, render thử bằng Chrome headless trước khi áp dụng |
+| Đổi thứ tự tên (chú rể / cô dâu trước) | `hero.names`, `families.fullNames`, `families.sides` (cột trái), `<title>` / og trong `index.html`, chạy lại `og-image.sh`. **Chỉ đổi khi khách nói rõ** — mẫu của khách gửi có thể ghi thứ tự khác mà không phải yêu cầu |
+
+### Khách nhắn thay đổi qua Zalo
+
+Đọc nhóm Zalo của khách bằng extension Claude in Chrome (đã đăng nhập sẵn chat.zalo.me; mở tab mới, **chỉ đọc đúng nhóm "TOL - …" của ticket đang xử lý**, không mở cuộc trò chuyện khác): `navigate https://chat.zalo.me/` → chờ ~3 giây → bấm nhóm trong danh sách (hoặc tìm bằng ô tìm kiếm) → `get_page_text` đọc chữ, `screenshot` + `zoom` xem ảnh khách gửi (mẫu phông chữ, ảnh sửa). Tin nhắn có thể ghi thứ tự khác với yêu cầu thật — **chỉ làm đúng điều khách yêu cầu**, đừng suy ra thêm (vd khách gửi ảnh mẫu có tên chú rể đứng trước chưa chắc muốn đổi thứ tự tên → hỏi lại người dùng). Việc cần Google Sheet / Apps Script riêng (bật form xác nhận) → người dùng tự tạo và gửi URL `.../exec`. Gửi link thiệp vào nhóm Zalo là gửi tin nhắn thay người dùng → luôn hỏi trước.
 
 Ảnh "bỏ phần này" thường chụp nhiều mục cùng lúc — ẩn mục ở giữa ảnh/rõ nhất, nói rõ đã giữ mục nào và hỏi lại.
 

@@ -24,7 +24,7 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này (tên trên, "&", tên dưới) */
-    names: ['Khổng Thủy', 'Đức Duy'],
+    names: ['Đức Duy', 'Khổng Thủy'],
     dateLine: '07 . 11 . 2026',
   },
 
@@ -38,7 +38,7 @@ export const content = {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể — dòng ký tên cuối mục Thank You */
-    fullNames: ['Khổng Thủy', 'Đức Duy'],
+    fullNames: ['Đức Duy', 'Khổng Thủy'],
   },
 
   invitation: {

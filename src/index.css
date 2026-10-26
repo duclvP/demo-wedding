@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  /* Xanh rêu mẫu lovecard mau31 (#415e34) */
-  --background: 60 8% 96%;
+  /* Đỏ đô mẫu lovecard mau37 (#5f0806) */
+  --background: 20 6% 95%;
   --foreground: 0 0% 15%;
-  --primary: 101 29% 29%;
+  --primary: 1 88% 20%;
   --primary-foreground: 0 0% 100%;
   --secondary: 38 60% 45%;
   --secondary-foreground: 0 0% 100%;
@@ -28,22 +28,22 @@ body {
 
 /* Nền giấy mỹ thuật: trắng ngà + vân sợi mờ */
 .paper {
-  background-color: #f5f5f3;
+  background-color: #f4f3f2;
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .55 0 0 0 0 .5 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Hiện dần khi cuộn tới (component Reveal) — chậm & quãng dài như mẫu */
+/* Hiện dần khi cuộn tới (component Reveal) — fadeIn của LadiPage: dịch 20–40px, 2–5s ease */
 .reveal {
   opacity: 0;
-  transition:
-    opacity 1.6s ease-out,
-    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-property: opacity, transform;
+  transition-duration: 2s;
+  transition-timing-function: ease;
 }
-.reveal-up { transform: translateY(80px); }
-.reveal-down { transform: translateY(-80px); }
-.reveal-left { transform: translateX(-100%); }
-.reveal-right { transform: translateX(100%); }
+.reveal-up { transform: translateY(20px); }
+.reveal-down { transform: translateY(-20px); }
+.reveal-left { transform: translateX(-40px); }
+.reveal-right { transform: translateX(40px); }
 .reveal-zoom { transform: scale(0.7); }
 .reveal.is-visible {
   opacity: 1;
@@ -92,46 +92,13 @@ body {
   to { transform: translate(calc(-50vw + 100vw * var(--rand-x)), 110vh) scale(1.2); opacity: 0.2; }
 }
 
-/* Màn mở thiệp: nền xanh rêu + vân lá trắng mờ */
-.curtain {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50.5%;
-  background-color: #415e34;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.12' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M10 80 C 30 60 40 40 45 10'/%3E%3Cpath d='M30 52 C 20 48 14 40 14 30 C 24 32 30 40 30 52 Z'/%3E%3Cpath d='M38 34 C 46 30 52 22 52 12 C 42 16 38 24 38 34 Z'/%3E%3Cpath d='M70 88 C 72 70 80 60 88 56'/%3E%3C/g%3E%3C/svg%3E"),
-    radial-gradient(ellipse at center, #557447 0%, #415e34 65%, #31492a 100%);
-  background-size: 90px 90px, 100% 100%;
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3);
-  transition: transform 3s ease-in-out;
-}
-.curtain-left { left: 0; border-right: 2px solid rgba(255, 255, 255, 0.55); }
-.curtain-right { right: 0; border-left: 2px solid rgba(255, 255, 255, 0.55); }
-.curtain-left.is-open { transform: translateX(-100%); }
-.curtain-right.is-open { transform: translateX(100%); }
-
-/* Con dấu tròn trắng, chữ cái đầu tên hai người */
-.seal {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 124px;
-  height: 124px;
-  border-radius: 9999px;
-  background: radial-gradient(circle, #ffffff, #eef2ea);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 0 0 5px #ffffff, inset 0 0 0 6px #8fa486;
-  cursor: pointer;
-}
-
-/* Nền hộp quà: loang xanh nhạt trên nền trắng */
+/* Nền hộp quà: loang hồng nhạt trên nền trắng */
 .gift-card {
   background:
-    radial-gradient(ellipse at 15% 10%, rgba(176, 196, 222, 0.45), transparent 55%),
-    radial-gradient(ellipse at 85% 30%, rgba(200, 210, 230, 0.5), transparent 50%),
-    radial-gradient(ellipse at 30% 85%, rgba(186, 200, 225, 0.45), transparent 55%),
-    linear-gradient(160deg, #ffffff, #eef2f8);
+    radial-gradient(ellipse at 15% 10%, rgba(244, 201, 207, 0.4), transparent 55%),
+    radial-gradient(ellipse at 85% 30%, rgba(236, 214, 214, 0.5), transparent 50%),
+    radial-gradient(ellipse at 30% 85%, rgba(244, 201, 207, 0.35), transparent 55%),
+    linear-gradient(160deg, #ffffff, #f7f1f0);
 }
 
 /* Nút nhạc: sóng lan ra khi đang phát, nhún khi bấm */
@@ -164,6 +131,15 @@ body {
   animation: pulse-soft 1.8s ease-in-out infinite;
 }
 
+/* pulse 2s của nút XEM VỊ TRÍ (mẫu) */
+@keyframes pulse-btn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+.animate-pulse-btn {
+  animation: pulse-btn 2s ease-in-out infinite;
+}
+
 @keyframes swing {
   0%, 100% { transform: rotate(-6deg); }
   50% { transform: rotate(6deg); }
@@ -192,11 +168,16 @@ body {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .reveal-bounce.is-visible,
-  .curtain,
+  .animate-pulse-btn,
   .falling,
   .music-ripple,
   .animate-pulse-soft,
   .animate-swing,
   .animate-spin-slow,
   .animate-pop { animation: none; }
+}
+
+/* Cormorant mặc định số kiểu cổ (16:oo) → số thẳng hàng như mẫu */
+.font-serif37 {
+  font-variant-numeric: lining-nums;
 }

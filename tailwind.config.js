@@ -6,6 +6,8 @@ export default {
       fontFamily: {
         /* Font thay thế gần nhất cho font của mẫu lovecard (ghi chú: font gốc) */
         sans: ['Quicksand', 'system-ui', 'sans-serif'],
+        /** mau37: font chính (tên, tiêu đề, thẻ sự kiện) — font LadiPage tự tải, thay bằng Cormorant Garamond */
+        serif37: ['"Cormorant Garamond"', 'serif'],
         /** 1FTV VIP High Spirited */
         script: ['Ephesis', 'cursive'],
         /** Tiêu đề hộp quà mừng cưới */
@@ -23,6 +25,8 @@ export default {
         display: ['Tinos', 'serif'],
       },
       colors: {
+        /** Đỏ đô mẫu mau37 rgb(95, 8, 6) */
+        wine: '#5f0806',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {

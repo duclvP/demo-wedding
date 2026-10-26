@@ -15,6 +15,11 @@ Repo: Vite + React + Tailwind. Mọi nội dung chữ nằm ở `src/content.js`
 
 Trước khi làm: `git branch -a | grep` tên cặp đôi + `git log --all --oneline --grep "issue #<số>"` — ticket có thể **đã làm xong ở nhánh riêng** (chỉ thiếu form / deploy / comment); khi đó checkout nhánh đó, đừng tạo lại.
 
+**Mẫu đã có chưa? (quyết định model)** — đọc số mẫu trong ticket ("Mẫu NN", `lovecard.click/mauNN`, `thiepsoNN`) rồi tra bảng mẫu ở §5 + `git log --all --format='%h %D %s' | grep -i "mẫu NN"`:
+- **Đã có** → làm tiếp ngay ở phiên hiện tại (Sonnet đủ).
+- **Chưa có** → việc dựng giao diện giao cho **subagent Opus**: gọi `Agent` với `model: "opus"`, `subagent_type: "general-purpose"`, prompt tự chứa đủ (số ticket, link mẫu, nhánh gốc, đường dẫn `$S`, yêu cầu làm theo `references/dung-mau-moi.md`, chỉ dựng giao diện — không điền nội dung cặp đôi, không push / deploy; trả về tên nhánh + commit + bảng đã thêm vào §5). Subagent không hỏi được người dùng và không thấy hội thoại này. Phiên chính nhận kết quả rồi điền nội dung / ảnh / QR (§1–§4) và deploy.
+- Không chắc mẫu có hay không → hỏi người dùng một câu, đừng đoán.
+
 Board: https://github.com/users/duclvP/projects/1 (kanban). Đọc cột **Ready**:
 
 ```bash

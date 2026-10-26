@@ -39,6 +39,15 @@ else:
   a=[x for x in (p.get('targets',{}).get('production',{}) or {}).get('alias',[]) if x.endswith('.vercel.app') and '-$SCOPE' not in x]
   print(min(a,key=len) if a else '')")
 if [ -z "$DOMAIN" ]; then
+  # Dự phòng: alias production có thể thiếu tên .vercel.app → hỏi danh sách domain của project
+  DOMAIN=$(curl -s -H "Authorization: Bearer $TOKEN" "https://api.vercel.com/v9/projects/$P/domains?teamId=$TEAM" \
+    | python3 -c "
+import json,sys
+try: d=[x['name'] for x in json.load(sys.stdin).get('domains',[]) if x['name'].endswith('.vercel.app') and '-$SCOPE' not in x['name']]
+except Exception: d=[]
+print(min(d,key=len) if d else '')")
+fi
+if [ -z "$DOMAIN" ]; then
   DOMAIN="$P.vercel.app"
   curl -s -m 30 "https://$DOMAIN/" | grep -q DEPLOYMENT_NOT_FOUND \
     || die "Project mới nhưng $DOMAIN đã có người dùng → Vercel sẽ gán tên khác, og:image sai. Chọn tên project khác."

@@ -81,11 +81,13 @@ export const content = {
   /** Lịch trình — tối đa 4 mốc trên đường cong; icon: bouquet | toast | rings | fork */
   timeline: {
     title: 'Timeline',
+    /** Ngày nổi bật dưới tiêu đề — các mốc bên dưới chỉ ghi giờ */
+    dateBadge: 'Thứ Bảy · 28.11.2026',
     items: [
       /** Chỉ các mốc ngày 28/11 (ngày khách dự tiệc) — bỏ rước dâu 27/11 để khỏi nhầm ngày */
-      { time: '10:00 - 28/11', label: 'Đón khách', icon: 'toast' },
-      { time: '10:30 - 28/11', label: 'Lễ thành hôn', icon: 'rings' },
-      { time: '11:00 - 28/11', label: 'Khai tiệc', icon: 'fork' },
+      { time: '10:00', label: 'Đón khách', icon: 'toast' },
+      { time: '10:30', label: 'Lễ thành hôn', icon: 'rings' },
+      { time: '11:00', label: 'Khai tiệc', icon: 'fork' },
     ],
   },
 

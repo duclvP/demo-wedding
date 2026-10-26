@@ -699,6 +699,13 @@ function Timeline({ t }) {
       <h2 className="font-pinyon text-center leading-[1.6]" style={{ ...b(0, 0, 420, 56), fontSize: fz(38), color: RED }}>
         {t.title}
       </h2>
+      {t.dateBadge && (
+        <div className="flex justify-center" style={b(0, 54, 420, 26)}>
+          <p className="rounded-full px-[5%] font-lora font-bold uppercase leading-[2] tracking-wider text-white" style={{ background: RED, fontSize: fz(14) }}>
+            {t.dateBadge}
+          </p>
+        </div>
+      )}
       <div style={b(64, 76, 331, 549)}>
         <img src={images.deco.timeline} alt="" className="absolute" style={{ width: "74.3%", left: "3%", top: "0.9%" }} />
       </div>

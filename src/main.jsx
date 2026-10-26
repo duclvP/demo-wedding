@@ -1123,7 +1123,7 @@ function ThankYou({ t }) {
           <h2 className="font-guest text-center leading-[1.6]" style={{ fontSize: fz(42) }}>{t.title}</h2>
         </Reveal>
       </div>
-      <p className="font-cormorant text-center leading-[1.6]" style={{ ...b(48, 366, 324, 90), fontSize: fz(15) }}>
+      <p className="font-cormorant whitespace-pre-line text-center leading-[1.6]" style={{ ...b(48, 366, 324, 90), fontSize: fz(15) }}>
         {t.text}
       </p>
       <p className="font-pinyon text-center leading-[1.6]" style={{ ...b(0, 484, 420, 44), fontSize: fz(t.sign.length > 24 ? 19 : 26) }}>

@@ -175,6 +175,14 @@ body {
   animation: swing 3s ease-in-out infinite;
 }
 
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+.animate-nudge {
+  animation: nudge 1.4s ease-in-out infinite;
+}
+
 @keyframes spin-slow {
   to { transform: rotate(360deg); }
 }
@@ -198,6 +206,7 @@ body {
   .falling,
   .music-ripple,
   .animate-pulse-soft,
+  .animate-nudge,
   .animate-swing,
   .animate-spin-slow,
   .animate-pop { animation: none; }

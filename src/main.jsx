@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Check, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
+import { Check, ChevronDown, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
 import { images } from "./image.js";
 import "./index.css";
@@ -290,6 +290,25 @@ const FALLING = [
 ];
 
 /** Bắt đầu khi `active` = true (rèm đã mở): rơi một đợt ngay, sau đó rơi đều */
+/** Mũi tên nhấp nhô cuối màn hình: báo khách cuộn xuống; ẩn sau khi bắt đầu cuộn */
+function ScrollHint({ active }) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div
+      aria-hidden="true"
+      className={`pointer-events-none fixed inset-x-0 bottom-4 z-30 flex justify-center text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-opacity duration-500 ${active && !scrolled ? "opacity-100" : "opacity-0"}`}
+    >
+      <ChevronDown className="h-9 w-9 animate-nudge" strokeWidth={2.5} />
+    </div>
+  );
+}
+
 function FallingEffects({ active }) {
   const [items, setItems] = useState([]);
 
@@ -855,6 +874,7 @@ function WeddingPage() {
     <div className="min-h-screen bg-[#e9ece6] text-foreground font-sans">
       <BackgroundMusic src={c.music.src} volume={c.music.volume} />
       <FallingEffects active={opened} />
+      <ScrollHint active={opened} />
       {!curtainGone && <OpeningCurtain onOpen={handleOpen} onDone={handleCurtainDone} initials={initials} />}
 
       <CurtainContext.Provider value={opened}>

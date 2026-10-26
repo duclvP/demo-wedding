@@ -1,120 +1,139 @@
-/** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
+/**
+ * Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout.
+ * BẢN DEMO mẫu "vé máy bay" (lovecard.click/vemaybay): tên, địa chỉ, ngày đều là dữ liệu mẫu.
+ */
 
-const ADDRESS_BRIDE = 'Số nhà 8, ngõ Mã Lẽ 2, thôn Thống Nhất, xã Phùng Nguyên, tỉnh Phú Thọ';
-const ADDRESS_GROOM = 'Số nhà 50, ngõ Sa Lộc 4, thôn Tứ Xã, xã Phùng Nguyên, tỉnh Phú Thọ';
-/** Ô tìm trên Google Maps (địa chỉ sau sáp nhập khó tìm) — TODO: nhờ khách gửi ghim vị trí chính xác */
-const MAP_BRIDE = ADDRESS_BRIDE;
-const MAP_GROOM = 'Tứ Xã, Lâm Thao, Phú Thọ';
+const ADDRESS_BRIDE = 'Số 12, đường Hoa Sữa, phường Demo, TP. Hà Nội';
+const ADDRESS_GROOM = 'Số 88, phố Mẫu Thử, phường Demo, TP. Hà Nội';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Khổng Văn Xuân',
-  mother: 'Khổng Thị Sơn',
-  address: ADDRESS_BRIDE,
+  father: 'Nguyễn Văn An',
+  mother: 'Trần Thị Bình',
+  address: 'TP. Hà Nội',
 };
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Chử Đức Thụy',
-  mother: 'Khổng Thị Phương',
-  address: ADDRESS_GROOM,
+  father: 'Lê Văn Cường',
+  mother: 'Phạm Thị Dung',
+  address: 'TP. Hà Nội',
 };
 
 export const content = {
-  hero: {
-    subtitle: 'Save The Date',
-    /** Hiển thị theo đúng thứ tự này (tên trên, "&", tên dưới) */
-    names: ['Đức Duy', 'Khổng Thủy'],
-    dateLine: '07 . 11 . 2026',
+  /** Màn đóng: tấm vé "Boarding pass" — bấm để mở */
+  cover: {
+    header: 'Boarding pass to our wedding',
+    title: ['Passport', 'Wedding Invitation'],
+    /** Tên ngắn in hoa trên cuống vé (thứ tự như hero.names) */
+    names: ['Minh Anh', 'Gia Bảo'],
+    date: '20/12/2026',
+    hint: 'Nhấn vào passport để mở',
   },
 
-  /** Hai cột "Chú rể | Cô dâu" dưới Save The Date */
+  hero: {
+    /** Tên trên hộ chiếu (trên, dưới) */
+    names: ['Minh Anh', 'Gia Bảo'],
+    /** Hai dòng chữ máy dưới tên */
+    lines: ['Destination: Marriage', 'Boarding date: 20/12/2026'],
+  },
+
+  /** Hai thẻ ảnh treo kẹp giấy "Chú rể | Cô dâu" */
   couple: {
-    groom: { role: 'Chú rể', name: 'Đức Duy' },
-    bride: { role: 'Cô dâu', name: 'Khổng Thủy' },
+    groom: { role: 'Chú rể', name: 'Gia Bảo' },
+    bride: { role: 'Cô dâu', name: 'Minh Anh' },
   },
 
   families: {
+    title: 'Boarding Pass',
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
-    /** Tên cô dâu & chú rể — dòng ký tên cuối mục Thank You */
-    fullNames: ['Đức Duy', 'Khổng Thủy'],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
+    /** Tên đầy đủ hai người — hiển thị dưới lời mời (trên, dưới) và ký tên cuối Thank You */
+    fullNames: ['Nguyễn Minh Anh', 'Lê Gia Bảo'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Đến Dự Và Chia Sẻ Niềm Vui',
-    /** Chữ đè lên 3 ảnh */
-    dateParts: ['07', '11', '2026'],
+    title: ['Tham dự tiệc chung vui', 'của gia đình chúng tôi'],
   },
 
   events: {
-    mapLabel: 'Xem vị trí',
+    mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'tiec-mung-cuoi',
-        title: 'Tiệc Mừng Cưới',
-        time: '16:00 | Thứ Sáu',
-        date: '06. 11. 2026',
-        lunar: '( Tức Ngày 28 Tháng 09 Năm Bính Ngọ )',
-        places: [
-          { label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM },
-          { label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: MAP_BRIDE },
-        ],
-      },
-      {
-        id: 'vu-quy',
-        title: 'Lễ Vu Quy',
-        time: '08:30 | Thứ Bảy',
-        date: '07. 11. 2026',
-        lunar: '( Tức Ngày 29 Tháng 09 Năm Bính Ngọ )',
-        /** Dòng phụ dưới ngày âm — để null thì ẩn */
-        note: 'Nhà trai xuất phát đón dâu lúc 08:05',
-        places: [{ label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: MAP_BRIDE }],
+        id: 'tiec-nha-gai',
+        title: 'Tiệc Chung Vui',
+        time: 'Vào lúc 17 giờ 30 - Thứ Bảy',
+        date: '19. 12. 2026',
+        lunar: '( Tức Ngày 11 Tháng 11 Năm Bính Ngọ )',
+        place: 'Tư Gia Nhà Gái',
+        address: ADDRESS_BRIDE,
+        mapQuery: 'Hồ Gươm, Hà Nội',
       },
       {
         id: 'thanh-hon',
         title: 'Lễ Thành Hôn',
-        time: '10:00 | Thứ Bảy',
-        date: '07. 11. 2026',
-        lunar: '( Tức Ngày 29 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: MAP_GROOM }],
+        time: 'Vào lúc 10 giờ 00 - Chủ Nhật',
+        date: '20. 12. 2026',
+        lunar: '( Tức Ngày 12 Tháng 11 Năm Bính Ngọ )',
+        place: 'Tư Gia Nhà Trai',
+        address: ADDRESS_GROOM,
+        mapQuery: 'Hồ Tây, Hà Nội',
       },
     ],
   },
 
+  /** Đường bay "Timeline" — icon: camera | cheers | music | rings */
+  timeline: {
+    title: 'Timeline',
+    items: [
+      { time: '17:30 - 19/12', label: 'Đón Khách', icon: 'camera' },
+      { time: '18:00 - 19/12', label: 'Khai Tiệc', icon: 'cheers' },
+      { time: '19:30 - 19/12', label: 'After party', icon: 'music' },
+      { time: '09:30 - 20/12', label: 'Đón Khách', icon: 'camera' },
+      { time: '10:00 - 20/12', label: 'Làm Lễ', icon: 'rings' },
+      { time: '11:00 - 20/12', label: 'Khai Tiệc', icon: 'cheers' },
+    ],
+  },
+
+  /** Dresscode — để null thì ẩn */
+  dresscode: {
+    title: 'Dresscode',
+    colors: ['#fffdd0', '#c8f0d8', '#ffd1dc', '#ffffff'],
+  },
+
   /** Bộ đếm ngược — để null thì ẩn */
   countdown: {
-    title: 'Đếm Ngược Ngày Vui',
-    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 10:00 07/11/2026 */
-    target: '2026-11-07T10:00:00+07:00',
+    title: 'Countdown',
+    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 10:00 20/12/2026 */
+    target: '2026-12-20T10:00:00+07:00',
     labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
   },
 
   calendar: {
-    title: 'Save The Date',
-    /** Ngày khoanh tim trên lịch tháng ở đầu thiệp — để null thì ẩn lịch */
-    dateIso: '2026-11-07',
+    /** Ngày đóng dấu "Love Visa" trên lịch tháng — để null thì ẩn lịch */
+    dateIso: '2026-12-20',
   },
+
+  journey: 'Love is a journey',
+  album: { title: 'Album of Love' },
 
   rsvp: {
     /**
-     * Link Web App của Google Apps Script — lời chúc sẽ lưu vào Google Sheets
-     * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
-     * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
+     * Link Web App của Google Apps Script dùng chung — lời chúc lưu vào Google Sheets
+     * riêng theo coupleId. Xem google-apps-script/README.md
      */
     endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
-    /** Mã cặp đôi (duy nhất) — script dùng chung tự tạo Google Sheet riêng cho mỗi mã */
-    coupleId: 'khong-thuy-duc-duy',
-    /** Tên đặt cho Sheet */
-    coupleName: 'Khổng Thủy & Đức Duy',
+    /** Mã cặp đôi (duy nhất) — bản demo */
+    coupleId: 'demo-vemaybay',
+    coupleName: 'Demo vé máy bay — Minh Anh & Gia Bảo',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
     askAttend: true,
-    title: 'Xác Nhận Tham Dự',
+    title: 'Xác Nhận & Gửi Lời Chúc',
     placeholders: {
       name: 'Họ và Tên',
       message: 'Gửi lời chúc cho dâu, rể',
@@ -130,30 +149,14 @@ export const content = {
     thanks: 'Cảm ơn bạn! Lời chúc của bạn đã được ghi nhận.',
   },
 
-  /** Hộp mừng cưới — để accounts: [] để ẩn nút "Gửi mừng cưới" */
+  /** Hộp mừng cưới — accounts: [] để ẩn nút "Gửi mừng cưới" (bản demo không có tài khoản) */
   gift: {
     button: 'Gửi Mừng Cưới',
     title: 'Hộp Quà Mừng Cưới',
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    accounts: [
-      {
-        /** Chú rể — QR đã giải mã: BIN 970422 (MB Bank) */
-        holder: 'CHU DUC DUY',
-        number: '81996199688888',
-        bank: 'MB Bank',
-        /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-mbbank.png',
-      },
-      {
-        /** Cô dâu — QR đã giải mã: BIN 970436 (Vietcombank) */
-        holder: 'KHONG THI THUY',
-        number: '1032473835',
-        bank: 'Vietcombank',
-        qr: '/images/qr-vietcombank.png',
-      },
-    ],
+    accounts: [],
   },
 
   thanks: {

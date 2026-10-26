@@ -4,29 +4,31 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        /* Font thay thế gần nhất cho font của mẫu lovecard (ghi chú: font gốc) */
+        /* Font thay thế cho font của mẫu lovecard.click/vemaybay (ghi chú: font gốc) */
         sans: ['Quicksand', 'system-ui', 'sans-serif'],
-        /** mau37: font chính (tên, tiêu đề, thẻ sự kiện) — font LadiPage tự tải, thay bằng Cormorant Garamond */
-        serif37: ['"Cormorant Garamond"', 'serif'],
-        /** 1FTV VIP High Spirited */
+        /** SFU Edwardian Script — tên cô dâu chú rể */
+        edw: ['"Pinyon Script"', 'cursive'],
+        /** 1FTV VIP High Spirited — "Countdown", "Timeline" */
         script: ['Ephesis', 'cursive'],
-        /** Tiêu đề hộp quà mừng cưới */
+        /** UTM Candlescript — "Tháng 12 - 2026", "&", "Dresscode", "Album of Love"; tiêu đề hộp quà */
         vibes: ['"Great Vibes"', 'cursive'],
-        /** Ed Drayton — chữ "Quý khách" */
+        /** Ed Drayton — "Thank You", tên khách */
         guest: ['"Imperial Script"', 'cursive'],
-        /** 1FTV VIP Askilon — ngày tháng */
-        date: ['Prata', 'serif'],
-        /** UTM Avo — thẻ sự kiện, "Trân Trọng Kính Mời" */
-        avo: ['Montserrat', 'sans-serif'],
+        /** Font chữ in (bfbfb) — "KÍNH MỜI…", "TƯ GIA NHÀ GÁI", "NHẤN VÀO PASSPORT" */
+        josefin: ['"Josefin Sans"', 'sans-serif'],
+        /** Font chữ máy (gdgdgdg) — "DESTINATION: MARRIAGE", đầu vé */
+        mono: ['"Space Mono"', 'monospace'],
+        /** Tiêu đề form lời chúc */
+        hand: ['"Dancing Script"', 'cursive'],
         lora: ['Lora', 'serif'],
         upright: ['"Cormorant Upright"', 'serif'],
-        oswald: ['Oswald', 'sans-serif'],
-        /** Số trên lịch */
+        /** Số trên lịch, giờ trong Timeline */
         display: ['Tinos', 'serif'],
       },
       colors: {
-        /** Đỏ đô mẫu mau37 rgb(95, 8, 6) */
-        wine: '#5f0806',
+        /** Vàng đồng mẫu vé máy bay rgb(167, 137, 80) / chữ phụ rgb(145, 131, 98) */
+        gold: '#a78950',
+        goldsoft: '#918362',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {

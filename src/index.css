@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  /* Đỏ đô mẫu lovecard mau37 (#5f0806) */
-  --background: 20 6% 95%;
+  /* Vàng đồng mẫu vé máy bay (#a78950) */
+  --background: 30 6% 95%;
   --foreground: 0 0% 15%;
-  --primary: 1 88% 20%;
+  --primary: 39 35% 48%;
   --primary-foreground: 0 0% 100%;
   --secondary: 38 60% 45%;
   --secondary-foreground: 0 0% 100%;
@@ -19,6 +19,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* thanh cuộn hiện ra sau khi mở vé không làm xê dịch trang */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -164,6 +166,49 @@ body {
   animation: pop 0.25s ease-out;
 }
 
+/* Máy bay trắng cất cánh khi tải trang (mU 4s, -2000px của mẫu) */
+.takeoff {
+  animation: takeoff 4s ease-in-out forwards;
+}
+@keyframes takeoff {
+  from { transform: translateY(0); }
+  to { transform: translateY(-240vh); }
+}
+
+/* Máy bay vàng đầu thiệp lơ lửng */
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(4px, -8px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Quả địa cầu quay chậm */
+.animate-spin-slow-30 {
+  animation: spin-slow 30s linear infinite;
+}
+
+/* Con dấu Love Visa lắc (swing 3s của mẫu) */
+@keyframes swing-stamp {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(15deg); }
+  40% { transform: rotate(-10deg); }
+  60% { transform: rotate(5deg); }
+  80% { transform: rotate(-5deg); }
+}
+.animate-swing-stamp {
+  animation: swing-stamp 3s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
@@ -174,10 +219,10 @@ body {
   .animate-pulse-soft,
   .animate-swing,
   .animate-spin-slow,
-  .animate-pop { animation: none; }
-}
-
-/* Cormorant mặc định số kiểu cổ (16:oo) → số thẳng hàng như mẫu */
-.font-serif37 {
-  font-variant-numeric: lining-nums;
+  .animate-pop,
+  .animate-float,
+  .animate-spin-slow-30,
+  .animate-swing-stamp,
+  .takeoff { animation: none; }
+  .takeoff { display: none; }
 }

@@ -18,8 +18,8 @@ export const images = {
   album: [
     '/images/studio-03.jpg',
     '/images/studio-07.jpg',
-    '/images/studio-09.jpg',
-    '/images/studio-11.jpg',
+    '/images/album-3.jpg',
+    '/images/album-4.jpg',
     '/images/studio-12.jpg',
     '/images/studio-04.jpg',
   ],

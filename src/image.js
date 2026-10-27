@@ -4,7 +4,7 @@
  */
 export const images = {
   /** Ảnh bìa tràn màn hình, mờ dần xuống nền xanh (tên + Save The Date đè lên nửa dưới) */
-  hero: '/images/studio-02.jpg',
+  hero: '/images/anh-chinh.jpg',
   /** Thẻ ảnh chú rể / cô dâu (bo góc, phủ tên) */
   groom: '/images/studio-05.jpg',
   bride: '/images/co-dau.jpg',

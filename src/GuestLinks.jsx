@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
+import { content } from "./content.js";
+import { hasEditableEvents } from "./eventOverrides.js";
 
 /**
  * Trang /tao-link — nhập tên khách (mỗi dòng một người) → link thiệp riêng cho từng người.
@@ -17,8 +19,8 @@ export function isGuestLinksPage() {
   }
 }
 
-function linkFor(base, name) {
-  return `${base}/?khach=${encodeURIComponent(name)}`;
+function linkFor(base, name, extra = "") {
+  return `${base}/?khach=${encodeURIComponent(name)}${extra}`;
 }
 
 async function copyText(text) {
@@ -71,6 +73,11 @@ export default function GuestLinksPage() {
     }
   });
   const [withName, setWithName] = useState(true);
+  const editable = hasEditableEvents(content.events.items);
+  const eventItem = content.events.items.find((i) => i.editable);
+  const [gio, setGio] = useState("");
+  const [ngay, setNgay] = useState("");
+  const extra = (gio ? `&gio=${gio}` : "") + (ngay ? `&ngay=${ngay}` : "");
 
   useEffect(() => {
     try {
@@ -88,7 +95,7 @@ export default function GuestLinksPage() {
       .filter((s) => s && !seen.has(s.toLowerCase()) && seen.add(s.toLowerCase()));
   }, [text]);
 
-  const lines = names.map((n) => (withName ? `${n}: ${linkFor(base, n)}` : linkFor(base, n)));
+  const lines = names.map((n) => (withName ? `${n}: ${linkFor(base, n, extra)}` : linkFor(base, n, extra)));
   const title = document.title;
 
   return (
@@ -98,6 +105,33 @@ export default function GuestLinksPage() {
         <p className="mt-1 text-sm text-black/60">
           Thiệp: <b>{title}</b>
         </p>
+
+        {editable && (
+          <section className="mt-6 rounded-xl bg-white p-4 shadow-sm">
+            <p className="text-sm font-semibold">Thời gian "{eventItem.title}" (để trống = giữ như trong thiệp)</p>
+            <div className="mt-2 flex flex-wrap gap-3">
+              <label className="text-sm">
+                Giờ
+                <input
+                  type="time"
+                  value={gio}
+                  onChange={(e) => setGio(e.target.value)}
+                  className="ml-2 rounded-lg border border-black/20 px-2 py-1"
+                />
+              </label>
+              <label className="text-sm">
+                Ngày
+                <input
+                  type="date"
+                  value={ngay}
+                  onChange={(e) => setNgay(e.target.value)}
+                  className="ml-2 rounded-lg border border-black/20 px-2 py-1"
+                />
+              </label>
+            </div>
+            <p className="mt-2 text-xs text-black/50">Giờ / ngày được gắn vào mọi link bên dưới; thứ trong tuần tự tính.</p>
+          </section>
+        )}
 
         <label className="mt-6 block text-sm font-semibold" htmlFor="guest-names">
           Tên khách mời — mỗi dòng một người, ghi cả xưng hô (vd: Cô Lan, Gia đình bác Hùng, Anh Tuấn)
@@ -126,7 +160,7 @@ export default function GuestLinksPage() {
             </div>
             <ul className="mt-3 space-y-2">
               {names.map((n) => {
-                const url = linkFor(base, n);
+                const url = linkFor(base, n, extra);
                 return (
                   <li key={n} className="rounded-xl bg-white p-3 shadow-sm">
                     <div className="flex items-center justify-between gap-3">

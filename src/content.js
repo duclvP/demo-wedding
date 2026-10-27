@@ -55,6 +55,8 @@ export const content = {
         title: 'Tiệc Mừng Lễ Vu Quy',
         // TODO: khách chưa gửi giờ + ngày tiệc nhà gái (đang tạm để cùng ngày 08/11) — hỏi lại khách
         time: '..:.. | Chủ Nhật',
+        /** Đổi giờ / ngày bằng link: ?gio=10:30&ngay=2026-11-07 (xem trang /tao-link) */
+        editable: true,
         date: '08. 11. 2026',
         lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
         places: [{ label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Giao Thiện, Giao Minh, Ninh Bình' }],

@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Check, ChevronDown, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
 import { images } from "./image.js";
+import { applyEventOverrides } from "./eventOverrides.js";
 import "./index.css";
 import GuestLinksPage, { isGuestLinksPage } from "./GuestLinks.jsx";
 
@@ -967,7 +968,7 @@ function WeddingPage() {
 
           {/* Sự kiện */}
           <section className="space-y-4 pb-10">
-            {c.events.items.map((item, i) => (
+            {applyEventOverrides(c.events.items).map((item, i) => (
               <Reveal key={item.id} variant={i % 2 ? "right" : "left"}>
                 <EventCard item={item} mapLabel={c.events.mapLabel} />
               </Reveal>

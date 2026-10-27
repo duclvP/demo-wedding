@@ -7,7 +7,7 @@ export const images = {
   hero: '/images/studio-02.jpg',
   /** Thẻ ảnh chú rể / cô dâu (bo góc, phủ tên) */
   groom: '/images/studio-05.jpg',
-  bride: '/images/studio-06.jpg',
+  bride: '/images/co-dau.jpg',
   /** 3 ảnh dải ngày cưới (chữ ngày / tháng / năm đè lên) */
   dateStrip: ['/images/studio-05.jpg', '/images/studio-04.jpg', '/images/studio-06.jpg'],
   /** Ảnh dán băng keo dưới các thẻ sự kiện */

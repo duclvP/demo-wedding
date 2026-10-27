@@ -59,7 +59,7 @@ export const content = {
         editable: true,
         date: '08. 11. 2026',
         lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Giao Thiện, Giao Minh, Ninh Bình' }],
+        places: [{ label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: '7GMQ+67P Xuân Bảo, ĐT489, Giao Minh, Ninh Bình' }],
       },
       {
         id: 'thanh-hon',
@@ -67,7 +67,7 @@ export const content = {
         time: '13:00 | Chủ Nhật',
         date: '08. 11. 2026',
         lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Yên Đồng, Ninh Bình' }],
+        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Phố Nấp, Yên Đồng, Ý Yên, Nam Định' }],
       },
     ],
   },
@@ -128,11 +128,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'NGUYEN DINH THANG',
-        number: '0971000009622',
+        holder: 'DINH THI SEN',
+        number: '0031000233954',
         bank: 'Vietcombank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-vietcombank.png',
+        qr: '/images/qr-vietcombank-sen.png',
       },
     ],
   },

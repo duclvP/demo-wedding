@@ -67,7 +67,7 @@ export const content = {
         time: '13:00 | Chủ Nhật',
         date: '08. 11. 2026',
         lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Phố Nấp, Yên Đồng, Ý Yên, Nam Định' }],
+        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Phố Nấp, Yên Đồng, Ý Yên, Nam Định', mapLink: 'https://www.google.com/maps/search/?api=1&query=20.256000518798828,106.0662841796875' }],
       },
     ],
   },

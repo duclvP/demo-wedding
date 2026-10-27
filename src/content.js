@@ -59,7 +59,7 @@ export const content = {
         editable: true,
         date: '08. 11. 2026',
         lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: '7GMQ+67P Xuân Bảo, ĐT489, Giao Minh, Ninh Bình' }],
+        places: [{ label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Xuân Bảo, ĐT489, Giao Minh, Ninh Bình', mapLink: 'https://maps.app.goo.gl/bdaKBqRxxDMSH7yq8' }],
       },
       {
         id: 'thanh-hon',

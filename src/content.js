@@ -21,7 +21,7 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Đình Thắng', 'Đinh Sen'],
+    names: ['Đinh Sen', 'Đình Thắng'],
     dateLine: '08 . 11 . 2026',
   },
 
@@ -33,16 +33,16 @@ export const content = {
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Tên cô dâu & chú rể — dòng ký tên cuối mục Thank You */
-    fullNames: ['Đình Thắng', 'Đinh Sen'],
+    fullNames: ['Đinh Sen', 'Đình Thắng'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Thành Hôn',
+    title: 'Tham Dự Lễ Vu Quy',
     /** Chữ đè lên 3 ảnh */
     dateParts: ['08', '11', '2026'],
   },
@@ -52,11 +52,12 @@ export const content = {
     items: [
       {
         id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Thành Hôn',
-        time: '08:30 | Chủ Nhật',
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        // TODO: khách chưa gửi giờ + ngày tiệc nhà gái (đang tạm để cùng ngày 08/11) — hỏi lại khách
+        time: '..:.. | Chủ Nhật',
         date: '08. 11. 2026',
         lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Yên Đồng, Ninh Bình' }],
+        places: [{ label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Giao Thiện, Giao Minh, Ninh Bình' }],
       },
       {
         id: 'thanh-hon',

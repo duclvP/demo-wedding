@@ -26,5 +26,5 @@ export const images = {
   /** Ảnh trong hộp quà mừng cưới */
   gift: '/images/studio-08.jpg',
   /** Ảnh mục Thank You */
-  thankYou: '/images/studio-10.jpg',
+  thankYou: '/images/thank-you.jpg',
 };

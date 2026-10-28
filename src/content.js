@@ -56,8 +56,8 @@ export const content = {
         lunar: '( Tức ngày 09 tháng 10 năm Bính Ngọ )',
         place: 'Tư Gia Nhà Trai',
         address: 'Xóm Làng Giếng, Quang Sơn, Thái Nguyên',
-        /** Tên cũ trước sáp nhập — Google Maps tìm dễ hơn */
-        mapQuery: 'Làng Giếng, Quang Sơn, Đồng Hỷ, Thái Nguyên',
+        /** Toạ độ ghim khách gửi (issue #14) */
+        mapQuery: '21.741261438217474,105.90433847766596',
       },
     ],
   },

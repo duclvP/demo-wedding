@@ -25,10 +25,20 @@ show: true,
 
 Sheet tự được tạo khi có lời chúc đầu tiên; email thông báo kèm link Sheet.
 
-## Chia sẻ cho khách (chỉ thấy Sheet của họ)
+## Khách nhận email thông báo + xem Sheet (không sửa code)
 
-Trong Apps Script, mở hàm `shareWithClient`, điền `COUPLE_ID` và `EMAIL` của khách (hoặc để `EMAIL = ''` để ai có link cũng **chỉ xem** được), chọn hàm → **Chạy**, link nằm ở **Nhật ký thực thi**.
-`listCouples` liệt kê mọi cặp và link Sheet. Mặc định Sheet riêng tư, chỉ bạn xem được.
+Một lần: chạy hàm `adminLink` → Nhật ký thực thi in link mẫu có `key` (KEY lưu trong Script Properties, không nằm trong repo công khai). Lưu link đó lại.
+
+Mỗi khách: mở link trên trình duyệt, đổi `couple` (= `rsvp.coupleId`) và `email`:
+
+```
+<URL /exec>?key=<KEY>&couple=dinh-sen-dinh-thang-nha-gai&email=khach@gmail.com              → thêm
+<URL /exec>?key=<KEY>&couple=dinh-sen-dinh-thang-nha-gai&email=khach@gmail.com&action=remove → bỏ
+<URL /exec>?key=<KEY>&couple=dinh-sen-dinh-thang-nha-gai                                     → xem danh sách
+```
+
+Email được thêm nhận email thông báo mỗi lời chúc mới của cặp đó (cùng `NOTIFY_EMAIL`) và quyền **xem** Sheet — thêm trước khi có Sheet cũng được, Sheet tạo ra sẽ tự chia sẻ.
+`shareWithClient` (chạy tay) bật "ai có link cũng xem được". `listCouples` liệt kê mọi cặp, link Sheet và email nhận thông báo. Mặc định Sheet riêng tư, chỉ bạn xem được.
 
 ## Sửa code sau này
 

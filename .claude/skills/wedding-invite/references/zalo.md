@@ -1,0 +1,5 @@
+### Khách nhắn thay đổi qua Zalo
+
+Đọc nhóm Zalo của khách bằng extension Claude in Chrome (đã đăng nhập sẵn chat.zalo.me; mở tab mới, **chỉ đọc đúng nhóm "TOL - …" của ticket đang xử lý**, không mở cuộc trò chuyện khác): `navigate https://chat.zalo.me/` → chờ ~3 giây → bấm nhóm trong danh sách (hoặc tìm bằng ô tìm kiếm) → `get_page_text` đọc chữ, `screenshot` + `zoom` xem ảnh khách gửi (mẫu phông chữ, ảnh sửa). Tin nhắn có thể ghi thứ tự khác với yêu cầu thật — **chỉ làm đúng điều khách yêu cầu**, đừng suy ra thêm (vd khách gửi ảnh mẫu có tên chú rể đứng trước chưa chắc muốn đổi thứ tự tên → hỏi lại người dùng). Bật form xác nhận → dùng script dùng chung + `rsvp.coupleId`, không cần tạo Sheet/Apps Script riêng (xem google-apps-script/README.md); chia sẻ Sheet cho khách bằng hàm `shareWithClient` — người dùng tự chạy. Gửi link thiệp vào nhóm Zalo là gửi tin nhắn thay người dùng → luôn hỏi trước.
+
+Ảnh "bỏ phần này" thường chụp nhiều mục cùng lúc — ẩn mục ở giữa ảnh/rõ nhất, nói rõ đã giữ mục nào và hỏi lại.

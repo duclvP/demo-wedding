@@ -21,6 +21,8 @@ html,body{margin:0;width:1200px;height:630px;overflow:hidden}
 EOF
 "$CHROME" --headless=new --disable-gpu --hide-scrollbars --allow-file-access-from-files \
   --virtual-time-budget=5000 --window-size=1200,630 --screenshot="$T/og.png" "file://$T/og.html" 2>/dev/null
-python3 -c "from PIL import Image; Image.open('$T/og.png').convert('RGB').save('$OUT', quality=85, optimize=True)"
+# PIL (Linux) hoặc sips (Mac không cài PIL)
+python3 -c "from PIL import Image; Image.open('$T/og.png').convert('RGB').save('$OUT', quality=85, optimize=True)" 2>/dev/null ||
+  sips -s format jpeg -s formatOptions 85 "$T/og.png" --out "$OUT" >/dev/null
 rm -rf "$T"
 echo "$OUT $(du -h "$OUT" | cut -f1)"

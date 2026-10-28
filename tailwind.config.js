@@ -4,35 +4,26 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        /* Font thay thế gần nhất cho font của mẫu lovecard thiepso13 (ghi chú: font gốc) */
-        sans: ['Quicksand', 'system-ui', 'sans-serif'],
-        /** 1FTV VIP High Spirited — tên trong "Trân trọng báo tin" và dòng tên dưới lời mời */
-        script: ['Ephesis', 'cursive'],
-        /** SFU Edwardian Script — tên trên màn phong bì */
-        edward: ['"Pinyon Script"', 'cursive'],
-        /** Tiêu đề hộp quà mừng cưới */
-        vibes: ['"Great Vibes"', 'cursive'],
-        /** Ed Drayton — chữ "Quý khách" */
-        guest: ['"Imperial Script"', 'cursive'],
-        arizonia: ['Arizonia', 'cursive'],
-        dancing: ['"Dancing Script"', 'cursive'],
-        monte: ['MonteCarlo', 'cursive'],
-        culpa: ['"Mea Culpa"', 'cursive'],
-        passions: ['"Passions Conflict"', 'cursive'],
-        philo: ['Philosopher', 'sans-serif'],
-        trirong: ['Trirong', 'serif'],
-        judson: ['Judson', 'serif'],
-        chonburi: ['Chonburi', 'serif'],
-        opensans: ['"Open Sans"', 'sans-serif'],
-        roboto: ['Roboto', 'sans-serif'],
-        lora: ['Lora', 'serif'],
-        /** Cormorant Upright — "Thư Mời Cưới"; LF Aretha Bridge — "Địa điểm tổ chức" */
-        upright: ['"Cormorant Upright"', 'serif'],
-        oswald: ['Oswald', 'sans-serif'],
-        /** Tinos — "Nhà Trai / Nhà Gái", thứ trên lịch */
-        display: ['Tinos', 'serif'],
+        /* Font thay thế gần nhất cho font của mẫu nawngs.com/thanglinh (ghi chú: font gốc) */
+        /** Boton — tên in hoa, giờ, địa điểm, chữ thường */
+        serif: ['"Brygada 1918"', 'serif'],
+        /** Hayollan — Love Story, tháng, Timeline, Destiny, The, Thank you, ký tên */
+        script: ['Corinthia', 'cursive'],
+        /** Roboto Slab — ngày tháng số to */
+        slab: ['"Roboto Slab"', 'serif'],
+        /** Hepta Slab — timeline, thư cảm ơn, form */
+        hepta: ['"Hepta Slab"', 'serif'],
+        /** Hộp quà mừng cưới (dùng chung với các mẫu khác) */
+        lora: ['"Brygada 1918"', 'serif'],
+        vibes: ['Corinthia', 'cursive'],
+        display: ['"Brygada 1918"', 'serif'],
       },
       colors: {
+        /** Tông chính khách chọn: đỏ rượu #7B0323 (mẫu gốc xanh rêu #062520) */
+        wine: '#7b0323',
+        cream: '#fffbf0',
+        /** Chữ phụ xám ấm (mẫu gốc #69706a) */
+        ink: '#6f6266',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {

@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  /* Xanh rêu xám của mẫu 13 (#808c70) */
+  /* Đỏ rượu #7B0323 (khách chọn) */
   --background: 0 0% 100%;
-  --foreground: 0 0% 12%;
-  --primary: 85 11% 49%;
+  --foreground: 340 50% 15%;
+  --primary: 340 95% 25%;
   --primary-foreground: 0 0% 100%;
   --secondary: 38 60% 45%;
   --secondary-foreground: 0 0% 100%;
@@ -56,68 +56,20 @@ body {
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* Màn phong bì: chạy ngay khi tải trang (không chờ mở) */
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: none; }
+/* Nền giấy thạch cao của mẫu */
+.paper {
+  background: #f4f2ee url("/images/deco-giay.jpg") repeat-y top center / 100% auto;
 }
-.anim-fade-up-4 { animation: fade-in-up 4s ease both; }
-@keyframes fade-in-down {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: none; }
-}
-.anim-fade-down-5 { animation: fade-in-down 5s ease both; }
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.anim-fade-in-300 { animation: fade-in 0.3s ease both; }
-.anim-fade-in-500 { animation: fade-in 0.5s ease both; }
-
-/* Ảnh cưới trượt lên khỏi phong bì: mẫu dịch 295px trên ảnh cao 347px */
-@keyframes move-up {
-  to { transform: translateY(-85%); }
-}
-.env-photo { animation: move-up 2s ease-in-out forwards; }
-
-/* Tuyết & tim rơi */
-.falling {
-  position: fixed;
-  top: -10%;
-  z-index: 140;
-  pointer-events: none;
-  user-select: none;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-.falling-snowflake {
-  color: #fff;
-  font-family: Arial, sans-serif;
-  text-shadow: 0 0 5px #000;
-  animation-name: fall-snow;
-}
-.falling-heart {
-  color: #ff3366;
-  font-weight: 700;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  animation-name: fall-heart;
-}
-@keyframes fall-snow {
-  from { transform: translate(0, -10%) rotate(0deg); opacity: 1; }
-  to { transform: translate(calc(-50vw + 100vw * var(--rand-x)), 110vh) rotate(360deg); opacity: 0.2; }
-}
-@keyframes fall-heart {
-  from { transform: translate(0, -10%) scale(0.7); opacity: 1; }
-  to { transform: translate(calc(-50vw + 100vw * var(--rand-x)), 110vh) scale(1.2); opacity: 0.2; }
+body {
+  font-variant-numeric: lining-nums;
 }
 
-/* Nền hộp quà: loang xanh nhạt trên nền trắng */
+/* Nền hộp quà: loang hồng nhạt trên nền kem */
 .gift-card {
   background:
-    radial-gradient(ellipse at 15% 10%, rgba(176, 196, 222, 0.45), transparent 55%),
-    radial-gradient(ellipse at 85% 30%, rgba(200, 210, 230, 0.5), transparent 50%),
-    radial-gradient(ellipse at 30% 85%, rgba(186, 200, 225, 0.45), transparent 55%),
-    linear-gradient(160deg, #ffffff, #eef2f8);
+    radial-gradient(ellipse at 15% 10%, rgba(123, 3, 35, 0.12), transparent 55%),
+    radial-gradient(ellipse at 85% 85%, rgba(123, 3, 35, 0.1), transparent 50%),
+    linear-gradient(160deg, #fffbf0, #f6ece9);
 }
 
 /* Nút nhạc: sóng lan ra khi đang phát, nhún khi bấm */
@@ -178,10 +130,14 @@ body {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .reveal-bounce.is-visible,
-  .falling,
   .music-ripple,
   .animate-pulse-soft,
   .animate-swing,
   .animate-spin-slow,
   .animate-pop { animation: none; }
+}
+
+/* Corinthia khoảng cách chữ hẹp — "Tuấn Anh & Trần Ly" dính chữ */
+.font-script {
+  word-spacing: 0.18em;
 }

@@ -2,47 +2,37 @@
  * Đường dẫn ảnh — file trong public/images/
  * Thêm ảnh mới: bỏ file vào public/images/ rồi thêm đường dẫn vào đây.
  */
+// TODO: ticket #30 chưa có ảnh cưới ("gửi sau") — đang dùng ảnh mẫu demo-*.jpg
 export const images = {
-  /** Ảnh trong phong bì lúc mở thiệp (khung 278×347, object-top) */
-  hero: '/images/studio-1.jpg',
-  /** Ảnh ngang bo góc viền xanh dưới "Trân trọng báo tin" (387×285) */
-  wide: '/images/man-do-4.jpg',
-  /** 3 ảnh dọc dưới "Trân trọng kính mời": trái, giữa (to hơn), phải */
-  trio: ['/images/studio-2.jpg', '/images/vuon-3.jpg', '/images/ao-dai-1.jpg'],
-  /** Ảnh polaroid cạnh lịch */
-  polaroid: '/images/ao-dai-2.jpg',
-  /** Album 2 cột so le — ảnh chẵn cột trái, ảnh lẻ cột phải (ô thứ 5 là khung ngang) */
+  /** Ảnh bìa đầu thiệp, dọc 385×613 bo góc dưới phải — tên phủ góc trên phải */
+  hero: '/images/demo-15.jpg',
+  /** Ảnh ngang 420×210 dưới "Love Story" */
+  wide: '/images/demo-02.jpg',
+  /** Ảnh dọc 420×630 bo góc trên trái, chữ "Destiny" ở đáy */
+  destiny: '/images/demo-10.jpg',
+  /** Ảnh dọc 305×458 mục "The Album" */
+  albumCover: '/images/demo-05.jpg',
+  /** Album trình chiếu (ảnh lớn 420×490 + dải ảnh nhỏ) */
   album: [
-    '/images/studio-3.jpg',
-    '/images/vuon-1.jpg',
-    '/images/vuon-4.jpg',
-    '/images/man-do-2.jpg',
-    '/images/man-do-1.jpg',
-    '/images/man-do-3.jpg',
-    '/images/man-do-5.jpg',
-    '/images/man-do-6.jpg',
+    '/images/demo-01.jpg',
+    '/images/demo-03.jpg',
+    '/images/demo-04.jpg',
+    '/images/demo-06.jpg',
+    '/images/demo-07.jpg',
+    '/images/demo-09.jpg',
+    '/images/demo-11.jpg',
+    '/images/demo-13.jpg',
+    '/images/demo-14.jpg',
+    '/images/demo-16.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/vuon-3.jpg',
-  /** Ảnh mục Thank You (420×647) — chữ phủ phần trên ảnh, chọn ảnh mặt nằm ở nửa dưới */
-  thankYou: '/images/vuon-2.jpg',
+  gift: '/images/demo-03.jpg',
+  /** Ảnh ngang 420×203 cuối thiệp — chữ "Thank you!" bên trái, chọn ảnh mặt nằm bên phải / giữa */
+  thankYou: '/images/demo-12.jpg',
 
-  /** Ảnh trang trí của mẫu 13 (lovecard thiepso13) — dùng chung cho mọi cặp đôi, không cần đổi */
+  /** Ảnh trang trí của mẫu nawngs.com/thanglinh — dùng chung mọi cặp đôi */
   deco: {
-    pbDong: '/images/deco-pb-dong.png',
-    pbMoSau: '/images/deco-pb-mo-sau.png',
-    pbMoTruoc: '/images/deco-pb-mo-truoc.png',
-    hyXanh: '/images/deco-hy-xanh.png',
-    hyTrang: '/images/deco-hy-trang.png',
-    thiepMoiCuoi: '/images/deco-thiep-moi-cuoi.png',
-    laMauNuoc: '/images/deco-la-mau-nuoc.png',
-    laGoc: '/images/deco-la-goc.png',
-    laCanh: '/images/deco-la-canh.png',
-    nhan: '/images/deco-nhan.png',
-    nhanDoi: '/images/deco-nhan-doi.png',
-    hoaSen: '/images/deco-hoa-sen.png',
-    timVanTay: '/images/deco-tim-van-tay.png',
-    chibi: '/images/deco-chibi.png',
-    phongThu: '/images/deco-phong-thu.png',
+    /** Lá phong (đã đổi sang tông đỏ rượu) */
+    leaf: '/images/deco-la-phong.png',
   },
 };

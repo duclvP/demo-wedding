@@ -586,9 +586,10 @@ function EventBlock({ item, mapLabel }) {
   );
 }
 
-/** Một bên gia đình: nhãn + bố mẹ (bỏ dòng null) + địa chỉ */
-function FamilySide({ side, align }) {
+/** Một bên gia đình: nhãn + bố mẹ (bỏ dòng null) + địa chỉ + nút chỉ đường riêng của nhà đó */
+function FamilySide({ side, align, mapLabel }) {
   const lines = [side.father, side.mother].filter(Boolean);
+  const href = side.mapLink ?? (side.address && mapUrl(side.address));
   return (
     <div className={`font-serif uppercase text-[13px] leading-[20.8px] text-ink ${align}`}>
       <p>{side.label}</p>
@@ -596,11 +597,17 @@ function FamilySide({ side, align }) {
         <p key={l} className="text-moss">{l}</p>
       ))}
       {side.address && <p className="normal-case">{side.address}</p>}
+      {href && (
+        <a href={href} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-[12px] text-moss underline-offset-2 hover:underline">
+          <MapPin className="h-[14px] w-[14px]" strokeWidth={1.5} aria-hidden />
+          {mapLabel}
+        </a>
+      )}
     </div>
   );
 }
 
-/** Lịch tháng chữ kem trên nền đỏ rượu, ngày cưới phủ tim hồng nhạt */
+/** Lịch tháng chữ kem trên nền màu chính, ngày cưới phủ tim xám xanh */
 function MonthCalendar({ dateIso }) {
   const [y, m, d] = dateIso.split("-").map(Number);
   const daysInMonth = new Date(y, m, 0).getDate();
@@ -927,10 +934,10 @@ function WeddingPage() {
           </Reveal>
           <div className="mt-[22px] grid grid-cols-2 gap-6">
             <Reveal variant="left" duration={1.5}>
-              <FamilySide side={c.families.sides[0]} align="text-left" />
+              <FamilySide side={c.families.sides[0]} align="text-left" mapLabel={c.events.mapLabel} />
             </Reveal>
             <Reveal variant="right" duration={1.5}>
-              <FamilySide side={c.families.sides[1]} align="text-right" />
+              <FamilySide side={c.families.sides[1]} align="text-right" mapLabel={c.events.mapLabel} />
             </Reveal>
           </div>
         </section>

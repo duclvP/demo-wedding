@@ -943,11 +943,21 @@ function WeddingPage() {
 
           {/* Album */}
           <section className="grid grid-cols-2 gap-1.5 pb-3 -mx-2">
-            {images.album.map((src, i) => (
-              <Reveal key={i} variant={i % 2 ? "right" : "left"} className="border-2 border-[#e6e6e6]">
-                <img src={src} alt="" className="w-full aspect-[2/3] object-cover" loading="lazy" />
-              </Reveal>
-            ))}
+            {images.album.map((src, i) => {
+              const photo = (
+                <Reveal key={i} variant={i % 2 ? "right" : "left"} className="border-2 border-[#e6e6e6]">
+                  <img src={src} alt="" className="w-full aspect-[2/3] object-cover" loading="lazy" />
+                </Reveal>
+              );
+              /** Số ảnh lẻ → ảnh cuối nằm giữa hàng */
+              return i === images.album.length - 1 && i % 2 === 0 ? (
+                <div key={i} className="col-span-2 flex justify-center">
+                  <div className="w-[calc(50%-3px)]">{photo}</div>
+                </div>
+              ) : (
+                photo
+              );
+            })}
           </section>
 
           {/* Thank you */}

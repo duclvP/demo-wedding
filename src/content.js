@@ -47,8 +47,29 @@ export const content = {
 
   events: {
     mapLabel: 'Xem chỉ đường',
-    /** Sự kiện đầu tiên là ngày chính: ngày xếp dọc đầu thiệp, lịch */
+    /**
+     * Khách được mời một ngày hay cả hai: link ?moi=1 (chỉ 28/11) / ?moi=2 (chỉ 29/11), không ghi = cả hai.
+     * Sự kiện đầu tiên đang hiện là ngày chính: ngày xếp dọc đầu thiệp, lịch
+     */
     items: [
+      {
+        /** Tiệc tối 28/11 — muộn hơn tiệc nhà gái cùng ngày 30 phút */
+        id: 'thanh-hon-28',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
+        time: '16:30 | Thứ Bảy',
+        date: '28. 11. 2026',
+        lunar: '(20 tháng 10 năm Bính Ngọ)',
+        placeLabel: 'Tại địa điểm',
+        place: 'Nhà Trai',
+        address: ADDRESS_GROOM,
+        mapLink: MAP_GROOM,
+        /** Mốc trong ngày — icon: guests | dinner | music | car | rings */
+        timeline: [
+          { time: '16:30', label: 'Đón khách', icon: 'guests' },
+          { time: '17:00', label: 'Nhập tiệc', icon: 'dinner' },
+          { time: '19:30', label: 'Âm nhạc', icon: 'music' },
+        ],
+      },
       {
         id: 'thanh-hon',
         title: 'Tiệc Mừng Lễ Thành Hôn',
@@ -59,11 +80,11 @@ export const content = {
         place: 'Nhà Trai',
         address: ADDRESS_GROOM,
         mapLink: MAP_GROOM,
-        /** Mốc trong ngày — icon: guests | dinner | music | car | rings */
         timeline: [
           { time: '09:00', label: 'Đón khách', icon: 'guests' },
           { time: '10:00', label: 'Nhập tiệc', icon: 'dinner' },
-          { time: '13:00', label: 'Lễ thành hôn', icon: 'rings' },
+          /** always: vẫn hiện trên timeline của khách chỉ mời ngày 28 (ngày cưới) */
+          { time: '13:00', label: 'Lễ thành hôn', icon: 'rings', always: true },
         ],
       },
     ],

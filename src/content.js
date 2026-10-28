@@ -59,20 +59,18 @@ export const content = {
         place: 'Nhà Trai',
         address: ADDRESS_GROOM,
         mapLink: MAP_GROOM,
+        /** Mốc trong ngày — icon: guests | dinner | music | car | rings */
+        timeline: [
+          { time: '09:00', label: 'Đón khách', icon: 'guests' },
+          { time: '10:00', label: 'Nhập tiệc', icon: 'dinner' },
+          { time: '13:00', label: 'Lễ thành hôn', icon: 'rings' },
+        ],
       },
     ],
   },
 
-  /** Các mốc trong ngày — followsEvent: khách đổi giờ sự kiện đó qua link thì các mốc dời theo */
   timeline: {
     title: 'Timeline',
-    followsEvent: 'thanh-hon',
-    /** icon: guests | dinner | music | car | rings */
-    items: [
-      { time: '09:00', label: 'Đón khách', icon: 'guests' },
-      { time: '10:00', label: 'Nhập tiệc', icon: 'dinner' },
-      { time: '13:00', label: 'Lễ thành hôn', icon: 'rings' },
-    ],
   },
 
   /** Màu trang phục gợi ý — để [] thì ẩn mục Dresscode */
@@ -82,7 +80,7 @@ export const content = {
   },
 
   calendar: {
-    /** Lịch tháng của ngày chính (sự kiện đầu tiên) — false thì ẩn */
+    /** Lịch tháng của ngày chính, khoanh mọi ngày tổ chức đang hiện — false thì ẩn */
     show: true,
   },
 

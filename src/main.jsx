@@ -905,11 +905,14 @@ function WeddingPage() {
           {/* Phần còn lại chỉ gắn vào trang sau khi mở phong bì — màn hình cao hơn khung 880px sẽ không thấy ló mục dưới */}
           {opened && (
             <div className="anim-fade-in-500">
-            {/* Gia đình hai bên — vạch dọc trái, "Thư Mời Cưới" rồi hai nhà xếp dọc, ô xanh 囍 bên phải */}
-            <section className="relative w-full pt-2 pb-[53px]">
-              <div className="relative ml-[3px] mr-[110px] min-h-[461px]">
-                <span className="absolute left-0 top-0 h-[66px] w-px bg-black" aria-hidden />
-                <Reveal variant="right" duration={2} className="pt-[57px] pl-[10px]">
+            {/*
+              Gia đình hai bên — toạ độ theo mẫu (khung 420, tính từ đỉnh mục): vạch dọc x8 (0→66), "Thư Mời Cưới" x10 y57,
+              vạch dọc thứ hai từ y188 chạy hết khối hai nhà (chữ x17, cách vạch 38px), ô xanh 87×244 cách mép phải 18px ở y80, hoa sen 187×307 ở y385 (lố mép phải 9px)
+            */}
+            <section className="relative w-full pt-[188px] pb-[60px]">
+              <span className="absolute left-[8px] top-0 h-[66px] w-px bg-black" aria-hidden />
+              <div className="absolute left-[10px] top-[57px]">
+                <Reveal variant="right" duration={2}>
                   <p className="font-upright text-[29.4px] leading-[47px]">
                     Thư
                     <br />
@@ -918,26 +921,26 @@ function WeddingPage() {
                     Cưới
                   </p>
                 </Reveal>
-                <span className="absolute left-0 top-[188px] bottom-0 w-px bg-black" aria-hidden />
-                <div className="mt-[25px] ml-[17px] space-y-[30px]">
-                  {c.families.sides.map((side) => (
-                    <Reveal key={side.label} variant="right" duration={3}>
-                      <FamilySide side={side} />
-                    </Reveal>
-                  ))}
+              </div>
+              <div className="relative ml-[8px] mr-[118px] border-l border-black pl-[9px] pt-[38px] space-y-[35px]">
+                {c.families.sides.map((side) => (
+                  <Reveal key={side.label} variant="right" duration={3}>
+                    <FamilySide side={side} />
+                  </Reveal>
+                ))}
+              </div>
+              <div className="absolute right-[18px] top-[80px] h-[244px] w-[87px] bg-[#b2bca3]">
+                <Cropped src={images.deco.nhan} crop={{ w: 42.6, l: 27, t: 17.7 }} className="left-[7px] top-[4px] w-[75px] h-[59px]" />
+                <div className="absolute left-[10px] top-[152px]">
+                  <Reveal variant="up" duration={3.5}>
+                    <Cropped src={images.deco.hyTrang} crop={{ w: 192, l: -47.2, t: -108.7 }} className="relative w-[71px] h-[77px]" />
+                  </Reveal>
                 </div>
               </div>
-              <div className="absolute right-[13px] top-[80px] h-[244px] w-[87px] bg-[#b2bca3]">
-                <Cropped src={images.deco.nhan} crop={{ w: 42.6, l: 27, t: 17.7 }} className="left-[7px] top-[4px] w-[75px] h-[59px]" />
-                <Reveal variant="up" duration={3.5} className="absolute left-[10px] top-[152px]">
-                  <Cropped src={images.deco.hyTrang} crop={{ w: 192, l: -47.2, t: -108.7 }} className="relative w-[71px] h-[77px]" />
-                </Reveal>
-              </div>
-              <img
+              <Cropped
                 src={images.deco.hoaSen}
-                alt=""
-                className="pointer-events-none absolute left-[242px] top-[385px] z-10 w-[187px] -rotate-[17deg] opacity-25"
-                loading="lazy"
+                crop={{ w: 164.2, l: 0, t: 0 }}
+                className="pointer-events-none right-[-9px] top-[385px] z-10 h-[307px] w-[187px] -rotate-[17deg] opacity-25"
               />
             </section>
 

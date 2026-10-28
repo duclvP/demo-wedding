@@ -508,15 +508,19 @@ const TIMELINE_ICONS = {
 };
 
 /**
- * Hai tên in hoa xếp chéo + nét "and" bay dài (ảnh của mẫu) lượn dưới hai tên — toạ độ theo mẫu trên khung 337×148:
- * tên 1 ở đỉnh, tên 2 thấp hơn 60px, ảnh "and" 242×101 ở x0 y26
+ * Hai tên in hoa xếp chéo + nét "and" bay dài (ảnh của mẫu 600×249) nằm ngoài, bên trái tên thứ hai như mẫu:
+ * mép phải ảnh chạm chữ đầu tên 2, đáy ảnh cách đáy dòng 22px; tên dài thì ảnh tự thu nhỏ (tối đa 242px)
  */
 function NamesBlock({ names, andSrc, className = "" }) {
   return (
-    <div className={`relative ml-auto w-[337px] max-w-full text-right font-serif uppercase text-[55px] leading-[88px] ${className}`}>
-      <img src={andSrc} alt="" className="pointer-events-none absolute left-0 top-[26px] w-[242px]" aria-hidden />
-      <p className="relative whitespace-nowrap">{names[0]}</p>
-      <p className="relative -mt-[28px] whitespace-nowrap">{names[1]}</p>
+    <div className={`w-full text-right font-serif uppercase text-[55px] leading-[88px] ${className}`}>
+      <p className="whitespace-nowrap">{names[0]}</p>
+      <div className="-mt-[28px] flex items-end">
+        <div className="relative min-w-0 flex-1 self-stretch">
+          <img src={andSrc} alt="" className="pointer-events-none absolute bottom-[22px] right-[-4px] w-full max-w-[242px]" aria-hidden />
+        </div>
+        <p className="relative whitespace-nowrap">{names[1]}</p>
+      </div>
     </div>
   );
 }
@@ -908,7 +912,7 @@ function WeddingPage() {
               <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-black/40 to-transparent" />
             </div>
           </Reveal>
-          <div className="absolute right-[34px] top-[15px]">
+          <div className="absolute left-[16px] right-[34px] top-[15px]">
             <Reveal variant="down" duration={1.5}>
               <NamesBlock names={names} andSrc={images.deco.andTrang} className="text-cream" />
             </Reveal>

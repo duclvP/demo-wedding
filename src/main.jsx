@@ -474,16 +474,23 @@ const fromMinutes = (n) => `${String(Math.floor(n / 60) % 24).padStart(2, "0")}:
 const timelineHour = (hhmm) => hhmm.replace(":", "h");
 
 /**
- * Timeline = các mốc `timeline` của từng sự kiện đang hiện. Khách đổi giờ sự kiện qua link (?gio=) thì mốc của sự kiện đó
- * dời theo cùng khoảng; hiện từ hai ngày trở lên thì mỗi mốc ghi thêm ngày "28/11".
+ * Timeline = các mốc `timeline` của từng sự kiện đang hiện, cộng mốc `always` của sự kiện khách không được mời
+ * (vd rước dâu ngày cưới vẫn hiện cho khách mời ngày hôm trước). Khách đổi giờ sự kiện qua link (?gio=) thì mốc
+ * của sự kiện đó dời theo cùng khoảng; timeline gồm từ hai ngày trở lên thì mỗi mốc ghi thêm ngày "28/11".
  */
-function buildTimeline(original, shown) {
-  const multi = new Set(shown.map((e) => e.date)).size > 1;
-  return shown.flatMap((ev) => {
-    const before = original.find((i) => i.id === ev.id);
+function buildTimeline(original, all, shown) {
+  const parts = all
+    .map((ev) => {
+      const before = original.find((i) => i.id === ev.id);
+      const items = (before.timeline ?? []).filter((t) => shown.includes(ev) || t.always);
+      return { ev, before, items };
+    })
+    .filter((p) => p.items.length);
+  const multi = new Set(parts.map((p) => p.ev.date)).size > 1;
+  return parts.flatMap(({ ev, before, items }) => {
     const delta = toMinutes(splitTime(ev.time)[0]) - toMinutes(splitTime(before.time)[0]);
     const [d, m] = splitDate(ev.date);
-    return (before.timeline ?? []).map((t) => ({
+    return items.map((t) => ({
       ...t,
       time: delta ? fromMinutes((toMinutes(t.time) + delta + 1440) % 1440) : t.time,
       date: multi ? `${d}/${m}` : null,
@@ -863,10 +870,11 @@ function WeddingPage() {
    * Sự kiện editable đổi được giờ / ngày qua link ?gio=&ngay= (thứ hai: gio2 / ngay2); ?moi=N chỉ hiện sự kiện thứ N
    * (khách được mời một ngày) — trang /tao-link ghép sẵn
    */
-  const events = pickInvitedEvents(applyEventOverrides(c.events.items));
+  const allEvents = applyEventOverrides(c.events.items);
+  const events = pickInvitedEvents(allEvents);
   const main = events[0];
   const [d, m, y] = splitDate(main.date);
-  const timeline = buildTimeline(c.events.items, events);
+  const timeline = buildTimeline(c.events.items, allEvents, events);
   /** Lịch tháng của ngày đầu tiên, khoanh mọi ngày tổ chức đang hiện trong tháng đó */
   const calendarDays = [
     ...new Set(

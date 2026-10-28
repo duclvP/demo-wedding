@@ -49,7 +49,7 @@ export const content = {
       {
         id: 'vu-quy',
         title: null,
-        hour: '11 giờ 00',
+        hour: '16 giờ 00',
         weekday: 'Thứ 2',
         day: '16',
         monthYear: '11 - 2026',

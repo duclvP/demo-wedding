@@ -4,24 +4,28 @@
  */
 export const images = {
   /** Ảnh dọc lớn đầu thiệp (khung vàng) */
-  hero: '/images/studio-1.jpg',
+  hero: '/images/trang-5.jpg',
   /** Ảnh dưới phần gia đình (khung vàng) */
-  couple: '/images/vuon-1.jpg',
+  couple: '/images/dan-toc-2.jpg',
   /** 3 ảnh dải ngày cưới: chú rể, ảnh đôi, cô dâu */
-  dateStrip: ['/images/chu-re.jpg', '/images/studio-2.jpg', '/images/co-dau.jpg'],
-  /** Lưới ảnh 2 cột */
+  dateStrip: ['/images/dan-toc-1.jpg', '/images/trang-10.jpg', '/images/dan-toc-3.jpg'],
+  /** Lưới ảnh 2 cột — xen kẽ ảnh áo dân tộc và ảnh váy cưới */
   album: [
-    '/images/vuon-2.jpg',
-    '/images/vuon-3.jpg',
-    '/images/voan-1.jpg',
-    '/images/voan-2.jpg',
-    '/images/voan-3.jpg',
-    '/images/ao-dai-1.jpg',
-    '/images/studio-2.jpg',
-    '/images/studio-3.jpg',
+    '/images/trang-1.jpg',
+    '/images/dan-toc-1.jpg',
+    '/images/trang-2.jpg',
+    '/images/trang-3.jpg',
+    '/images/dan-toc-2.jpg',
+    '/images/trang-4.jpg',
+    '/images/trang-6.jpg',
+    '/images/dan-toc-3.jpg',
+    '/images/trang-8.jpg',
+    '/images/trang-9.jpg',
+    '/images/dan-toc-4.jpg',
+    '/images/trang-7.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/studio-3.jpg',
+  gift: '/images/trang-6.jpg',
   /** Ảnh mục Thank You */
-  thankYou: '/images/sanh-1.jpg',
+  thankYou: '/images/trang-7.jpg',
 };

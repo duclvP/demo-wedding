@@ -556,8 +556,11 @@ function EventCard({ item, mapLabel }) {
 
 const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
+/** dateIso: một ngày '2026-11-24' hoặc mảng nhiều ngày cùng tháng */
 function MonthCalendar({ dateIso }) {
-  const [y, m, d] = dateIso.split("-").map(Number);
+  const dates = [].concat(dateIso).map((s) => s.split("-").map(Number));
+  const [y, m] = dates[0];
+  const marked = new Set(dates.filter(([yy, mm]) => yy === y && mm === m).map(([, , dd]) => dd));
   const daysInMonth = new Date(y, m, 0).getDate();
   /** Lịch bắt đầu từ Thứ Hai */
   const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
@@ -578,7 +581,7 @@ function MonthCalendar({ dateIso }) {
       </div>
       <div className="grid grid-cols-7 gap-y-2 text-center font-display text-lg mt-3">
         {cells.map((day, i) =>
-          day === d ? (
+          marked.has(day) ? (
             <span key={i} className="relative flex items-center justify-center h-10">
               <svg viewBox="0 0 24 24" className="absolute w-11 h-11 text-[#e0303a] animate-pulse-soft" aria-hidden>
                 <path
@@ -612,7 +615,7 @@ function RsvpForm({ c }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!c.endpoint) {
+    if (!c.endpoint || !c.coupleId) {
       console.warn("Chưa cấu hình rsvp.endpoint trong content.js — lời chúc không được lưu.", form);
       setSent(true);
       return;
@@ -628,6 +631,8 @@ function RsvpForm({ c }) {
         method: "POST",
         mode: "no-cors",
         body: new URLSearchParams({
+          couple: c.coupleId,
+          coupleName: c.coupleName || "",
           name: form.name.trim(),
           message: form.message.trim(),
           attend: !c.askAttend ? "" : form.attend === "yes" ? c.attendYes : c.attendNo,

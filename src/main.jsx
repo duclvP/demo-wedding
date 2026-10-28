@@ -916,7 +916,7 @@ function WeddingPage() {
         <section className="px-[22px] pt-[40px]">
           <Reveal variant="down" duration={1.5}>
             <p className="ml-auto max-w-[378px] text-right font-serif uppercase text-[13px] leading-[20.8px] text-ink">
-              {c.invitation.before} <span className="font-bold text-moss">{guest}</span> {c.invitation.after}
+              {c.invitation.before} {guest} {c.invitation.after}
             </p>
           </Reveal>
           <Reveal variant="left" duration={1.5} className="mt-[10px]">

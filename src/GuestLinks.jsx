@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
 import { content } from "./content.js";
-import { overrideSuffix } from "./eventOverrides.js";
+import { INVITE_PARAM, overrideSuffix } from "./eventOverrides.js";
 
 /**
  * Trang /tao-link — nhập tên khách (mỗi dòng một người) → link thiệp riêng cho từng người.
@@ -77,9 +77,14 @@ export default function GuestLinksPage() {
   const editableItems = content.events.items.filter((i) => i.editable);
   const [times, setTimes] = useState(() => editableItems.map(() => ({ gio: "", ngay: "" })));
   const setTime = (k, field) => (e) => setTimes((list) => list.map((t, i) => (i === k ? { ...t, [field]: e.target.value } : t)));
-  const extra = times
-    .map((t, k) => (t.gio ? `&gio${overrideSuffix(k)}=${t.gio}` : "") + (t.ngay ? `&ngay${overrideSuffix(k)}=${t.ngay}` : ""))
-    .join("");
+  /** Thiệp nhiều ngày: chọn khách được mời ngày nào → ?moi=N (sự kiện thứ N); "" = mọi ngày */
+  const allItems = content.events.items;
+  const [invite, setInvite] = useState("");
+  const extra =
+    (invite ? `&${INVITE_PARAM}=${invite}` : "") +
+    times
+      .map((t, k) => (t.gio ? `&gio${overrideSuffix(k)}=${t.gio}` : "") + (t.ngay ? `&ngay${overrideSuffix(k)}=${t.ngay}` : ""))
+      .join("");
 
   useEffect(() => {
     try {
@@ -108,9 +113,26 @@ export default function GuestLinksPage() {
           Thiệp: <b>{title}</b>
         </p>
 
+        {allItems.length > 1 && (
+          <section className="mt-6 rounded-xl bg-white p-4 shadow-sm">
+            <p className="text-sm font-semibold">Mời dự</p>
+            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2">
+              {[["", "Tất cả các ngày"], ...allItems.map((item, i) => [String(i + 1), `${item.title} — ${item.date.replace(/\s/g, "")}`])].map(
+                ([value, label]) => (
+                  <label key={value} className="flex items-center gap-1.5 text-sm">
+                    <input type="radio" name="invite" checked={invite === value} onChange={() => setInvite(value)} />
+                    {label}
+                  </label>
+                ),
+              )}
+            </div>
+            <p className="mt-2 text-xs text-black/50">Áp cho mọi link bên dưới — mời ngày khác thì tạo một lượt link riêng.</p>
+          </section>
+        )}
+
         {editableItems.map((item, k) => (
           <section key={item.id} className="mt-6 rounded-xl bg-white p-4 shadow-sm">
-            <p className="text-sm font-semibold">Thời gian "{item.title}" (để trống = giữ như trong thiệp)</p>
+            <p className="text-sm font-semibold">Thời gian "{item.title} — {item.date.replace(/\s/g, "")}" (để trống = giữ như trong thiệp)</p>
             <div className="mt-2 flex flex-wrap gap-3">
               <label className="text-sm">
                 Giờ

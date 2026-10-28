@@ -47,10 +47,13 @@ export const content = {
 
   events: {
     mapLabel: 'Xem chỉ đường',
-    /** Sự kiện đầu tiên là ngày chính: ngày xếp dọc đầu thiệp, lịch */
+    /**
+     * Khách được mời một ngày hay cả hai: link ?moi=1 (chỉ 28/11) / ?moi=2 (chỉ 29/11), không ghi = cả hai.
+     * Sự kiện đầu tiên đang hiện là ngày chính: ngày xếp dọc đầu thiệp, lịch
+     */
     items: [
       {
-        id: 'vu-quy',
+        id: 'vu-quy-28',
         title: 'Tiệc Mừng Lễ Vu Quy',
         time: '16:00 | Thứ Bảy',
         /** Đổi giờ / ngày bằng link: ?gio=17:00&ngay=2026-11-28 (xem trang /tao-link) */
@@ -61,12 +64,18 @@ export const content = {
         place: 'Tư Gia Nhà Gái',
         address: ADDRESS_BRIDE,
         mapLink: MAP_BRIDE,
+        /** Mốc trong ngày — đổi giờ sự kiện qua link thì các mốc dời theo; icon: guests | dinner | music | car | rings */
+        timeline: [
+          { time: '16:00', label: 'Đón khách', icon: 'guests' },
+          { time: '16:30', label: 'Nhập tiệc', icon: 'dinner' },
+          { time: '19:00', label: 'Âm nhạc', icon: 'music' },
+        ],
       },
       {
-        id: 'ruoc-dau',
-        title: 'Lễ Rước Dâu',
-        time: '13:00 | Chủ Nhật',
-        /** Đổi giờ / ngày bằng link: ?gio2=14:00&ngay2=2026-11-29 (xem trang /tao-link) */
+        id: 'vu-quy-29',
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        time: '09:00 | Chủ Nhật',
+        /** Đổi giờ / ngày bằng link: ?gio2=09:30&ngay2=2026-11-29 (xem trang /tao-link) */
         editable: true,
         date: '29. 11. 2026',
         lunar: '(21 tháng 10 năm Bính Ngọ)',
@@ -74,20 +83,17 @@ export const content = {
         place: 'Tư Gia Nhà Gái',
         address: ADDRESS_BRIDE,
         mapLink: MAP_BRIDE,
+        timeline: [
+          { time: '09:00', label: 'Đón khách', icon: 'guests' },
+          { time: '10:00', label: 'Nhập tiệc', icon: 'dinner' },
+          { time: '13:00', label: 'Rước dâu', icon: 'car' },
+        ],
       },
     ],
   },
 
-  /** Các mốc trong ngày — followsEvent: khách đổi giờ sự kiện đó qua link thì các mốc dời theo */
   timeline: {
     title: 'Timeline',
-    followsEvent: 'vu-quy',
-    /** icon: guests | dinner | music | car | rings */
-    items: [
-      { time: '16:00', label: 'Đón khách', icon: 'guests' },
-      { time: '16:30', label: 'Nhập tiệc', icon: 'dinner' },
-      { time: '19:00', label: 'Âm nhạc', icon: 'music' },
-    ],
   },
 
   /** Màu trang phục gợi ý — để [] thì ẩn mục Dresscode */
@@ -97,7 +103,7 @@ export const content = {
   },
 
   calendar: {
-    /** Lịch tháng của ngày chính (sự kiện đầu tiên) — false thì ẩn */
+    /** Lịch tháng của ngày chính, khoanh mọi ngày tổ chức đang hiện — false thì ẩn */
     show: true,
   },
 

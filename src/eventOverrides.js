@@ -39,6 +39,19 @@ export function applyEventOverrides(items, search = window.location.search) {
   });
 }
 
+/** Tham số chọn ngày khách được mời: ?moi=2 → chỉ sự kiện thứ 2 (đếm từ 1); không có / sai → mọi sự kiện */
+export const INVITE_PARAM = "moi";
+
+export function pickInvitedEvents(items, search = window.location.search) {
+  let n;
+  try {
+    n = Number(new URLSearchParams(search).get(INVITE_PARAM));
+  } catch {
+    return items;
+  }
+  return Number.isInteger(n) && n >= 1 && n <= items.length ? [items[n - 1]] : items;
+}
+
 export function hasEditableEvents(items) {
   return items.some((item) => item.editable);
 }

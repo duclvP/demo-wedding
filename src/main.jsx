@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Car, Check, ChevronLeft, ChevronRight, Copy, Download, HeartHandshake, MapPin, Music, Users, UtensilsCrossed, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
 import { images } from "./image.js";
-import { applyEventOverrides } from "./eventOverrides.js";
+import { applyEventOverrides, pickInvitedEvents } from "./eventOverrides.js";
 import GuestLinksPage, { isGuestLinksPage } from "./GuestLinks.jsx";
 import "./index.css";
 
@@ -474,16 +474,21 @@ const fromMinutes = (n) => `${String(Math.floor(n / 60) % 24).padStart(2, "0")}:
 const timelineHour = (hhmm) => hhmm.replace(":", "h");
 
 /**
- * Timeline gắn với sự kiện `followsEvent`: khách đổi giờ sự kiện đó qua link (?gio=) thì mọi mốc dời theo cùng khoảng
+ * Timeline = các mốc `timeline` của từng sự kiện đang hiện. Khách đổi giờ sự kiện qua link (?gio=) thì mốc của sự kiện đó
+ * dời theo cùng khoảng; hiện từ hai ngày trở lên thì mỗi mốc ghi thêm ngày "28/11".
  */
-function shiftTimeline(timeline, original, overridden) {
-  const id = timeline.followsEvent;
-  const before = original.find((i) => i.id === id);
-  const after = overridden.find((i) => i.id === id);
-  if (!before || !after) return timeline.items;
-  const delta = toMinutes(splitTime(after.time)[0]) - toMinutes(splitTime(before.time)[0]);
-  if (!delta) return timeline.items;
-  return timeline.items.map((t) => ({ ...t, time: fromMinutes((toMinutes(t.time) + delta + 1440) % 1440) }));
+function buildTimeline(original, shown) {
+  const multi = new Set(shown.map((e) => e.date)).size > 1;
+  return shown.flatMap((ev) => {
+    const before = original.find((i) => i.id === ev.id);
+    const delta = toMinutes(splitTime(ev.time)[0]) - toMinutes(splitTime(before.time)[0]);
+    const [d, m] = splitDate(ev.date);
+    return (before.timeline ?? []).map((t) => ({
+      ...t,
+      time: delta ? fromMinutes((toMinutes(t.time) + delta + 1440) % 1440) : t.time,
+      date: multi ? `${d}/${m}` : null,
+    }));
+  });
 }
 
 /** Biểu tượng nét mảnh cho từng mốc timeline */
@@ -605,9 +610,8 @@ function FamilySide({ side, align, mapLabel }) {
   );
 }
 
-/** Lịch tháng chữ kem trên nền màu chính, ngày cưới phủ tim xám xanh */
-function MonthCalendar({ dateIso }) {
-  const [y, m, d] = dateIso.split("-").map(Number);
+/** Lịch tháng chữ kem trên nền màu chính, các ngày tổ chức (cùng tháng) phủ tim xám xanh */
+function MonthCalendar({ year: y, month: m, days }) {
   const daysInMonth = new Date(y, m, 0).getDate();
   /** Lịch bắt đầu từ Thứ Hai */
   const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
@@ -630,7 +634,7 @@ function MonthCalendar({ dateIso }) {
           <span key={w} className="pb-[18px]">{w}</span>
         ))}
         {cells.map((day, i) =>
-          day === d ? (
+          days.includes(day) ? (
             <span key={i} className="relative flex h-[37px] items-center justify-center">
               <Heart className="absolute h-[34px] w-[34px] text-[#a9b5ae] animate-pulse-soft" />
               <span className="relative font-bold text-moss">{day}</span>
@@ -687,7 +691,10 @@ function Timeline({ items }) {
               style={{ top: 30 + i * TL_STEP - 10, left: right ? 215 : 45 }}
             >
               <Reveal variant={right ? "right" : "left"} duration={1.5}>
-                <p className="font-hepta font-bold text-[17px] leading-[26px] text-moss">{timelineHour(t.time)}</p>
+                <p className="font-hepta font-bold text-[17px] leading-[26px] text-moss">
+                  {timelineHour(t.time)}
+                  {t.date && <span className="font-normal text-[14px] text-ink"> · {t.date}</span>}
+                </p>
                 <p className="font-hepta uppercase text-[14px] leading-[22px] text-moss">{t.label}</p>
                 <Icon className="mx-auto mt-2 h-[46px] w-[46px] text-moss/75" strokeWidth={1} aria-hidden />
               </Reveal>
@@ -852,13 +859,23 @@ function WeddingPage() {
   const closeGift = useCallback(() => setGiftOpen(false), []);
   const names = c.hero.names;
   const hasGift = c.gift.accounts.length > 0;
-  /** Sự kiện đánh dấu editable đổi được giờ / ngày qua link ?gio=&ngay= (trang /tao-link) */
-  const events = applyEventOverrides(c.events.items);
+  /**
+   * Sự kiện editable đổi được giờ / ngày qua link ?gio=&ngay= (thứ hai: gio2 / ngay2); ?moi=N chỉ hiện sự kiện thứ N
+   * (khách được mời một ngày) — trang /tao-link ghép sẵn
+   */
+  const events = pickInvitedEvents(applyEventOverrides(c.events.items));
   const main = events[0];
   const [d, m, y] = splitDate(main.date);
-  const timeline = shiftTimeline(c.timeline, c.events.items, events);
-  /** Lịch theo ngày của sự kiện chính (kể cả khi đổi ngày qua link) */
-  const calendarIso = c.calendar.show ? `${y}-${m}-${d}` : null;
+  const timeline = buildTimeline(c.events.items, events);
+  /** Lịch tháng của ngày đầu tiên, khoanh mọi ngày tổ chức đang hiện trong tháng đó */
+  const calendarDays = [
+    ...new Set(
+      events
+        .map((e) => splitDate(e.date))
+        .filter(([, mm, yy]) => mm === m && yy === y)
+        .map(([dd]) => +dd),
+    ),
+  ];
 
   const giftButton = hasGift && (
     <button
@@ -949,7 +966,7 @@ function WeddingPage() {
         </div>
 
         {/* Lịch */}
-        {calendarIso && <MonthCalendar dateIso={calendarIso} />}
+        {c.calendar.show && <MonthCalendar year={+y} month={+m} days={calendarDays} />}
 
         {/* Ảnh "Destiny" bo góc trên trái */}
         <section className="relative mt-[26px]">

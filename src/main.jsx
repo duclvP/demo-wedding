@@ -619,7 +619,7 @@ function MonthCalendar({ dateIso }) {
     <div className="rounded-br-[60px] bg-moss pb-[30px] pt-[5px]">
       <div className="relative h-[88px]">
         <Reveal variant="left" duration={1.5} className="absolute left-[10px] top-0">
-          <p className="font-script text-[60px] leading-[88px] text-cream">{MONTHS_EN[m - 1]}</p>
+          <p className="font-script text-[55px] leading-[88px] text-cream">{MONTHS_EN[m - 1]}</p>
         </Reveal>
         <div className="absolute left-[86px] right-[26px] top-[61px]">
           <Reveal variant="right" duration={1.5}>
@@ -821,14 +821,18 @@ function RsvpForm({ c }) {
             <option value="yes">{c.attendYes}</option>
             <option value="no">{c.attendNo}</option>
           </select>
-          {form.attend === "yes" && (
-            <select value={form.guestCount} onChange={update("guestCount")} className={inputCls}>
-              <option value="">{c.placeholders.guestCount}</option>
-              {[1, 2, 3, 4, 5].map((n) => (
-                <option key={n} value={n}>{n} người</option>
-              ))}
-            </select>
-          )}
+          {/* Luôn hiện như mẫu; khách báo không tham dự thì khóa lại (gửi 0 người) */}
+          <select
+            value={form.attend === "no" ? "" : form.guestCount}
+            onChange={update("guestCount")}
+            disabled={form.attend === "no"}
+            className={`${inputCls} disabled:opacity-60`}
+          >
+            <option value="">{c.placeholders.guestCount}</option>
+            {[1, 2, 3, 4, 5].map((n) => (
+              <option key={n} value={n}>{n === 1 ? "1 người (chỉ mình tôi)" : `${n} người`}</option>
+            ))}
+          </select>
         </>
       )}
       {error && <p className="text-center text-sm text-cream/90">{error}</p>}
@@ -892,7 +896,7 @@ function WeddingPage() {
         <section className="grid grid-cols-[1fr_108px] gap-2 pl-[22px] pr-[8px] pt-[2px]">
           <div className="pt-[38px]">
             <Reveal variant="left" duration={1.5}>
-              <p className="font-script text-[56px] leading-[61px] whitespace-nowrap">{c.hero.storyTitle}</p>
+              <p className="font-script text-[51px] leading-[61px] whitespace-nowrap">{c.hero.storyTitle}</p>
             </Reveal>
             <Reveal duration={2}>
               <p className="mt-[6px] pl-[10px] font-serif text-[14px] leading-[16.8px] text-[#9e9e9e]">{c.hero.story}</p>
@@ -959,7 +963,7 @@ function WeddingPage() {
           </Reveal>
           <div className="absolute inset-x-0 bottom-[6px]">
             <Reveal variant="down" duration={1.5}>
-              <p className="pl-[40px] font-script text-[110px] leading-[123px] text-cream/90">{c.destiny}</p>
+              <p className="pl-[40px] font-script text-[100px] leading-[123px] text-cream/90">{c.destiny}</p>
             </Reveal>
           </div>
         </section>
@@ -969,7 +973,7 @@ function WeddingPage() {
           <section className="pt-[40px]">
             <div className="relative h-[107px]">
               <Reveal variant="right" duration={1.5} className="absolute left-[150px] top-0">
-                <p className="font-script text-[72px] leading-[107px]">{c.timeline.title}</p>
+                <p className="font-script text-[67px] leading-[107px]">{c.timeline.title}</p>
               </Reveal>
               <span className="absolute right-0 top-[54px] h-px w-[60px] bg-moss/60" aria-hidden />
             </div>
@@ -983,7 +987,7 @@ function WeddingPage() {
             <div className="relative h-[96px]">
               <span className="absolute left-0 top-[46px] h-px w-[60px] bg-moss/60" aria-hidden />
               <Reveal variant="left" duration={1.5} className="absolute left-[66px] top-0">
-                <p className="font-script text-[64px] leading-[96px]">{c.dresscode.title}</p>
+                <p className="font-script text-[60px] leading-[96px]">{c.dresscode.title}</p>
               </Reveal>
             </div>
             <Reveal variant="up" duration={1.5} className="mt-[-4px] flex justify-center gap-[23px]">
@@ -1006,7 +1010,7 @@ function WeddingPage() {
           <div className="absolute inset-x-0 top-[84px] h-[300px] bg-black/25 backdrop-blur-[3px]" aria-hidden />
           <div className="absolute left-[10px] top-[143px]">
             <Reveal variant="left" duration={1.5}>
-              <p className="font-script text-[100px] leading-[100px] text-cream drop-shadow">The</p>
+              <p className="font-script text-[97px] leading-[100px] text-cream drop-shadow">The</p>
               <p className="-mt-[6px] pl-[48px] font-serif uppercase text-[49px] leading-[60px] text-cream drop-shadow">{c.album.title}</p>
             </Reveal>
           </div>
@@ -1019,7 +1023,8 @@ function WeddingPage() {
         {/* Thư cảm ơn trong khung viền bo tròn */}
         <section className="px-[13px] pt-[30px] pb-[34px]">
           <Reveal duration={1.5} className="rounded-[50px] border border-moss px-[23px] pt-[24px] pb-[16px] text-center">
-            <p className="font-script text-[44px] leading-[52px]">{c.letter.title}</p>
+            {/* Ảnh chữ của mẫu — Hayollan không có dấu tiếng Việt */}
+            <img src={images.deco.tranTrong} alt={c.letter.title} className="mx-auto h-[39px] w-[200px]" loading="lazy" />
             <span className="mx-auto mt-[20px] block h-[5px] w-[5px] rounded-full bg-moss" aria-hidden />
             <div className="mt-[30px] space-y-[26px] text-justify font-hepta text-[13px] leading-[26px]">
               {c.letter.paragraphs.map((p) => (
@@ -1028,8 +1033,8 @@ function WeddingPage() {
             </div>
             <span className="mx-auto mt-[38px] block h-[5px] w-[5px] rounded-full bg-moss" aria-hidden />
             <p className="mt-[40px] font-hepta uppercase text-[13px] leading-[26px]">{c.letter.closing}</p>
-            <p className="font-script text-[38px] leading-[64px] whitespace-nowrap">
-              {names[0]} &amp; {names[1]}
+            <p className="font-script text-[32px] leading-[64px] whitespace-nowrap">
+              {c.letter.signature}
             </p>
           </Reveal>
         </section>
@@ -1053,7 +1058,7 @@ function WeddingPage() {
           <div className="absolute inset-0 rounded-tl-[60px] bg-gradient-to-r from-black/45 to-transparent" />
           <div className="absolute left-[20px] top-[50px]">
             <Reveal variant="left" duration={1.5}>
-              <p className="font-script text-[64px] leading-[100px] text-cream whitespace-nowrap">{c.thanks.title}</p>
+              <p className="font-script text-[54px] leading-[107px] text-cream whitespace-nowrap">{c.thanks.title}</p>
             </Reveal>
           </div>
         </section>

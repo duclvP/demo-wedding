@@ -34,6 +34,9 @@ export const images = {
   deco: {
     /** Lá phong */
     leaf: '/images/deco-la-phong.png',
+    /** Nét chữ "and" bay dài giữa hai tên: trắng (ảnh bìa), xanh (lời mời) */
+    andTrang: '/images/deco-and-trang.png',
+    andXanh: '/images/deco-and-xanh.png',
     /** Chữ "Trân trọng cảm ơn !" viết tay (ảnh của mẫu) */
     tranTrong: '/images/deco-tran-trong.png',
   },

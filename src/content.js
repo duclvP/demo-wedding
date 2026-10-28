@@ -113,6 +113,8 @@ export const content = {
       'Rất mong bạn có thể thu xếp thời gian đến tham dự và cùng chúc phúc cho chúng tôi.',
     ],
     closing: 'Thân,',
+    /** Ký tên bằng chữ viết tay Hayollan — font không có dấu tiếng Việt nên viết không dấu (mẫu: 'Thang & Linh') */
+    signature: 'Ly & Tuan Anh',
   },
 
   rsvp: {
@@ -134,7 +136,7 @@ export const content = {
       name: 'Tên của bạn',
       message: 'Gửi lời chúc đến cô dâu chú rể',
       attend: 'Xác nhận tham dự?',
-      guestCount: 'Bạn đi mấy người?',
+      guestCount: 'Số người tham dự?',
     },
     attendYes: 'Tôi sẽ tham dự',
     attendNo: 'Xin lỗi, tôi không thể tham dự',

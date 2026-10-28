@@ -4,19 +4,19 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        /* Font thay thế gần nhất cho font của mẫu nawngs.com/thanglinh (ghi chú: font gốc) */
-        /** Boton — tên in hoa, giờ, địa điểm, chữ thường */
-        serif: ['"Brygada 1918"', 'serif'],
-        /** Hayollan — Love Story, tháng, Timeline, Destiny, The, Thank you, ký tên */
-        script: ['Corinthia', 'cursive'],
+        /* Font của mẫu nawngs.com/thanglinh */
+        /** Boton (file trong public/fonts) — tên in hoa, giờ, địa điểm, chữ thường */
+        serif: ['Boton', 'serif'],
+        /** Hayollan (public/fonts) — Love Story, tháng, Timeline, Destiny, The, Thank you, ký tên — KHÔNG có dấu tiếng Việt */
+        script: ['Hayollan', 'cursive'],
         /** Roboto Slab — ngày tháng số to */
         slab: ['"Roboto Slab"', 'serif'],
         /** Hepta Slab — timeline, thư cảm ơn, form */
         hepta: ['"Hepta Slab"', 'serif'],
         /** Hộp quà mừng cưới (dùng chung với các mẫu khác) */
-        lora: ['"Brygada 1918"', 'serif'],
+        lora: ['Boton', 'serif'],
         vibes: ['Corinthia', 'cursive'],
-        display: ['"Brygada 1918"', 'serif'],
+        display: ['Boton', 'serif'],
       },
       colors: {
         /** Màu của mẫu: xanh rêu đậm (chữ chính, khối lịch / form), kem (chữ trên nền tối), xám xanh (chữ phụ) */

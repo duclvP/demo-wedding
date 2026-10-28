@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font của mẫu nawngs.com/thanglinh (tải từ trang mẫu) — Boton có dấu tiếng Việt, Hayollan thì không (chỉ dùng cho chữ không dấu) */
+@font-face {
+  font-family: "Boton";
+  src: url("/fonts/boton.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hayollan";
+  src: url("/fonts/hayollan.ttf") format("truetype");
+  font-display: swap;
+}
+
 :root {
   /* Xanh rêu đậm #062520 của mẫu */
   --background: 0 0% 100%;
@@ -135,9 +147,4 @@ body {
   .animate-swing,
   .animate-spin-slow,
   .animate-pop { animation: none; }
-}
-
-/* Corinthia khoảng cách chữ hẹp — "Tuấn Anh & Trần Ly" dính chữ */
-.font-script {
-  word-spacing: 0.18em;
 }

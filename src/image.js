@@ -34,5 +34,7 @@ export const images = {
   deco: {
     /** Lá phong */
     leaf: '/images/deco-la-phong.png',
+    /** Chữ "Trân trọng cảm ơn !" viết tay (ảnh của mẫu) */
+    tranTrong: '/images/deco-tran-trong.png',
   },
 };

@@ -21,7 +21,7 @@ const BRIDE_SIDE = {
 export const content = {
   hero: {
     /** Hiển thị theo đúng thứ tự này (cũng là dòng tên dưới lời mời và ký tên mục Thank You) */
-    names: ['Huy Hoàng', 'Huyền Chi'],
+    names: ['Huyền Chi', 'Huy Hoàng'],
     /** Hai dòng dưới tên: ngày.tháng / năm */
     dateLines: ['17.11', '2026'],
     hint: 'NHẤP VÀO THIỆP ĐỂ MỞ',
@@ -29,17 +29,17 @@ export const content = {
 
   families: {
     /** Hai khối gia đình, từ trên xuống theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Họ tên đầy đủ — dòng "Trân trọng báo tin lễ thành hôn của" */
-    fullNames: ['Vũ Huy Hoàng', 'Phan Huyền Chi'],
+    fullNames: ['Phan Huyền Chi', 'Vũ Huy Hoàng'],
   },
 
   invitation: {
-    announce: ['Trân Trọng Báo Tin', 'Lễ Thành Hôn', 'Của'],
+    announce: ['Trân Trọng Báo Tin', 'Lễ Vu Quy', 'Của'],
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Tiệc Mừng Lễ Cưới',
+    title: 'Tham Dự Lễ Vu Quy',
   },
 
   events: {
@@ -47,17 +47,17 @@ export const content = {
     mapLabel: 'Xem trên Google Map',
     items: [
       {
-        id: 'tiec-cuoi',
+        id: 'vu-quy',
         title: null,
+        // TODO: khách chỉ ghi "rước dâu 16h00 ngày 17/11" (không có địa chỉ, không có giờ tiệc nhà gái) — đang tạm dùng giờ này, hỏi lại khách
         hour: '16 giờ 00',
         weekday: 'Thứ 3',
         day: '17',
         monthYear: '11 - 2026',
         lunar: '( Tức ngày 09 tháng 10 năm Bính Ngọ )',
-        place: 'Tư Gia Nhà Trai',
-        address: 'Xóm Làng Giếng, Quang Sơn, Thái Nguyên',
-        /** Tên cũ trước sáp nhập — Google Maps tìm dễ hơn */
-        mapQuery: 'Làng Giếng, Quang Sơn, Đồng Hỷ, Thái Nguyên',
+        place: 'Tư Gia Nhà Gái',
+        // TODO: khách chỉ ghi "Đại Phúc, Thái Nguyên" — hỏi địa chỉ cụ thể (xóm / thôn)
+        address: ADDRESS_BRIDE,
       },
     ],
   },
@@ -112,15 +112,8 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    accounts: [
-      {
-        holder: 'VU HUY HOANG',
-        number: '8886039774',
-        bank: 'BIDV',
-        /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-bidv.png',
-      },
-    ],
+    // TODO: khách chưa gửi tài khoản / QR nhà gái — bản này tạm ẩn nút mừng cưới
+    accounts: [],
   },
 
   album: {

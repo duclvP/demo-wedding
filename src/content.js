@@ -112,8 +112,16 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    // TODO: khách chưa gửi tài khoản / QR nhà gái — bản này tạm ẩn nút mừng cưới
-    accounts: [],
+    /** Khách dùng chung tài khoản chú rể cho cả hai bản thiệp */
+    accounts: [
+      {
+        holder: 'VU HUY HOANG',
+        number: '8886039774',
+        bank: 'BIDV',
+        /** Ảnh mã QR trong public/images/ — để null nếu không có */
+        qr: '/images/qr-bidv.png',
+      },
+    ],
   },
 
   album: {

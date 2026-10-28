@@ -2,31 +2,30 @@
  * Đường dẫn ảnh — file trong public/images/
  * Thêm ảnh mới: bỏ file vào public/images/ rồi thêm đường dẫn vào đây.
  */
-// TODO: ticket #14 — đang tạm dùng ảnh mẫu demo-*.jpg, thay bằng ảnh cưới của khách
 export const images = {
   /** Ảnh trong phong bì lúc mở thiệp (khung 278×347, object-top) */
-  hero: '/images/demo-01.jpg',
+  hero: '/images/studio-1.jpg',
   /** Ảnh ngang bo góc viền xanh dưới "Trân trọng báo tin" (387×285) */
-  wide: '/images/demo-02.jpg',
+  wide: '/images/man-do-4.jpg',
   /** 3 ảnh dọc dưới "Trân trọng kính mời": trái, giữa (to hơn), phải */
-  trio: ['/images/demo-03.jpg', '/images/demo-04.jpg', '/images/demo-05.jpg'],
+  trio: ['/images/studio-2.jpg', '/images/vuon-3.jpg', '/images/ao-dai-1.jpg'],
   /** Ảnh polaroid cạnh lịch */
-  polaroid: '/images/demo-06.jpg',
-  /** Album 2 cột so le — ảnh chẵn cột trái, ảnh lẻ cột phải */
+  polaroid: '/images/ao-dai-2.jpg',
+  /** Album 2 cột so le — ảnh chẵn cột trái, ảnh lẻ cột phải (ô thứ 5 là khung ngang) */
   album: [
-    '/images/demo-07.jpg',
-    '/images/demo-09.jpg',
-    '/images/demo-10.jpg',
-    '/images/demo-11.jpg',
-    '/images/demo-12.jpg',
-    '/images/demo-13.jpg',
-    '/images/demo-14.jpg',
-    '/images/demo-15.jpg',
+    '/images/studio-3.jpg',
+    '/images/vuon-1.jpg',
+    '/images/vuon-4.jpg',
+    '/images/man-do-2.jpg',
+    '/images/man-do-1.jpg',
+    '/images/man-do-3.jpg',
+    '/images/man-do-5.jpg',
+    '/images/man-do-6.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/demo-04.jpg',
+  gift: '/images/vuon-3.jpg',
   /** Ảnh mục Thank You (420×647) — chữ phủ phần trên ảnh, chọn ảnh mặt nằm ở nửa dưới */
-  thankYou: '/images/demo-16.jpg',
+  thankYou: '/images/vuon-2.jpg',
 
   /** Ảnh trang trí của mẫu 13 (lovecard thiepso13) — dùng chung cho mọi cặp đôi, không cần đổi */
   deco: {

@@ -1074,7 +1074,7 @@ function WeddingPage() {
                         <img
                           src={src}
                           alt=""
-                          className="w-full object-cover"
+                          className="w-full object-cover object-[center_30%]"
                           style={{ aspectRatio: ALBUM_RATIOS[row % 4][col] }}
                           loading="lazy"
                         />

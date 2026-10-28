@@ -16,12 +16,12 @@ export const images = {
   circle: '/images/studio-10.jpg',
   /** Album of Love — lưới 2 cột, số chẵn ảnh */
   album: [
-    '/images/studio-03.jpg',
+    '/images/album-1.jpg',
     '/images/studio-07.jpg',
     '/images/album-3.jpg',
     '/images/album-4.jpg',
     '/images/studio-12.jpg',
-    '/images/studio-04.jpg',
+    '/images/album-6.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
   gift: '/images/studio-08.jpg',

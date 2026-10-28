@@ -6,7 +6,7 @@ const ADDRESS_GROOM = 'Thôn Tiến Thắng, Xã Yên Đồng, Tỉnh Ninh Bình
 /** father / mother / address: để null nếu không muốn hiển thị */
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Đinh Văn Thiều',
+  father: 'Đinh Quang Thiều',
   mother: 'Phạm Thị Quýt',
   address: ADDRESS_BRIDE,
 };

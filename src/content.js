@@ -49,8 +49,7 @@ export const content = {
       {
         id: 'vu-quy',
         title: null,
-        // TODO: khách chỉ ghi "rước dâu 16h00 ngày 17/11" (không có địa chỉ, không có giờ tiệc nhà gái) — đang tạm dùng giờ này, hỏi lại khách
-        hour: '16 giờ 00',
+        hour: '11 giờ 00',
         weekday: 'Thứ 3',
         day: '17',
         monthYear: '11 - 2026',
@@ -58,6 +57,8 @@ export const content = {
         place: 'Tư Gia Nhà Gái',
         // TODO: khách chỉ ghi "Đại Phúc, Thái Nguyên" — hỏi địa chỉ cụ thể (xóm / thôn)
         address: ADDRESS_BRIDE,
+        /** Toạ độ ghim khách gửi (issue #14) */
+        mapQuery: '21.533687591552734,105.74153137207031',
       },
     ],
   },

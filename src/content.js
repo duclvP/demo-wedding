@@ -66,6 +66,8 @@ export const content = {
         id: 'ruoc-dau',
         title: 'Lễ Rước Dâu',
         time: '13:00 | Chủ Nhật',
+        /** Đổi giờ / ngày bằng link: ?gio2=14:00&ngay2=2026-11-29 (xem trang /tao-link) */
+        editable: true,
         date: '29. 11. 2026',
         lunar: '(21 tháng 10 năm Bính Ngọ)',
         placeLabel: 'Tại địa điểm',

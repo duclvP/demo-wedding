@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
 import { content } from "./content.js";
-import { hasEditableEvents } from "./eventOverrides.js";
+import { overrideSuffix } from "./eventOverrides.js";
 
 /**
  * Trang /tao-link — nhập tên khách (mỗi dòng một người) → link thiệp riêng cho từng người.
@@ -73,11 +73,13 @@ export default function GuestLinksPage() {
     }
   });
   const [withName, setWithName] = useState(true);
-  const editable = hasEditableEvents(content.events.items);
-  const eventItem = content.events.items.find((i) => i.editable);
-  const [gio, setGio] = useState("");
-  const [ngay, setNgay] = useState("");
-  const extra = (gio ? `&gio=${gio}` : "") + (ngay ? `&ngay=${ngay}` : "");
+  /** Mỗi sự kiện editable một cặp giờ / ngày riêng → tham số gio, ngay (thứ hai: gio2, ngay2…) */
+  const editableItems = content.events.items.filter((i) => i.editable);
+  const [times, setTimes] = useState(() => editableItems.map(() => ({ gio: "", ngay: "" })));
+  const setTime = (k, field) => (e) => setTimes((list) => list.map((t, i) => (i === k ? { ...t, [field]: e.target.value } : t)));
+  const extra = times
+    .map((t, k) => (t.gio ? `&gio${overrideSuffix(k)}=${t.gio}` : "") + (t.ngay ? `&ngay${overrideSuffix(k)}=${t.ngay}` : ""))
+    .join("");
 
   useEffect(() => {
     try {
@@ -106,16 +108,16 @@ export default function GuestLinksPage() {
           Thiệp: <b>{title}</b>
         </p>
 
-        {editable && (
-          <section className="mt-6 rounded-xl bg-white p-4 shadow-sm">
-            <p className="text-sm font-semibold">Thời gian "{eventItem.title}" (để trống = giữ như trong thiệp)</p>
+        {editableItems.map((item, k) => (
+          <section key={item.id} className="mt-6 rounded-xl bg-white p-4 shadow-sm">
+            <p className="text-sm font-semibold">Thời gian "{item.title}" (để trống = giữ như trong thiệp)</p>
             <div className="mt-2 flex flex-wrap gap-3">
               <label className="text-sm">
                 Giờ
                 <input
                   type="time"
-                  value={gio}
-                  onChange={(e) => setGio(e.target.value)}
+                  value={times[k].gio}
+                  onChange={setTime(k, "gio")}
                   className="ml-2 rounded-lg border border-black/20 px-2 py-1"
                 />
               </label>
@@ -123,15 +125,15 @@ export default function GuestLinksPage() {
                 Ngày
                 <input
                   type="date"
-                  value={ngay}
-                  onChange={(e) => setNgay(e.target.value)}
+                  value={times[k].ngay}
+                  onChange={setTime(k, "ngay")}
                   className="ml-2 rounded-lg border border-black/20 px-2 py-1"
                 />
               </label>
             </div>
             <p className="mt-2 text-xs text-black/50">Giờ / ngày được gắn vào mọi link bên dưới; thứ trong tuần tự tính.</p>
           </section>
-        )}
+        ))}
 
         <label className="mt-6 block text-sm font-semibold" htmlFor="guest-names">
           Tên khách mời — mỗi dòng một người, ghi cả xưng hô (vd: Cô Lan, Gia đình bác Hùng, Anh Tuấn)

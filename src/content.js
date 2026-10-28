@@ -21,15 +21,15 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Mẩy Líu', 'Phùng Yết'],
-    dateLine: '24 . 11 . 2026',
+    names: ['Phùng Yết', 'Mẩy Líu'],
+    dateLine: '23 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Mẩy Líu', 'Phùng Yết'],
+    fullNames: ['Phùng Yết', 'Mẩy Líu'],
   },
 
   invitation: {
@@ -38,7 +38,7 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Cưới',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['24', '11', '2026'],
+    dateParts: ['23', '11', '2026'],
   },
 
   events: {
@@ -91,8 +91,8 @@ export const content = {
      */
     endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
     /** Slug riêng của thiệp trong script dùng chung — không đổi sau khi đã có lời chúc */
-    coupleId: 'mayliu-phungyet',
-    coupleName: 'Mẩy Líu & Phùng Yết',
+    coupleId: 'phungyet-mayliu',
+    coupleName: 'Phùng Yết & Mẩy Líu',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */

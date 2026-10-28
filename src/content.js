@@ -104,8 +104,14 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    // TODO: web cũ chưa có tài khoản mừng cưới — hỏi khách nếu cần
-    accounts: [],
+    accounts: [
+      {
+        holder: 'CHAO LIU MAY',
+        number: '103881587023',
+        bank: 'VietinBank',
+        qr: '/images/qr-liumay.png',
+      },
+    ],
   },
 
   thanks: {

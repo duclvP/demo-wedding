@@ -104,8 +104,14 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    // TODO: web cũ chưa có tài khoản mừng cưới — hỏi khách nếu cần
-    accounts: [],
+    accounts: [
+      {
+        holder: 'PHUNG ONG YET',
+        number: '101872018755',
+        bank: 'VietinBank',
+        qr: '/images/qr-yet.png',
+      },
+    ],
   },
 
   thanks: {

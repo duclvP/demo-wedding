@@ -23,7 +23,7 @@ export const content = {
     /** Hiển thị theo đúng thứ tự này (cũng là dòng tên dưới lời mời và ký tên mục Thank You) */
     names: ['Huyền Chi', 'Huy Hoàng'],
     /** Hai dòng dưới tên: ngày.tháng / năm */
-    dateLines: ['17.11', '2026'],
+    dateLines: ['16.11', '2026'],
     hint: 'NHẤP VÀO THIỆP ĐỂ MỞ',
   },
 
@@ -50,10 +50,10 @@ export const content = {
         id: 'vu-quy',
         title: null,
         hour: '11 giờ 00',
-        weekday: 'Thứ 3',
-        day: '17',
+        weekday: 'Thứ 2',
+        day: '16',
         monthYear: '11 - 2026',
-        lunar: '( Tức ngày 09 tháng 10 năm Bính Ngọ )',
+        lunar: '( Tức ngày 08 tháng 10 năm Bính Ngọ )',
         place: 'Tư Gia Nhà Gái',
         // TODO: khách chỉ ghi "Đại Phúc, Thái Nguyên" — hỏi địa chỉ cụ thể (xóm / thôn)
         address: ADDRESS_BRIDE,
@@ -65,7 +65,7 @@ export const content = {
 
   calendar: {
     /** Ngày khoanh tim trên lịch — để null thì ẩn lịch */
-    dateIso: '2026-11-17',
+    dateIso: '2026-11-16',
     photoCaption: 'My Love',
   },
 

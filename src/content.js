@@ -56,8 +56,6 @@ export const content = {
         id: 'vu-quy-28',
         title: 'Tiệc Mừng Lễ Vu Quy',
         time: '16:00 | Thứ Bảy',
-        /** Đổi giờ / ngày bằng link: ?gio=17:00&ngay=2026-11-28 (xem trang /tao-link) */
-        editable: true,
         date: '28. 11. 2026',
         lunar: '(20 tháng 10 năm Bính Ngọ)',
         placeLabel: 'Tại địa điểm',
@@ -75,8 +73,6 @@ export const content = {
         id: 'vu-quy-29',
         title: 'Tiệc Mừng Lễ Vu Quy',
         time: '09:00 | Chủ Nhật',
-        /** Đổi giờ / ngày bằng link: ?gio2=09:30&ngay2=2026-11-29 (xem trang /tao-link) */
-        editable: true,
         date: '29. 11. 2026',
         lunar: '(21 tháng 10 năm Bính Ngọ)',
         placeLabel: 'Tại địa điểm',
@@ -86,7 +82,8 @@ export const content = {
         timeline: [
           { time: '09:00', label: 'Đón khách', icon: 'guests' },
           { time: '10:00', label: 'Nhập tiệc', icon: 'dinner' },
-          { time: '13:00', label: 'Rước dâu', icon: 'car' },
+          /** always: vẫn hiện trên timeline của khách chỉ mời ngày 28 (ngày cưới) */
+          { time: '13:00', label: 'Rước dâu', icon: 'car', always: true },
         ],
       },
     ],

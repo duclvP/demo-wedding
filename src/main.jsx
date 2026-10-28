@@ -690,7 +690,7 @@ function Timeline({ items }) {
             >
               <Reveal variant={right ? "right" : "left"} duration={1.5}>
                 <p className="font-hepta font-bold text-[17px] leading-[26px] text-moss">{timelineHour(t.time)}</p>
-                <p className="font-hepta uppercase text-[14px] leading-[22px] text-moss/80">{t.label}</p>
+                <p className="font-hepta uppercase text-[14px] leading-[22px] text-moss">{t.label}</p>
                 <Icon className="mx-auto mt-2 h-[46px] w-[46px] text-moss/75" strokeWidth={1} aria-hidden />
               </Reveal>
             </div>
@@ -895,7 +895,7 @@ function WeddingPage() {
               <p className="font-script text-[56px] leading-[61px] whitespace-nowrap">{c.hero.storyTitle}</p>
             </Reveal>
             <Reveal duration={2}>
-              <p className="mt-[6px] pl-[10px] font-serif text-[14px] leading-[16.8px] text-ink">{c.hero.story}</p>
+              <p className="mt-[6px] pl-[10px] font-serif text-[14px] leading-[16.8px] text-[#9e9e9e]">{c.hero.story}</p>
             </Reveal>
           </div>
           <Reveal variant="right" duration={1.5} className="text-center font-slab text-[55px] leading-[66px]">

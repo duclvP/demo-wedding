@@ -4,23 +4,32 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        /* Font thay thế gần nhất cho font của mẫu lovecard (ghi chú: font gốc) */
+        /* Font thay thế gần nhất cho font của mẫu lovecard thiepso13 (ghi chú: font gốc) */
         sans: ['Quicksand', 'system-ui', 'sans-serif'],
-        /** 1FTV VIP High Spirited */
+        /** 1FTV VIP High Spirited — tên trong "Trân trọng báo tin" và dòng tên dưới lời mời */
         script: ['Ephesis', 'cursive'],
+        /** SFU Edwardian Script — tên trên màn phong bì */
+        edward: ['"Pinyon Script"', 'cursive'],
         /** Tiêu đề hộp quà mừng cưới */
         vibes: ['"Great Vibes"', 'cursive'],
         /** Ed Drayton — chữ "Quý khách" */
         guest: ['"Imperial Script"', 'cursive'],
-        /** 1FTV VIP Askilon — ngày tháng (khách muốn chữ nhẹ nhàng hơn: Prata → Cormorant Garamond) */
-        date: ['"Cormorant Garamond"', 'serif'],
-        /** UTM Avo — thẻ sự kiện, "Trân Trọng Kính Mời" */
-        avo: ['Montserrat', 'sans-serif'],
-        /** Lora / Oswald của mẫu → Cormorant Garamond nét mảnh (khách muốn chữ nhẹ nhàng hơn) */
-        lora: ['"Cormorant Garamond"', 'serif'],
+        arizonia: ['Arizonia', 'cursive'],
+        dancing: ['"Dancing Script"', 'cursive'],
+        monte: ['MonteCarlo', 'cursive'],
+        culpa: ['"Mea Culpa"', 'cursive'],
+        passions: ['"Passions Conflict"', 'cursive'],
+        philo: ['Philosopher', 'sans-serif'],
+        trirong: ['Trirong', 'serif'],
+        judson: ['Judson', 'serif'],
+        chonburi: ['Chonburi', 'serif'],
+        opensans: ['"Open Sans"', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
+        lora: ['Lora', 'serif'],
+        /** Cormorant Upright — "Thư Mời Cưới"; LF Aretha Bridge — "Địa điểm tổ chức" */
         upright: ['"Cormorant Upright"', 'serif'],
-        oswald: ['"Cormorant Garamond"', 'serif'],
-        /** Số trên lịch */
+        oswald: ['Oswald', 'sans-serif'],
+        /** Tinos — "Nhà Trai / Nhà Gái", thứ trên lịch */
         display: ['Tinos', 'serif'],
       },
       colors: {

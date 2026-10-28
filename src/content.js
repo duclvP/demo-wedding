@@ -1,89 +1,71 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_BRIDE = 'Thôn Giao Thiện, Xã Giao Minh, Tỉnh Ninh Bình';
-const ADDRESS_GROOM = 'Thôn Tiến Thắng, Xã Yên Đồng, Tỉnh Ninh Bình';
+const ADDRESS_GROOM = 'Quang Sơn, Thái Nguyên';
+const ADDRESS_BRIDE = 'Đại Phúc, Thái Nguyên';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
-const BRIDE_SIDE = {
-  label: 'Nhà Gái',
-  father: 'Đinh Văn Thiều',
-  mother: 'Phạm Thị Quýt',
-  address: ADDRESS_BRIDE,
-};
+// TODO: ticket #14 chưa có tên bố mẹ hai bên — hỏi lại khách
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Nguyễn Đình Hy',
-  mother: 'Nguyễn Thị Vừng',
+  father: null,
+  mother: null,
   address: ADDRESS_GROOM,
+};
+const BRIDE_SIDE = {
+  label: 'Nhà Gái',
+  father: null,
+  mother: null,
+  address: ADDRESS_BRIDE,
 };
 
 export const content = {
   hero: {
-    subtitle: 'Save The Date',
-    /** Hiển thị theo đúng thứ tự này */
-    names: ['Đinh Sen', 'Đình Thắng'],
-    dateLine: '08 . 11 . 2026',
-  },
-
-  /** Thẻ ảnh chú rể / cô dâu */
-  couple: {
-    groom: { role: 'Chú rể', name: 'Đình Thắng' },
-    bride: { role: 'Cô dâu', name: 'Đinh Sen' },
+    /** Hiển thị theo đúng thứ tự này (cũng là dòng tên dưới lời mời và ký tên mục Thank You) */
+    names: ['Huy Hoàng', 'Huyền Chi'],
+    /** Hai dòng dưới tên: ngày.tháng / năm */
+    dateLines: ['17.11', '2026'],
+    hint: 'NHẤP VÀO THIỆP ĐỂ MỞ',
   },
 
   families: {
-    /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [BRIDE_SIDE, GROOM_SIDE],
-    /** Tên cô dâu & chú rể — dòng ký tên cuối mục Thank You */
-    fullNames: ['Đinh Sen', 'Đình Thắng'],
+    /** Hai khối gia đình, từ trên xuống theo thứ tự này */
+    sides: [GROOM_SIDE, BRIDE_SIDE],
+    /** Họ tên đầy đủ — dòng "Trân trọng báo tin lễ thành hôn của" */
+    fullNames: ['Vũ Huy Hoàng', 'Phan Huyền Chi'],
   },
 
   invitation: {
+    announce: ['Trân Trọng Báo Tin', 'Lễ Thành Hôn', 'Của'],
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Vu Quy',
-    /** Chữ đè lên 3 ảnh */
-    dateParts: ['08', '11', '2026'],
+    title: 'Tham Dự Tiệc Mừng Lễ Cưới',
   },
 
   events: {
-    mapLabel: 'Xem vị trí',
+    venueTitle: 'Địa điểm tổ chức',
+    mapLabel: 'Xem trên Google Map',
     items: [
       {
         id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Vu Quy',
-        // TODO: khách chưa gửi giờ + ngày tiệc nhà gái (đang tạm để cùng ngày 08/11) — hỏi lại khách
-        time: '..:.. | Chủ Nhật',
-        /** Đổi giờ / ngày bằng link: ?gio=10:30&ngay=2026-11-07 (xem trang /tao-link) */
-        editable: true,
-        date: '08. 11. 2026',
-        lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Xuân Bảo, ĐT489, Giao Minh, Ninh Bình', mapLink: 'https://www.google.com/maps?q=7GMQ%2B67P+Xu%C3%A2n+B%E1%BA%A3o,+%C4%90T489,+Giao+Minh,+Ninh+B%C3%ACnh&ftid=0x3149ffb8e5b079cb:0x694f7e0cf8e71152' }],
-      },
-      {
-        id: 'thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '13:00 | Chủ Nhật',
-        date: '08. 11. 2026',
-        lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Phố Nấp, Yên Đồng, Ý Yên, Nam Định', mapLink: 'https://www.google.com/maps/search/?api=1&query=20.256000518798828,106.0662841796875' }],
+        title: null,
+        hour: '16 giờ 00',
+        weekday: 'Thứ 3',
+        day: '17',
+        monthYear: '11 - 2026',
+        lunar: '( Tức ngày 09 tháng 10 năm Bính Ngọ )',
+        place: 'Tư Gia Nhà Trai',
+        address: 'Xóm Làng Giếng, Quang Sơn, Thái Nguyên',
+        /** Tên cũ trước sáp nhập — Google Maps tìm dễ hơn */
+        mapQuery: 'Làng Giếng, Quang Sơn, Đồng Hỷ, Thái Nguyên',
       },
     ],
   },
 
-  /** Bộ đếm ngược — để null thì ẩn */
-  countdown: {
-    title: 'Đếm Ngược Ngày Vui',
-    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 13:00 08/11/2026 */
-    target: '2026-11-08T13:00:00+07:00',
-    labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
-  },
-
   calendar: {
-    title: 'Save The Date',
-    /** Ngày khoanh tim trên lịch tháng ở đầu thiệp — để null thì ẩn lịch */
-    dateIso: '2026-11-08',
+    /** Ngày khoanh tim trên lịch — để null thì ẩn lịch */
+    dateIso: '2026-11-17',
+    photoCaption: 'My Love',
   },
 
   rsvp: {
@@ -100,19 +82,23 @@ export const content = {
     coupleId: '',
     /** Tên hiển thị đặt cho Sheet, vd 'Minh Hiền & Đức Thành' */
     coupleName: '',
-    /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
+    /** false = tạm ẩn toàn bộ mục "Xác nhận tham dự & Gửi lời chúc" (nút mừng cưới vẫn hiện) */
     show: false,
-    /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
+    /** false = tạm ẩn ô xác nhận tham dự, chỉ nhận lời chúc */
     askAttend: true,
-    title: 'Xác Nhận Tham Dự',
+    title: 'Xác nhận tham dự',
+    wishTitle: 'Gửi Lời Chúc',
+    boxTitle: 'Gửi Lời Chúc Mừng',
+    intro: 'Cảm ơn tất cả tình cảm mà mọi người đã dành cho chúng mình',
+    guestOfOptions: ['Khách nhà trai', 'Khách nhà gái'],
     placeholders: {
-      name: 'Tên của bạn là gì ?',
-      message: 'Gửi lời chúc cho cô dâu & chú rể',
-      attend: 'Xác nhận tham dự ?',
-      guestCount: 'Bạn đi bao nhiêu người ?',
+      name: 'Họ và Tên',
+      guestOf: 'Bạn là khách mời của ai ?',
+      message: 'Nhập lời chúc của bạn:',
+      attend: 'Xác nhận tham dự',
     },
-    attendYes: 'Có, mình sẽ đến',
-    attendNo: 'Xin lỗi, hôm đấy mình không tới được :(',
+    attendYes: 'Có, tôi sẽ đến',
+    attendNo: 'Tiếc quá, hôm đấy mình không đến được',
     submit: 'Gửi Lời Chúc',
     sending: 'Đang gửi...',
     error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
@@ -128,18 +114,22 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'DINH THI SEN',
-        number: '0031000233954',
-        bank: 'Vietcombank',
+        holder: 'VU HUY HOANG',
+        number: '8886039774',
+        bank: 'BIDV',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-vietcombank-sen.png',
+        qr: '/images/qr-bidv.png',
       },
     ],
   },
 
+  album: {
+    title: 'Album Hình Cưới',
+  },
+
   thanks: {
-    title: 'Thank You',
-    text: 'Từ tận đáy lòng, chúng mình cảm ơn bạn đã dành tình cảm và sự hiện diện cho ngày vui này. Chính bạn đã góp phần làm nên một kỷ niệm hạnh phúc mà chúng mình sẽ luôn trân trọng.',
+    title: 'Thank you',
+    text: 'Sự hiện diện của quý vị là niềm vinh hạnh cho gia đình chúng tôi!',
   },
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */

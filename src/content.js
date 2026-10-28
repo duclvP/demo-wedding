@@ -54,8 +54,8 @@ export const content = {
           {
             label: 'Tư Gia Nhà Gái',
             address: ADDRESS_BRIDE,
-            /** Toạ độ trong link maps.app.goo.gl của ticket */
-            mapQuery: '22.398639,103.8905',
+            /** Toạ độ trong link Maps nhà gái khách gửi (maps.app.goo.gl/w64etpAAgSvvv3rf7) */
+            mapQuery: '22.333124,103.841121',
           },
         ],
       },

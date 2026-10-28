@@ -495,18 +495,16 @@ const TIMELINE_ICONS = {
   rings: HeartHandshake,
 };
 
-/** Hai tên in hoa xếp chéo + chữ "and" viết tay (mục đầu thiệp và lời mời) */
-function NamesBlock({ names, className = "", andClass = "" }) {
+/**
+ * Hai tên in hoa xếp chéo + nét "and" bay dài (ảnh của mẫu) lượn dưới hai tên — toạ độ theo mẫu trên khung 337×148:
+ * tên 1 ở đỉnh, tên 2 thấp hơn 60px, ảnh "and" 242×101 ở x0 y26
+ */
+function NamesBlock({ names, andSrc, className = "" }) {
   return (
-    <div className={`relative text-right font-serif uppercase text-[clamp(40px,13vw,55px)] leading-[1.6] ${className}`}>
-      <p className="whitespace-nowrap">{names[0]}</p>
-      {/* "and" đứng ngay trước tên thứ hai, nhích lên — tên dài ngắn nào cũng không đè */}
-      <p className="-mt-[0.45em] whitespace-nowrap">
-        <span className={`mr-[0.15em] inline-block -translate-y-[0.3em] font-script normal-case text-[0.95em] leading-none ${andClass}`} aria-hidden>
-          and
-        </span>
-        {names[1]}
-      </p>
+    <div className={`relative ml-auto w-[337px] max-w-full text-right font-serif uppercase text-[55px] leading-[88px] ${className}`}>
+      <img src={andSrc} alt="" className="pointer-events-none absolute left-0 top-[26px] w-[242px]" aria-hidden />
+      <p className="relative whitespace-nowrap">{names[0]}</p>
+      <p className="relative -mt-[28px] whitespace-nowrap">{names[1]}</p>
     </div>
   );
 }
@@ -887,7 +885,7 @@ function WeddingPage() {
           </Reveal>
           <div className="absolute right-[34px] top-[15px]">
             <Reveal variant="down" duration={1.5}>
-              <NamesBlock names={names} className="text-cream drop-shadow" andClass="text-cream/85" />
+              <NamesBlock names={names} andSrc={images.deco.andTrang} className="text-cream" />
             </Reveal>
           </div>
         </section>
@@ -924,7 +922,7 @@ function WeddingPage() {
             </p>
           </Reveal>
           <Reveal variant="left" duration={1.5} className="mt-[10px]">
-            <NamesBlock names={names} andClass="text-moss/60" />
+            <NamesBlock names={names} andSrc={images.deco.andXanh} />
           </Reveal>
 
           <div className="mt-[10px] space-y-[50px]">

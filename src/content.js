@@ -54,8 +54,8 @@ export const content = {
           {
             label: 'Tư Gia Nhà Gái',
             address: ADDRESS_BRIDE,
-            /** Toạ độ trong link Maps nhà gái khách gửi (maps.app.goo.gl/w64etpAAgSvvv3rf7) */
-            mapQuery: '22.333124,103.841121',
+            /** Vị trí nhà gái theo khách: Pờ Sì Ngài, Lào Cai */
+            mapQuery: 'Pờ Sì Ngài, Lào Cai, Việt Nam',
           },
         ],
       },

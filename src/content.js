@@ -2,6 +2,9 @@
 
 const ADDRESS_GROOM = 'Lô 30 Cụm Công Nghiệp Phú Túc, Phượng Dực, Hà Nội';
 const ADDRESS_BRIDE = 'Xóm 3, Thôn Lưu Thượng, Phượng Dực, Hà Nội';
+/** Link Google Maps khách gửi: nhà trai → Công ty TNHH Phú Ưng (CCN Phú Túc), nhà gái → gần Đình Lưu Thượng */
+const MAP_GROOM = 'https://maps.app.goo.gl/wX8XudTSRfDiRnim7';
+const MAP_BRIDE = 'https://maps.app.goo.gl/CXUS2s1doVrYYmNbA';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 // TODO: ticket #30 chưa có tên bố mẹ hai bên — hỏi lại khách (vd 'Ông Trần Văn A', 'Bà Nguyễn Thị B')
@@ -10,12 +13,14 @@ const GROOM_SIDE = {
   father: null,
   mother: null,
   address: ADDRESS_GROOM,
+  mapLink: MAP_GROOM,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
   father: null,
   mother: null,
   address: ADDRESS_BRIDE,
+  mapLink: MAP_BRIDE,
 };
 
 export const content = {
@@ -53,7 +58,7 @@ export const content = {
         placeLabel: 'Tại địa điểm',
         place: 'Nhà Trai',
         address: ADDRESS_GROOM,
-        mapLink: 'https://maps.app.goo.gl/wX8XudTSRfDiRnim7',
+        mapLink: MAP_GROOM,
       },
     ],
   },

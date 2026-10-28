@@ -219,7 +219,7 @@ const BackgroundMusic = memo(function BackgroundMusic({ src, volume }) {
           onClick={toggle}
           title={playing ? "Tạm dừng nhạc" : "Bật nhạc nền"}
           aria-label={playing ? "Tạm dừng nhạc nền" : "Phát nhạc nền"}
-          className="music-btn relative flex h-11 w-11 items-center justify-center rounded-full bg-wine/90 text-cream shadow-lg transition-colors hover:bg-wine active:animate-press"
+          className="music-btn relative flex h-11 w-11 items-center justify-center rounded-full bg-moss/90 text-cream shadow-lg transition-colors hover:bg-moss active:animate-press"
         >
           {playing && (
             <>
@@ -500,10 +500,13 @@ function NamesBlock({ names, className = "", andClass = "" }) {
   return (
     <div className={`relative text-right font-serif uppercase text-[clamp(40px,13vw,55px)] leading-[1.6] ${className}`}>
       <p className="whitespace-nowrap">{names[0]}</p>
-      <span className={`absolute left-[8%] top-[38%] font-script normal-case text-[clamp(44px,14vw,60px)] leading-none ${andClass}`} aria-hidden>
-        and
-      </span>
-      <p className="-mt-[0.45em] whitespace-nowrap">{names[1]}</p>
+      {/* "and" đứng ngay trước tên thứ hai, nhích lên — tên dài ngắn nào cũng không đè */}
+      <p className="-mt-[0.45em] whitespace-nowrap">
+        <span className={`mr-[0.15em] inline-block -translate-y-[0.3em] font-script normal-case text-[0.95em] leading-none ${andClass}`} aria-hidden>
+          and
+        </span>
+        {names[1]}
+      </p>
     </div>
   );
 }
@@ -530,9 +533,9 @@ function Leaf({ className = "" }) {
 
 /** Vạch ngang mảnh kết thúc bằng chấm vuông (LINE + BOX 6×6 của mẫu) */
 function DotLine({ className = "", dotLeft = false, light = false }) {
-  const color = light ? "bg-cream" : "bg-wine";
+  const color = light ? "bg-cream" : "bg-moss";
   return (
-    <span className={`relative block h-px ${light ? "bg-cream/70" : "bg-wine/50"} ${className}`} aria-hidden>
+    <span className={`relative block h-px ${light ? "bg-cream/70" : "bg-moss/50"} ${className}`} aria-hidden>
       <span className={`absolute top-1/2 h-[6px] w-[6px] -translate-y-1/2 rounded-full ${color} ${dotLeft ? "left-0" : "right-0"}`} />
     </span>
   );
@@ -551,21 +554,21 @@ function EventBlock({ item, mapLabel }) {
         </Reveal>
       )}
       <Reveal variant="up" duration={1.5}>
-        <p className="font-serif uppercase text-[23px] leading-[36.8px] text-wine">
+        <p className="font-serif uppercase text-[23px] leading-[36.8px] text-moss">
           {hour}, {weekday}
         </p>
-        <p className="flex items-center justify-end gap-[14px] font-slab text-[23px] leading-[36.8px] text-wine">
+        <p className="flex items-center justify-end gap-[14px] font-slab text-[23px] leading-[36.8px] text-moss">
           <span>{d}</span>
-          <span className="h-[20px] w-px bg-wine/60" aria-hidden />
+          <span className="h-[20px] w-px bg-moss/60" aria-hidden />
           <span>{m}</span>
-          <span className="h-[20px] w-px bg-wine/60" aria-hidden />
+          <span className="h-[20px] w-px bg-moss/60" aria-hidden />
           <span>{y}</span>
         </p>
         {item.lunar && <p className="font-serif text-[14px] leading-[22.4px] text-ink">{item.lunar}</p>}
       </Reveal>
       <Reveal variant="down" duration={1.5} className="mt-[40px]">
         <p className="font-serif uppercase text-[13px] leading-[20.8px] text-ink">{item.placeLabel}</p>
-        <p className="mt-[5px] font-serif uppercase text-[24px] leading-[38.4px] text-wine">{item.place}</p>
+        <p className="mt-[5px] font-serif uppercase text-[24px] leading-[38.4px] text-moss">{item.place}</p>
         <p className="font-serif uppercase text-[13px] leading-[20.8px] text-ink">{item.address}</p>
       </Reveal>
       <div className="mt-6 flex justify-center">
@@ -573,9 +576,9 @@ function EventBlock({ item, mapLabel }) {
           href={item.mapLink ?? mapUrl(q)}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col items-center text-wine animate-pulse-soft"
+          className="flex flex-col items-center text-moss animate-pulse-soft"
         >
-          <MapPin className="h-[28px] w-[22px] fill-wine stroke-cream" strokeWidth={1.5} aria-hidden />
+          <MapPin className="h-[28px] w-[22px] fill-moss stroke-cream" strokeWidth={1.5} aria-hidden />
           <span className="mt-1 font-serif uppercase text-[14px] leading-[22.4px]">{mapLabel}</span>
         </a>
       </div>
@@ -583,21 +586,28 @@ function EventBlock({ item, mapLabel }) {
   );
 }
 
-/** Một bên gia đình: nhãn + bố mẹ (bỏ dòng null) + địa chỉ */
-function FamilySide({ side, align }) {
+/** Một bên gia đình: nhãn + bố mẹ (bỏ dòng null) + địa chỉ + nút chỉ đường riêng của nhà đó */
+function FamilySide({ side, align, mapLabel }) {
   const lines = [side.father, side.mother].filter(Boolean);
+  const href = side.mapLink ?? (side.address && mapUrl(side.address));
   return (
     <div className={`font-serif uppercase text-[13px] leading-[20.8px] text-ink ${align}`}>
       <p>{side.label}</p>
       {lines.map((l) => (
-        <p key={l} className="text-wine">{l}</p>
+        <p key={l} className="text-moss">{l}</p>
       ))}
       {side.address && <p className="normal-case">{side.address}</p>}
+      {href && (
+        <a href={href} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-[12px] text-moss underline-offset-2 hover:underline">
+          <MapPin className="h-[14px] w-[14px]" strokeWidth={1.5} aria-hidden />
+          {mapLabel}
+        </a>
+      )}
     </div>
   );
 }
 
-/** Lịch tháng chữ kem trên nền đỏ rượu, ngày cưới phủ tim hồng nhạt */
+/** Lịch tháng chữ kem trên nền màu chính, ngày cưới phủ tim xám xanh */
 function MonthCalendar({ dateIso }) {
   const [y, m, d] = dateIso.split("-").map(Number);
   const daysInMonth = new Date(y, m, 0).getDate();
@@ -606,7 +616,7 @@ function MonthCalendar({ dateIso }) {
   const cells = [...Array(lead).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
 
   return (
-    <div className="rounded-br-[60px] bg-wine pb-[30px] pt-[5px]">
+    <div className="rounded-br-[60px] bg-moss pb-[30px] pt-[5px]">
       <div className="relative h-[88px]">
         <Reveal variant="left" duration={1.5} className="absolute left-[10px] top-0">
           <p className="font-script text-[60px] leading-[88px] text-cream">{MONTHS_EN[m - 1]}</p>
@@ -624,8 +634,8 @@ function MonthCalendar({ dateIso }) {
         {cells.map((day, i) =>
           day === d ? (
             <span key={i} className="relative flex h-[37px] items-center justify-center">
-              <Heart className="absolute h-[34px] w-[34px] text-[#f3d6dc] animate-pulse-soft" />
-              <span className="relative font-bold text-wine">{day}</span>
+              <Heart className="absolute h-[34px] w-[34px] text-[#a9b5ae] animate-pulse-soft" />
+              <span className="relative font-bold text-moss">{day}</span>
             </span>
           ) : (
             <span key={i} className="flex h-[37px] items-center justify-center">{day ?? ""}</span>
@@ -658,7 +668,7 @@ function Timeline({ items }) {
     <div className="relative mx-auto w-full max-w-[420px]" style={{ height: h }}>
       <Reveal variant="left" duration={2} className="absolute inset-0">
         <svg viewBox={`0 0 420 ${h}`} className="absolute inset-0 h-full w-full" fill="none" aria-hidden>
-          <path d={d} stroke="#7b0323" strokeWidth="1.4" strokeLinecap="round" />
+          <path d={d} stroke="#062520" strokeWidth="1.4" strokeLinecap="round" />
         </svg>
       </Reveal>
       {items.map((t, i) => {
@@ -679,9 +689,9 @@ function Timeline({ items }) {
               style={{ top: 30 + i * TL_STEP - 10, left: right ? 215 : 45 }}
             >
               <Reveal variant={right ? "right" : "left"} duration={1.5}>
-                <p className="font-hepta font-bold text-[17px] leading-[26px] text-wine">{timelineHour(t.time)}</p>
-                <p className="font-hepta uppercase text-[14px] leading-[22px] text-wine/80">{t.label}</p>
-                <Icon className="mx-auto mt-2 h-[46px] w-[46px] text-wine/75" strokeWidth={1} aria-hidden />
+                <p className="font-hepta font-bold text-[17px] leading-[26px] text-moss">{timelineHour(t.time)}</p>
+                <p className="font-hepta uppercase text-[14px] leading-[22px] text-moss/80">{t.label}</p>
+                <Icon className="mx-auto mt-2 h-[46px] w-[46px] text-moss/75" strokeWidth={1} aria-hidden />
               </Reveal>
             </div>
           </div>
@@ -795,7 +805,7 @@ function RsvpForm({ c }) {
   }
 
   const inputCls =
-    "w-full rounded-[18px] border-0 bg-cream/90 px-3 py-[6px] font-hepta text-[14px] text-wine placeholder:italic placeholder:text-wine/60 outline-none focus:ring-2 focus:ring-cream/60";
+    "w-full rounded-[18px] border-0 bg-cream/90 px-3 py-[6px] font-hepta text-[14px] text-moss placeholder:italic placeholder:text-moss/60 outline-none focus:ring-2 focus:ring-cream/60";
 
   if (sent) return <p className="py-6 text-center font-hepta text-[16px] text-cream">{c.thanks}</p>;
   return (
@@ -859,7 +869,7 @@ function WeddingPage() {
   );
 
   return (
-    <div className="paper min-h-screen font-serif text-wine">
+    <div className="paper min-h-screen font-serif text-moss">
       <BackgroundMusic src={c.music.src} volume={c.music.volume} />
 
       <main className="paper relative mx-auto min-h-screen max-w-[420px] overflow-hidden shadow-2xl">
@@ -871,7 +881,7 @@ function WeddingPage() {
               <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-black/40 to-transparent" />
             </div>
           </Reveal>
-          <div className="absolute right-[34px] top-[15px] w-[80%]">
+          <div className="absolute right-[34px] top-[15px]">
             <Reveal variant="down" duration={1.5}>
               <NamesBlock names={names} className="text-cream drop-shadow" andClass="text-cream/85" />
             </Reveal>
@@ -890,9 +900,9 @@ function WeddingPage() {
           </div>
           <Reveal variant="right" duration={1.5} className="text-center font-slab text-[55px] leading-[66px]">
             <p>{d}</p>
-            <span className="mx-auto block h-px w-[61px] bg-wine" aria-hidden />
+            <span className="mx-auto block h-px w-[61px] bg-moss" aria-hidden />
             <p>{m}</p>
-            <span className="mx-auto block h-px w-[61px] bg-wine" aria-hidden />
+            <span className="mx-auto block h-px w-[61px] bg-moss" aria-hidden />
             <p>{y.slice(-2)}</p>
           </Reveal>
         </section>
@@ -906,11 +916,11 @@ function WeddingPage() {
         <section className="px-[22px] pt-[40px]">
           <Reveal variant="down" duration={1.5}>
             <p className="ml-auto max-w-[378px] text-right font-serif uppercase text-[13px] leading-[20.8px] text-ink">
-              {c.invitation.before} <span className="font-bold text-wine">{guest}</span> {c.invitation.after}
+              {c.invitation.before} <span className="font-bold text-moss">{guest}</span> {c.invitation.after}
             </p>
           </Reveal>
-          <Reveal variant="left" duration={1.5} className="mt-[10px] ml-auto w-[85%]">
-            <NamesBlock names={names} andClass="text-wine/60" />
+          <Reveal variant="left" duration={1.5} className="mt-[10px]">
+            <NamesBlock names={names} andClass="text-moss/60" />
           </Reveal>
 
           <div className="mt-[10px] space-y-[50px]">
@@ -924,10 +934,10 @@ function WeddingPage() {
           </Reveal>
           <div className="mt-[22px] grid grid-cols-2 gap-6">
             <Reveal variant="left" duration={1.5}>
-              <FamilySide side={c.families.sides[0]} align="text-left" />
+              <FamilySide side={c.families.sides[0]} align="text-left" mapLabel={c.events.mapLabel} />
             </Reveal>
             <Reveal variant="right" duration={1.5}>
-              <FamilySide side={c.families.sides[1]} align="text-right" />
+              <FamilySide side={c.families.sides[1]} align="text-right" mapLabel={c.events.mapLabel} />
             </Reveal>
           </div>
         </section>
@@ -961,7 +971,7 @@ function WeddingPage() {
               <Reveal variant="right" duration={1.5} className="absolute left-[150px] top-0">
                 <p className="font-script text-[72px] leading-[107px]">{c.timeline.title}</p>
               </Reveal>
-              <span className="absolute right-0 top-[54px] h-px w-[60px] bg-wine/60" aria-hidden />
+              <span className="absolute right-0 top-[54px] h-px w-[60px] bg-moss/60" aria-hidden />
             </div>
             <Timeline items={timeline} />
           </section>
@@ -971,7 +981,7 @@ function WeddingPage() {
         {c.dresscode.colors.length > 0 && (
           <section className="pt-[40px]">
             <div className="relative h-[96px]">
-              <span className="absolute left-0 top-[46px] h-px w-[60px] bg-wine/60" aria-hidden />
+              <span className="absolute left-0 top-[46px] h-px w-[60px] bg-moss/60" aria-hidden />
               <Reveal variant="left" duration={1.5} className="absolute left-[66px] top-0">
                 <p className="font-script text-[64px] leading-[96px]">{c.dresscode.title}</p>
               </Reveal>
@@ -1008,15 +1018,15 @@ function WeddingPage() {
 
         {/* Thư cảm ơn trong khung viền bo tròn */}
         <section className="px-[13px] pt-[30px] pb-[34px]">
-          <Reveal duration={1.5} className="rounded-[50px] border border-wine px-[23px] pt-[24px] pb-[16px] text-center">
+          <Reveal duration={1.5} className="rounded-[50px] border border-moss px-[23px] pt-[24px] pb-[16px] text-center">
             <p className="font-script text-[44px] leading-[52px]">{c.letter.title}</p>
-            <span className="mx-auto mt-[20px] block h-[5px] w-[5px] rounded-full bg-wine" aria-hidden />
+            <span className="mx-auto mt-[20px] block h-[5px] w-[5px] rounded-full bg-moss" aria-hidden />
             <div className="mt-[30px] space-y-[26px] text-justify font-hepta text-[13px] leading-[26px]">
               {c.letter.paragraphs.map((p) => (
                 <p key={p}>{p}</p>
               ))}
             </div>
-            <span className="mx-auto mt-[38px] block h-[5px] w-[5px] rounded-full bg-wine" aria-hidden />
+            <span className="mx-auto mt-[38px] block h-[5px] w-[5px] rounded-full bg-moss" aria-hidden />
             <p className="mt-[40px] font-hepta uppercase text-[13px] leading-[26px]">{c.letter.closing}</p>
             <p className="font-script text-[38px] leading-[64px] whitespace-nowrap">
               {names[0]} &amp; {names[1]}
@@ -1026,7 +1036,7 @@ function WeddingPage() {
 
         {/* Xác nhận tham dự + mừng cưới */}
         {(c.rsvp.show || hasGift) && (
-          <section className="rounded-br-[60px] bg-wine px-[31px] pt-[53px] pb-[60px] text-cream">
+          <section className="rounded-br-[60px] bg-moss px-[31px] pt-[53px] pb-[60px] text-cream">
             {c.rsvp.show && (
               <Reveal variant="up" duration={1.5}>
                 <p className="mb-[22px] text-center font-hepta text-[13px] leading-[20.8px] whitespace-pre-line">{c.rsvp.intro}</p>

@@ -47,7 +47,7 @@ export const content = {
       {
         id: 'nha-trai',
         title: 'Lễ Cưới Nhà Trai',
-        time: '09:00 - Thứ Hai',
+        time: '17:00 - Thứ Hai',
         date: '23. 11. 2026',
         lunar: '( Tức Ngày 15 Tháng 10 Năm Bính Ngọ )',
         places: [
@@ -59,28 +59,13 @@ export const content = {
           },
         ],
       },
-      {
-        id: 'nha-gai',
-        title: 'Lễ Cưới Nhà Gái',
-        time: '09:00 - Thứ Ba',
-        date: '24. 11. 2026',
-        lunar: '( Tức Ngày 16 Tháng 10 Năm Bính Ngọ )',
-        places: [
-          {
-            label: 'Tư Gia Nhà Gái',
-            address: ADDRESS_BRIDE,
-            /** Toạ độ trong link maps.app.goo.gl của ticket */
-            mapQuery: '22.398639,103.8905',
-          },
-        ],
-      },
     ],
   },
 
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch (một ngày hoặc mảng nhiều ngày cùng tháng) — để null thì ẩn lịch */
-    dateIso: ['2026-11-23', '2026-11-24'],
+    dateIso: '2026-11-23',
   },
 
   rsvp: {

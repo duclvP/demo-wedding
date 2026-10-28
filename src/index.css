@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  /* Đỏ rượu #7B0323 (khách chọn) */
+  /* Xanh rêu đậm #062520 của mẫu */
   --background: 0 0% 100%;
-  --foreground: 340 50% 15%;
-  --primary: 340 95% 25%;
+  --foreground: 171 72% 8%;
+  --primary: 171 72% 8%;
   --primary-foreground: 0 0% 100%;
   --secondary: 38 60% 45%;
   --secondary-foreground: 0 0% 100%;
@@ -64,12 +64,12 @@ body {
   font-variant-numeric: lining-nums;
 }
 
-/* Nền hộp quà: loang hồng nhạt trên nền kem */
+/* Nền hộp quà: loang xanh rêu nhạt trên nền kem */
 .gift-card {
   background:
-    radial-gradient(ellipse at 15% 10%, rgba(123, 3, 35, 0.12), transparent 55%),
-    radial-gradient(ellipse at 85% 85%, rgba(123, 3, 35, 0.1), transparent 50%),
-    linear-gradient(160deg, #fffbf0, #f6ece9);
+    radial-gradient(ellipse at 15% 10%, rgba(6, 37, 32, 0.1), transparent 55%),
+    radial-gradient(ellipse at 85% 85%, rgba(6, 37, 32, 0.08), transparent 50%),
+    linear-gradient(160deg, #fffbf0, #eef0ec);
 }
 
 /* Nút nhạc: sóng lan ra khi đang phát, nhún khi bấm */

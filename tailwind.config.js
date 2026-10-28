@@ -19,11 +19,10 @@ export default {
         display: ['"Brygada 1918"', 'serif'],
       },
       colors: {
-        /** Tông chính khách chọn: đỏ rượu #7B0323 (mẫu gốc xanh rêu #062520) */
-        wine: '#7b0323',
+        /** Màu của mẫu: xanh rêu đậm (chữ chính, khối lịch / form), kem (chữ trên nền tối), xám xanh (chữ phụ) */
+        moss: '#062520',
         cream: '#fffbf0',
-        /** Chữ phụ xám ấm (mẫu gốc #69706a) */
-        ink: '#6f6266',
+        ink: '#69706a',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {

@@ -21,7 +21,7 @@ const BRIDE_SIDE = {
 export const content = {
   hero: {
     /** Hai tên in hoa đầu thiệp, dòng tên ở lời mời và ký tên thư cảm ơn — theo đúng thứ tự này */
-    names: ['Tuấn Anh', 'Trần Ly'],
+    names: ['Trần Ly', 'Tuấn Anh'],
     storyTitle: 'Love Story',
     story:
       'From a chance meeting to a lifetime promise, our love story is written with laughter, trust, and the joy of finding each other.',
@@ -29,7 +29,7 @@ export const content = {
 
   families: {
     /** Cột trái → phải */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
   },
 
   invitation: {
@@ -45,15 +45,28 @@ export const content = {
     /** Sự kiện đầu tiên là ngày chính: ngày xếp dọc đầu thiệp, lịch */
     items: [
       {
-        id: 'thanh-hon',
-        title: 'Tiệc Mừng Lễ Thành Hôn',
-        time: '09:00 | Chủ Nhật',
+        id: 'vu-quy',
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        time: '16:00 | Thứ Bảy',
+        /** Đổi giờ / ngày bằng link: ?gio=17:00&ngay=2026-11-28 (xem trang /tao-link) */
+        editable: true,
+        date: '28. 11. 2026',
+        lunar: '(20 tháng 10 năm Bính Ngọ)',
+        placeLabel: 'Tại địa điểm',
+        place: 'Tư Gia Nhà Gái',
+        address: ADDRESS_BRIDE,
+        mapLink: 'https://maps.app.goo.gl/CXUS2s1doVrYYmNbA',
+      },
+      {
+        id: 'ruoc-dau',
+        title: 'Lễ Rước Dâu',
+        time: '13:00 | Chủ Nhật',
         date: '29. 11. 2026',
         lunar: '(21 tháng 10 năm Bính Ngọ)',
         placeLabel: 'Tại địa điểm',
-        place: 'Nhà Trai',
-        address: ADDRESS_GROOM,
-        mapLink: 'https://maps.app.goo.gl/wX8XudTSRfDiRnim7',
+        place: 'Tư Gia Nhà Gái',
+        address: ADDRESS_BRIDE,
+        mapLink: 'https://maps.app.goo.gl/CXUS2s1doVrYYmNbA',
       },
     ],
   },
@@ -61,12 +74,12 @@ export const content = {
   /** Các mốc trong ngày — followsEvent: khách đổi giờ sự kiện đó qua link thì các mốc dời theo */
   timeline: {
     title: 'Timeline',
-    followsEvent: 'thanh-hon',
+    followsEvent: 'vu-quy',
     /** icon: guests | dinner | music | car | rings */
     items: [
-      { time: '09:00', label: 'Đón khách', icon: 'guests' },
-      { time: '10:00', label: 'Nhập tiệc', icon: 'dinner' },
-      { time: '13:00', label: 'Lễ thành hôn', icon: 'rings' },
+      { time: '16:00', label: 'Đón khách', icon: 'guests' },
+      { time: '16:30', label: 'Nhập tiệc', icon: 'dinner' },
+      { time: '19:00', label: 'Âm nhạc', icon: 'music' },
     ],
   },
 
@@ -90,7 +103,7 @@ export const content = {
   letter: {
     title: 'Trân trọng cảm ơn !',
     paragraphs: [
-      'Chúng tôi rất vui khi được mời bạn đến dự lễ cưới của Tuấn Anh và Ly – một dấu mốc ý nghĩa trong hành trình chung đôi.',
+      'Chúng tôi rất vui khi được mời bạn đến dự lễ cưới của Ly và Tuấn Anh – một dấu mốc ý nghĩa trong hành trình chung đôi.',
       'Sẽ thật hạnh phúc nếu bạn có thể đến chung vui và cùng lưu giữ những khoảnh khắc đáng nhớ trong ngày đặc biệt này.',
       'Rất mong bạn có thể thu xếp thời gian đến tham dự và cùng chúc phúc cho chúng tôi.',
     ],
@@ -104,9 +117,9 @@ export const content = {
      */
     endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
     /** Mã cặp đôi — không đổi sau khi đã có lời chúc (mất liên kết với Sheet cũ) */
-    coupleId: 'tran-ly-tuan-anh-nha-trai',
+    coupleId: 'tran-ly-tuan-anh-nha-gai',
     /** Tên Sheet */
-    coupleName: 'Tuấn Anh & Trần Ly (nhà trai)',
+    coupleName: 'Trần Ly & Tuấn Anh (nhà gái)',
     /** false = tạm ẩn form (nút mừng cưới vẫn hiện) */
     show: true,
     /** false = tạm ẩn ô xác nhận tham dự, chỉ nhận lời chúc */
@@ -135,11 +148,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'TRAN TUAN ANH',
-        number: '32369999999',
-        bank: 'Techcombank',
+        holder: 'TRAN THI LY',
+        number: '0301000374969',
+        bank: 'Vietcombank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-techcombank.png',
+        qr: '/images/qr-vietcombank.png',
       },
     ],
   },

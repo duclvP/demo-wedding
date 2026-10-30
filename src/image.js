@@ -4,30 +4,30 @@
  */
 export const images = {
   /** Ảnh dọc lớn đầu thiệp (khung vàng) */
-  hero: '/images/trang-5.jpg',
+  hero: '/images/vay-2441.jpg',
   /** Ảnh dưới phần gia đình (khung vàng) */
-  couple: '/images/dan-toc-2.jpg',
+  couple: '/images/vay-2307.jpg',
   /** 3 ảnh dải ngày cưới: chú rể, ảnh đôi, cô dâu */
-  dateStrip: ['/images/dan-toc-1.jpg', '/images/trang-10.jpg', '/images/dan-toc-3.jpg'],
-  /** Lưới ảnh 2 cột — 7 ảnh áo dân tộc xen kẽ 7 ảnh váy cưới (bàn cờ); số lẻ thì ảnh cuối nằm giữa */
+  dateStrip: ['/images/vay-2581.jpg', '/images/ao-dai-1787.jpg', '/images/vay-2323.jpg'],
+  /** Lưới ảnh 2 cột — áo dài đỏ xen kẽ váy cưới (bàn cờ) */
   album: [
-    '/images/trang-1.jpg',
-    '/images/dan-toc-1.jpg',
-    '/images/dan-toc-2.jpg',
-    '/images/trang-2.jpg',
-    '/images/trang-3.jpg',
-    '/images/dan-toc-5.jpg',
-    '/images/dan-toc-3.jpg',
-    '/images/trang-4.jpg',
-    '/images/trang-6.jpg',
-    '/images/dan-toc-6.jpg',
-    '/images/dan-toc-4.jpg',
-    '/images/trang-8.jpg',
-    '/images/trang-9.jpg',
-    '/images/dan-toc-7.jpg',
+    '/images/ao-dai-1695.jpg',
+    '/images/vay-2147.jpg',
+    '/images/vay-2240.jpg',
+    '/images/ao-dai-1750.jpg',
+    '/images/ao-dai-1772.jpg',
+    '/images/vay-2390.jpg',
+    '/images/vay-2427.jpg',
+    '/images/ao-dai-1808.jpg',
+    '/images/ao-dai-1925.jpg',
+    '/images/vay-2456.jpg',
+    '/images/vay-2501.jpg',
+    '/images/ao-dai-1929.jpg',
+    '/images/ao-dai-1843.jpg',
+    '/images/vay-2527.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/trang-6.jpg',
+  gift: '/images/ao-dai-1843.jpg',
   /** Ảnh mục Thank You */
-  thankYou: '/images/trang-7.jpg',
+  thankYou: '/images/vay-2554.jpg',
 };

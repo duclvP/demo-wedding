@@ -1,19 +1,19 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Thôn Bản Sái, xã Bản Hồ, tỉnh Lào Cai';
-const ADDRESS_BRIDE = 'Km19, thôn Ky Công Hồ, đường Sa Pa - Lào Cai';
+const ADDRESS_GROOM = 'Thôn Minh Thành, xã Gia Tường, tỉnh Ninh Bình';
+const ADDRESS_BRIDE = 'Thôn Yên Nam, xã Quảng Ninh, tỉnh Thanh Hóa';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Phùng Vần Siểu',
-  mother: 'Phùng Cờ Mẩy',
+  father: 'Nguyễn Xuân Mai',
+  mother: 'Trần Thị Huế',
   address: ADDRESS_GROOM,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Chảo Diếu Nhàn',
-  mother: 'Lý Tả Mẩy',
+  father: 'Viên Đình Nghinh',
+  mother: 'Nguyễn Thị Thức',
   address: ADDRESS_BRIDE,
 };
 
@@ -21,41 +21,56 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Mẩy Líu', 'Phùng Yết'],
-    dateLine: '24 . 11 . 2026',
+    names: ['Nguyễn Long', 'Viên Nhung'],
+    dateLine: '16 . 11 . 2026',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
-    fullNames: ['Mẩy Líu', 'Phùng Yết'],
+    fullNames: ['Nguyễn Long', 'Viên Nhung'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Cưới',
+    title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['24', '11', '2026'],
+    dateParts: ['16', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'nha-gai',
-        title: 'Lễ Cưới Nhà Gái',
-        time: '17:00 - Thứ Ba',
-        date: '24. 11. 2026',
-        lunar: '( Tức Ngày 16 Tháng 10 Năm Bính Ngọ )',
+        id: 'tiec-nha-trai',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
+        time: '16:00 - Chủ Nhật',
+        date: '15. 11. 2026',
+        lunar: '( Tức Ngày 07 Tháng 10 Năm Bính Ngọ )',
         places: [
           {
-            label: 'Tư Gia Nhà Gái',
-            address: ADDRESS_BRIDE,
-            /** Vị trí nhà gái theo link Maps khách gửi */
-            mapQuery: '20 QL4D, Pờ Sì Ngài, Tả Phìn, Lào Cai',
+            label: 'Tư Gia Nhà Trai',
+            address: ADDRESS_GROOM,
+            /** Tên cũ trước sáp nhập, dễ tìm trên Maps */
+            mapQuery: 'Minh Thành, Gia Tường, Nho Quan, Ninh Bình',
+          },
+        ],
+      },
+      {
+        id: 'le-thanh-hon',
+        title: 'Lễ Thành Hôn',
+        /** TODO: khách chưa gửi giờ lễ rước dâu — hỏi lại rồi thêm vào, vd '08:00 - Thứ Hai' */
+        time: 'Thứ Hai',
+        date: '16. 11. 2026',
+        lunar: '( Tức Ngày 08 Tháng 10 Năm Bính Ngọ )',
+        places: [
+          {
+            label: 'Tư Gia Nhà Trai',
+            address: ADDRESS_GROOM,
+            mapQuery: 'Minh Thành, Gia Tường, Nho Quan, Ninh Bình',
           },
         ],
       },
@@ -65,7 +80,7 @@ export const content = {
   calendar: {
     title: 'Save The Date',
     /** Ngày được đánh dấu trên lịch (một ngày hoặc mảng nhiều ngày cùng tháng) — để null thì ẩn lịch */
-    dateIso: '2026-11-24',
+    dateIso: ['2026-11-15', '2026-11-16'],
   },
 
   rsvp: {
@@ -74,12 +89,12 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
+    endpoint: '',
     /** Slug riêng của thiệp trong script dùng chung — không đổi sau khi đã có lời chúc */
-    coupleId: 'mayliu-phungyet',
-    coupleName: 'Mẩy Líu & Phùng Yết',
+    coupleId: 'nhung-long',
+    coupleName: 'Nguyễn Long & Viên Nhung',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
-    show: true,
+    show: false,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
     askAttend: true,
     title: 'Gửi Lời Chúc & Xác Nhận',
@@ -104,14 +119,8 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    accounts: [
-      {
-        holder: 'CHAO LIU MAY',
-        number: '103881587023',
-        bank: 'VietinBank',
-        qr: '/images/qr-liumay.png',
-      },
-    ],
+    /** TODO: khách chưa gửi mã QR — để [] thì ẩn nút mừng cưới */
+    accounts: [],
   },
 
   thanks: {

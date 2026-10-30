@@ -132,13 +132,13 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    /** Khách mới gửi QR của chú rể — dùng chung cho bản nhà gái; có QR nhà gái thì thay/thêm vào đây */
+    /** QR của cô dâu (bản nhà gái) — đã giải mã: VPBank (BIN 970432), STK 0369423767 */
     accounts: [
       {
-        holder: 'NGUYEN VAN LONG',
-        number: '19036693054015',
-        bank: 'Techcombank',
-        qr: '/images/qr-techcombank.png',
+        holder: 'VIEN THI NHUNG',
+        number: '0369423767',
+        bank: 'VPBank',
+        qr: '/images/qr-vpbank.png',
       },
     ],
   },

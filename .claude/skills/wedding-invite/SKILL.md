@@ -163,6 +163,15 @@ Rồi `npm run build` (phải thành công), grep `dist/index.html` thấy đún
 
 Commit message tiếng Việt, kiểu `feat: thiệp <Tên> & <Tên> — bản nhà trai (issue #9)`. **Không push** trừ khi được yêu cầu. Không commit `.gitignore` / `.env.local` do Vercel CLI sinh ra.
 
+Khi được yêu cầu push / cập nhật ticket: GitHub **không gắn vào ticket các commit nằm trong lần push tạo nhánh mới** (đã kiểm chứng ở #29, #30, #31). Tạo nhánh trên remote ở commit gốc trước, rồi mới push commit — commit ghi `(issue #N)` sẽ hiện trong lịch sử ticket:
+
+```bash
+git push origin <commit-gốc>:refs/heads/<nhánh>   # vd commit đầu nhánh thiệp mới nhất đã có trên origin
+git push -u origin <nhánh>
+```
+
+Kèm một bình luận tóm tắt vào ticket (`gh issue comment N --body-file …`): link Vercel từng bản, nhánh, QR đã dùng, thông tin còn thiếu cần hỏi khách. `gh` trên máy đăng nhập tài khoản `xduclv`, chỉ có quyền đọc board (`read:project`) — đổi cột trên board thì người dùng tự làm.
+
 ## 11. Deploy Vercel (khi người dùng yêu cầu)
 
 Team: `ducs-projects-2e3ef64b` (tài khoản `xduclv`; team cũ `leducuet-5765s-projects` báo "Not authorized"). Mỗi thiệp **một project, tên = tên hai bạn theo thứ tự của bản đó, không dấu, nối bằng gạch**: bản nhà trai `tuananh-tranly`, bản nhà gái `tranly-tuananh` → https://tuananh-tranly.vercel.app. `og:image` / `twitter:image` trong `index.html` phải trỏ đúng domain này. Deploy production thẳng từ code nhánh hiện tại trên máy (không cần push).

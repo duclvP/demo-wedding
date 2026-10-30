@@ -1,7 +1,7 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
 const ADDRESS_GROOM = 'Thôn Minh Thành, xã Gia Tường, tỉnh Ninh Bình';
-const ADDRESS_BRIDE = 'Thôn Yên Nam, xã Quảng Ninh, tỉnh Thanh Hóa';
+const ADDRESS_BRIDE = 'Thôn 8, xã Quảng Hải, Quảng Xương, Thanh Hóa';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const GROOM_SIDE = {

@@ -10,8 +10,8 @@ export const images = {
   /** Ảnh ngang dưới tên đỏ "Trân trọng báo tin…" (khung 387×240) */
   couple: '/images/ao-dai-1843.jpg',
   couplePosition: 'center 12%',
-  /** 3 ảnh dọc dưới tên khách: chú rể, ảnh đôi, cô dâu */
-  dateStrip: ['/images/vay-2581.jpg', '/images/ao-dai-1787.jpg', '/images/vay-2323.jpg'],
+  /** 3 ảnh dọc dưới tên khách: cô dâu, ảnh đôi, chú rể (bản nhà gái) */
+  dateStrip: ['/images/vay-2323.jpg', '/images/ao-dai-1787.jpg', '/images/vay-2581.jpg'],
   /** Ảnh tròn trong khung hoa, trên nút "Gửi mừng cưới" */
   circle: '/images/vay-2307.jpg',
   circlePosition: 'center 8%',

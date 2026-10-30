@@ -22,48 +22,52 @@ export const content = {
     /** Chữ nhấp nháy dưới phong bì đóng (màn đầu) */
     openHint: '- Nhấp vào thiệp để mở -',
     /** Tên hai bên trái/phải trái tim, dưới phong bì — hiển thị theo đúng thứ tự này */
-    names: ['Nguyễn Long', 'Viên Nhung'],
+    names: ['Viên Nhung', 'Nguyễn Long'],
     /** Chữ dọc bên trái phần gia đình */
     letter: ['Thư', 'Mời', 'Cưới'],
   },
 
-  /** "TRÂN TRỌNG BÁO TIN LỄ THÀNH HÔN CỦA" — phần event tô đỏ */
+  /** "TRÂN TRỌNG BÁO TIN LỄ VU QUY CỦA" — phần event tô đỏ */
   announce: {
     before: 'Trân trọng báo tin',
-    event: 'Lễ Thành Hôn',
+    event: 'Lễ Vu Quy',
     after: 'của',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Tên cô dâu & chú rể (đỏ, dưới "Trân trọng báo tin"), cũng là dòng ký tên cuối thiệp */
-    fullNames: ['Nguyễn Long', 'Viên Nhung'],
+    fullNames: ['Viên Nhung', 'Nguyễn Long'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    /** Ngày chính dưới tên: "16.11" / "2026" */
-    dateParts: ['16', '11', '2026'],
+    /** Ngày chính dưới tên (ngày tiệc nhà gái): "15.11" / "2026" */
+    dateParts: ['15', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'tiec-nha-trai',
-        title: 'Tiệc Mừng Lễ Thành Hôn',
-        time: '16:00 - Chủ Nhật',
+        id: 'tiec-nha-gai',
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        /**
+         * TODO: khách chỉ gửi lịch nhà trai ("2 ngày tổ chức 15-16/11") — đang giả định tiệc nhà gái
+         * cũng ngày 15/11, chưa có giờ. Hỏi lại giờ (và ngày nếu khác) rồi sửa, vd '16:00 - Chủ Nhật'
+         */
+        time: 'Chủ Nhật',
         date: '15. 11. 2026',
         lunar: '( Tức Ngày 07 Tháng 10 Năm Bính Ngọ )',
         places: [
           {
-            label: 'Tư Gia Nhà Trai',
-            address: ADDRESS_GROOM,
+            label: 'Tư Gia Nhà Gái',
+            address: ADDRESS_BRIDE,
             /** Tên cũ trước sáp nhập, dễ tìm trên Maps */
-            mapQuery: 'Minh Thành, Gia Tường, Nho Quan, Ninh Bình',
+            mapQuery: 'Yên Nam, Quảng Ninh, Quảng Xương, Thanh Hóa',
           },
         ],
       },
@@ -78,6 +82,7 @@ export const content = {
           {
             label: 'Tư Gia Nhà Trai',
             address: ADDRESS_GROOM,
+            /** Tên cũ trước sáp nhập, dễ tìm trên Maps */
             mapQuery: 'Minh Thành, Gia Tường, Nho Quan, Ninh Bình',
           },
         ],
@@ -99,8 +104,8 @@ export const content = {
      */
     endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
     /** Slug riêng của thiệp trong script dùng chung — không đổi sau khi đã có lời chúc */
-    coupleId: 'nguyen-long-vien-nhung-nha-trai',
-    coupleName: 'Nguyễn Long & Viên Nhung',
+    coupleId: 'vien-nhung-nguyen-long-nha-gai',
+    coupleName: 'Viên Nhung & Nguyễn Long (nhà gái)',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
@@ -127,6 +132,7 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
+    /** Khách mới gửi QR của chú rể — dùng chung cho bản nhà gái; có QR nhà gái thì thay/thêm vào đây */
     accounts: [
       {
         holder: 'NGUYEN VAN LONG',

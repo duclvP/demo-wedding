@@ -6,6 +6,13 @@ import { images } from "./image.js";
 import "./index.css";
 import GuestLinksPage, { isGuestLinksPage } from "./GuestLinks.jsx";
 
+/**
+ * Giao diện theo mẫu lovecard.click/thiepso05 (phong bì đỏ, chữ 囍 vàng, thẻ treo đỏ, hoa sen).
+ * Toạ độ lấy từ trang mẫu (khung rộng 420px) — cả khung được phóng/thu theo bề rộng màn hình (giống LadiPage).
+ */
+const DESIGN_WIDTH = 420;
+const DECOR = "/images/mau05";
+
 function publicAssetUrl(path) {
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
   const base = import.meta.env.BASE_URL || "/";
@@ -237,52 +244,6 @@ const BackgroundMusic = memo(function BackgroundMusic({ src, volume }) {
   );
 });
 
-/** Hiện dần khi cuộn tới — variant: up | down | left | right | zoom | bounce */
-const CurtainContext = React.createContext(true);
-
-function Reveal({ as: Tag = "div", variant = "up", delay = 0, className = "", children }) {
-  const ref = useRef(null);
-  const [seen, setSeen] = useState(false);
-  /** Không chạy hiệu ứng khi rèm còn che — tránh phần đầu thiệp "diễn" trước khi khách thấy */
-  const curtainOpen = React.useContext(CurtainContext);
-  const visible = seen && curtainOpen;
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (!("IntersectionObserver" in window)) {
-      setSeen(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setSeen(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  /**
-   * Quan sát lớp ngoài (không transform) — nếu quan sát chính phần tử đang bị
-   * đẩy ra ngoài khung (translateX(-100%)), nó không bao giờ "giao" với màn hình.
-   */
-  return (
-    <div ref={ref}>
-      <Tag
-        style={{ transitionDelay: `${delay}ms`, animationDelay: `${delay}ms` }}
-        className={`reveal reveal-${variant} ${visible ? "is-visible" : ""} ${className}`}
-      >
-        {children}
-      </Tag>
-    </div>
-  );
-}
-
 /** Tuyết ❆ và tim ❤ rơi khắp màn hình, giống mẫu lovecard */
 const FALLING = [
   { kind: "snowflake", chars: ["❆", "❅"], every: 2500, burst: 8, size: [0.8, 0.6], duration: [15, 5] },
@@ -347,115 +308,6 @@ function FallingEffects({ active }) {
   );
 }
 
-/** Rèm đỏ che thiệp, chỉ kéo sang hai bên khi khách chạm — cú chạm này cũng mở khóa nhạc nền */
-function OpeningCurtain({ onOpen, onDone }) {
-  const [opening, setOpening] = useState(false);
-
-  const open = useCallback(() => {
-    setOpening((was) => {
-      if (!was) onOpen();
-      return true;
-    });
-  }, [onOpen]);
-
-  useEffect(() => {
-    if (!opening) return;
-    const t = setTimeout(onDone, 3000);
-    return () => clearTimeout(t);
-  }, [opening, onDone]);
-
-  return (
-    <div
-      className={`fixed inset-0 z-[160] mx-auto max-w-[460px] overflow-hidden ${opening ? "pointer-events-none" : ""}`}
-      onClick={open}
-      aria-hidden
-    >
-      <div className={`curtain curtain-left ${opening ? "is-open" : ""}`} />
-      <div className={`curtain curtain-right ${opening ? "is-open" : ""}`} />
-      <div
-        className={`absolute left-1/2 top-[38%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center transition-all duration-700 ${
-          opening ? "scale-50 opacity-0" : ""
-        }`}
-      >
-        <button type="button" className="seal animate-pulse-soft" aria-label="Mở thiệp">
-          <span className="font-display font-bold text-[64px] leading-none text-[#f3d27a]">囍</span>
-        </button>
-        <p className="mt-4 font-lora text-sm tracking-widest uppercase text-[#f8e4a6] drop-shadow">
-          Chạm để mở thiệp
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Họa tiết trang trí (SVG vẽ tay, không cần file ảnh) ---------- */
-
-function DoubleHappiness({ className = "" }) {
-  return (
-    <div
-      className={`flex items-center justify-center rounded-full border-2 border-primary/80 text-primary font-display font-bold ${className}`}
-      aria-hidden
-    >
-      囍
-    </div>
-  );
-}
-
-function Knot({ className = "" }) {
-  return (
-    <svg viewBox="0 0 40 90" className={className} aria-hidden>
-      <g fill="none" stroke="#e0782f" strokeWidth="2">
-        <line x1="20" y1="0" x2="20" y2="14" />
-        <path d="M20 14 L32 26 L20 38 L8 26 Z" />
-        <path d="M14 20 L26 32 M26 20 L14 32" />
-        <circle cx="8" cy="26" r="3" />
-        <circle cx="32" cy="26" r="3" />
-        <line x1="20" y1="38" x2="20" y2="48" />
-      </g>
-      <path d="M16 48 h8 l2 34 h-12 z" fill="#e0782f" opacity="0.85" />
-    </svg>
-  );
-}
-
-function Lantern({ className = "" }) {
-  return (
-    <svg viewBox="0 0 40 70" className={className} aria-hidden>
-      <line x1="20" y1="0" x2="20" y2="10" stroke="#b8860b" strokeWidth="1.5" />
-      <rect x="13" y="10" width="14" height="4" rx="1" fill="#b8860b" />
-      <ellipse cx="20" cy="32" rx="16" ry="18" fill="#d6262b" />
-      <path d="M20 14 Q8 32 20 50 M20 14 Q32 32 20 50" stroke="#a01519" strokeWidth="1.2" fill="none" />
-      <rect x="13" y="49" width="14" height="4" rx="1" fill="#b8860b" />
-      <path d="M17 53 h6 l1 14 h-8 z" fill="#d6262b" />
-    </svg>
-  );
-}
-
-/** Viền hoa văn vàng chạy dọc mép thiệp */
-function KeyBorder({ side }) {
-  return (
-    <div
-      className={`key-border pointer-events-none absolute inset-y-0 ${side === "left" ? "left-1.5" : "right-1.5"} w-4 z-20`}
-      aria-hidden
-    />
-  );
-}
-
-function GoldFrame({ src, alt, className = "", imgClass = "" }) {
-  return (
-    <div className={`gold-frame p-[6px] shadow-xl ${className}`}>
-      <div className="bg-white p-1.5">
-        <img src={src} alt={alt} className={`w-full object-cover ${imgClass}`} loading="lazy" />
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Các khối nội dung ---------- */
-
-function mapUrl(address) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-}
-
 /** Từ xưng hô gõ không dấu ở đầu link → có dấu: /co-lan → "Cô Lan"; không có thì thêm "Bạn" */
 const GUEST_TITLES = {
   "gia dinh": "Gia Đình",
@@ -511,90 +363,398 @@ function useGuestName(fallback) {
   })[0];
 }
 
-function FamilySide({ side }) {
+/* ---------- Khung 420px của mẫu ---------- */
+
+function getDesignScale() {
+  try {
+    return Math.min(window.innerWidth || DESIGN_WIDTH, DESIGN_WIDTH) / DESIGN_WIDTH;
+  } catch {
+    return 1;
+  }
+}
+
+/** Màn hình hẹp hơn 420px → thu cả khung lại (giống LadiPage), rộng hơn thì giữ 420px ở giữa */
+function useDesignScale() {
+  const [scale, setScale] = useState(getDesignScale);
+  useEffect(() => {
+    const onResize = () => setScale(getDesignScale());
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  return scale;
+}
+
+/** false khi phong bì còn đóng — chưa chạy hiệu ứng để khách mở ra mới thấy */
+const OpenedContext = React.createContext(true);
+
+/**
+ * Hiệu ứng khi cuộn tới, như mẫu (animate.css): fadeInDown | fadeInUp | fadeInLeft | fadeInRight | bounceIn | zoomIn.
+ * Lớp ngoài giữ vị trí & được quan sát, lớp trong chạy hiệu ứng.
+ */
+function Ani({ fx = "fadeInUp", dur = 2, delay = 0, className = "", style, children }) {
+  const ref = useRef(null);
+  const [seen, setSeen] = useState(false);
+  const opened = React.useContext(OpenedContext);
+  const on = seen && opened;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) {
+      setSeen(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSeen(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <div className="text-center">
-      <h3 className="font-upright font-semibold text-[28px] text-foreground mb-1">{side.label}</h3>
-      {side.father && (
-        <p className="font-oswald font-medium text-[15px] uppercase">Bố: {side.father}</p>
-      )}
-      {side.mother && (
-        <p className="font-oswald font-medium text-[15px] uppercase mb-2">Mẹ: {side.mother}</p>
-      )}
-      {side.address && (
-        <p className="text-sm text-foreground/75 leading-relaxed mt-1">{side.address}</p>
-      )}
+    <div ref={ref} className={className} style={style}>
+      <div
+        className={`ani h-full ${on ? "ani-in" : ""}`}
+        style={on ? { animationName: fx, animationDuration: `${dur}s`, animationDelay: `${delay}s` } : undefined}
+      >
+        {children}
+      </div>
     </div>
   );
 }
 
-function EventCard({ item, mapLabel }) {
+/** Ảnh cắt trong khung như ảnh LadiPage: khung (x, y, w, h), ảnh bên trong (iw, ih) lệch (ix, iy) */
+function Cut({ src, x, y, w, h, iw, ih, ix = 0, iy = 0, className = "", style }) {
   return (
-    <div className="rounded-[28px] bg-primary text-primary-foreground px-6 py-7 text-center shadow-lg shadow-primary/25">
-      <h3 className="font-avo font-semibold uppercase text-lg mb-2">{item.title}</h3>
-      <p className="font-avo text-base mb-1">{item.time}</p>
-      <p className="font-avo font-semibold text-3xl mb-1">{item.date}</p>
-      <p className="italic text-xs opacity-85 mb-5">{item.lunar}</p>
-      <div className="space-y-5">
-        {item.places.map((place) => (
-          <div key={place.label}>
-            <p className="font-avo uppercase text-lg mb-1">{place.label}</p>
-            <p className="text-sm opacity-90 mb-3">{place.address}</p>
-            <a
-              href={mapUrl(place.mapQuery ?? place.address)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block rounded-full bg-white px-8 py-1.5 font-lora text-primary text-base shadow transition hover:scale-105"
-            >
-              {mapLabel}
-            </a>
-          </div>
+    <div className={`absolute overflow-hidden ${className}`} style={{ left: x, top: y, width: w, height: h, ...style }}>
+      <img
+        src={src}
+        alt=""
+        draggable={false}
+        className="absolute max-w-none object-cover object-left-top"
+        style={{ left: ix, top: iy, width: iw, height: ih }}
+      />
+    </div>
+  );
+}
+
+/** Chữ một dòng tự thu nhỏ cỡ chữ nếu dài hơn khung (tên dài) */
+function FitText({ text, max, min = 18, className = "", style }) {
+  const boxRef = useRef(null);
+  const textRef = useRef(null);
+  const [size, setSize] = useState(max);
+
+  React.useLayoutEffect(() => {
+    const box = boxRef.current;
+    const span = textRef.current;
+    if (!box || !span) return;
+    function fit() {
+      let s = max;
+      span.style.fontSize = `${s}px`;
+      while (span.offsetWidth > box.clientWidth && s > min) {
+        s -= 1;
+        span.style.fontSize = `${s}px`;
+      }
+      setSize(s);
+    }
+    fit();
+    document.fonts?.ready.then(fit).catch(() => {});
+  }, [text, max, min]);
+
+  return (
+    <div ref={boxRef} className={className} style={style}>
+      <span ref={textRef} className="inline-block whitespace-nowrap" style={{ fontSize: size }}>
+        {text}
+      </span>
+    </div>
+  );
+}
+
+function GoldCorners({ top }) {
+  const cls = "absolute object-cover object-left-top";
+  return (
+    <>
+      <img src={`${DECOR}/goc-vang.webp`} alt="" className={cls} style={{ left: 0.5, top, width: 69.07, height: 96.7 }} />
+      <img
+        src={`${DECOR}/goc-vang.webp`}
+        alt=""
+        className={cls}
+        style={{ left: 351.37, top, width: 69.07, height: 96.7, transform: "scaleX(-1)" }}
+      />
+    </>
+  );
+}
+
+/* ---------- Phong bì đóng: màn đầu, chạm để mở ---------- */
+
+function EnvelopeCover({ c, scale, onOpen, onDone }) {
+  const [leaving, setLeaving] = useState(false);
+
+  const open = useCallback(() => {
+    setLeaving((was) => {
+      if (!was) onOpen();
+      return true;
+    });
+  }, [onOpen]);
+
+  useEffect(() => {
+    if (!leaving) return;
+    const t = setTimeout(onDone, 700);
+    return () => clearTimeout(t);
+  }, [leaving, onDone]);
+
+  return (
+    <div
+      className={`fixed inset-0 z-[160] cursor-pointer bg-white transition-opacity duration-700 ${
+        leaving ? "pointer-events-none opacity-0" : ""
+      }`}
+      onClick={open}
+      role="button"
+      aria-label="Mở thiệp"
+    >
+      <div className="relative mx-auto overflow-hidden" style={{ width: DESIGN_WIDTH, height: 860, zoom: scale }}>
+        <GoldCorners top={0} />
+        <img
+          src={`${DECOR}/tieu-de.png`}
+          alt="Thiệp mời cưới"
+          className="ani ani-in absolute"
+          style={{ left: 124, top: 21, width: 172.65, height: 95, animationName: "fadeInDown", animationDuration: "4s" }}
+        />
+        <img
+          src={`${DECOR}/hy-vang.webp`}
+          alt=""
+          className="ani ani-in absolute"
+          style={{ left: 161.84, top: 154.5, width: 92.5, height: 92.5, animationName: "fadeInUp", animationDuration: "4s" }}
+        />
+        <Cut
+          src={`${DECOR}/phong-bi-dong.webp`}
+          x={32.99}
+          y={292.19}
+          w={350.01}
+          h={255.5}
+          iw={375.68}
+          ih={516.18}
+          ix={-12.67}
+          iy={-121.43}
+        />
+        <p
+          className="f-lora absolute left-0 text-center uppercase animate-pulse-slow"
+          style={{ top: 554.5, width: DESIGN_WIDTH, fontSize: 18, lineHeight: 1.6, color: "rgb(156, 5, 5)" }}
+        >
+          {c.hero.openHint}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Phong bì mở: ảnh trồi lên, tên, ngày, gia đình ---------- */
+
+function EnvelopeTop({ c, opened }) {
+  const [first, second] = c.hero.names;
+  const [day, month, year] = c.invitation.dateParts;
+
+  return (
+    <div className="relative" style={{ height: 1400 }}>
+      <GoldCorners top={2} />
+      <Ani fx="fadeInDown" dur={3} className="absolute" style={{ left: 124, top: 13, width: 172, height: 95 }}>
+        <img src={`${DECOR}/tieu-de.png`} alt="Thiệp mời cưới" style={{ width: 172.65, height: 95 }} />
+      </Ani>
+
+      {/* Lưng phong bì → ảnh cưới trồi lên → nền trắng che phần ảnh dưới phong bì → mặt trước phong bì */}
+      <Cut src={`${DECOR}/phong-bi-sau.webp`} x={34.49} y={157.81} w={366.47} h={390.64} iw={374.58} ih={524.42} ix={-13.25} iy={13.98} />
+      <div
+        className={`envelope-photo absolute ${opened ? "is-up" : ""}`}
+        style={{ left: 55.1, top: 121.89, width: 305.42, height: 380.01 }}
+      >
+        <img
+          src={images.hero}
+          alt={`${first} & ${second}`}
+          className="h-full w-full object-cover"
+          style={{ border: "2px solid rgb(166, 166, 166)", borderRadius: 20, objectPosition: images.heroPosition }}
+        />
+      </div>
+      <div className="absolute bg-white" style={{ left: 0, top: 470.89, width: DESIGN_WIDTH, height: 357.01 }} />
+      <Cut src={`${DECOR}/phong-bi-truoc.webp`} x={26.39} y={271.06} w={363.53} h={271.12} iw={376.03} ih={521.74} ix={-5.59} iy={-100.62} />
+
+      {/* Tên hai bạn giữa hai đường kẻ */}
+      <div className="absolute left-0" style={{ top: 592.5, width: DESIGN_WIDTH, borderTop: "3px solid rgba(178, 188, 163, 0.3)" }} />
+      <div className="absolute left-0" style={{ top: 672.5, width: DESIGN_WIDTH, borderTop: "3px solid rgba(178, 188, 163, 0.3)" }} />
+      <Ani fx="fadeInLeft" dur={4} className="absolute" style={{ left: 0, top: 601, width: 180 }}>
+        <FitText text={first} max={40} className="f-names text-right" style={{ lineHeight: "64px" }} />
+      </Ani>
+      <Ani fx="fadeInRight" dur={5} className="absolute" style={{ left: 234, top: 601.39, width: 186 }}>
+        <FitText text={second} max={40} className="f-names text-left" style={{ lineHeight: "64px" }} />
+      </Ani>
+      <Ani fx="bounceIn" dur={5} className="absolute" style={{ left: 186.48, top: 619.35, width: 39.38, height: 37.65 }}>
+        <svg viewBox="0 0 1792 1896.08" width="100%" height="100%" preserveAspectRatio="none" fill="rgb(185, 5, 26)" aria-hidden>
+          <path d="M896 1664q-26 0-44-18l-624-602q-10-8-27.5-26T145 952.5 77 855 23.5 734 0 596q0-220 127-344t351-124q62 0 126.5 21.5t120 58T820 276t76 68q36-36 76-68t95.5-68.5 120-58T1314 128q224 0 351 124t127 344q0 221-229 450l-623 600q-18 18-44 18z" />
+        </svg>
+      </Ani>
+
+      {/* Ngày cưới giữa hai chữ 囍 mờ */}
+      <Ani fx="fadeInDown" dur={5} className="absolute" style={{ left: 135.91, top: 683.5, width: 144.48, height: 137 }}>
+        <p className="f-lora text-center" style={{ width: 139, fontSize: 48, lineHeight: 1.6 }}>
+          {day}.{month}
+        </p>
+        <p className="f-lora absolute" style={{ left: 10.48, top: 57, width: 134, fontSize: 50, lineHeight: 1.6 }}>
+          {year}
+        </p>
+      </Ani>
+      <img src={`${DECOR}/hy-mo.webp`} alt="" className="absolute opacity-30" style={{ left: 22.87, top: 766.45, width: 87.58, height: 88.42 }} />
+      <img src={`${DECOR}/hy-mo.webp`} alt="" className="absolute opacity-30" style={{ left: 308.53, top: 766.45, width: 87.58, height: 88.42 }} />
+
+      {/* Thư Mời Cưới + gia đình hai bên, thẻ treo đỏ bên phải */}
+      <div className="absolute bg-black" style={{ left: 15.95, top: 901.63, width: 1, height: 66 }} />
+      <Ani fx="fadeInRight" dur={4} className="absolute" style={{ left: 15.64, top: 959.63, width: 90 }}>
+        {c.hero.letter.map((word) => (
+          <p key={word} className="f-upright" style={{ fontSize: 30, lineHeight: "48px" }}>
+            {word}
+          </p>
+        ))}
+      </Ani>
+      <div className="absolute bg-black" style={{ left: 15.95, top: 1089.63, width: 1, height: 273 }} />
+      <div className="absolute" style={{ left: 314.88, top: 967.27, width: 86.57, height: 244, background: "rgb(125, 31, 42)" }}>
+        <img src={`${DECOR}/khoen-vang.webp`} alt="" className="absolute" style={{ left: 27.08, top: 14.53, width: 32.02, height: 32.02 }} />
+        <Ani fx="fadeInUp" dur={4} className="absolute" style={{ left: 9.43, top: 151.4, width: 71.22, height: 77.2 }}>
+          <img src={`${DECOR}/the-hy.png`} alt="" style={{ width: 71.22, height: 77.2 }} />
+        </Ani>
+      </div>
+      <div
+        className="absolute overflow-hidden opacity-25"
+        style={{ left: 261.61, top: 1280.4, width: 157.89, height: 259.23, transform: "rotate(-17deg)" }}
+        aria-hidden
+      >
+        <img src={`${DECOR}/sen.png`} alt="" className="max-w-none" style={{ width: 259.23, height: 259.23 }} />
+      </div>
+      <div className="absolute" style={{ left: 24.95, top: 1125.67, width: 292 }}>
+        {c.families.sides.map((side, i) => (
+          <Ani key={side.label} fx="fadeInRight" dur={4} style={{ marginTop: i ? 19.9 : 0 }}>
+            <p className="f-oswald font-bold uppercase" style={{ fontSize: 18, lineHeight: "28.8px" }}>
+              {side.label}
+            </p>
+            <div className="f-oswald uppercase" style={{ fontSize: 15, lineHeight: "24px", marginTop: i ? 3 : 4.4 }}>
+              {side.father && <p>Ông {side.father}</p>}
+              {side.mother && <p>Bà {side.mother}</p>}
+            </div>
+            {side.address && (
+              <p className="f-diachi" style={{ fontSize: 12, lineHeight: "19.2px", marginTop: i ? 6.7 : 8 }}>
+                {side.address}
+              </p>
+            )}
+          </Ani>
         ))}
       </div>
+    </div>
+  );
+}
+
+/* ---------- Lời mời, sự kiện, lịch ---------- */
+
+function mapUrl(address) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+}
+
+
+function EventCard({ item, mapLabel }) {
+  return (
+    <div
+      className="mx-[28px] text-center text-white"
+      style={{ background: "rgb(135, 1, 1)", border: "2px solid rgb(104, 1, 1)", borderRadius: 30, padding: "13px 4px 16px" }}
+    >
+      <h3 className="f-opensans uppercase" style={{ fontSize: 18, lineHeight: "28.8px" }}>
+        {item.title}
+      </h3>
+      {item.time && (
+        <p className="f-tinos" style={{ fontSize: 16, lineHeight: "25.6px", marginTop: 10 }}>
+          {item.time}
+        </p>
+      )}
+      <p className="f-opensans font-bold" style={{ fontSize: 25, lineHeight: "40px", marginTop: 1 }}>
+        {item.date}
+      </p>
+      <p className="f-quicksand italic" style={{ fontSize: 12, lineHeight: "19.2px", marginTop: 1 }}>
+        {item.lunar}
+      </p>
+      {item.places.map((place) => (
+        <div key={place.label} style={{ marginTop: 14 }}>
+          <p className="f-opensans font-bold uppercase" style={{ fontSize: 18, lineHeight: "28.8px" }}>
+            {place.label}
+          </p>
+          <p className="f-quicksand px-3" style={{ fontSize: 12, lineHeight: "19.2px", marginTop: 8 }}>
+            {place.address}
+          </p>
+          <a
+            href={mapUrl(place.mapQuery ?? place.address)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="f-lora mt-[13px] inline-block bg-white transition hover:scale-105"
+            style={{
+              width: 169,
+              padding: "2px 0",
+              fontSize: 15,
+              lineHeight: "24px",
+              color: "rgb(160, 11, 11)",
+              border: "1px solid rgb(166, 166, 166)",
+              borderRadius: 20,
+              boxShadow: "rgb(0, 0, 0) 0px 15px 20px -15px",
+            }}
+          >
+            {mapLabel}
+          </a>
+        </div>
+      ))}
     </div>
   );
 }
 
 const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
-/** dateIso: một ngày '2026-11-24' hoặc mảng nhiều ngày cùng tháng */
-function MonthCalendar({ dateIso }) {
+/** dateIso: một ngày '2026-11-16' hoặc mảng nhiều ngày cùng tháng — ngày cưới có tim vân tay đỏ */
+function MonthCalendar({ title, dateIso }) {
   const dates = [].concat(dateIso).map((s) => s.split("-").map(Number));
   const [y, m] = dates[0];
   const marked = new Set(dates.filter(([yy, mm]) => yy === y && mm === m).map(([, , dd]) => dd));
   const daysInMonth = new Date(y, m, 0).getDate();
   /** Lịch bắt đầu từ Thứ Hai */
   const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7;
-  const cells = [
-    ...Array(lead).fill(null),
-    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-  ];
+  const cells = [...Array(lead).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
+  const cols = { gridTemplateColumns: "repeat(7, 45.17px)", marginLeft: 52.4 };
 
   return (
-    <div>
-      <p className="text-center font-date text-xl text-primary uppercase mb-4">
+    <div style={{ color: "rgb(160, 11, 11)" }}>
+      <h2 className="f-lora text-center uppercase" style={{ fontSize: 26, lineHeight: "41.6px" }}>
+        {title}
+      </h2>
+      <p className="f-tinos text-center uppercase" style={{ fontSize: 20, lineHeight: "32px", marginTop: -1.6 }}>
         Tháng {m} - {y}
       </p>
-      <div className="grid grid-cols-7 bg-primary text-primary-foreground text-center font-semibold text-sm py-2.5">
-        {WEEKDAYS.map((w) => (
-          <span key={w}>{w}</span>
-        ))}
+      <div className="relative" style={{ marginLeft: 38, width: 349, height: 34, marginTop: 2, background: "rgb(160, 11, 11)" }}>
+        <div className="grid h-full items-center text-center text-white" style={{ ...cols, marginLeft: 14.4 }}>
+          {WEEKDAYS.map((w) => (
+            <span key={w} className="f-bellerose font-bold" style={{ fontSize: 16 }}>
+              {w}
+            </span>
+          ))}
+        </div>
       </div>
-      <div className="grid grid-cols-7 gap-y-2 text-center font-display text-lg mt-3">
+      <div className="grid text-center text-black" style={{ ...cols, marginTop: 9 }}>
         {cells.map((day, i) =>
           marked.has(day) ? (
-            <span key={i} className="relative flex items-center justify-center h-10">
-              <svg viewBox="0 0 24 24" className="absolute w-11 h-11 text-[#e0303a] animate-pulse-soft" aria-hidden>
-                <path
-                  fill="currentColor"
-                  opacity="0.85"
-                  d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 3 5 6.4 5c2 0 3.6 1.1 4.6 2.6C12 6.1 13.6 5 15.6 5 19 5 21.1 8.6 19.6 11.9 17.5 16.4 12 21 12 21z"
-                />
-              </svg>
-              <span className="relative font-bold text-white">{day}</span>
+            <span key={i} className="relative flex items-center justify-center" style={{ height: 42 }}>
+              <img src={`${DECOR}/tim-lich.png`} alt="" className="absolute animate-pulse-soft" style={{ width: 46, height: 46 }} />
+              <span className="f-tinos relative font-bold text-white" style={{ fontSize: 16 }}>
+                {day}
+              </span>
             </span>
           ) : (
-            <span key={i} className="flex items-center justify-center h-10">
+            <span key={i} className="f-tinos flex items-center justify-center" style={{ height: 42, fontSize: 16 }}>
               {day ?? ""}
             </span>
           ),
@@ -648,24 +808,27 @@ function RsvpForm({ c }) {
     }
   }
 
-  const inputCls =
-    "w-full bg-white px-3 py-2.5 font-lora text-[15px] text-foreground placeholder:text-foreground/50 outline-none focus:ring-2 focus:ring-white/60";
+  const inputCls = "f-judson block w-full bg-white px-3 text-black outline-none placeholder:text-[#737373] focus:ring-2 focus:ring-white/60";
+  const inputStyle = { height: 38.42, fontSize: 15, border: "1px solid rgb(115, 115, 115)" };
 
   return (
-    <div className="rounded-[28px] bg-primary px-4 py-8 shadow-lg shadow-primary/25">
-      <h2 className="font-script text-[clamp(24px,8vw,36px)] leading-tight whitespace-nowrap text-white text-center mb-6">{c.title}</h2>
+    <div className="mx-[28px]" style={{ background: "rgb(135, 1, 1)", borderRadius: 20, padding: "15px 9px 19px 12px" }}>
+      <h2 className="f-spirited whitespace-nowrap text-center text-white" style={{ fontSize: 32, lineHeight: "51.2px" }}>
+        {c.title}
+      </h2>
       {sent ? (
-        <p className="text-center text-white font-lora text-lg py-6">{c.thanks}</p>
+        <p className="f-lora py-8 text-center text-lg text-white">{c.thanks}</p>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <input required value={form.name} onChange={update("name")} placeholder={c.placeholders.name} className={inputCls} />
-          <input value={form.message} onChange={update("message")} placeholder={c.placeholders.message} className={inputCls} />
+        <form onSubmit={handleSubmit} className="space-y-[12.6px]" style={{ marginTop: 11 }}>
+          <input required value={form.name} onChange={update("name")} placeholder={c.placeholders.name} className={inputCls} style={inputStyle} />
+          <input value={form.message} onChange={update("message")} placeholder={c.placeholders.message} className={inputCls} style={inputStyle} />
           {c.askAttend && (
             <select
               required
               value={form.attend}
               onChange={update("attend")}
-              className={`${inputCls} ${form.attend ? "" : "text-foreground/50"}`}
+              className={`${inputCls} rsvp-select ${form.attend ? "" : "text-[#737373]"}`}
+              style={inputStyle}
             >
               <option value="" disabled>
                 {c.placeholders.attend}
@@ -683,14 +846,23 @@ function RsvpForm({ c }) {
               onChange={update("guestCount")}
               placeholder={c.placeholders.guestCount}
               className={inputCls}
+              style={inputStyle}
             />
           )}
-          <div className="text-center pt-3">
-            {error && <p className="text-sm text-white/90 mb-3">{error}</p>}
+          <div className="pt-[0.4px] text-center">
+            {error && <p className="mb-3 text-sm text-white/90">{error}</p>}
             <button
               type="submit"
               disabled={sending}
-              className="rounded-full bg-white px-12 py-2 font-bold uppercase text-sm text-primary shadow transition hover:scale-105 disabled:opacity-70 disabled:hover:scale-100 animate-pulse-soft"
+              className="f-bellerose bg-white font-bold uppercase transition hover:scale-105 disabled:opacity-70"
+              style={{
+                width: 180,
+                height: 32,
+                fontSize: 15,
+                color: "rgb(131, 11, 11)",
+                borderRadius: 30,
+                boxShadow: "rgb(0, 0, 0) 0px 15px 20px -18px",
+              }}
             >
               {sending ? c.sending : c.submit}
             </button>
@@ -720,21 +892,34 @@ function GiftAccount({ account, c }) {
         <img
           src={account.qr}
           alt={`Mã QR chuyển khoản ${account.bank} ${account.number}`}
-          className="w-36 h-36 rounded-xl border-2 border-foreground/80 bg-white p-1.5 shadow-md"
+          className="h-36 w-36 rounded-[10px] bg-white p-1.5"
+          style={{ border: "1px dotted #000" }}
         />
       )}
-      <dl className="mt-3 space-y-1 font-lora font-bold text-[13px] uppercase text-primary">
-        <div><dt className="inline">CTK: </dt><dd className="inline">{account.holder}</dd></div>
-        <div><dt className="inline">STK: </dt><dd className="inline tracking-wide">{account.number}</dd></div>
-        <div><dt className="inline">NH: </dt><dd className="inline">{account.bank}</dd></div>
+      <dl className="f-bellerose mt-3 space-y-0.5 font-bold uppercase" style={{ fontSize: 15, color: "rgb(125, 1, 1)" }}>
+        <div>
+          <dt className="inline">CTK: </dt>
+          <dd className="inline">{account.holder}</dd>
+        </div>
+        <div>
+          <dt className="inline">STK: </dt>
+          <dd className="inline tracking-wide" style={{ fontSize: 16 }}>
+            {account.number}
+          </dd>
+        </div>
+        <div>
+          <dt className="inline">NN: </dt>
+          <dd className="inline">{account.bank}</dd>
+        </div>
       </dl>
       <div className="mt-3 flex flex-wrap justify-center gap-2">
         <button
           type="button"
           onClick={copy}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-foreground/45 px-4 py-1.5 font-lora text-sm text-white shadow transition hover:bg-foreground/60 animate-pulse-soft"
+          className="f-lora inline-flex items-center gap-1.5 px-3 py-1 text-xs text-white animate-pulse-soft"
+          style={{ background: "rgb(166, 166, 166)", borderRadius: 5 }}
         >
-          {copied ? <Check className="w-3.5 h-3.5" aria-hidden /> : <Copy className="w-3.5 h-3.5" aria-hidden />}
+          {copied ? <Check className="h-3.5 w-3.5" aria-hidden /> : <Copy className="h-3.5 w-3.5" aria-hidden />}
           {copied ? c.copiedLabel : c.copyLabel}
         </button>
         {account.qr && (
@@ -742,9 +927,10 @@ function GiftAccount({ account, c }) {
           <a
             href={account.qr}
             download={`QR-${account.bank}-${account.number}.png`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-primary/40 px-4 py-1.5 font-lora text-sm text-primary transition hover:bg-primary hover:text-white"
+            className="f-lora inline-flex items-center gap-1.5 rounded-[5px] border px-3 py-1 text-xs transition hover:bg-[#7d0101] hover:text-white"
+            style={{ borderColor: "rgba(125, 1, 1, 0.4)", color: "rgb(125, 1, 1)" }}
           >
-            <Download className="w-3.5 h-3.5" aria-hidden />
+            <Download className="h-3.5 w-3.5" aria-hidden />
             {c.saveQrLabel}
           </a>
         )}
@@ -753,7 +939,7 @@ function GiftAccount({ account, c }) {
   );
 }
 
-function GiftModal({ c, photo, onClose }) {
+function GiftModal({ c, photo, scale, onClose }) {
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
@@ -761,34 +947,28 @@ function GiftModal({ c, photo, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/55 px-4" onClick={onClose}>
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/55" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-label={c.title}
         onClick={(e) => e.stopPropagation()}
-        className="gift-card relative w-full max-w-[400px] max-h-[90vh] overflow-hidden rounded-3xl shadow-2xl animate-pop"
+        className="relative overflow-hidden rounded-3xl bg-white bg-cover bg-center shadow-2xl animate-pop"
+        style={{ width: 400, zoom: scale, backgroundImage: `url(${DECOR}/nen-hop-qua.png)` }}
       >
-        <div className="relative max-h-[90vh] overflow-y-auto px-4 pt-5 pb-6">
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Đóng"
-            className="absolute right-4 top-4 text-foreground/70 hover:text-foreground"
-          >
-            <X className="w-6 h-6" />
+        <div className="relative max-h-[90vh] overflow-y-auto px-4 pb-6 pt-5">
+          <button type="button" onClick={onClose} aria-label="Đóng" className="absolute right-4 top-4 text-black/60 hover:text-black">
+            <X className="h-6 w-6" />
           </button>
           <div className="flex justify-center">
-            <DoubleHappiness className="w-12 h-12 text-2xl bg-white/70" />
+            <img src={`${DECOR}/hy-vang.webp`} alt="" className="h-12 w-12" />
           </div>
-          <h2 className="font-vibes text-[42px] leading-tight whitespace-nowrap text-primary text-center mt-1">{c.title}</h2>
-          <div className="h-px bg-foreground/15 my-4" />
-          <div className="grid grid-cols-[1fr_1.1fr] items-center gap-3">
-            <img
-              src={photo}
-              alt=""
-              className="w-full aspect-[3/4] object-cover rounded-2xl border-2 border-white shadow-lg"
-            />
+          <h2 className="f-spirited mt-1 whitespace-nowrap text-center" style={{ fontSize: 38, lineHeight: 1.6, color: "rgb(0, 128, 55)" }}>
+            {c.title}
+          </h2>
+          <div className="my-3 h-px bg-black/15" />
+          <div className="grid grid-cols-[1fr_1.15fr] items-center gap-3">
+            <img src={photo} alt="" className="aspect-[2/3] w-full rounded-[10px] object-cover" style={{ border: "1px dotted #000" }} />
             <div className="space-y-6">
               {c.accounts.map((account) => (
                 <GiftAccount key={account.number} account={account} c={c} />
@@ -803,184 +983,201 @@ function GiftModal({ c, photo, onClose }) {
 
 function WeddingPage() {
   const c = content;
+  const scale = useDesignScale();
   const guest = useGuestName(c.invitation.defaultGuest);
   const [giftOpen, setGiftOpen] = useState(false);
   const closeGift = useCallback(() => setGiftOpen(false), []);
-  /** opened: rèm bắt đầu kéo ra; curtainGone: rèm đã kéo xong, gỡ khỏi trang */
+  /** opened: khách vừa chạm mở phong bì; coverGone: màn phong bì đóng đã mờ hẳn, gỡ khỏi trang */
   const [opened, setOpened] = useState(false);
-  const [curtainGone, setCurtainGone] = useState(false);
-  const handleOpen = useCallback(() => setOpened(true), []);
-  const handleCurtainDone = useCallback(() => setCurtainGone(true), []);
-  const [first, second] = c.hero.names;
+  const [coverGone, setCoverGone] = useState(false);
+  const handleOpen = useCallback(() => {
+    window.scrollTo(0, 0);
+    setOpened(true);
+  }, []);
+  const handleCoverDone = useCallback(() => setCoverGone(true), []);
+  const [first, second] = c.families.fullNames;
 
   return (
-    <div className="min-h-screen bg-[#f3eeee] text-foreground font-sans">
+    <div className="min-h-screen bg-white text-black">
       <BackgroundMusic src={c.music.src} volume={c.music.volume} />
       <FallingEffects active={opened} />
-      {!curtainGone && <OpeningCurtain onOpen={handleOpen} onDone={handleCurtainDone} />}
+      {!coverGone && <EnvelopeCover c={c} scale={scale} onOpen={handleOpen} onDone={handleCoverDone} />}
 
-      <CurtainContext.Provider value={opened}>
-      <main className="relative mx-auto max-w-[460px] bg-white overflow-hidden shadow-2xl">
-        <KeyBorder side="left" />
-        <KeyBorder side="right" />
+      <OpenedContext.Provider value={opened}>
+        <main className="relative mx-auto overflow-hidden bg-white" style={{ width: DESIGN_WIDTH, zoom: scale }}>
+          <EnvelopeTop c={c} opened={opened} />
 
-        <div className="px-8">
-          {/* Save the date */}
-          <section className="relative pt-10 pb-12 text-center">
-            <Reveal variant="down">
-              <h2 className="font-lora text-[32px] uppercase">{c.hero.subtitle}</h2>
-            </Reveal>
-            <Reveal variant="zoom" delay={150}>
-              <p className="font-script text-[clamp(28px,9vw,42px)] leading-tight whitespace-nowrap text-foreground mt-4">
-                {first} & {second}
+          {/* Báo tin lễ thành hôn */}
+          <section className="text-center" style={{ paddingTop: 9 }}>
+            <Ani fx="fadeInDown" dur={4}>
+              <p className="f-gsans uppercase" style={{ fontSize: 15, lineHeight: "24px", letterSpacing: 1 }}>
+                {c.announce.before}{" "}
+                <b style={{ color: "rgb(168, 1, 1)" }}>{c.announce.event}</b> {c.announce.after}
               </p>
-            </Reveal>
-            <Reveal variant="zoom" delay={300} className="relative mt-6 flex items-center justify-center">
-              <Knot className="absolute left-6 top-0 w-9 h-20 animate-swing" />
-              <DoubleHappiness className="w-14 h-14 text-3xl animate-pulse-soft" />
-              <Knot className="absolute right-6 top-0 w-9 h-20 animate-swing [animation-delay:0.8s]" />
-            </Reveal>
-            <Reveal delay={400}>
-              <p className="font-date text-[32px] mt-12 mb-6">{c.hero.dateLine}</p>
-            </Reveal>
-            <Reveal variant="left" delay={500}>
-              <GoldFrame src={images.hero} alt={`${first} & ${second}`} imgClass="aspect-[2/3]" />
-            </Reveal>
-            <Lantern className="absolute -right-2 bottom-0 w-9 h-16 animate-swing" />
-            <Lantern className="absolute right-6 bottom-8 w-7 h-12 animate-swing [animation-delay:0.6s]" />
-          </section>
-
-          {/* Gia đình hai bên */}
-          <section className="pb-12 text-center">
-            <Reveal variant="down" className="mb-10">
-              <div className="flex flex-col items-center animate-swing">
-              <span className="w-px h-6 bg-primary/70" />
-              <DoubleHappiness className="w-16 h-16 text-3xl" />
-              <Knot className="w-8 h-16 -mt-1" />
-              </div>
-            </Reveal>
-            <div className="grid grid-cols-2 gap-4 mb-10">
-              {c.families.sides.map((side, i) => (
-                <Reveal key={side.label} variant={i ? "right" : "left"}>
-                  <FamilySide side={side} />
-                </Reveal>
-              ))}
+            </Ani>
+            <div className="f-names" style={{ color: "rgb(156, 5, 5)", marginTop: 13 }}>
+              <Ani fx="fadeInRight" dur={4}>
+                <FitText text={first} max={36} className="px-2" style={{ lineHeight: "57.6px", height: 44 }} />
+              </Ani>
+              <Ani fx="bounceIn" dur={3}>
+                <p style={{ fontSize: 35, lineHeight: "56px", height: 50 }}>&amp;</p>
+              </Ani>
+              <Ani fx="fadeInLeft" dur={4}>
+                <FitText text={second} max={35} className="px-2" style={{ lineHeight: "56px" }} />
+              </Ani>
             </div>
-            <Reveal variant="left">
-              <p className="font-script text-5xl">{c.families.fullNames[0]}</p>
-            </Reveal>
-            <Reveal variant="bounce" delay={300}>
-              <p className="font-script text-4xl my-1">&</p>
-            </Reveal>
-            <Reveal variant="right">
-              <p className="font-script text-5xl">{c.families.fullNames[1]}</p>
-            </Reveal>
-            <Reveal variant="up" className="mt-10">
-              <GoldFrame src={images.couple} alt="" imgClass="aspect-[4/5] object-top" />
-            </Reveal>
+            <Ani fx="fadeInUp" dur={3} style={{ margin: "17px 16px 0 17px" }}>
+              <img
+                src={images.couple}
+                alt=""
+                className="w-full object-cover"
+                style={{ height: 240, border: "2px solid rgb(217, 217, 217)", borderRadius: 15, objectPosition: images.couplePosition }}
+              />
+            </Ani>
           </section>
 
-          {/* Lời mời */}
-          <section className="pb-8 text-center">
-            <Reveal>
-              <p className="font-avo uppercase text-xl text-foreground/75 font-medium">{c.invitation.kicker}</p>
-              <p className="font-guest text-[40px] text-primary mt-3 pb-1 border-b border-dashed border-foreground/30 mx-8">
-                {guest}
-              </p>
-              <p className="font-lora uppercase text-xl mt-4">{c.invitation.title}</p>
-            </Reveal>
-            <div className="grid grid-cols-3 gap-1.5 mt-6 -mx-4">
+          {/* Kính mời + tên khách */}
+          <section className="text-center">
+            <p className="f-opensans font-bold uppercase" style={{ fontSize: 20, lineHeight: "32px", marginTop: 14, color: "rgb(160, 1, 1)" }}>
+              {c.invitation.kicker}
+            </p>
+            <Ani fx="zoomIn" dur={2} className="relative" style={{ marginTop: 14, height: 53 }}>
+              <FitText
+                text={guest}
+                max={40}
+                className="f-eddrayton px-6"
+                style={{ lineHeight: "53px", color: "rgb(156, 5, 5)" }}
+              />
+              <div
+                className="absolute"
+                style={{ left: 108, top: 37, width: 203, borderTop: "1px dotted rgb(0, 128, 55)" }}
+                aria-hidden
+              />
+            </Ani>
+            <div className="flex" style={{ marginTop: 10, paddingLeft: 17, gap: 5.5 }}>
               {images.dateStrip.map((src, i) => (
-                <Reveal key={i} variant="up" delay={i * 150} className="relative border-[3px] border-[#ecc8c8]">
-                  <img src={src} alt="" className="w-full aspect-[3/5] object-cover" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
-                  <span className="absolute bottom-2 inset-x-0 text-center font-lora font-bold text-3xl text-white drop-shadow">
-                    {c.invitation.dateParts[i]}
-                  </span>
-                </Reveal>
+                <Ani key={src} fx="fadeInUp" dur={2} delay={i * 0.3}>
+                  <img
+                    src={src}
+                    alt=""
+                    className="object-cover"
+                    style={{ width: 124, height: 186, border: "3px solid rgb(220, 196, 195)" }}
+                    loading="lazy"
+                  />
+                </Ani>
               ))}
             </div>
           </section>
 
           {/* Sự kiện */}
-          <section className="space-y-3 pb-12">
+          <section className="space-y-3" style={{ marginTop: 13 }}>
             {c.events.items.map((item, i) => (
-              <Reveal key={item.id} variant={i % 2 ? "right" : "left"}>
+              <Ani key={item.id} fx={i % 2 ? "fadeInRight" : "fadeInLeft"} dur={2}>
                 <EventCard item={item} mapLabel={c.events.mapLabel} />
-              </Reveal>
+              </Ani>
             ))}
           </section>
 
           {/* Lịch */}
           {c.calendar.dateIso && (
-            <section className="pb-12 -mx-2">
-              <Reveal variant="right">
-                <h2 className="text-center font-lora text-3xl text-primary uppercase mb-1">{c.calendar.title}</h2>
-                <MonthCalendar dateIso={c.calendar.dateIso} />
-              </Reveal>
+            <section style={{ marginTop: 23 }}>
+              <Ani fx="fadeInUp" dur={2}>
+                <MonthCalendar title={c.calendar.title} dateIso={c.calendar.dateIso} />
+              </Ani>
             </section>
           )}
 
-          {/* Xác nhận + mừng cưới */}
-          <section className="pb-10 -mx-2">
+          {/* Lời chúc & xác nhận, ảnh tròn, mừng cưới */}
+          <section className="text-center" style={{ paddingTop: 30 }}>
             {c.rsvp.show && (
-              <Reveal>
+              <Ani fx="fadeInUp" dur={2}>
                 <RsvpForm c={c.rsvp} />
-              </Reveal>
+              </Ani>
             )}
+            <Ani fx="zoomIn" dur={2} className="relative mx-auto" style={{ marginTop: 33, width: 199, height: 199 }}>
+              <img src={`${DECOR}/khung-tron.png`} alt="" className="absolute inset-0 h-full w-full" />
+              <img
+                src={images.circle}
+                alt=""
+                className="absolute object-cover"
+                style={{
+                  left: 12,
+                  top: 8,
+                  width: 182,
+                  height: 186,
+                  border: "5px solid #fff",
+                  borderRadius: 720,
+                  objectPosition: images.circlePosition,
+                }}
+                loading="lazy"
+              />
+            </Ani>
             {c.gift.accounts.length > 0 && (
-              <Reveal className={`text-center ${c.rsvp.show ? "mt-8" : ""}`}>
-                <button
-                  type="button"
-                  onClick={() => setGiftOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-10 py-2.5 font-upright font-semibold text-lg uppercase text-white shadow-lg shadow-primary/30 animate-pulse-soft"
-                >
-                  <Gift className="w-5 h-5" aria-hidden />
-                  {c.gift.button}
-                </button>
-              </Reveal>
+              <button
+                type="button"
+                onClick={() => setGiftOpen(true)}
+                className="f-upright relative mx-auto mt-3 flex items-center justify-center gap-3 font-bold uppercase text-white animate-pulse-soft"
+                style={{ width: 202, height: 46, fontSize: 15, borderRadius: 100, background: "rgb(135, 84, 41)" }}
+              >
+                <Gift className="h-6 w-6" aria-hidden />
+                {c.gift.button}
+              </button>
             )}
           </section>
 
-          {/* Album */}
-          <section className="grid grid-cols-2 gap-1.5 pb-3 -mx-2">
-            {images.album.map((src, i) => {
-              const photo = (
-                <Reveal key={i} variant={i % 2 ? "right" : "left"} className="border-2 border-[#e6e6e6]">
-                  <img src={src} alt="" className="w-full aspect-[2/3] object-cover" loading="lazy" />
-                </Reveal>
-              );
-              /** Số ảnh lẻ → ảnh cuối nằm giữa hàng */
-              return i === images.album.length - 1 && i % 2 === 0 ? (
-                <div key={i} className="col-span-2 flex justify-center">
-                  <div className="w-[calc(50%-3px)]">{photo}</div>
-                </div>
-              ) : (
-                photo
-              );
-            })}
+          {/* Our memories */}
+          <section style={{ marginTop: 42 }}>
+            <Ani fx="fadeInLeft" dur={2} className="relative" style={{ height: 64 }}>
+              <h2 className="f-scriptina absolute" style={{ left: 11, fontSize: 40, lineHeight: "64px", color: "rgb(160, 1, 1)" }}>
+                {c.memories.title}
+              </h2>
+              <div className="absolute" style={{ left: 222, top: 31, width: 186, borderTop: "1px solid rgb(160, 1, 1)" }} />
+            </Ani>
+            <p className="f-bellerose" style={{ margin: "-10px 21px 0 14px", fontSize: 16, lineHeight: "25.6px", color: "rgb(160, 1, 1)" }}>
+              {c.memories.text}
+            </p>
+            <div className="grid grid-cols-2" style={{ margin: "8px 7px 0", gap: 5 }}>
+              {images.album.map((src, i) => (
+                <Ani key={src} fx={i % 2 ? "fadeInRight" : "fadeInLeft"} dur={1.6}>
+                  <img
+                    src={src}
+                    alt=""
+                    className="aspect-[2/3] w-full object-cover"
+                    style={{ border: "2px solid rgb(217, 217, 217)" }}
+                    loading="lazy"
+                  />
+                </Ani>
+              ))}
+            </div>
           </section>
 
           {/* Thank you */}
-          <section className="relative -mx-2 overflow-hidden">
-            <img src={images.thankYou} alt="" className="w-full aspect-[3/4] object-cover" loading="lazy" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-            {/* Định vị ở lớp ngoài — Reveal quan sát lớp bọc của nó, lớp đó phải có chiều cao thật */}
-            <div className="absolute inset-x-0 bottom-0">
-              <Reveal variant="up" className="px-4 pb-14 text-center text-white">
-                <h2 className="font-script text-7xl mb-3 drop-shadow-lg">{c.thanks.title}</h2>
-                <p className="text-sm leading-relaxed drop-shadow">{c.thanks.text}</p>
-                <p className="font-script text-4xl mt-4 drop-shadow-lg">
-                  {c.families.fullNames[0]} &amp; {c.families.fullNames[1]}
+          <section className="relative mx-[6px] overflow-hidden" style={{ marginTop: 5, height: 647 }}>
+            <img src={images.thankYou} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: "center top" }} loading="lazy" />
+            <div
+              className="absolute inset-x-0"
+              style={{ top: 233, height: 364, background: "linear-gradient(rgba(253, 251, 251, 0) 0%, rgb(160, 1, 1) 100%)" }}
+            />
+            <div className="absolute inset-x-0 bottom-0" style={{ top: 596, background: "rgb(137, 1, 1)" }} />
+            <div className="absolute inset-x-0" style={{ top: 453 }}>
+              <Ani fx="fadeInUp" dur={2} className="text-center text-white">
+                <h2 className="f-scriptina" style={{ fontSize: 40, lineHeight: "64px" }}>
+                  {c.thanks.title}
+                </h2>
+                <p className="f-bellerose mx-auto" style={{ width: 346, marginTop: -7, fontSize: 14, lineHeight: "22.4px" }}>
+                  {c.thanks.text}
                 </p>
-              </Reveal>
+              </Ani>
             </div>
+            <p className="f-literata absolute inset-x-0 text-center text-white" style={{ top: 605, fontSize: 16, lineHeight: "25.6px" }}>
+              {first} &amp; {second}
+            </p>
           </section>
-        </div>
-      </main>
-      </CurtainContext.Provider>
+          <div style={{ height: 8 }} />
+        </main>
+      </OpenedContext.Provider>
 
-      {giftOpen && <GiftModal c={c.gift} photo={images.gift} onClose={closeGift} />}
+      {giftOpen && <GiftModal c={c.gift} photo={images.gift} scale={scale} onClose={closeGift} />}
     </div>
   );
 }

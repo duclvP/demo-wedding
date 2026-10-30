@@ -19,16 +19,25 @@ const BRIDE_SIDE = {
 
 export const content = {
   hero: {
-    subtitle: 'Save The Date',
-    /** Hiển thị theo đúng thứ tự này */
+    /** Chữ nhấp nháy dưới phong bì đóng (màn đầu) */
+    openHint: '- Nhấp vào thiệp để mở -',
+    /** Tên hai bên trái/phải trái tim, dưới phong bì — hiển thị theo đúng thứ tự này */
     names: ['Nguyễn Long', 'Viên Nhung'],
-    dateLine: '16 . 11 . 2026',
+    /** Chữ dọc bên trái phần gia đình */
+    letter: ['Thư', 'Mời', 'Cưới'],
+  },
+
+  /** "TRÂN TRỌNG BÁO TIN LỄ THÀNH HÔN CỦA" — phần event tô đỏ */
+  announce: {
+    before: 'Trân trọng báo tin',
+    event: 'Lễ Thành Hôn',
+    after: 'của',
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
-    /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
+    /** Tên cô dâu & chú rể (đỏ, dưới "Trân trọng báo tin"), cũng là dòng ký tên cuối thiệp */
     fullNames: ['Nguyễn Long', 'Viên Nhung'],
   },
 
@@ -36,8 +45,7 @@ export const content = {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Thành Hôn',
-    /** Chữ đè lên 3 ảnh */
+    /** Ngày chính dưới tên: "16.11" / "2026" */
     dateParts: ['16', '11', '2026'],
   },
 
@@ -89,12 +97,12 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: '',
+    endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
     /** Slug riêng của thiệp trong script dùng chung — không đổi sau khi đã có lời chúc */
-    coupleId: 'nhung-long',
+    coupleId: 'nguyen-long-vien-nhung-nha-trai',
     coupleName: 'Nguyễn Long & Viên Nhung',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
-    show: false,
+    show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
     askAttend: true,
     title: 'Gửi Lời Chúc & Xác Nhận',
@@ -121,6 +129,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     /** TODO: khách chưa gửi mã QR — để [] thì ẩn nút mừng cưới */
     accounts: [],
+  },
+
+  memories: {
+    title: 'Our memories',
+    text: '"Từ những lần gặp gỡ đầu tiên đến hôm nay, chúng tôi đã tìm thấy một nửa của mình. Đây là câu chuyện tình yêu được viết nên bằng những khoảnh khắc đẹp nhất."',
   },
 
   thanks: {

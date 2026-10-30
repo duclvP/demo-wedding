@@ -27,6 +27,7 @@ $K/fetch-issue.sh 9 $S/t9      # issue.md (body + MỌI comment) + i10.bin, i11.
 - `.bin` có thể là PNG hoặc JPEG — Read không đọc được `.bin`, dùng `p*.jpg` hoặc `sips -s format png`.
 - md5 trùng = ảnh trùng, bỏ bớt.
 - Ticket hay có các mục: "thông tin thiệp" (ảnh chụp văn bản Word), "ảnh cưới và mã qr", "làm theo mẫu" (lovecard.click/thiepso01 = đúng giao diện repo này), "bỏ phần này" (ảnh chụp phần cần ẩn — xem §6).
+- Mẫu khác đã dựng sẵn — tạo nhánh mới **từ nhánh của mẫu đó** thay vì nhánh mới nhất: lovecard.click/**thiepso05** (phong bì đỏ mở ra, thẻ treo 囍, "Our memories") → nhánh `nhung_long` (khung 420px phóng theo màn hình, họa tiết trong `public/images/mau05/`, font trong `public/fonts/`; ảnh: `hero` trong phong bì, `couple` ảnh ngang, `dateStrip` 3 ảnh, `circle` ảnh tròn). Mẫu nawngs.com/thanglinh → nhánh `ly_tuananh_*`.
 
 ## 1. Thu thập thông tin từ ảnh
 

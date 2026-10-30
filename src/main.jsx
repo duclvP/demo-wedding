@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Check, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
+import { Check, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
 import { images } from "./image.js";
 import "./index.css";
@@ -886,51 +886,42 @@ function GiftAccount({ account, c }) {
     }
   }
 
+  const btnCls = "f-lora inline-flex items-center justify-center gap-1 text-white transition hover:brightness-90";
+  const btnStyle = { height: 29, padding: "0 9px", fontSize: 12, background: "rgb(166, 166, 166)", borderRadius: 5 };
+
   return (
     <div className="flex flex-col items-center text-center">
       {account.qr && (
         <img
           src={account.qr}
           alt={`Mã QR chuyển khoản ${account.bank} ${account.number}`}
-          className="h-36 w-36 rounded-[10px] bg-white p-1.5"
-          style={{ border: "1px dotted #000" }}
+          className="bg-white object-contain"
+          style={{ width: 102, height: 103, padding: 4, border: "1px dotted #000", borderRadius: 10 }}
         />
       )}
-      <dl className="f-bellerose mt-3 space-y-0.5 font-bold uppercase" style={{ fontSize: 15, color: "rgb(125, 1, 1)" }}>
+      <dl className="f-bellerose font-bold uppercase" style={{ marginTop: 9, fontSize: 15, lineHeight: "24px", color: "rgb(125, 1, 1)" }}>
         <div>
           <dt className="inline">CTK: </dt>
           <dd className="inline">{account.holder}</dd>
         </div>
-        <div>
+        <div style={{ fontSize: 16, lineHeight: "25.6px", marginTop: 2 }}>
           <dt className="inline">STK: </dt>
-          <dd className="inline tracking-wide" style={{ fontSize: 16 }}>
-            {account.number}
-          </dd>
+          <dd className="inline">{account.number}</dd>
         </div>
-        <div>
+        <div style={{ marginTop: 3 }}>
           <dt className="inline">NN: </dt>
           <dd className="inline">{account.bank}</dd>
         </div>
       </dl>
-      <div className="mt-3 flex flex-wrap justify-center gap-2">
-        <button
-          type="button"
-          onClick={copy}
-          className="f-lora inline-flex items-center gap-1.5 px-3 py-1 text-xs text-white animate-pulse-soft"
-          style={{ background: "rgb(166, 166, 166)", borderRadius: 5 }}
-        >
-          {copied ? <Check className="h-3.5 w-3.5" aria-hidden /> : <Copy className="h-3.5 w-3.5" aria-hidden />}
+      <div className="flex flex-wrap justify-center gap-1.5" style={{ marginTop: 8 }}>
+        <button type="button" onClick={copy} className={btnCls} style={btnStyle}>
+          {copied && <Check className="h-3 w-3" aria-hidden />}
           {copied ? c.copiedLabel : c.copyLabel}
         </button>
         {account.qr && (
           /** Khách mở thiệp trên chính điện thoại thì không quét được — lưu ảnh rồi chọn trong app ngân hàng */
-          <a
-            href={account.qr}
-            download={`QR-${account.bank}-${account.number}.png`}
-            className="f-lora inline-flex items-center gap-1.5 rounded-[5px] border px-3 py-1 text-xs transition hover:bg-[#7d0101] hover:text-white"
-            style={{ borderColor: "rgba(125, 1, 1, 0.4)", color: "rgb(125, 1, 1)" }}
-          >
-            <Download className="h-3.5 w-3.5" aria-hidden />
+          <a href={account.qr} download={`QR-${account.bank}-${account.number}.png`} className={btnCls} style={btnStyle}>
+            <Download className="h-3 w-3" aria-hidden />
             {c.saveQrLabel}
           </a>
         )}
@@ -939,6 +930,7 @@ function GiftAccount({ account, c }) {
   );
 }
 
+/** Hộp quà như mẫu: nền vân đá, hoa hồng, ảnh cưới bên trái, QR + STK bên phải */
 function GiftModal({ c, photo, scale, onClose }) {
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
@@ -947,29 +939,47 @@ function GiftModal({ c, photo, scale, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/55" onClick={onClose}>
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-label={c.title}
         onClick={(e) => e.stopPropagation()}
-        className="relative overflow-hidden rounded-3xl bg-white bg-cover bg-center shadow-2xl animate-pop"
-        style={{ width: 400, zoom: scale, backgroundImage: `url(${DECOR}/nen-hop-qua.png)` }}
+        className="relative overflow-hidden animate-pop"
+        style={{
+          width: 361,
+          maxHeight: `${90 / scale}vh`,
+          zoom: scale,
+          borderRadius: 20,
+          background: `#fff url(${DECOR}/nen-hop-qua.jpg) center top / cover no-repeat`,
+        }}
       >
-        <div className="relative max-h-[90vh] overflow-y-auto px-4 pb-6 pt-5">
-          <button type="button" onClick={onClose} aria-label="Đóng" className="absolute right-4 top-4 text-black/60 hover:text-black">
-            <X className="h-6 w-6" />
+        <div className="relative overflow-y-auto" style={{ maxHeight: `${90 / scale}vh`, minHeight: 415, paddingBottom: 24 }}>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Đóng"
+            className="absolute flex items-center justify-center"
+            style={{ left: 330, top: 4, width: 28, height: 28 }}
+          >
+            <X className="h-5 w-5 text-black" strokeWidth={1.6} />
           </button>
-          <div className="flex justify-center">
-            <img src={`${DECOR}/hy-vang.webp`} alt="" className="h-12 w-12" />
-          </div>
-          <h2 className="f-spirited mt-1 whitespace-nowrap text-center" style={{ fontSize: 38, lineHeight: 1.6, color: "rgb(0, 128, 55)" }}>
+          <img src={`${DECOR}/hoa-hop-qua.png`} alt="" className="mx-auto block" style={{ width: 124, height: 64 }} />
+          <h2
+            className="f-spirited whitespace-nowrap text-center"
+            style={{ marginTop: -1, height: 61, fontSize: 38, lineHeight: "60.8px", color: "rgb(0, 128, 55)" }}
+          >
             {c.title}
           </h2>
-          <div className="my-3 h-px bg-black/15" />
-          <div className="grid grid-cols-[1fr_1.15fr] items-center gap-3">
-            <img src={photo} alt="" className="aspect-[2/3] w-full rounded-[10px] object-cover" style={{ border: "1px dotted #000" }} />
-            <div className="space-y-6">
+          <div style={{ marginTop: -2, borderTop: "1px solid rgb(217, 217, 217)" }} />
+          <div className="flex items-start" style={{ marginTop: 32, paddingLeft: 26 }}>
+            <img
+              src={photo}
+              alt=""
+              className="shrink-0 object-cover"
+              style={{ width: 146, height: 229, border: "2px solid rgb(217, 217, 217)", borderRadius: 15 }}
+            />
+            <div className="space-y-6" style={{ width: 191, marginTop: 3 }}>
               {c.accounts.map((account) => (
                 <GiftAccount key={account.number} account={account} c={c} />
               ))}

@@ -27,7 +27,7 @@ $K/fetch-issue.sh 9 $S/t9      # issue.md (body + MỌI comment) + i10.bin, i11.
 - `.bin` có thể là PNG hoặc JPEG — Read không đọc được `.bin`, dùng `p*.jpg` hoặc `sips -s format png`.
 - md5 trùng = ảnh trùng, bỏ bớt.
 - Ticket hay có các mục: "thông tin thiệp" (ảnh chụp văn bản Word), "ảnh cưới và mã qr", "làm theo mẫu" (lovecard.click/thiepso01 = đúng giao diện repo này), "bỏ phần này" (ảnh chụp phần cần ẩn — xem §6).
-- Mẫu khác đã dựng sẵn — tạo nhánh mới **từ nhánh của mẫu đó** thay vì nhánh mới nhất: lovecard.click/**thiepso05** (phong bì đỏ mở ra, thẻ treo 囍, "Our memories") → nhánh `nhung_long` (khung 420px phóng theo màn hình, họa tiết trong `public/images/mau05/`, font trong `public/fonts/`; ảnh: `hero` trong phong bì, `couple` ảnh ngang, `dateStrip` 3 ảnh, `circle` ảnh tròn). Mẫu nawngs.com/thanglinh → nhánh `ly_tuananh_*`.
+- Mẫu khác đã dựng sẵn — tạo nhánh mới **từ nhánh của mẫu đó** thay vì nhánh mới nhất: lovecard.click/**thiepso05** (phong bì đỏ mở ra, thẻ treo 囍, "Our memories") → nhánh `nhung_long_nha_trai` / `nhung_long_nha_gai` (khung 420px phóng theo màn hình, họa tiết trong `public/images/mau05/`, font trong `public/fonts/`; ảnh: `hero` trong phong bì, `couple` ảnh ngang, `dateStrip` 3 ảnh, `circle` ảnh tròn). Mẫu nawngs.com/thanglinh → nhánh `ly_tuananh_*`.
 
 ## 1. Thu thập thông tin từ ảnh
 
@@ -165,17 +165,19 @@ Commit message tiếng Việt, kiểu `feat: thiệp <Tên> & <Tên> — bản n
 
 ## 11. Deploy Vercel (khi người dùng yêu cầu)
 
-Team: `leducuet-5765s-projects` (https://vercel.com/leducuet-5765s-projects). Mỗi thiệp **một project, tên = tên nhánh** (`gam_ngoc` → gamngoc.vercel.app). Deploy production thẳng từ code nhánh hiện tại trên máy (không cần push).
+Team: `ducs-projects-2e3ef64b` (tài khoản `xduclv`; team cũ `leducuet-5765s-projects` báo "Not authorized"). Mỗi thiệp **một project, tên = tên hai bạn theo thứ tự của bản đó, không dấu, nối bằng gạch**: bản nhà trai `tuananh-tranly`, bản nhà gái `tranly-tuananh` → https://tuananh-tranly.vercel.app. `og:image` / `twitter:image` trong `index.html` phải trỏ đúng domain này. Deploy production thẳng từ code nhánh hiện tại trên máy (không cần push).
+
+**`.vercel/project.json` vẫn link project của thiệp trước** → luôn `link --project <tên>` trước `deploy`, nếu không sẽ deploy đè thiệp người khác.
 
 ```bash
-V="npx -y vercel@65.0.0"     # máy không cài vercel global
-$V whoami                    # "Logged out" → chạy `$V login` NỀN, đọc log lấy link
+v(){ npx -y vercel@65.0.0 "$@"; }   # máy không cài vercel global; zsh không tách chữ trong $V nên dùng hàm
+v whoami                     # "Logged out" → chạy `v login` NỀN, đọc log lấy link
                              # https://vercel.com/oauth/device?user_code=XXXX-XXXX, đưa người dùng bấm xác nhận
 git branch --show-current && git status --short          # đúng nhánh, đã commit
-$V project ls --scope leducuet-5765s-projects             # đã có project của nhánh này chưa
-$V link --yes --project <tên-nhánh> --scope leducuet-5765s-projects   # tạo mới hoặc link project có sẵn
-$V deploy --prod --yes --scope leducuet-5765s-projects
-$V inspect <url-deploy> --scope leducuet-5765s-projects   # status Ready + Aliases → link chính
+v project ls --scope ducs-projects-2e3ef64b              # đã có project của thiệp này chưa
+v link --yes --project <ten-hai-ban> --scope ducs-projects-2e3ef64b   # tạo mới hoặc link project có sẵn
+v deploy --prod --yes --scope ducs-projects-2e3ef64b
+v inspect <url-deploy> --scope ducs-projects-2e3ef64b    # status Ready + Aliases → link chính
 ```
 
 Kiểm tra link chính trả 200 cho `/`, một link tên khách (`/co-lan`) và một ảnh QR; `<title>` đúng tên. Cập nhật thiệp đã deploy = commit rồi chạy lại `deploy --prod` ở đúng nhánh.

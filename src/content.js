@@ -127,8 +127,14 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    /** TODO: khách chưa gửi mã QR — để [] thì ẩn nút mừng cưới */
-    accounts: [],
+    accounts: [
+      {
+        holder: 'NGUYEN VAN LONG',
+        number: '19036693054015',
+        bank: 'Techcombank',
+        qr: '/images/qr-techcombank.png',
+      },
+    ],
   },
 
   memories: {

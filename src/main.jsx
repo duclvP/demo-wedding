@@ -586,10 +586,11 @@ function EnvelopeTop({ c, opened }) {
       {/* Tên hai bạn giữa hai đường kẻ */}
       <div className="absolute left-0" style={{ top: 592.5, width: DESIGN_WIDTH, borderTop: "3px solid rgba(178, 188, 163, 0.3)" }} />
       <div className="absolute left-0" style={{ top: 672.5, width: DESIGN_WIDTH, borderTop: "3px solid rgba(178, 188, 163, 0.3)" }} />
-      <Ani fx="fadeInLeft" dur={4} className="absolute" style={{ left: 0, top: 601, width: 180 }}>
+      {/* Chừa ~8px ở mép màn hình cho nét đuôi của chữ viết tay (tên dài như "Nguyễn Long") */}
+      <Ani fx="fadeInLeft" dur={4} className="absolute" style={{ left: 8, top: 601, width: 172 }}>
         <FitText text={first} max={40} className="f-names text-right" style={{ lineHeight: "64px" }} />
       </Ani>
-      <Ani fx="fadeInRight" dur={5} className="absolute" style={{ left: 234, top: 601.39, width: 186 }}>
+      <Ani fx="fadeInRight" dur={5} className="absolute" style={{ left: 234, top: 601.39, width: 176 }}>
         <FitText text={second} max={40} className="f-names text-left" style={{ lineHeight: "64px" }} />
       </Ani>
       <Ani fx="bounceIn" dur={5} className="absolute" style={{ left: 186.48, top: 619.35, width: 39.38, height: 37.65 }}>

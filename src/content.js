@@ -100,7 +100,7 @@ export const content = {
     endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
     /** Slug riêng của thiệp trong script dùng chung — không đổi sau khi đã có lời chúc */
     coupleId: 'nguyen-long-vien-nhung-nha-trai',
-    coupleName: 'Nguyễn Long & Viên Nhung',
+    coupleName: 'Nguyễn Long & Viên Nhung (nhà trai)',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */

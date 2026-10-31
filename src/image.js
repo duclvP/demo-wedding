@@ -13,27 +13,23 @@ export const images = {
   countdown: '/images/hoa-1.jpg',
   /** Our Moments: ảnh dọc trên, ảnh nhỏ phải (ảnh ngang), ảnh lớn dưới */
   moments: ['/images/co-dau-hoa.jpg', '/images/chao-doi.jpg', '/images/chu-re.jpg'],
-  /** Ảnh lớn + dải ảnh nhỏ — số chẵn ảnh, chỉ ảnh dọc */
+  /** Ảnh lớn + dải ảnh nhỏ — số chẵn ảnh, chỉ ảnh dọc, không lặp ảnh đã dùng ở các mục khác (khách yêu cầu) */
   album: [
-    '/images/nam-tay.jpg',
-    '/images/ao-dai-1.jpg',
+    '/images/hoa-2.jpg',
+    '/images/voan-2.jpg',
     '/images/co-dau-ngoi.jpg',
-    '/images/chu-re-chao.jpg',
-    '/images/co-dau-cuoi.jpg',
-    '/images/ao-dai-3.jpg',
-    '/images/hoa-1.jpg',
-    '/images/studio-1.jpg',
-    '/images/ao-dai-2.jpg',
-    '/images/co-dau-hoa.jpg',
-    '/images/studio-2.jpg',
-    '/images/chu-re.jpg',
+    '/images/quan-phuc.jpg',
+    '/images/studio-3.jpg',
     '/images/co-dau-dung.jpg',
-    '/images/co-dau-sau.jpg',
+    '/images/hoa-3.jpg',
+    '/images/studio-2.jpg',
+    '/images/studio-4.jpg',
+    '/images/studio-1.jpg',
   ],
   /** Ảnh tròn cạnh nút mừng cưới */
   circle: '/images/voan.jpg',
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/studio-1.jpg',
+  gift: '/images/co-dau-sau.jpg',
   /** Ảnh mục Thank You — mặt ở 1/3 trên */
   thankYou: '/images/ao-dai-3.jpg',
 

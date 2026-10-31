@@ -6,13 +6,13 @@ export const images = {
   /** Ảnh bìa 2:3 — "SAVE the DATE" + tên đè lên phần dưới */
   hero: '/images/ao-dai-1.jpg',
   /** 3 ảnh dọc khung hồng (chữ ngày / tháng / năm đè lên) — bản nhà gái: cô dâu, ảnh đôi, chú rể */
-  dateStrip: ['/images/co-dau-hoa.jpg', '/images/ao-dai-2.jpg', '/images/chu-re.jpg'],
+  dateStrip: ['/images/co-dau-cuoi.jpg', '/images/ao-dai-2.jpg', '/images/chu-re-chao.jpg'],
   /** Ảnh lớn "Two hearts, one love…" (chữ đè 1/4 dưới) */
   quote: '/images/nam-tay.jpg',
   /** Ảnh nền đếm ngược (chữ đè 1/3 dưới) */
   countdown: '/images/hoa-1.jpg',
   /** Our Moments: ảnh dọc trên, ảnh nhỏ phải (ảnh ngang), ảnh lớn dưới */
-  moments: ['/images/co-dau-cuoi.jpg', '/images/chao-doi.jpg', '/images/chu-re-chao.jpg'],
+  moments: ['/images/co-dau-hoa.jpg', '/images/chao-doi.jpg', '/images/chu-re.jpg'],
   /** Ảnh lớn + dải ảnh nhỏ — số chẵn ảnh, chỉ ảnh dọc */
   album: [
     '/images/nam-tay.jpg',

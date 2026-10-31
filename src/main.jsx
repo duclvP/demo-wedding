@@ -685,6 +685,8 @@ const TIMELINE_SLOTS = [
   { text: [19, 390], dot: [186, 394], icon: [53, 437, 55, 61], anim: "up" },
   { text: [121, 556], dot: [309, 556], icon: [155, 612, 55, 61], anim: "right" },
 ];
+/** Ô dùng theo số mốc — ít mốc thì bỏ ô giữa để mốc đầu / cuối vẫn ở hai đầu đường cong, trải đều hơn */
+const TIMELINE_ORDER = { 1: [0], 2: [0, 3], 3: [0, 2, 3], 4: [0, 1, 2, 3] };
 
 function TimelineIcon({ name, className }) {
   if (name === "toast") return <ToastIcon className={className} />;
@@ -710,8 +712,7 @@ function Timeline({ t }) {
         <img src={images.deco.timeline} alt="" className="absolute" style={{ width: "74.3%", left: "3%", top: "0.9%" }} />
       </div>
       {t.items.slice(0, 4).map((item, i, list) => {
-        /** 3 mốc: bỏ ô thứ 2 (giữa) để mốc đầu vẫn ở đầu đường cong, trải đều hơn */
-        const s = TIMELINE_SLOTS[list.length === 3 ? [0, 2, 3][i] : i];
+        const s = TIMELINE_SLOTS[TIMELINE_ORDER[list.length][i]];
         return (
           <React.Fragment key={item.time}>
             <span className="rounded-full" style={{ ...b(s.dot[0], s.dot[1], 10, 10), background: RED, height: "auto", aspectRatio: "1" }} />
@@ -901,7 +902,7 @@ function RsvpForm({ c }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!c.endpoint) {
+    if (!c.endpoint || !c.coupleId) {
       console.warn("Chưa cấu hình rsvp.endpoint trong content.js — lời chúc không được lưu.", form);
       setSent(true);
       return;
@@ -917,6 +918,8 @@ function RsvpForm({ c }) {
         method: "POST",
         mode: "no-cors",
         body: new URLSearchParams({
+          couple: c.coupleId,
+          coupleName: c.coupleName || "",
           name: form.name.trim(),
           message: form.message.trim(),
           attend: !c.askAttend ? "" : form.attend === "yes" ? c.attendYes : c.attendNo,

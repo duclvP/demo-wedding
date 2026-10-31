@@ -4,32 +4,38 @@
  */
 export const images = {
   /** Ảnh bìa 2:3 — "SAVE the DATE" + tên đè lên phần dưới */
-  hero: '/images/hon-1.jpg',
-  /** 3 ảnh dọc khung hồng (chữ ngày / tháng / năm đè lên) */
-  dateStrip: ['/images/dung-1.jpg', '/images/nam-tay.jpg', '/images/vuon-1.jpg'],
+  hero: '/images/ao-dai-1.jpg',
+  /** 3 ảnh dọc khung hồng (chữ ngày / tháng / năm đè lên) — bản nhà gái: cô dâu, ảnh đôi, chú rể */
+  dateStrip: ['/images/co-dau-hoa.jpg', '/images/ao-dai-2.jpg', '/images/chu-re.jpg'],
   /** Ảnh lớn "Two hearts, one love…" (chữ đè 1/4 dưới) */
-  quote: '/images/ngoi-1.jpg',
+  quote: '/images/nam-tay.jpg',
   /** Ảnh nền đếm ngược (chữ đè 1/3 dưới) */
-  countdown: '/images/hon-2.jpg',
-  /** Our Moments: ảnh dọc trên, ảnh nhỏ phải, ảnh lớn dưới */
-  moments: ['/images/dung-1.jpg', '/images/biet-thu.jpg', '/images/nam-tay.jpg'],
-  /** Ảnh lớn + dải ảnh nhỏ — số chẵn ảnh */
+  countdown: '/images/hoa-1.jpg',
+  /** Our Moments: ảnh dọc trên, ảnh nhỏ phải (ảnh ngang), ảnh lớn dưới */
+  moments: ['/images/co-dau-cuoi.jpg', '/images/chao-doi.jpg', '/images/chu-re-chao.jpg'],
+  /** Ảnh lớn + dải ảnh nhỏ — số chẵn ảnh, chỉ ảnh dọc */
   album: [
-    '/images/voan-1.jpg',
-    '/images/hon-1.jpg',
-    '/images/ngoi-1.jpg',
-    '/images/dung-1.jpg',
     '/images/nam-tay.jpg',
-    '/images/hon-2.jpg',
-    '/images/biet-thu.jpg',
-    '/images/vuon-1.jpg',
+    '/images/ao-dai-1.jpg',
+    '/images/co-dau-ngoi.jpg',
+    '/images/chu-re-chao.jpg',
+    '/images/co-dau-cuoi.jpg',
+    '/images/ao-dai-3.jpg',
+    '/images/hoa-1.jpg',
+    '/images/studio-1.jpg',
+    '/images/ao-dai-2.jpg',
+    '/images/co-dau-hoa.jpg',
+    '/images/studio-2.jpg',
+    '/images/chu-re.jpg',
+    '/images/co-dau-dung.jpg',
+    '/images/co-dau-sau.jpg',
   ],
   /** Ảnh tròn cạnh nút mừng cưới */
-  circle: '/images/ngoi-1.jpg',
+  circle: '/images/voan.jpg',
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/ngoi-1.jpg',
+  gift: '/images/studio-1.jpg',
   /** Ảnh mục Thank You — mặt ở 1/3 trên */
-  thankYou: '/images/voan-1.jpg',
+  thankYou: '/images/ao-dai-3.jpg',
 
   /** Họa tiết lấy từ trang mẫu lovecard.click/mau-49 */
   deco: {

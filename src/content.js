@@ -56,7 +56,8 @@ export const content = {
         /** dd. mm. yyyy */
         date: '13. 11. 2026',
         lunar: '( Tức Ngày 05 Tháng 10 Năm Bính Ngọ )',
-        places: [{ label: 'Quảng Trường Tráng A Pao', address: VENUE_BRIDE, mapQuery: 'Quảng trường Tráng A Pao, Lào Cai' }],
+        /** Toạ độ ghim khách gửi (issue #32) */
+        places: [{ label: 'Quảng Trường Tráng A Pao', address: VENUE_BRIDE, mapQuery: '22.482020,103.979747' }],
       },
       {
         id: 'thanh-hon',
@@ -64,8 +65,8 @@ export const content = {
         time: '09:00, Thứ Bảy',
         date: '14. 11. 2026',
         lunar: '( Tức Ngày 06 Tháng 10 Năm Bính Ngọ )',
-        /** mapQuery theo địa giới cũ (xã Chất Bình, huyện Kim Sơn) cho bản đồ dễ tìm */
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Chất Bình, Kim Sơn, Ninh Bình' }],
+        /** Toạ độ ghim khách gửi (issue #32) */
+        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: '20.128537,106.125285' }],
       },
     ],
   },

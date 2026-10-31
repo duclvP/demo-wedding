@@ -1101,8 +1101,9 @@ function CirclePhoto({ gift, onGift }) {
         <button
           type="button"
           onClick={onGift}
-          className="absolute left-1/2 -translate-x-1/2 inline-flex items-center justify-center gap-2 rounded-full bg-[#7f0606] font-lora uppercase text-white shadow-lg animate-pulse-3"
-          style={{ top: "84%", width: "42.9%", height: "13.2%", fontSize: fz(13) }}
+          /** Căn giữa bằng left (không dùng translate — transform của animate-pulse-3 sẽ đè mất) */
+          className="absolute inline-flex items-center justify-center gap-2 rounded-full bg-[#7f0606] font-lora uppercase text-white shadow-lg animate-pulse-3"
+          style={{ top: "84%", left: "28.55%", width: "42.9%", height: "13.2%", fontSize: fz(13) }}
         >
           <Gift className="h-[1.3em] w-[1.3em]" aria-hidden />
           {gift}

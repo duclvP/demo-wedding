@@ -140,8 +140,15 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    /** TODO: ticket chưa có QR / số tài khoản — hỏi lại khách */
-    accounts: [],
+    /** QR khách gửi — đã giải mã: BIN 970418 (BIDV), STK khớp chữ trên ảnh */
+    accounts: [
+      {
+        holder: 'VU HUYEN TRANG',
+        number: '3750667212',
+        bank: 'BIDV',
+        qr: '/images/qr-bidv.png',
+      },
+    ],
   },
 
   thanks: {

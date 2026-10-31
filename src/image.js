@@ -29,7 +29,7 @@ export const images = {
   /** Ảnh tròn cạnh nút mừng cưới */
   circle: '/images/voan.jpg',
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/co-dau-sau.jpg',
+  gift: '/images/co-dau-hoa.jpg',
   /** Ảnh mục Thank You — mặt ở 1/3 trên */
   thankYou: '/images/ao-dai-3.jpg',
 

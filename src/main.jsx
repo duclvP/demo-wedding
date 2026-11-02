@@ -473,23 +473,29 @@ function Darling({ d }) {
         <img src={images.darling} alt="" className="h-full w-full object-cover object-top" loading="lazy" />
         <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-b from-transparent to-black/55" />
       </div>
-      <div style={b(23, 268, 334, 40)}>
+      {/* Chữ ngoài ảnh canh phải sát mép trái ảnh (x 199) — font thay thế rộng hơn font mẫu, canh trái sẽ tràn vào ảnh */}
+      <div style={b(0, 268, 193, 40)}>
         <Reveal variant="left" duration={4}>
-          <h2 className="font-didot text-center uppercase leading-[1.6]" style={{ fontSize: fz(25), color: OLIVE }}>{d.title}</h2>
+          <h2 className="font-didot text-right uppercase leading-[1.6]" style={{ fontSize: fz(25), color: OLIVE }}>{d.title}</h2>
         </Reveal>
       </div>
-      {d.lines.map(([left, right], i) => (
-        <React.Fragment key={left}>
-          <p className="font-cormorant font-medium leading-[1.6] whitespace-nowrap" style={{ ...b(131, 303 + i * 22.4), fontSize: fz(14.5), color: OLIVE }}>
-            {left}
-          </p>
-          {right && (
-            <p className="font-cormorant font-medium leading-[1.6] whitespace-nowrap text-white" style={{ ...b(204, 303 + i * 22.4), fontSize: fz(14.5) }}>
+      {d.lines.map(([left, right], i) =>
+        right ? (
+          <React.Fragment key={left}>
+            <p className="font-cormorant font-medium text-right leading-[1.6] whitespace-nowrap" style={{ ...b(0, 303 + i * 22.4, 193), fontSize: fz(14.5), color: OLIVE }}>
+              {left}
+            </p>
+            <p className="font-cormorant font-medium leading-[1.6] whitespace-nowrap text-white" style={{ ...b(206, 303 + i * 22.4), fontSize: fz(14.5) }}>
               {right}
             </p>
-          )}
-        </React.Fragment>
-      ))}
+          </React.Fragment>
+        ) : (
+          /** Dòng nằm dưới ảnh: canh phải theo mép phải ảnh */
+          <p key={left} className="font-cormorant font-medium text-right leading-[1.6] whitespace-nowrap" style={{ ...b(0, 306 + i * 22.4, 388), fontSize: fz(14.5), color: OLIVE }}>
+            {left}
+          </p>
+        ),
+      )}
     </Frame>
   );
 }

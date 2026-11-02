@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Check, Copy, Download, Gift, MapPin, Volume2, VolumeX, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Copy, Download, Gift, Volume2, VolumeX, X } from "lucide-react";
 import { content } from "./content.js";
 import { images } from "./image.js";
 import "./index.css";
@@ -370,21 +370,6 @@ function Frame({ H, className = "", style, children }) {
   );
 }
 
-/** Ly sâm banh chạm nhau — vẽ nét cùng kiểu icon timeline của mẫu */
-function ToastIcon({ className = "" }) {
-  return (
-    <svg viewBox="0 0 64 80" className={className} fill="none" stroke="#7f0606" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M10 22 L22 18 L28 40 C 29 46 25 50 20 51 C 15 52 11 49 10 44 Z" />
-      <path d="M20 51 L24 68 M17 70 L31 66" />
-      <path d="M11 30 L25 26" />
-      <path d="M54 22 L42 18 L36 40 C 35 46 39 50 44 51 C 49 52 53 49 54 44 Z" />
-      <path d="M44 51 L40 68 M33 66 L47 70" />
-      <path d="M53 30 L39 26" />
-      <path d="M32 4 L32 12 M24 8 L27 13 M40 8 L37 13" />
-    </svg>
-  );
-}
-
 function mapUrl(address) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
@@ -445,84 +430,65 @@ function useGuestName(fallback) {
 
 /* ---------- Các khối nội dung ---------- */
 
+/** Màu mẫu lovecard thiepso53: chữ xanh ô liu, hồng đất (lời mời, chỉ đường), đỏ rượu (timeline) */
+const OLIVE = "#6f6c4a";
+const ROSE = "#ba4353";
 const RED = "#7f0606";
 
-/** Bìa: ảnh lớn 420×630, "SAVE the DATE" + tên đè phần dưới */
-function Cover({ c, names }) {
+/** Bìa: ảnh lớn 420×630, tên hai người + ngày đè phần dưới, chữ "&" mờ phía sau */
+function Cover({ c }) {
   const b = boxIn(630);
   return (
     <Frame H={630} className="overflow-hidden text-white">
-      <img src={images.hero} alt={names.join(" & ")} className="absolute inset-0 h-full w-full object-cover object-top" />
-      <div className="absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-b from-transparent to-black/45" />
-      <div style={b(35, 393, 215, 112)}>
-        <Reveal variant="left" duration={3}>
-          <p className="font-didot leading-[1.6] whitespace-nowrap" style={{ fontSize: fz(70) }}>SAVE</p>
+      <img src={images.hero} alt={c.names.join(" & ")} className="absolute inset-0 h-full w-full object-cover object-top" />
+      <div className="absolute inset-x-0 bottom-0 h-[41%] bg-gradient-to-b from-transparent to-black/45" />
+      <img src={images.deco.amp} alt="" className="pointer-events-none opacity-50" style={b(141, 398, 163, 163)} />
+      <div style={b(0, 416, 420, 72)}>
+        <Reveal variant="right" duration={4}>
+          <h1 className="font-didot text-center uppercase leading-[1.6] whitespace-nowrap" style={{ fontSize: fz(45) }}>{c.names[0]}</h1>
         </Reveal>
       </div>
-      <div style={b(48, 468, 92, 128)}>
-        <Reveal variant="fade" duration={3}>
-          <p className="font-pinyon text-center leading-[1.6]" style={{ fontSize: fz(66) }}>the</p>
+      <div style={b(4, 480, 420, 72)}>
+        <Reveal variant="left" duration={4}>
+          <p className="font-didot text-center uppercase leading-[1.6] whitespace-nowrap" style={{ fontSize: fz(45) }}>{c.names[1]}</p>
         </Reveal>
       </div>
-      <div style={b(150, 476, 270, 112)}>
-        <Reveal variant="right" duration={3}>
-          <p className="font-didot leading-[1.6] whitespace-nowrap" style={{ fontSize: fz(70) }}>DATE</p>
-        </Reveal>
-      </div>
-      <div style={b(0, 574, 390, 40)}>
-        <Reveal variant="right" duration={3}>
-          <h1 className="font-didot uppercase text-right whitespace-nowrap leading-[1.6]" style={{ fontSize: fz(25) }}>
-            {names[0]} &amp; {names[1]}
-          </h1>
+      <div style={b(4, 570, 420, 35)}>
+        <Reveal variant="up" duration={4}>
+          <p className="font-didot text-center leading-[1.6]" style={{ fontSize: fz(22) }}>{c.dateLine}</p>
         </Reveal>
       </div>
     </Frame>
   );
 }
 
-/** Chữ lồng 2 chữ cái đầu + câu tiếng Anh */
-function Monogram({ initials, quote }) {
-  const b = boxIn(176);
+/** Ảnh dọc + cành lá vàng, chữ "DARLING" và câu thơ — nửa sau mỗi dòng nằm trên ảnh (chữ trắng) */
+function Darling({ d }) {
+  const H = 420;
+  const b = boxIn(H);
   return (
-    <Frame H={176} style={{ color: RED }}>
-      <Reveal variant="fade" duration={3}>
-        <div className="absolute inset-0" style={{ color: RED }}>
-          <span className="font-didot leading-[1.6]" style={{ ...b(163, 4, 56, 70), fontSize: fz(44), textAlign: "center" }}>
-            {initials[0]}
-          </span>
-          <span className="font-guest leading-[1.6] opacity-60" style={{ ...b(170, 10, 72, 63), fontSize: fz(40), textAlign: "center" }}>
-            &amp;
-          </span>
-          <span className="font-didot leading-[1.6]" style={{ ...b(202, 33, 54, 70), fontSize: fz(44), textAlign: "center" }}>
-            {initials[1]}
-          </span>
-        </div>
-      </Reveal>
-      <p className="font-taviraj text-center leading-[1.6]" style={{ ...b(60, 117, 301, 40), fontSize: fz(11), color: RED }}>
-        {quote}
-      </p>
-    </Frame>
-  );
-}
-
-/** 3 ảnh dọc khung hồng, chữ ngày / tháng / năm */
-function DateStrip({ parts }) {
-  const b = boxIn(196);
-  const xs = [8, 144, 281];
-  return (
-    <Frame H={196}>
-      {images.dateStrip.map((src, i) => (
-        <div key={i} className="overflow-hidden border-[3px] border-[#dcc4c3]" style={b(xs[i], 0, 131, 196)}>
-          <img src={src} alt="" className="h-full w-full object-cover object-top" loading="lazy" />
-          <div className="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-b from-transparent to-black/35" />
-          <div className="absolute inset-x-0 top-[66%]">
-            <Reveal variant="up" duration={3} delay={i * 150}>
-              <p className="font-didot text-center text-white leading-[1.6]" style={{ fontSize: fz(35) }}>
-                {parts[i]}
-              </p>
-            </Reveal>
-          </div>
-        </div>
+    <Frame H={H}>
+      <img src={images.deco.leafDarling} alt="" className="pointer-events-none" style={b(114, 124, 171, 222)} />
+      <div className="overflow-hidden" style={b(199, 63, 189, 283)}>
+        <img src={images.darling} alt="" className="h-full w-full object-cover object-top" loading="lazy" />
+        <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-b from-transparent to-black/55" />
+      </div>
+      <div style={b(23, 268, 334, 40)}>
+        <Reveal variant="left" duration={4}>
+          <h2 className="font-didot text-center uppercase leading-[1.6]" style={{ fontSize: fz(25), color: OLIVE }}>{d.title}</h2>
+        </Reveal>
+      </div>
+      {d.lines.map(([left, right], i) => (
+        <React.Fragment key={left}>
+          <p className="font-cormorant font-medium leading-[1.6] whitespace-nowrap" style={{ ...b(131, 303 + i * 22.4), fontSize: fz(14.5), color: OLIVE }}>
+            {left}
+          </p>
+          {right && (
+            <p className="font-cormorant font-medium leading-[1.6] whitespace-nowrap text-white" style={{ ...b(204, 303 + i * 22.4), fontSize: fz(14.5) }}>
+              {right}
+            </p>
+          )}
+        </React.Fragment>
       ))}
     </Frame>
   );
@@ -531,7 +497,7 @@ function DateStrip({ parts }) {
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-/** Lịch tháng: tên tháng viết tay, ngày cưới in trên tim vân tay */
+/** Lịch tháng: tên tháng viết tay + năm bên trái vạch dọc, ngày cưới in trên tim vân tay */
 function MonthCalendar({ dateIso }) {
   const [y, m, d] = dateIso.split("-").map(Number);
   const daysInMonth = new Date(y, m, 0).getDate();
@@ -540,27 +506,29 @@ function MonthCalendar({ dateIso }) {
   const cells = [...Array(lead).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
 
   return (
-    <div style={{ color: RED }}>
-      <p className="font-guest text-center leading-[1.6]" style={{ fontSize: fz(38) }}>
-        {MONTHS_EN[m - 1]}
-      </p>
-      <div className="mx-auto w-[78%] translate-x-[1%]">
-        <div className="grid grid-cols-7 font-montserrat font-bold uppercase" style={{ fontSize: fz(12.5) }}>
+    <div className="flex items-center" style={{ color: OLIVE }}>
+      <Reveal variant="left" duration={4} wrapClassName="w-[29.5%] shrink-0">
+        <p className="font-pinyon text-center leading-[1.6]" style={{ fontSize: fz(27) }}>{MONTHS_EN[m - 1]}</p>
+        <p className="font-didot font-bold text-right leading-[1.6] pr-[19%]" style={{ fontSize: fz(21) }}>{y}</p>
+      </Reveal>
+      <div className="w-px self-stretch my-[6%] bg-[#6f6c4a]/80" />
+      <div className="flex-1 pl-[1.5%] pr-[1%]">
+        <div className="grid grid-cols-7 font-didot font-bold uppercase" style={{ fontSize: fz(10.5) }}>
           {WEEKDAYS.map((w) => (
-            <span key={w} className="text-center">{w}</span>
+            <span key={w} className="text-center leading-[1.6]">{w}</span>
           ))}
         </div>
-        <div className="grid grid-cols-7 font-lora mt-[3%]" style={{ fontSize: fz(14) }}>
+        <div className="grid grid-cols-7 font-notoserif mt-[3%]" style={{ fontSize: fz(11) }}>
           {cells.map((day, i) =>
             day === d ? (
-              <span key={i} className="relative flex aspect-[46/41] items-center justify-center">
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <img src={images.deco.heart} alt="" className="w-[100%] max-w-none animate-pulse-soft" />
-                </span>
-                <span className="relative font-bold text-white [text-shadow:0_0_3px_rgba(127,6,6,0.6)]">{day}</span>
+              <span key={i} className="relative flex items-center justify-center" style={{ height: fz(26.4) }}>
+                <Reveal variant="right" duration={3} wrapClassName="absolute inset-0 flex items-center justify-center">
+                  <img src={images.deco.heart} alt="" className="max-w-none animate-pulse-soft" style={{ width: fz(31) }} />
+                </Reveal>
+                <span className="relative text-white">{day}</span>
               </span>
             ) : (
-              <span key={i} className="flex aspect-[46/41] items-center justify-center">
+              <span key={i} className="flex items-center justify-center" style={{ height: fz(26.4) }}>
                 {day ?? ""}
               </span>
             ),
@@ -571,28 +539,30 @@ function MonthCalendar({ dateIso }) {
   );
 }
 
-function FamilySide({ side }) {
+/** Ảnh ngang toàn khung */
+function WideImage({ src, ratio }) {
   return (
-    <div className="font-lora uppercase text-center" style={{ color: RED }}>
-      <h3 className="font-bold leading-[1.6]" style={{ fontSize: fz(15) }}>{side.label}</h3>
-      {side.father && (
-        <p className="leading-[1.6] mt-0.5" style={{ fontSize: fz(12) }}>Ông {side.father}</p>
-      )}
-      {side.mother && (
-        <p className="leading-[1.6]" style={{ fontSize: fz(12) }}>Bà {side.mother}</p>
-      )}
-      {side.address && (
-        <p className="font-quicksand normal-case leading-snug mt-1 opacity-80" style={{ fontSize: fz(11.5) }}>{side.address}</p>
-      )}
+    <div className="relative w-full overflow-hidden" style={{ aspectRatio: ratio }}>
+      <img src={src} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
     </div>
   );
 }
 
-/** Đoạn kẻ ngang hai bên tháng / năm */
+function FamilySide({ side, align }) {
+  return (
+    <div className={`font-lora uppercase ${align}`} style={{ color: OLIVE }}>
+      <h3 className="font-bold leading-[1.6]" style={{ fontSize: fz(15) }}>{side.label}</h3>
+      {side.father && <p className="leading-[1.6] mt-0.5" style={{ fontSize: fz(12) }}>Ông {side.father}</p>}
+      {side.mother && <p className="leading-[1.6]" style={{ fontSize: fz(12) }}>Bà {side.mother}</p>}
+    </div>
+  );
+}
+
+/** Tháng / năm giữa hai vạch ngang đỏ hai bên ngày to */
 function Ruled({ children, variant }) {
   return (
-    <Reveal variant={variant} duration={3}>
-      <div className="border-y border-[#7f0606]/70 py-[2px] text-center font-lora leading-[1.6]" style={{ fontSize: fz(20), width: "100%" }}>
+    <Reveal variant={variant} duration={4}>
+      <div className="border-y border-[#ba4353]/80 py-[3px] text-center font-lora leading-[1.6]" style={{ fontSize: fz(20) }}>
         {children}
       </div>
     </Reveal>
@@ -601,59 +571,44 @@ function Ruled({ children, variant }) {
 
 function EventBlock({ item, mapLabel }) {
   const [dd, mm, yyyy] = item.date.split(/\.\s*/);
-  if (item.compact) {
-    return (
-      <div className="text-center font-lora opacity-80" style={{ color: RED }}>
-        <h3 className="font-bold uppercase leading-[1.6]" style={{ fontSize: fz(16) }}>{item.title}</h3>
-        <p className="uppercase leading-[1.6]" style={{ fontSize: fz(14) }}>
-          {item.time} · {dd}.{mm}.{yyyy}
-        </p>
-        <p className="font-quicksand italic leading-[1.6]" style={{ fontSize: fz(12) }}>{item.lunar}</p>
-      </div>
-    );
-  }
   return (
-    <div className="text-center font-lora" style={{ color: RED }}>
-      {item.badge && (
-        <p className="mx-auto mb-2 inline-block rounded-full px-[5%] py-[0.6%] font-bold uppercase tracking-wider text-white" style={{ background: RED, fontSize: fz(13) }}>
-          {item.badge}
-        </p>
+    <div className="text-center" style={{ color: OLIVE }}>
+      {item.title && (
+        <p className="font-lora font-bold uppercase leading-[1.6] mb-1" style={{ fontSize: fz(18) }}>{item.title}</p>
       )}
-      <Reveal variant="left" duration={3}>
-        <h3 className="font-bold uppercase leading-[1.6]" style={{ fontSize: fz(22) }}>{item.title}</h3>
-      </Reveal>
-      <p className="uppercase leading-[1.6] mt-1" style={{ fontSize: fz(17) }}>{item.time}</p>
-      <div className="flex items-center justify-center" style={{ height: fz(78) }}>
+      <p className="font-lora uppercase leading-[1.6]" style={{ fontSize: fz(17) }}>{item.time}</p>
+      <div className="flex items-center justify-center gap-[4%]" style={{ height: fz(80) }}>
         <div className="w-[25%]">
-          <Ruled variant="left">THÁNG {Number(mm)}</Ruled>
+          <Ruled variant="left">THÁNG {mm}</Ruled>
         </div>
-        <div className="w-[28%]">
-          <Reveal variant="fade" duration={4}>
-            <p className="leading-none" style={{ fontSize: fz(70) }}>{dd}</p>
-          </Reveal>
-        </div>
+        <Reveal variant="fade" duration={5}>
+          <p className="font-lora leading-none" style={{ fontSize: fz(70) }}>{dd}</p>
+        </Reveal>
         <div className="w-[25%]">
           <Ruled variant="right">NĂM {yyyy}</Ruled>
         </div>
       </div>
-      <p className="font-quicksand italic leading-[1.6]" style={{ fontSize: fz(14) }}>{item.lunar}</p>
+      <Reveal variant="fade" duration={3}>
+        <p className="font-quicksand leading-[1.6]" style={{ fontSize: fz(13), color: ROSE }}>{item.lunar}</p>
+      </Reveal>
       {item.places.map((place) => (
-        <div key={place.label} className="mt-2">
-          <Reveal variant="left" duration={3}>
-            <p className="uppercase leading-[1.6]" style={{ fontSize: fz(22) }}>{place.label}</p>
+        <div key={place.label} className="relative mt-[3%]">
+          <Reveal variant="left" duration={4}>
+            <p className="font-cormorant font-bold uppercase leading-[1.6]" style={{ fontSize: fz(21) }}>{place.label}</p>
           </Reveal>
-          <p className="font-quicksand leading-[1.6] px-[9%] mt-0.5" style={{ fontSize: fz(13) }}>
-            Địa chỉ: {place.address}
-          </p>
+          <Reveal variant="fade" duration={3}>
+            <p className="font-quicksand leading-[1.6] px-[9%]" style={{ fontSize: fz(12) }}>Địa chỉ: {place.address}</p>
+          </Reveal>
+          <img src={images.deco.pearl} alt="" className="pointer-events-none absolute right-[3%] animate-pulse-soft" style={{ width: fz(23), bottom: fz(-14) }} />
           <a
             href={mapUrl(place.mapQuery ?? place.address)}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 inline-flex flex-col items-center font-bold uppercase animate-pulse-3"
-            style={{ fontSize: fz(15) }}
+            className="mt-[5%] inline-flex flex-col items-center font-didot font-bold uppercase animate-pulse-3"
+            style={{ fontSize: fz(14), color: ROSE }}
           >
-            <MapPin className="h-[1.8em] w-[1.8em] fill-[#7f0606] text-[#f4f3f1]" strokeWidth={1.6} aria-hidden />
-            <span className="mt-1">{mapLabel}</span>
+            <img src={images.deco.mapPin} alt="" style={{ width: fz(34) }} />
+            <span className="leading-[1.6] mt-[2px]">{mapLabel}</span>
           </a>
         </div>
       ))}
@@ -661,83 +616,125 @@ function EventBlock({ item, mapLabel }) {
   );
 }
 
-/** Ảnh lớn có câu chữ viết tay đè phần dưới */
-function QuoteImage({ text }) {
+/** Lời mời: góc hoa vàng, Nhà gái / Nhà trai, tên khách, tên hai người, sự kiện */
+function Invitation({ c, guest }) {
+  const hasParents = c.families.sides.some((s) => s.father || s.mother);
+  const [nameA, nameB] = c.families.fullNames;
   return (
-    <Frame H={595} className="overflow-hidden">
-      <img src={images.quote} alt="" className="absolute inset-0 h-full w-full object-cover object-top" loading="lazy" />
-      <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-b from-transparent to-black/45" />
-      <div className="absolute inset-x-0 top-[76%]">
-        <Reveal variant="up" duration={3}>
-          <p className="font-pinyon whitespace-pre-line text-center text-white leading-[1.6]" style={{ fontSize: fz(28) }}>
-            {text}
+    <section className="relative pb-[9%]">
+      <img src={images.deco.corner} alt="" className="pointer-events-none absolute left-0 top-0 w-[66.9%]" />
+      <div className={hasParents ? "pt-[35.7%]" : "pt-[22%]"} />
+      {hasParents && (
+        <div className="relative grid grid-cols-[1fr_1fr] gap-x-[12.8%] px-[1%] mb-[6%]">
+          {c.families.sides.map((side, i) => (
+            <Reveal key={side.label} variant={i ? "right" : "left"} duration={3}>
+              <FamilySide side={side} align={i ? "text-left" : "text-right"} />
+            </Reveal>
+          ))}
+        </div>
+      )}
+
+      <div className="relative text-center font-lora uppercase" style={{ color: OLIVE }}>
+        <p className="leading-[1.6]" style={{ fontSize: fz(16), color: ROSE }}>{c.invitation.kicker}</p>
+        <div className="mx-auto w-[48.3%] border-b border-dotted" style={{ borderColor: ROSE }}>
+          <p className="font-guest normal-case leading-[1.5] whitespace-nowrap" style={{ fontSize: fz(guest.length > 18 ? 24 : 32), color: RED }}>
+            {guest}
           </p>
+        </div>
+        <p className="whitespace-pre-line leading-[1.6] mt-[2%]" style={{ fontSize: fz(16) }}>{c.invitation.title}</p>
+
+        <div className="normal-case mt-[5%]">
+          <Reveal variant="right" duration={4}>
+            <p className="font-pinyon leading-[1.5]" style={{ fontSize: fz(36) }}>{nameA}</p>
+          </Reveal>
+          <Reveal variant="right" duration={5}>
+            <p className="font-cormorant italic leading-[1.3]" style={{ fontSize: fz(26) }}>&amp;</p>
+          </Reveal>
+          <Reveal variant="left" duration={4}>
+            <p className="font-pinyon leading-[1.5]" style={{ fontSize: fz(36) }}>{nameB}</p>
+          </Reveal>
+        </div>
+      </div>
+
+      <div className="relative mt-[8%] space-y-[10%]">
+        {c.events.items.map((item) => (
+          <EventBlock key={item.id} item={item} mapLabel={c.events.mapLabel} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/** "Romantic LOVE": ảnh lớn làm mờ phía sau, hai ảnh khung trắng so le */
+function RomanticLove({ r }) {
+  const H = 798;
+  const b = boxIn(H);
+  const framed = "overflow-hidden border-[3px] border-white shadow-[0_4px_14px_rgba(0,0,0,0.12)]";
+  return (
+    <Frame H={H} style={{ color: OLIVE }}>
+      <img src={images.deco.leafTall} alt="" className="pointer-events-none" style={b(0, 42, 104, 341)} />
+      <h2 className="font-pinyon text-center leading-[1.6]" style={{ ...b(50, 45, 334, 74), fontSize: fz(40) }}>{r.title}</h2>
+      <div style={b(198, 81, 200, 80)}>
+        <Reveal variant="right" duration={4}>
+          <p className="font-didot uppercase leading-[1.6]" style={{ fontSize: fz(50) }}>{r.word}</p>
         </Reveal>
       </div>
+      {/* blur không cắt khung → mép ảnh tự loang mờ vào nền giấy như mẫu */}
+      <img src={images.romantic.blur} alt="" className="object-cover blur-[5px]" style={b(50, 173, 322, 481)} loading="lazy" />
+      <div style={b(240, 264, 159, 209)}>
+        <Reveal variant="right" duration={3} className="h-full" wrapClassName="h-full">
+          <div className={`${framed} h-full`}>
+            <img src={images.romantic.right} alt="" className="h-full w-full object-cover object-top" loading="lazy" />
+          </div>
+        </Reveal>
+      </div>
+      <div style={b(22, 344, 154, 215)}>
+        <Reveal variant="left" duration={3} className="h-full" wrapClassName="h-full">
+          <div className={`${framed} h-full`}>
+            <img src={images.romantic.left} alt="" className="h-full w-full object-cover object-top" loading="lazy" />
+          </div>
+        </Reveal>
+      </div>
+      <img src={images.deco.cornerBottom} alt="" className="pointer-events-none" style={b(119, 654, 300, 144)} />
     </Frame>
   );
 }
 
-/** Ô đặt chữ + icon cho 4 mốc trên đường cong của mẫu */
+/** 4 ô (chữ, chấm, icon) trên đường cong của mẫu — toạ độ trong khung Timeline */
 const TIMELINE_SLOTS = [
-  { text: [121, 103], dot: [287, 141], icon: [158, 159, 49, 67], anim: "left" },
-  { text: [227, 242], dot: [172, 250], icon: [258, 303, 60, 72], anim: "left" },
-  { text: [19, 390], dot: [186, 394], icon: [53, 437, 55, 61], anim: "up" },
-  { text: [121, 556], dot: [309, 556], icon: [155, 612, 55, 61], anim: "right" },
+  { text: [236, 121, 118], dot: [154, 190], icon: [275, 179, 39, 66], anim: "right" },
+  { text: [32, 273, 123], dot: [199, 318], icon: [66, 338, 55, 61], anim: "left" },
+  { text: [280, 348, 123], dot: [260, 432], icon: [313, 408, 58, 74], anim: "right" },
+  { text: [35, 585, 123], dot: [217, 608], icon: [70, 635, 55, 61], anim: "up" },
 ];
-/** Ô dùng theo số mốc — ít mốc thì bỏ ô giữa để mốc đầu / cuối vẫn ở hai đầu đường cong, trải đều hơn */
+/** Ô dùng theo số mốc — ít mốc thì bỏ ô giữa để mốc đầu / cuối vẫn ở hai đầu đường cong */
 const TIMELINE_ORDER = { 1: [0], 2: [0, 3], 3: [0, 2, 3], 4: [0, 1, 2, 3] };
 
-function TimelineIcon({ name, className }) {
-  if (name === "toast") return <ToastIcon className={className} />;
-  return <img src={images.deco[name]} alt="" className={`${className} object-contain`} loading="lazy" />;
-}
-
 function Timeline({ t }) {
-  const H = 776;
+  const H = 949;
   const b = boxIn(H);
   return (
-    <Frame H={H} className="overflow-hidden">
-      <h2 className="font-pinyon text-center leading-[1.6]" style={{ ...b(0, 0, 420, 56), fontSize: fz(38), color: RED }}>
+    <Frame H={H}>
+      <h2 className="font-pinyon text-center leading-[1.6]" style={{ ...b(0, 0, 420, 74), fontSize: fz(40), color: OLIVE }}>
         {t.title}
       </h2>
-      {t.dateBadge && (
-        <div className="flex justify-center" style={b(0, 54, 420, 26)}>
-          <p className="rounded-full px-[5%] font-lora font-bold uppercase leading-[2] tracking-wider text-white" style={{ background: RED, fontSize: fz(14) }}>
-            {t.dateBadge}
-          </p>
-        </div>
-      )}
-      <div style={b(64, 76, 331, 549)}>
-        <img src={images.deco.timeline} alt="" className="absolute" style={{ width: "74.3%", left: "3%", top: "0.9%" }} />
-      </div>
+      <img src={images.deco.timeline} alt="" className="pointer-events-none" style={b(144, 122, 136, 544)} />
       {t.items.slice(0, 4).map((item, i, list) => {
         const s = TIMELINE_SLOTS[TIMELINE_ORDER[list.length][i]];
         return (
-          <React.Fragment key={item.time}>
-            <span className="rounded-full" style={{ ...b(s.dot[0], s.dot[1], 10, 10), background: RED, height: "auto", aspectRatio: "1" }} />
-            <div style={b(s.text[0], s.text[1], 123)}>
-              <Reveal variant={s.anim} duration={3}>
-                <p className="font-lora font-bold text-center uppercase leading-[1.6]" style={{ fontSize: fz(14.5), color: RED }}>
-                  {item.time}
-                </p>
-                <p className="font-lora text-center uppercase leading-[1.6]" style={{ fontSize: fz(13), color: RED }}>
-                  {item.label}
-                </p>
+          <React.Fragment key={item.time + item.label}>
+            <span className="rounded-full" style={{ ...b(s.dot[0], s.dot[1], 10), aspectRatio: "1", background: RED }} />
+            <div style={b(...s.text)}>
+              <Reveal variant={s.anim} duration={4}>
+                <p className="font-lora font-bold text-center uppercase leading-[1.6]" style={{ fontSize: fz(20), color: RED }}>{item.time}</p>
+                <p className="font-lora text-center uppercase leading-[1.6]" style={{ fontSize: fz(13.5), color: RED }}>{item.label}</p>
               </Reveal>
             </div>
-            <div className="flex items-center justify-center" style={b(...s.icon)}>
-              <TimelineIcon name={item.icon} className="h-full w-full" />
-            </div>
+            <img src={images.deco[item.icon]} alt="" className="object-contain" style={b(...s.icon)} loading="lazy" />
           </React.Fragment>
         );
       })}
-      <img
-        src={images.deco.callaCorner}
-        alt=""
-        className="pointer-events-none"
-        style={{ ...b(0, 603, 176, 172), transform: "rotate(90deg) scaleY(-1)" }}
-      />
+      <img src={images.deco.leafBottom} alt="" className="pointer-events-none" style={b(0, 718, 262, 231)} />
     </Frame>
   );
 }
@@ -754,100 +751,85 @@ function useCountdown(targetIso) {
   return [Math.floor(s / 86400), Math.floor((s % 86400) / 3600), Math.floor((s % 3600) / 60), s % 60];
 }
 
-/** Đếm ngược đè lên ảnh lớn */
-function Countdown({ c }) {
+function CountdownNumbers({ c, b }) {
   const parts = useCountdown(c.target);
-  const b = boxIn(630);
-  const xs = [16, 116, 217, 317];
+  const xs = [78, 147, 216, 285];
+  return parts.map((v, i) => (
+    <React.Fragment key={c.labels[i]}>
+      <p className="font-didot text-center tabular-nums leading-[1.6]" style={{ ...b(xs[i], 217, 59, 43), fontSize: fz(27) }}>
+        {String(v).padStart(2, "0")}
+      </p>
+      <p className="font-cormorant font-medium text-center leading-[1.6]" style={{ ...b(xs[i] + 7, 258, 49, 27), fontSize: fz(17) }}>
+        {c.labels[i]}
+      </p>
+      {i > 0 && (
+        <p className="font-cormorant text-center leading-[1.6]" style={{ ...b(xs[i] - 23, 219, 23, 40), fontSize: fz(20) }}>:</p>
+      )}
+    </React.Fragment>
+  ));
+}
+
+/** Đếm ngược + "Romantic LOVE STORY" + ghép ảnh + câu trích dẫn — khung 420 × 1386 của mẫu */
+function Story({ countdown, s }) {
+  const H = 1386;
+  const b = boxIn(H);
+  const photo = (src, box, pos = "object-center", extra = "") => (
+    <div className="overflow-hidden" style={b(...box)}>
+      <img src={src} alt="" className={`h-full w-full object-cover ${pos} ${extra}`} loading="lazy" />
+    </div>
+  );
   return (
-    <Frame H={630} className="overflow-hidden text-white">
-      <img src={images.countdown} alt="" className="absolute inset-0 h-full w-full object-cover object-top" loading="lazy" />
-      <div className="absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-b from-transparent to-black/50" />
-      <div style={b(0, 428, 420, 64)}>
-        <Reveal variant="up" duration={3}>
-          <h2 className="font-pinyon text-center leading-[1.6]" style={{ fontSize: fz(40) }}>{c.title}</h2>
+    <Frame H={H} style={{ color: OLIVE }}>
+      <img src={images.deco.branch} alt="" className="pointer-events-none" style={b(142, 34, 139, 75)} />
+      {countdown && (
+        <>
+          <div style={b(0, 124, 420, 65)}>
+            <Reveal variant="right" duration={5}>
+              <h2 className="font-pinyon text-center leading-[1.6]" style={{ fontSize: fz(35) }}>{countdown.title}</h2>
+            </Reveal>
+          </div>
+          <CountdownNumbers c={countdown} b={b} />
+        </>
+      )}
+      <img src={images.deco.leafTall} alt="" className="pointer-events-none" style={b(0, 320, 103, 335)} />
+      <img src={images.deco.leafRight} alt="" className="pointer-events-none" style={b(321, 500, 99, 189)} />
+      <h2 className="font-pinyon text-center leading-[1.6]" style={{ ...b(16, 487, 334, 59), fontSize: fz(32) }}>{s.title}</h2>
+      <p className="font-didot text-center uppercase leading-[1.6]" style={{ ...b(47, 531, 316, 51), fontSize: fz(32) }}>{s.subtitle}</p>
+      <p className="font-pinyon text-center leading-[1.6]" style={{ ...b(33, 562, 334, 47), fontSize: fz(25) }}>{s.tagline}</p>
+
+      {photo(images.story[0], [146, 689, 263, 178], "object-center", "grayscale")}
+      <div style={b(0, 734, 146, 35)}>
+        <Reveal variant="left" duration={4}>
+          <p className="font-cormorant italic font-medium text-center leading-[1.6]" style={{ fontSize: fz(22) }}>{s.caption}</p>
         </Reveal>
       </div>
-      {parts.map((v, i) => (
-        <React.Fragment key={c.labels[i]}>
-          <p className="font-didot text-center tabular-nums leading-none" style={{ ...b(xs[i], 508, 91, 50), fontSize: fz(38) }}>
-            {String(v).padStart(2, "0")}
-          </p>
-          <p className="font-notoserif text-center leading-[1.6]" style={{ ...b(xs[i] + 4, 559, 81, 26), fontSize: fz(16) }}>
-            {c.labels[i]}
-          </p>
-          {i > 0 && (
-            <p className="font-lora text-center leading-none" style={{ ...b(xs[i] - 22, 510, 26, 43), fontSize: fz(26.7) }}>
-              :
-            </p>
-          )}
-        </React.Fragment>
+      {photo(images.story[1], [11, 776, 133, 91])}
+      <span style={{ ...b(56, 869, 87, 87), background: OLIVE }} />
+      <span style={{ ...b(70, 960, 73, 73), background: "rgba(112,108,75,0.2)" }} />
+      {photo(images.story[2], [146, 869, 165, 251], "object-top")}
+      {photo(images.story[3], [316, 869, 94, 143], "object-top")}
+      <img src={images.deco.floral} alt="" className="pointer-events-none" style={b(0, 1036, 321, 350)} />
+      <div style={b(305, 1025, 115, 48)}>
+        <Reveal variant="right" duration={4}>
+          <p className="font-cormorant text-center uppercase leading-[1.6]" style={{ fontSize: fz(30) }}>{s.word}</p>
+        </Reveal>
+      </div>
+      {s.quote.map((line, i) => (
+        <div key={line} style={b(0, 1171 + i * 55, 420, 48)}>
+          <Reveal variant={i ? "right" : "left"} duration={4}>
+            <p className="font-lora italic text-center whitespace-pre-line leading-[1.6] opacity-80" style={{ fontSize: fz(15) }}>{line}</p>
+          </Reveal>
+        </div>
       ))}
     </Frame>
   );
 }
 
-/** Our Moments: 3 ảnh khung trắng chồng nhau + chữ */
-function Moments({ m }) {
-  const H = 595;
-  const b = boxIn(H);
-  const frame = "absolute overflow-hidden border-[5px] border-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]";
-  return (
-    <Frame H={H} style={{ color: RED }}>
-      <div style={b(126, 0, 185, 237)}>
-        <Reveal variant="down" duration={3} className="h-full" wrapClassName="h-full">
-          <div className={`${frame} inset-0`} style={{ position: "relative", height: "100%" }}>
-            <img src={images.moments[0]} alt="" className="h-full w-full object-cover object-top" loading="lazy" />
-          </div>
-        </Reveal>
-      </div>
-      <p className="font-trirong italic text-center" style={{ ...b(297, 53, 118, 22), fontSize: fz(14), color: RED }}>{m.captions[1]}</p>
-      <div style={b(288, 86, 120, 98)}>
-        <Reveal variant="right" duration={3} className="h-full" wrapClassName="h-full">
-          <div className={frame} style={{ position: "relative", height: "100%" }}>
-            <img src={images.moments[1]} alt="" className="h-full w-full object-cover object-[center_62%]" loading="lazy" />
-          </div>
-        </Reveal>
-      </div>
-      <p className="font-taviraj italic text-center" style={{ ...b(20, 104, 118, 22), fontSize: fz(14), color: RED }}>{m.captions[0]}</p>
-      <div style={b(12, 136, 188, 221)}>
-        <Reveal variant="left" duration={3} className="h-full" wrapClassName="h-full">
-          <div className="relative h-full border-[5px] border-white bg-[#f8f3ed]/90">
-            <p className="absolute inset-x-0 top-[28%] text-center font-tinos uppercase leading-none" style={{ fontSize: fz(34), color: RED }}>
-              {m.title[0]}
-            </p>
-            <p className="absolute inset-x-0 top-[38%] text-center font-pinyon leading-[1.6]" style={{ fontSize: fz(42), color: RED }}>
-              {m.title[1]}
-            </p>
-          </div>
-        </Reveal>
-      </div>
-      <div style={b(177, 194, 231, 305)}>
-        <Reveal variant="up" duration={3} className="h-full" wrapClassName="h-full">
-          <div className={frame} style={{ position: "relative", height: "100%" }}>
-            <img src={images.moments[2]} alt="" className="h-full w-full object-cover object-top" loading="lazy" />
-          </div>
-        </Reveal>
-      </div>
-      <div style={b(0, 370, 173, 45)}>
-        <Reveal variant="left" duration={3}>
-          <p className="font-taviraj italic text-right leading-[1.6]" style={{ fontSize: fz(14), color: RED }}>{m.text}</p>
-        </Reveal>
-      </div>
-      <img
-        src={images.deco.calla}
-        alt=""
-        className="pointer-events-none object-contain"
-        style={{ ...b(-50, 430, 300, 140), transform: "rotate(17deg)" }}
-      />
-    </Frame>
-  );
-}
-
-/** Ảnh lớn + dải ảnh nhỏ (bấm để đổi, tự chuyển 4 giây) */
+/** Ảnh lớn có nút trước / sau + dải ảnh nhỏ (bấm để đổi, tự chuyển 4 giây) */
 function Gallery({ list }) {
   const [active, setActive] = useState(0);
   const stripRef = useRef(null);
+  const go = (step) => setActive((i) => (i + step + list.length) % list.length);
   useEffect(() => {
     const t = setInterval(() => {
       if (document.visibilityState !== "hidden") setActive((i) => (i + 1) % list.length);
@@ -862,7 +844,7 @@ function Gallery({ list }) {
 
   return (
     <div className="border-[6px] border-white bg-white">
-      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "408 / 620" }}>
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "408 / 600" }}>
         {list.map((src, i) => (
           <img
             key={src}
@@ -872,15 +854,21 @@ function Gallery({ list }) {
             className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-1000 ${i === active ? "opacity-100" : "opacity-0"}`}
           />
         ))}
+        <button type="button" onClick={() => go(-1)} aria-label="Ảnh trước" className="absolute left-[2%] top-1/2 -translate-y-1/2 p-2 text-[#333]/80">
+          <ChevronLeft className="h-7 w-7" strokeWidth={1.5} />
+        </button>
+        <button type="button" onClick={() => go(1)} aria-label="Ảnh sau" className="absolute right-[2%] top-1/2 -translate-y-1/2 p-2 text-[#333]/80">
+          <ChevronRight className="h-7 w-7" strokeWidth={1.5} />
+        </button>
       </div>
-      <div ref={stripRef} className="no-scrollbar mt-[6px] flex gap-[8px] overflow-x-auto">
+      <div ref={stripRef} className="no-scrollbar mt-[6px] flex gap-[6px] overflow-x-auto">
         {list.map((src, i) => (
           <button
             key={src}
             type="button"
             onClick={() => setActive(i)}
             aria-label={`Ảnh ${i + 1}`}
-            className={`shrink-0 basis-[calc((100%-40px)/6)] transition-opacity ${i === active ? "opacity-100" : "opacity-55"}`}
+            className={`shrink-0 basis-[calc((100%-30px)/6)] transition-opacity ${i === active ? "opacity-100" : "opacity-55"}`}
           >
             <img src={src} alt="" className="aspect-[56/66] w-full object-cover object-top" loading="lazy" />
           </button>
@@ -935,18 +923,18 @@ function RsvpForm({ c }) {
   }
 
   const inputCls =
-    "w-full rounded-full border border-[#22371a] bg-white/60 px-3 py-[11px] font-taviraj text-[15px] text-[#22371a] placeholder:text-[#22371a]/80 outline-none focus:ring-2 focus:ring-[#7f0606]/30";
+    "w-full rounded-full border border-[#a6a6a6] bg-white/70 px-4 py-[11px] font-cormorant font-medium text-[15px] text-[#6f6c4a] placeholder:text-[#6f6c4a]/80 outline-none focus:ring-2 focus:ring-[#6f6c4a]/30";
 
   return (
-    <div className="text-center" style={{ color: RED }}>
-      <Reveal variant="down" duration={3}>
-        <h2 className="font-guest leading-[1.6]" style={{ fontSize: fz(30) }}>{c.title}</h2>
+    <div className="text-center" style={{ color: OLIVE }}>
+      <Reveal variant="down" duration={4}>
+        <h2 className="font-cormorant uppercase leading-[1.6]" style={{ fontSize: fz(32) }}>{c.title}</h2>
       </Reveal>
-      <p className="font-taviraj leading-[1.6] px-[13%] mt-1" style={{ fontSize: fz(15) }}>{c.intro}</p>
+      <p className="font-quicksand italic leading-[1.6] px-[12%]" style={{ fontSize: fz(15) }}>{c.intro}</p>
       {sent ? (
         <p className="font-lora text-lg py-6 px-[9%]">{c.thanks}</p>
       ) : (
-        <form onSubmit={handleSubmit} className="mx-auto mt-4 w-[85%] space-y-[13px]">
+        <form onSubmit={handleSubmit} className="mx-auto mt-[5%] w-[85.7%] space-y-[13px]">
           <input required value={form.name} onChange={update("name")} placeholder={c.placeholders.name} className={inputCls} />
           <input value={form.message} onChange={update("message")} placeholder={c.placeholders.message} className={inputCls} />
           {c.askAttend && (
@@ -954,7 +942,7 @@ function RsvpForm({ c }) {
               required
               value={form.attend}
               onChange={update("attend")}
-              className={`${inputCls} appearance-none bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='10'%20height='6'%3E%3Cpath%20d='M0%200h10L5%206z'%20fill='%2322371a'/%3E%3C/svg%3E")] bg-[length:10px_6px] bg-[right_16px_center] bg-no-repeat`}
+              className={`${inputCls} appearance-none bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='10'%20height='6'%3E%3Cpath%20d='M0%200h10L5%206z'%20fill='%236f6c4a'/%3E%3C/svg%3E")] bg-[length:10px_6px] bg-[right_16px_center] bg-no-repeat`}
             >
               <option value="" disabled>
                 {c.placeholders.attend}
@@ -979,7 +967,8 @@ function RsvpForm({ c }) {
             <button
               type="submit"
               disabled={sending}
-              className="w-[70%] rounded-[20px] border border-[#7f0606] bg-[#7f0606] py-[9px] font-lora text-[15px] uppercase text-white shadow transition hover:brightness-110 disabled:opacity-70"
+              className="w-[73%] rounded-full py-[9px] font-lora text-[15px] uppercase text-white shadow transition hover:brightness-110 disabled:opacity-70"
+              style={{ background: OLIVE }}
             >
               {sending ? c.sending : c.submit}
             </button>
@@ -1009,10 +998,10 @@ function GiftAccount({ account, c }) {
         <img
           src={account.qr}
           alt={`Mã QR chuyển khoản ${account.bank} ${account.number}`}
-          className="w-36 h-36 rounded-xl border-2 border-[#7f0606]/70 bg-white p-1.5 shadow-md"
+          className="w-36 h-36 rounded-xl border-2 border-[#6f6c4a]/70 bg-white p-1.5 shadow-md"
         />
       )}
-      <dl className="mt-3 space-y-1 font-lora font-bold text-[13px] uppercase text-[#7f0606]">
+      <dl className="mt-3 space-y-1 font-lora font-bold text-[13px] uppercase text-[#6f6c4a]">
         <div><dt className="inline">CTK: </dt><dd className="inline">{account.holder}</dd></div>
         <div><dt className="inline">STK: </dt><dd className="inline tracking-wide">{account.number}</dd></div>
         <div><dt className="inline">NH: </dt><dd className="inline">{account.bank}</dd></div>
@@ -1021,7 +1010,7 @@ function GiftAccount({ account, c }) {
         <button
           type="button"
           onClick={copy}
-          className="inline-flex items-center gap-1.5 rounded-full bg-[#7f0606] px-4 py-1.5 font-lora text-sm text-white shadow transition hover:brightness-110"
+          className="inline-flex items-center gap-1.5 rounded-full bg-[#6f6c4a] px-4 py-1.5 font-lora text-sm text-white shadow transition hover:brightness-110"
         >
           {copied ? <Check className="w-3.5 h-3.5" aria-hidden /> : <Copy className="w-3.5 h-3.5" aria-hidden />}
           {copied ? c.copiedLabel : c.copyLabel}
@@ -1031,7 +1020,7 @@ function GiftAccount({ account, c }) {
           <a
             href={account.qr}
             download={`QR-${account.bank}-${account.number}.png`}
-            className="inline-flex items-center gap-1.5 rounded-full border border-[#7f0606]/50 px-4 py-1.5 font-lora text-sm text-[#7f0606] transition hover:bg-[#7f0606] hover:text-white"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[#6f6c4a]/50 px-4 py-1.5 font-lora text-sm text-[#6f6c4a] transition hover:bg-[#6f6c4a] hover:text-white"
           >
             <Download className="w-3.5 h-3.5" aria-hidden />
             {c.saveQrLabel}
@@ -1063,12 +1052,12 @@ function GiftModal({ c, photo, onClose }) {
             type="button"
             onClick={onClose}
             aria-label="Đóng"
-            className="absolute right-4 top-4 text-[#7f0606]/70 hover:text-[#7f0606]"
+            className="absolute right-4 top-4 text-[#6f6c4a]/70 hover:text-[#6f6c4a]"
           >
             <X className="w-6 h-6" />
           </button>
-          <h2 className="font-guest text-[38px] leading-tight whitespace-nowrap text-[#7f0606] text-center mt-3">{c.title}</h2>
-          <div className="h-px bg-[#7f0606]/20 my-4" />
+          <h2 className="font-pinyon text-[36px] leading-tight whitespace-nowrap text-[#6f6c4a] text-center mt-3">{c.title}</h2>
+          <div className="h-px bg-[#6f6c4a]/20 my-4" />
           <div className="grid grid-cols-[1fr_1.1fr] items-center gap-3">
             <img
               src={photo}
@@ -1087,50 +1076,24 @@ function GiftModal({ c, photo, onClose }) {
   );
 }
 
-/** Ảnh tròn trong vòng lá + nút Gửi mừng cưới */
-function CirclePhoto({ gift, onGift }) {
-  return (
-    <div className="relative mx-auto w-full" style={{ aspectRatio: gift ? "420 / 280" : "420 / 235" }}>
-      <div className="absolute animate-tada" style={{ left: "22.9%", top: 0, width: "48.6%", aspectRatio: "1" }}>
-        <img src={images.deco.wreath} alt="" className="absolute -left-[2%] -top-[3%] w-[106%] max-w-none" />
-        <div className="absolute left-[5%] top-[8%] w-[92%] aspect-square overflow-hidden rounded-full border-[5px] border-white shadow-[0_6px_18px_rgba(127,6,6,0.18)]">
-          <img src={images.circle} alt="" className="h-full w-full object-cover object-[center_22%]" loading="lazy" />
-        </div>
-      </div>
-      {gift && (
-        <button
-          type="button"
-          onClick={onGift}
-          /** Căn giữa bằng left (không dùng translate — transform của animate-pulse-3 sẽ đè mất) */
-          className="absolute inline-flex items-center justify-center gap-2 rounded-full bg-[#7f0606] font-lora uppercase text-white shadow-lg animate-pulse-3"
-          style={{ top: "84%", left: "28.55%", width: "42.9%", height: "13.2%", fontSize: fz(13) }}
-        >
-          <Gift className="h-[1.3em] w-[1.3em]" aria-hidden />
-          {gift}
-        </button>
-      )}
-    </div>
-  );
-}
-
-/** Thank You: ảnh lớn loang đỏ rượu ở dưới, chữ cảm ơn + ký tên */
+/** Thank You: ảnh lớn loang hồng đất ở dưới, chữ cảm ơn + ký tên */
 function ThankYou({ t }) {
   /** Cao hơn mẫu (472) để dòng ký tên không nằm dưới nút nhạc */
-  const H = 580;
+  const H = 560;
   const b = boxIn(H);
   return (
     <Frame H={H} className="overflow-hidden text-white">
-      <img src={images.thankYou} alt="" className="absolute inset-0 h-full w-full object-cover object-[center_18%]" loading="lazy" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent from-40% via-[#7f0606]/70 via-[62%] to-[#7f0606]" />
-      <div style={b(0, 300, 420, 64)}>
-        <Reveal variant="down" duration={3}>
-          <h2 className="font-guest text-center leading-[1.6]" style={{ fontSize: fz(42) }}>{t.title}</h2>
+      <img src={images.thankYou} alt="" className="absolute inset-0 h-full w-full object-cover object-[center_12%]" loading="lazy" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent from-[42%] via-[#ba4353]/60 via-[64%] to-[#a83a4b]" />
+      <div style={b(0, 300, 420, 54)}>
+        <Reveal variant="down" duration={5}>
+          <h2 className="font-pinyon text-center leading-[1.6]" style={{ fontSize: fz(36) }}>{t.title}</h2>
         </Reveal>
       </div>
-      <p className="font-cormorant whitespace-pre-line text-center leading-[1.6]" style={{ ...b(48, 366, 324, 90), fontSize: fz(15) }}>
+      <p className="font-cormorant font-medium text-center leading-[1.6]" style={{ ...b(29, 368, 363, 80), fontSize: fz(16) }}>
         {t.text}
       </p>
-      <p className="font-pinyon text-center leading-[1.6]" style={{ ...b(0, 484, 420, 44), fontSize: fz(t.sign.length > 24 ? 19 : 26) }}>
+      <p className="font-pinyon text-center leading-[1.6]" style={{ ...b(0, 470, 420, 44), fontSize: fz(t.sign.length > 24 ? 22 : 27) }}>
         {t.sign}
       </p>
     </Frame>
@@ -1142,94 +1105,60 @@ function WeddingPage() {
   const guest = useGuestName(c.invitation.defaultGuest);
   const [giftOpen, setGiftOpen] = useState(false);
   const closeGift = useCallback(() => setGiftOpen(false), []);
-  const names = c.hero.names;
-  const initials = names.map((n) => n.split(" ").pop()[0]);
-  const [nameA, nameB] = c.families.fullNames;
+  const hasGift = c.gift.accounts.length > 0;
 
   return (
     <div className="min-h-screen bg-[#e7e5e2] font-lora">
       <BackgroundMusic src={c.music.src} volume={c.music.volume} />
       <FallingEffects />
 
-      <main className="paper relative mx-auto max-w-[420px] overflow-hidden shadow-2xl [container-type:inline-size]" style={{ color: RED }}>
-        <Cover c={c.hero} names={names} />
-        <div className="pt-[2.6%]">
-          <Monogram initials={initials} quote={c.hero.quote} />
-        </div>
-        <DateStrip parts={c.invitation.dateParts} />
+      <main className="paper relative mx-auto max-w-[420px] overflow-hidden shadow-2xl [container-type:inline-size]" style={{ color: OLIVE }}>
+        <Cover c={c.hero} />
+        <Darling d={c.darling} />
 
         {c.calendar.dateIso && (
-          <section className="pt-[3.5%]">
+          <section className="pt-[1%] pb-[11%]">
             <MonthCalendar dateIso={c.calendar.dateIso} />
-            <Reveal variant="fade" duration={4}>
-              <img src={images.deco.calla} alt="" className="mx-auto mt-[4%] w-[50.5%]" />
-            </Reveal>
           </section>
         )}
 
-        {/* Nhà trai / Nhà gái */}
-        <section className="grid grid-cols-2 gap-x-[12.8%] px-[1%] pt-[14%]">
-          {c.families.sides.map((side, i) => (
-            <Reveal key={side.label} variant={i ? "right" : "left"} duration={3}>
-              <FamilySide side={side} />
-            </Reveal>
-          ))}
-        </section>
+        <WideImage src={images.wide} ratio="420 / 280" />
 
-        {/* Lời mời + tên khách + tên hai người */}
-        <section className="pt-[7%] text-center font-lora uppercase">
-          <p className="leading-[1.6]" style={{ fontSize: fz(17) }}>{c.invitation.kicker}</p>
-          <div className="mx-auto w-[48.3%] border-b border-dotted border-[#7f0606]/80">
-            <p className="font-guest normal-case leading-[1.5] whitespace-nowrap" style={{ fontSize: fz(guest.length > 18 ? 26 : 34) }}>
-              {guest}
-            </p>
-          </div>
-          <p className="whitespace-pre-line leading-[1.6] mt-[2%]" style={{ fontSize: fz(17) }}>{c.invitation.title}</p>
-          <div className="mx-auto mt-[2%] w-px bg-[#7f0606]" style={{ height: fz(54) }} />
-          <div className="relative py-[2%]">
-            <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-guest normal-case opacity-10" style={{ fontSize: fz(100) }} aria-hidden>
-              &amp;
-            </span>
-            <Reveal variant="zoom" duration={3}>
-              <p className="font-didot leading-[1.6]" style={{ fontSize: fz(40) }}>{nameA}</p>
-              <p className="font-didot leading-[1.6]" style={{ fontSize: fz(40) }}>{nameB}</p>
-            </Reveal>
-          </div>
-          <div className="mx-auto w-px bg-[#7f0606]" style={{ height: fz(54) }} />
-        </section>
+        <Invitation c={c} guest={guest} />
 
-        {/* Sự kiện */}
-        <section className="pt-[3%] pb-[8%]">
-          {c.events.items.map((item, i) => (
-            <React.Fragment key={item.id}>
-              {i > 0 && <div className="mx-auto my-[6%] h-px w-[41%] bg-[#7f0606]/60" />}
-              <EventBlock item={item} mapLabel={c.events.mapLabel} />
-            </React.Fragment>
-          ))}
-        </section>
+        <RomanticLove r={c.romantic} />
 
-        <QuoteImage text={c.quoteImage} />
+        {c.timeline && (
+          <section className="pt-[8.5%]">
+            <Timeline t={c.timeline} />
+          </section>
+        )}
 
-        <section className="pt-[6%]">
-          <Timeline t={c.timeline} />
-        </section>
+        <WideImage src={images.big} ratio="420 / 619" />
 
-        {c.countdown && <Countdown c={c.countdown} />}
-
-        <section className="pt-[8%] pb-[2%]">
-          <Moments m={c.moments} />
-        </section>
+        <Story countdown={c.countdown} s={c.story} />
 
         <Gallery list={images.album} />
 
-        {c.rsvp.show && (
-          <section className="pt-[9%]">
-            <RsvpForm c={c.rsvp} />
-          </section>
-        )}
-
-        <section className="pt-[7%] pb-[3%]">
-          <CirclePhoto gift={c.gift.accounts.length > 0 ? c.gift.button : null} onGift={() => setGiftOpen(true)} />
+        <section className="relative pt-[41%] pb-[12%]">
+          <img src={images.deco.corner} alt="" className="pointer-events-none absolute left-0 top-0 w-[72%]" />
+          <img src={images.deco.borderBottom} alt="" className="pointer-events-none absolute inset-x-0 bottom-0 w-full" />
+          <div className="relative">
+            {c.rsvp.show && <RsvpForm c={c.rsvp} />}
+            {hasGift && (
+              <div className="mt-[4%] text-center">
+                <button
+                  type="button"
+                  onClick={() => setGiftOpen(true)}
+                  className="inline-flex w-[78%] items-center justify-center gap-2 rounded-full border border-[#a6a6a6] bg-white/60 py-[10px] font-lora uppercase animate-pulse-3"
+                  style={{ fontSize: fz(15), color: OLIVE }}
+                >
+                  <Gift className="h-[1.2em] w-[1.2em]" aria-hidden />
+                  {c.gift.button}
+                </button>
+              </div>
+            )}
+          </div>
         </section>
 
         <ThankYou t={c.thanks} />

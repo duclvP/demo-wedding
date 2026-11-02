@@ -1,106 +1,97 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_BRIDE = '382 Ngô Quyền, Phường Lào Cai, Thành phố Lào Cai';
-const ADDRESS_GROOM = 'Xã Chất Bình, Tỉnh Ninh Bình';
-/** Nơi tổ chức Lễ Vu Quy — ghi theo thiệp giấy của khách */
-const VENUE_BRIDE = 'Đường Ngô Quyền, Kim Tân, Phường Lào Cai, Tỉnh Lào Cai';
+/** Địa chỉ nhà gái theo ticket (issue #34): "52 ấp Bắc xã Tân Thạnh đồng tháp" */
+const ADDRESS_BRIDE = '52 Ấp Bắc, Xã Tân Thạnh, Tỉnh Đồng Tháp';
 
-/** father / mother / address: để null nếu không muốn hiển thị */
+/** father / mother: để null nếu không muốn hiển thị — cả hai bên đều null thì ẩn mục Nhà Gái / Nhà Trai */
+/** TODO: ticket chưa có tên bố mẹ hai bên */
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Vũ Văn Đông',
-  mother: 'Nguyễn Thị Vang',
-  address: ADDRESS_BRIDE,
+  father: null,
+  mother: null,
 };
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Trần Văn Phong',
-  mother: 'Đỗ Thị Bích',
-  address: ADDRESS_GROOM,
+  father: null,
+  mother: null,
 };
 
 export const content = {
   hero: {
-    subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này (bản nhà gái: cô dâu trước) */
-    names: ['Huyền Trang', 'Xuân Bình'],
-    dateLine: '13 . 11 . 2026',
-    /** Câu tiếng Anh dưới chữ lồng */
-    quote: 'We step into a new chapter together, hand in hand, ready to build our home and embrace a lifetime of love.',
+    names: ['Diễm My', 'Thanh Toản'],
+    dateLine: '28. 11. 2026',
+  },
+
+  /** Ảnh dọc + chữ DARLING; mỗi dòng: [chữ ngoài ảnh, chữ trắng trên ảnh] */
+  darling: {
+    title: 'Darling',
+    lines: [
+      ['Could you be', 'my light in the dark?'],
+      ['So I can be', 'your Morning star'],
+      ['Wake up you, Fight next to you. In my arms.'],
+    ],
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [BRIDE_SIDE, GROOM_SIDE],
-    /** Tên cô dâu & chú rể — dòng tên lớn giữa thiệp */
-    fullNames: ['Huyền Trang', 'Xuân Bình'],
+    /** Họ tên cô dâu & chú rể — dòng tên viết tay giữa thiệp */
+    fullNames: ['Lê Thị Diễm My', 'Vũ Thanh Toản'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Vu Quy\nCủa Hai Con Chúng Tôi',
-    /** Chữ đè lên 3 ảnh */
-    dateParts: ['13', '11', '2026'],
+    title: 'Tham Dự Buổi Tiệc Cưới Cùng\nGia Đình Chúng Tôi',
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'vu-quy',
-        title: 'Tiệc Mừng Lễ Vu Quy',
-        /** Giờ theo thiệp giấy ("Vào hồi 10 giờ 30") — chữ gõ trong ticket ghi lễ 9h00, tiệc 10h00 */
-        time: '10:30, Thứ Sáu',
+        id: 'tiec-cuoi',
+        /** Một sự kiện thì để null như mẫu (tiêu đề đã nằm trong lời mời) */
+        title: null,
+        time: '10:00, Thứ Bảy',
         /** dd. mm. yyyy */
-        date: '13. 11. 2026',
-        lunar: '( Tức Ngày 05 Tháng 10 Năm Bính Ngọ )',
-        /** Toạ độ ghim khách gửi (issue #32) */
-        places: [{ label: 'Quảng Trường Tráng A Pao', address: VENUE_BRIDE, mapQuery: '22.482020,103.979747' }],
-      },
-      {
-        id: 'thanh-hon',
-        title: 'Lễ Thành Hôn',
-        time: '09:00, Thứ Bảy',
-        date: '14. 11. 2026',
-        lunar: '( Tức Ngày 06 Tháng 10 Năm Bính Ngọ )',
-        /** Toạ độ ghim khách gửi (issue #32) */
-        places: [{ label: 'Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: '20.128537,106.125285' }],
+        date: '28. 11. 2026',
+        lunar: '( Nhằm Ngày 20 Tháng 10 Năm Bính Ngọ )',
+        /** TODO: chưa có ghim bản đồ — chỉ đường đang tìm theo chữ địa chỉ */
+        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
       },
     ],
   },
 
-  /** Ảnh lớn có câu chữ viết tay */
-  quoteImage: 'Two hearts, one love,\none beautiful journey',
+  romantic: { title: 'Romantic', word: 'Love' },
 
-  /** Lịch trình — tối đa 4 mốc trên đường cong; icon: bouquet | toast | rings | fork */
-  timeline: {
-    title: 'Timeline',
-    items: [
-      { time: '10:30 - 13/11', label: 'Lễ Vu Quy', icon: 'bouquet' },
-      { time: '09:00 - 14/11', label: 'Lễ Thành Hôn', icon: 'rings' },
-    ],
-  },
+  /**
+   * Lịch trình — tối đa 4 mốc trên đường cong; icon: bouquet | rings | toast | disco.
+   * TODO: ticket chỉ có giờ tiệc 10:00, không đón dâu → để null (ẩn) tới khi khách gửi lịch trình
+   */
+  timeline: null,
 
   /** Bộ đếm ngược — để null thì ẩn */
   countdown: {
     title: 'Countdown',
-    /** Giờ Việt Nam (+07:00) — Tiệc Mừng Lễ Vu Quy 10:30 13/11/2026 */
-    target: '2026-11-13T10:30:00+07:00',
+    /** Giờ Việt Nam (+07:00) — tiệc cưới 10:00 28/11/2026 */
+    target: '2026-11-28T10:00:00+07:00',
     labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
   },
 
   calendar: {
-    title: 'Save The Date',
-    /** Ngày khoanh tim trên lịch tháng — để null thì ẩn lịch */
-    dateIso: '2026-11-13',
+    /** Ngày in trên tim vân tay ở lịch tháng — để null thì ẩn lịch */
+    dateIso: '2026-11-28',
   },
 
-  moments: {
-    title: ['Our', 'Moments'],
-    captions: ['Forever', 'Love you'],
-    text: "A collection of memories we've shared together",
+  story: {
+    title: 'Romantic',
+    subtitle: 'Love Story',
+    tagline: 'never have endings',
+    caption: 'only my love',
+    word: 'Love',
+    quote: ['"Being deeply loved by someone\ngives you strength,', 'while loving someone deeply gives\nyou courage."'],
   },
 
   rsvp: {
@@ -111,8 +102,8 @@ export const content = {
      */
     endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
     /** Slug riêng của thiệp trong script dùng chung — không đổi sau khi đã có lời chúc */
-    coupleId: 'huyen-trang-xuan-binh-nha-gai',
-    coupleName: 'Huyền Trang & Xuân Bình (nhà gái)',
+    coupleId: 'diem-my-thanh-toan-nha-gai',
+    coupleName: 'Diễm My & Thanh Toản (nhà gái)',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
@@ -126,35 +117,28 @@ export const content = {
       guestCount: 'Bạn đi bao nhiêu người ?',
     },
     attendYes: 'Có, mình sẽ đến',
-    attendNo: 'Tiếc quá, hôm đấy mình bận mất rồi :(',
-    submit: 'Xác Nhận',
+    attendNo: 'Tiếc quá, hôm đấy mình không đến được :((',
+    submit: 'Xác Nhận & Gửi Lời Chúc',
     sending: 'Đang gửi...',
     error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
     thanks: 'Cảm ơn bạn! Lời chúc của bạn đã được ghi nhận.',
   },
 
-  /** Hộp mừng cưới — để accounts: [] để ẩn nút "Gửi mừng cưới" */
+  /** Hộp mừng cưới — để accounts: [] để ẩn nút "Gửi quà mừng cưới" */
   gift: {
-    button: 'Gửi Mừng Cưới',
+    button: 'Gửi Quà Mừng Cưới',
     title: 'Hộp Quà Mừng Cưới',
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    /** QR khách gửi — đã giải mã: BIN 970418 (BIDV), STK khớp chữ trên ảnh */
-    accounts: [
-      {
-        holder: 'VU HUYEN TRANG',
-        number: '3750667212',
-        bank: 'BIDV',
-        qr: '/images/qr-bidv.png',
-      },
-    ],
+    /** Ticket ghi "Kh QR" — chưa có tài khoản */
+    accounts: [],
   },
 
   thanks: {
     title: 'Thank You',
     text: 'Từ tận đáy lòng, chúng mình cảm ơn bạn đã dành tình cảm và sự hiện diện cho ngày vui này. Chính bạn đã góp phần làm nên một kỷ niệm hạnh phúc mà chúng mình sẽ luôn trân trọng.',
-    sign: 'Huyền Trang & Xuân Bình',
+    sign: 'Diễm My & Thanh Toản',
   },
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */

@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  /* Đỏ rượu mẫu lovecard mau-49 (#7f0606) */
+  /* Xanh ô liu mẫu lovecard thiepso53 (#6f6c4a) */
   --background: 30 8% 95%;
-  --foreground: 0 91% 26%;
-  --primary: 0 91% 26%;
+  --foreground: 54 20% 36%;
+  --primary: 54 20% 36%;
   --primary-foreground: 0 0% 100%;
   --secondary: 38 60% 45%;
   --secondary-foreground: 0 0% 100%;

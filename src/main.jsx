@@ -1427,10 +1427,8 @@ function WeddingPage() {
           <section className="relative pb-14 pt-2">
             <GoldRope className="relative z-[1] h-[22px] w-full" />
             <div className="-mt-[14px] grid grid-cols-2 gap-[6%] px-[5%]">
-              {[
-                [c.couple.groom, images.groom],
-                [c.couple.bride, images.bride],
-              ].map(([p, src]) => (
+              {/* Thứ tự trái → phải theo couple.order (mặc định chú rể | cô dâu) */}
+              {(c.couple.order ?? ["groom", "bride"]).map((k) => [c.couple[k], images[k]]).map(([p, src]) => (
                 <div key={p.role} className="relative pt-3">
                   <PaperClip className="absolute left-1/2 -top-6 z-[2] h-[54px] w-[24px] -translate-x-1/2 rotate-[-18deg]" />
                   <HangingCard person={p} photo={src} />

@@ -45,6 +45,8 @@ export const content = {
 
   /** Hai thẻ ảnh treo kẹp giấy "Chú rể | Cô dâu" */
   couple: {
+    /** Trái → phải: cô dâu (nhìn sang phải) bên trái, chú rể (nhìn sang trái) bên phải → hai người nhìn vào nhau */
+    order: ['bride', 'groom'],
     groom: { role: 'Chú rể', name: 'Đỗ Hùng' },
     bride: { role: 'Cô dâu', name: 'Bích Liên' },
   },

@@ -4,26 +4,31 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        /* Font thay thế (Google Fonts) cho font trả phí của mẫu lovecard thiepso53 (ghi chú: font gốc) */
-        sans: ['Lora', 'serif'],
-        /** Lora (font gốc của mẫu) — chữ thường, sự kiện, gia đình */
-        lora: ['Lora', 'serif'],
-        /** Tên + ngày ở bìa, DARLING, LOVE, thứ trong lịch, đếm ngược, Xem chỉ đường (font gốc: 1FTV VIP Ergisa) */
-        didot: ['"Cormorant Garamond"', 'serif'],
-        /** Câu thơ, Thank You, nhãn đếm ngược, Xác Nhận Tham Dự (font gốc: "sss") */
-        cormorant: ['"Cormorant Garamond"', 'serif'],
-        /** Tên tháng, Romantic, Timeline, Countdown, họ tên hai người, Thank You (font gốc: BHN BP Ecatherina) */
-        pinyon: ['"Pinyon Script"', 'cursive'],
-        /** Ed Drayton — "Quý khách" */
+        /* Font thay thế cho font của mẫu lovecard.click/vemaybay (ghi chú: font gốc) */
+        sans: ['Quicksand', 'system-ui', 'sans-serif'],
+        /** SFU Edwardian Script — tên cô dâu chú rể */
+        edw: ['"Pinyon Script"', 'cursive'],
+        /** 1FTV VIP High Spirited — "Countdown", "Timeline" */
+        script: ['Ephesis', 'cursive'],
+        /** UTM Candlescript — "Tháng 12 - 2026", "&", "Dresscode", "Album of Love"; tiêu đề hộp quà */
+        vibes: ['"Great Vibes"', 'cursive'],
+        /** Ed Drayton — "Thank You", tên khách */
         guest: ['"Imperial Script"', 'cursive'],
-        quicksand: ['Quicksand', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif'],
-        taviraj: ['Taviraj', 'serif'],
-        trirong: ['Trirong', 'serif'],
-        notoserif: ['"Noto Serif"', 'serif'],
-        tinos: ['Tinos', 'serif'],
+        /** Font chữ in (bfbfb) — "KÍNH MỜI…", "TƯ GIA NHÀ GÁI", "NHẤN VÀO PASSPORT" */
+        josefin: ['"Josefin Sans"', 'sans-serif'],
+        /** Font chữ máy (gdgdgdg) — "DESTINATION: MARRIAGE", đầu vé */
+        mono: ['"Space Mono"', 'monospace'],
+        /** Tiêu đề form lời chúc */
+        hand: ['"Dancing Script"', 'cursive'],
+        lora: ['Lora', 'serif'],
+        upright: ['"Cormorant Upright"', 'serif'],
+        /** Số trên lịch, giờ trong Timeline */
+        display: ['Tinos', 'serif'],
       },
       colors: {
+        /** Vàng đồng mẫu vé máy bay rgb(167, 137, 80) / chữ phụ rgb(145, 131, 98) */
+        gold: '#a78950',
+        goldsoft: '#918362',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {

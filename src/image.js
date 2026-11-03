@@ -3,55 +3,37 @@
  * Thêm ảnh mới: bỏ file vào public/images/ rồi thêm đường dẫn vào đây.
  */
 export const images = {
-  /** Ảnh bìa 2:3 — tên + ngày đè lên phần dưới */
-  hero: '/images/vuon-hon.jpg',
-  /** Ảnh dọc cạnh chữ DARLING (2:3, câu thơ trắng đè đáy ảnh) */
-  darling: '/images/vuon-nam-tay.jpg',
-  /** Ảnh ngang 3:2 dưới lịch */
-  wide: '/images/vuon-ngang.jpg',
-  /** "Romantic LOVE": ảnh lớn làm mờ phía sau, ảnh khung phải, ảnh khung trái */
-  romantic: {
-    blur: '/images/vuon-voan.jpg',
-    right: '/images/studio-1.jpg',
-    left: '/images/studio-2.jpg',
-  },
-  /** Ảnh lớn 420×619 trước đếm ngược */
-  big: '/images/save-the-date.jpg',
-  /** Ghép ảnh Love Story: ngang lớn (đen trắng), ngang nhỏ, dọc lớn, dọc nhỏ */
-  story: ['/images/save-the-date-ngang.jpg', '/images/vuon-ngang.jpg', '/images/vuon-voan.jpg', '/images/vuon-hon.jpg'],
-  /** Ảnh lớn + dải ảnh nhỏ — chỉ ảnh dọc */
+  /** Ảnh trong hộ chiếu đầu thiệp — NGANG 3:2 (292×199) */
+  hero: '/images/passport.jpg',
+  /** Nền khối Countdown — ngang (418×317), chữ đè nửa dưới */
+  countdown: '/images/vom-ngang.jpg',
+  /** Ảnh polaroid "Love is a journey" — gần vuông (336×351) */
+  journey: '/images/vuon-vuong.jpg',
+  /** Thẻ treo kẹp giấy — vuông 1:1 (cắt từ hai nửa một ảnh đôi) */
+  groom: '/images/chu-re.jpg',
+  bride: '/images/co-dau.jpg',
+  /**
+   * Album of Love: 8 ô đầu xếp so le 2 cột theo khung mẫu
+   * (trái 2:3, 2:3, NGANG 7:5, 3:5 — phải 3:4, 3:5, 1:1, 5:6 — xếp xen kẽ trái/phải),
+   * ảnh thứ 9 trở đi xếp từng cặp 2:3 (nên để số chẵn). Chỉ ảnh chưa dùng ở các mục trên.
+   */
   album: [
-    '/images/vuon-hon.jpg',
     '/images/studio-1.jpg',
-    '/images/vuon-nam-tay.jpg',
+    '/images/hy-1.jpg',
+    '/images/sofa-1.jpg',
+    '/images/tuong-1.jpg',
+    /** ô ngang 7:5 */
+    '/images/vom-2-ngang.jpg',
+    '/images/hy-3.jpg',
+    '/images/studio-3.jpg',
+    '/images/nha-kinh.jpg',
+    '/images/tuong-3.jpg',
     '/images/studio-2.jpg',
-    '/images/vuon-voan.jpg',
-    '/images/save-the-date.jpg',
   ],
+  /** Ảnh tròn trong vòng địa cầu + máy bay (cạnh nút mừng cưới) */
+  circle: '/images/sofa-tron.jpg',
   /** Ảnh trong hộp quà mừng cưới */
-  gift: '/images/studio-2.jpg',
-  /** Ảnh mục Thank You — mặt ở 1/3 trên */
-  thankYou: '/images/studio-1.jpg',
-
-  /** Họa tiết lấy từ trang mẫu lovecard.click/thiepso53 */
-  deco: {
-    amp: '/images/deco-amp.png',
-    leafDarling: '/images/deco-leaf-darling.png',
-    heart: '/images/deco-heart.png',
-    corner: '/images/deco-corner.png',
-    pearl: '/images/deco-pearl.png',
-    mapPin: '/images/deco-map-pin.png',
-    leafTall: '/images/deco-leaf-tall.png',
-    cornerBottom: '/images/deco-corner-bottom.png',
-    timeline: '/images/deco-timeline.png',
-    bouquet: '/images/deco-bouquet.png',
-    rings: '/images/deco-rings.png',
-    toast: '/images/deco-toast.png',
-    disco: '/images/deco-disco.png',
-    leafBottom: '/images/deco-leaf-bottom.png',
-    branch: '/images/deco-branch.png',
-    leafRight: '/images/deco-leaf-right.png',
-    floral: '/images/deco-floral.png',
-    borderBottom: '/images/deco-border-bottom.png',
-  },
+  gift: '/images/sofa-3.jpg',
+  /** Ảnh Thank You (402×438, mặt ở nửa trên — chữ phủ nửa dưới). og.jpg cũng cắt từ ảnh này */
+  thankYou: '/images/studio-chao.jpg',
 };

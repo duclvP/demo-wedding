@@ -1,144 +1,177 @@
-/** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
+/**
+ * Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout.
+ * Mẫu "vé máy bay" (lovecard.click/vemaybay, giao diện lấy từ nhánh demo_vemaybay) — issue #28.
+ */
 
-/** Địa chỉ nhà gái theo ticket (issue #34): "52 ấp Bắc xã Tân Thạnh đồng tháp" */
-const ADDRESS_BRIDE = '52 Ấp Bắc, Xã Tân Thạnh, Tỉnh Đồng Tháp';
+/** Địa chỉ theo ticket: nhà trai "Thôn Đồng Kẻng - xã Quảng Yên (khu 5 Đại An cũ)", nhà gái "thôn Ngọc Am - xã Chí Tiên - Phú Thọ" */
+const ADDRESS_GROOM = 'Thôn Đồng Kẻng, Xã Quảng Yên, Tỉnh Phú Thọ';
+const ADDRESS_BRIDE = 'Thôn Ngọc Am, Xã Chí Tiên, Tỉnh Phú Thọ';
 
-/** father / mother: để null nếu không muốn hiển thị — cả hai bên đều null thì ẩn mục Nhà Gái / Nhà Trai */
-/** TODO: ticket chưa có tên bố mẹ hai bên */
-const BRIDE_SIDE = {
-  label: 'Nhà Gái',
-  father: null,
-  mother: null,
-};
+/**
+ * father / mother / address: để null nếu không muốn hiển thị.
+ * TODO: ticket chưa có tên bố mẹ hai bên
+ */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
   father: null,
   mother: null,
+  address: 'Xã Quảng Yên, Phú Thọ',
+};
+const BRIDE_SIDE = {
+  label: 'Nhà Gái',
+  father: null,
+  mother: null,
+  address: 'Xã Chí Tiên, Phú Thọ',
 };
 
 export const content = {
-  hero: {
-    /** Hiển thị theo đúng thứ tự này (bản nhà gái: cô dâu trước) */
-    names: ['Diễm My', 'Thanh Toản'],
-    dateLine: '28. 11. 2026',
+  /** Màn đóng: tấm vé "Boarding pass" — bấm để mở */
+  cover: {
+    header: 'Boarding pass to our wedding',
+    title: ['Passport', 'Wedding Invitation'],
+    /** Tên ngắn in hoa trên cuống vé (thiệp chung hai nhà, thứ tự như ticket: cô dâu trước) — "Hùng" một chữ nên giữ họ Đỗ */
+    names: ['Bích Liên', 'Đỗ Hùng'],
+    /** Ngày Lễ Thành Hôn */
+    date: '29/11/2026',
+    hint: 'Nhấn vào passport để mở',
   },
 
-  /** Ảnh dọc + chữ DARLING; mỗi dòng: [chữ ngoài ảnh, chữ trắng trên ảnh] */
-  darling: {
-    title: 'Darling',
-    lines: [
-      ['Could you be', 'my light in the dark?'],
-      ['So I can be', 'your Morning star'],
-      ['Wake up you, Fight next to you. In my arms.'],
-    ],
+  hero: {
+    /** Tên trên hộ chiếu (trên, dưới) */
+    names: ['Bích Liên', 'Đỗ Hùng'],
+    /** Hai dòng chữ máy dưới tên */
+    lines: ['Destination: Marriage', 'Boarding date: 29/11/2026'],
+  },
+
+  /** Hai thẻ ảnh treo kẹp giấy "Chú rể | Cô dâu" */
+  couple: {
+    groom: { role: 'Chú rể', name: 'Đỗ Hùng' },
+    bride: { role: 'Cô dâu', name: 'Bích Liên' },
   },
 
   families: {
+    title: 'Boarding Pass',
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [BRIDE_SIDE, GROOM_SIDE],
-    /** Họ tên cô dâu & chú rể — dòng tên viết tay giữa thiệp */
-    fullNames: ['Lê Thị Diễm My', 'Vũ Thanh Toản'],
+    /** Tên hai người dưới lời mời (trên, dưới) — TODO: ticket chưa có họ cô dâu / tên đệm chú rể */
+    fullNames: ['Bích Liên', 'Đỗ Hùng'],
   },
 
   invitation: {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Buổi Tiệc Cưới Cùng\nGia Đình Chúng Tôi',
+    title: ['Tham dự tiệc chung vui', 'của gia đình chúng tôi'],
   },
 
   events: {
     mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'tiec-cuoi',
-        /** Một sự kiện thì để null như mẫu (tiêu đề đã nằm trong lời mời) */
-        title: null,
-        time: '10:00, Thứ Bảy',
-        /** dd. mm. yyyy */
+        id: 'tiec-nha-gai',
+        title: 'Tiệc Mừng Lễ Vu Quy',
+        /** Ticket ghi "4h30 + thứ bảy" — hiểu là 16:30 chiều */
+        time: 'Vào lúc 16 giờ 30 - Thứ Bảy',
         date: '28. 11. 2026',
-        lunar: '( Nhằm Ngày 20 Tháng 10 Năm Bính Ngọ )',
-        /** TODO: chưa có ghim bản đồ — chỉ đường đang tìm theo chữ địa chỉ */
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+        lunar: '( Tức Ngày 20 Tháng 10 Năm Bính Ngọ )',
+        place: 'Tư Gia Nhà Gái',
+        address: ADDRESS_BRIDE,
+        mapQuery: 'Ngọc Am, Chí Tiên, Phú Thọ',
+      },
+      {
+        id: 'tiec-nha-trai',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
+        time: 'Vào lúc 16 giờ 30 - Thứ Bảy',
+        date: '28. 11. 2026',
+        lunar: '( Tức Ngày 20 Tháng 10 Năm Bính Ngọ )',
+        place: 'Tư Gia Nhà Trai',
+        address: ADDRESS_GROOM,
+        mapQuery: 'Khu 5, Đại An, Phú Thọ',
+      },
+      {
+        id: 'thanh-hon',
+        title: 'Lễ Thành Hôn',
+        time: 'Vào lúc 09 giờ 00 - Chủ Nhật',
+        date: '29. 11. 2026',
+        lunar: '( Tức Ngày 21 Tháng 10 Năm Bính Ngọ )',
+        place: 'Tư Gia Nhà Trai',
+        address: ADDRESS_GROOM,
+        mapQuery: 'Khu 5, Đại An, Phú Thọ',
       },
     ],
   },
 
-  romantic: { title: 'Romantic', word: 'Love' },
+  /** Đường bay "Timeline" — icon: camera | cheers | music | rings. Để null thì ẩn */
+  timeline: {
+    title: 'Timeline',
+    items: [
+      { time: '16:30 - 28/11', label: 'Tiệc Mừng Cưới', icon: 'cheers' },
+      { time: '09:00 - 29/11', label: 'Lễ Thành Hôn', icon: 'rings' },
+    ],
+  },
 
-  /**
-   * Lịch trình — tối đa 4 mốc trên đường cong; icon: bouquet | rings | toast | disco.
-   * TODO: ticket chỉ có giờ tiệc 10:00, không đón dâu → để null (ẩn) tới khi khách gửi lịch trình
-   */
-  timeline: null,
+  /** Dresscode — TODO: khách chưa gửi màu, để null (ẩn) */
+  dresscode: null,
 
   /** Bộ đếm ngược — để null thì ẩn */
   countdown: {
     title: 'Countdown',
-    /** Giờ Việt Nam (+07:00) — tiệc cưới 10:00 28/11/2026 */
-    target: '2026-11-28T10:00:00+07:00',
+    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 09:00 29/11/2026 */
+    target: '2026-11-29T09:00:00+07:00',
     labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
   },
 
   calendar: {
-    /** Ngày in trên tim vân tay ở lịch tháng — để null thì ẩn lịch */
-    dateIso: '2026-11-28',
+    /** Ngày đóng dấu "Love Visa" trên lịch tháng — để null thì ẩn lịch */
+    dateIso: '2026-11-29',
   },
 
-  story: {
-    title: 'Romantic',
-    subtitle: 'Love Story',
-    tagline: 'never have endings',
-    caption: 'only my love',
-    word: 'Love',
-    quote: ['"Being deeply loved by someone\ngives you strength,', 'while loving someone deeply gives\nyou courage."'],
-  },
+  journey: 'Love is a journey',
+  album: { title: 'Album of Love' },
 
   rsvp: {
     /**
-     * Link Web App của Google Apps Script dùng chung — lời chúc lưu vào Sheet riêng của thiệp
-     * (theo coupleId) và gửi email thông báo. Xem google-apps-script/README.md
-     * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
+     * Link Web App của Google Apps Script dùng chung — lời chúc lưu vào Google Sheets
+     * riêng theo coupleId. Xem google-apps-script/README.md
      */
     endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
     /** Slug riêng của thiệp trong script dùng chung — không đổi sau khi đã có lời chúc */
-    coupleId: 'diem-my-thanh-toan-nha-gai',
-    coupleName: 'Diễm My & Thanh Toản (nhà gái)',
+    coupleId: 'bich-lien-do-hung',
+    coupleName: 'Bích Liên & Đỗ Hùng',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: true,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
     askAttend: true,
-    title: 'Xác Nhận Tham Dự',
-    intro: 'Hãy xác nhận tham dự để chúng mình chuẩn bị đón tiếp thật chu đáo. Trân Trọng!',
+    title: 'Xác Nhận & Gửi Lời Chúc',
     placeholders: {
       name: 'Họ và Tên',
-      message: 'Gửi lời chúc cho Dâu Rể',
-      attend: 'Bạn có tham dự không ?',
-      guestCount: 'Bạn đi bao nhiêu người ?',
+      message: 'Gửi lời chúc cho dâu, rể',
+      attend: 'Xác nhận tham dự ?',
+      guestCount: 'Bạn đi bao nhiêu người',
     },
     attendYes: 'Có, mình sẽ đến',
     attendNo: 'Tiếc quá, hôm đấy mình không đến được :((',
-    submit: 'Xác Nhận & Gửi Lời Chúc',
+    submit: 'Gửi Xác Nhận',
+    subtitle: 'Hãy xác nhận tham dự để chúng mình chuẩn bị đón tiếp thật chu đáo. Trân Trọng!',
     sending: 'Đang gửi...',
     error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
     thanks: 'Cảm ơn bạn! Lời chúc của bạn đã được ghi nhận.',
   },
 
-  /** Hộp mừng cưới — để accounts: [] để ẩn nút "Gửi quà mừng cưới" */
+  /** Hộp mừng cưới — accounts: [] để ẩn nút "Gửi mừng cưới" */
   gift: {
-    button: 'Gửi Quà Mừng Cưới',
+    button: 'Gửi Mừng Cưới',
     title: 'Hộp Quà Mừng Cưới',
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    /** Ticket ghi "Kh QR" — chưa có tài khoản */
+    /** TODO: khách chưa gửi mã QR nhận quà */
     accounts: [],
   },
 
   thanks: {
     title: 'Thank You',
     text: 'Từ tận đáy lòng, chúng mình cảm ơn bạn đã dành tình cảm và sự hiện diện cho ngày vui này. Chính bạn đã góp phần làm nên một kỷ niệm hạnh phúc mà chúng mình sẽ luôn trân trọng.',
-    sign: 'Diễm My & Thanh Toản',
   },
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */

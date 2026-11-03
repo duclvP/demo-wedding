@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  /* Xanh ô liu mẫu lovecard thiepso53 (#6f6c4a) */
-  --background: 30 8% 95%;
-  --foreground: 54 20% 36%;
-  --primary: 54 20% 36%;
+  /* Vàng đồng mẫu vé máy bay (#a78950) */
+  --background: 30 6% 95%;
+  --foreground: 0 0% 15%;
+  --primary: 39 35% 48%;
   --primary-foreground: 0 0% 100%;
   --secondary: 38 60% 45%;
   --secondary-foreground: 0 0% 100%;
@@ -19,6 +19,7 @@
 
 html {
   scroll-behavior: smooth;
+  /* thanh cuộn hiện ra sau khi mở vé không làm xê dịch trang */
   scrollbar-gutter: stable;
 }
 
@@ -27,14 +28,14 @@ body {
   min-height: 100vh;
 }
 
-/* Nền giấy mỹ thuật trắng: vân sợi mờ */
+/* Nền giấy mỹ thuật: trắng ngà + vân sợi mờ */
 .paper {
-  background-color: #f4f3f1;
+  background-color: #f4f3f2;
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .55 0 0 0 0 .5 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Hiện dần khi cuộn tới (component Reveal) — fadeInUp/Down/Left/Right của mẫu: dịch 20/40px, 2–5s ease */
+/* Hiện dần khi cuộn tới (component Reveal) — fadeIn của LadiPage: dịch 20–40px, 2–5s ease */
 .reveal {
   opacity: 0;
   transition-property: opacity, transform;
@@ -45,8 +46,7 @@ body {
 .reveal-down { transform: translateY(-20px); }
 .reveal-left { transform: translateX(-40px); }
 .reveal-right { transform: translateX(40px); }
-.reveal-fade { transform: none; }
-.reveal-zoom { transform: scale(0.85); }
+.reveal-zoom { transform: scale(0.7); }
 .reveal.is-visible {
   opacity: 1;
   transform: none;
@@ -94,6 +94,15 @@ body {
   to { transform: translate(calc(-50vw + 100vw * var(--rand-x)), 110vh) scale(1.2); opacity: 0.2; }
 }
 
+/* Nền hộp quà: loang hồng nhạt trên nền trắng */
+.gift-card {
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(244, 201, 207, 0.4), transparent 55%),
+    radial-gradient(ellipse at 85% 30%, rgba(236, 214, 214, 0.5), transparent 50%),
+    radial-gradient(ellipse at 30% 85%, rgba(244, 201, 207, 0.35), transparent 55%),
+    linear-gradient(160deg, #ffffff, #f7f1f0);
+}
+
 /* Nút nhạc: sóng lan ra khi đang phát, nhún khi bấm */
 .music-ripple {
   position: absolute;
@@ -124,6 +133,15 @@ body {
   animation: pulse-soft 1.8s ease-in-out infinite;
 }
 
+/* pulse 2s của nút XEM VỊ TRÍ (mẫu) */
+@keyframes pulse-btn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+.animate-pulse-btn {
+  animation: pulse-btn 2s ease-in-out infinite;
+}
+
 @keyframes swing {
   0%, 100% { transform: rotate(-6deg); }
   50% { transform: rotate(6deg); }
@@ -140,32 +158,6 @@ body {
   animation: spin-slow 4s linear infinite;
 }
 
-/* pulse 3s của mẫu (nút chỉ đường, nút mừng cưới) */
-@keyframes pulse-3 {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
-}
-.animate-pulse-3 {
-  animation: pulse-3 3s ease-in-out infinite;
-}
-
-/* tada 3s của mẫu (ảnh tròn) */
-@keyframes tada {
-  0%, 100% { transform: scale(1) rotate(0); }
-  5%, 10% { transform: scale(0.95) rotate(-2deg); }
-  15%, 25%, 35% { transform: scale(1.05) rotate(2deg); }
-  20%, 30% { transform: scale(1.05) rotate(-2deg); }
-  40% { transform: scale(1) rotate(0); }
-}
-.animate-tada {
-  animation: tada 3s ease infinite;
-}
-
-.font-didot { font-variant-numeric: lining-nums; }
-
-.no-scrollbar { scrollbar-width: none; }
-.no-scrollbar::-webkit-scrollbar { display: none; }
-
 @keyframes pop {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: none; }
@@ -174,16 +166,64 @@ body {
   animation: pop 0.25s ease-out;
 }
 
+/* Máy bay trắng cất cánh khi tải trang (mU 4s, -2000px của mẫu) */
+.takeoff {
+  animation: takeoff 4s cubic-bezier(0.45, 0, 0.85, 0.55) forwards;
+  transform-origin: 50% 70%;
+}
+@keyframes takeoff {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-200vh) scale(0.8); }
+}
+
+/* Máy bay vàng đầu thiệp lơ lửng */
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(4px, -8px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Quả địa cầu quay chậm */
+.animate-spin-slow-30 {
+  animation: spin-slow 30s linear infinite;
+}
+
+/* Con dấu Love Visa lắc (swing 3s của mẫu) */
+@keyframes swing-stamp {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(15deg); }
+  40% { transform: rotate(-10deg); }
+  60% { transform: rotate(5deg); }
+  80% { transform: rotate(-5deg); }
+}
+.animate-swing-stamp {
+  animation: swing-stamp 3s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .reveal-bounce.is-visible,
-  .animate-pulse-3,
-  .animate-tada,
+  .animate-pulse-btn,
   .falling,
   .music-ripple,
   .animate-pulse-soft,
   .animate-swing,
   .animate-spin-slow,
-  .animate-pop { animation: none; }
+  .animate-pop,
+  .animate-float,
+  .animate-spin-slow-30,
+  .animate-swing-stamp,
+  .takeoff { animation: none; }
+  .takeoff { display: none; }
 }

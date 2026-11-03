@@ -167,13 +167,22 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    /** QR khách gửi (Vietcombank — giải mã QR: BIN 970436, STK khớp chữ in trên ảnh) */
+    /**
+     * QR khách gửi — giải mã QR, STK khớp chữ in trên ảnh.
+     * Cô dâu: Vietcombank (BIN 970436); chú rể: VietinBank (BIN 970415) CN Thị xã Phú Thọ - PGD Công Thương Thanh Ba
+     */
     accounts: [
       {
         holder: 'DO THI BICH LIEN',
         number: '1042088635',
         bank: 'Vietcombank',
         qr: '/images/qr-vietcombank.png',
+      },
+      {
+        holder: 'DO VAN HUNG',
+        number: '106881302472',
+        bank: 'VietinBank',
+        qr: '/images/qr-vietinbank.png',
       },
     ],
   },

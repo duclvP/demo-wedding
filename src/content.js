@@ -165,8 +165,15 @@ export const content = {
     copyLabel: 'Copy STK',
     copiedLabel: 'Đã copy',
     saveQrLabel: 'Lưu ảnh QR',
-    /** TODO: khách chưa gửi mã QR nhận quà */
-    accounts: [],
+    /** QR khách gửi (Vietcombank — giải mã QR: BIN 970436, STK khớp chữ in trên ảnh) */
+    accounts: [
+      {
+        holder: 'DO THI BICH LIEN',
+        number: '1042088635',
+        bank: 'Vietcombank',
+        qr: '/images/qr-vietcombank.png',
+      },
+    ],
   },
 
   thanks: {

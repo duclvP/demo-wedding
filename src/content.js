@@ -9,18 +9,18 @@ const ADDRESS_BRIDE = 'Thôn Ngọc Am, Xã Chí Tiên, Tỉnh Phú Thọ';
 
 /**
  * father / mother / address: để null nếu không muốn hiển thị.
- * TODO: ticket chưa có tên bố mẹ hai bên
+ * Tên bố mẹ khách gửi sau (03/11/2026)
  */
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: null,
-  mother: null,
+  father: 'Đỗ Văn Kiên',
+  mother: 'Nguyễn Thu Thuỷ',
   address: 'Xã Quảng Yên, Phú Thọ',
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: null,
-  mother: null,
+  father: 'Đỗ Văn Hiến',
+  mother: 'Đỗ Thị Vân',
   address: 'Xã Chí Tiên, Phú Thọ',
 };
 

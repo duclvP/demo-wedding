@@ -1029,12 +1029,15 @@ function WeddingPage() {
           <Leaf />
         </div>
 
-        {/* The Album: ảnh bo góc lệch phải, dải mờ ngang đè lên */}
+        {/* The Album: dải ngang (chính ảnh đó làm mờ, phủ xám) nằm sau ảnh bo góc lệch phải — như mẫu chỉ lộ ra hai bên */}
         <section className="relative h-[458px]">
+          <div className="absolute inset-x-0 top-[84px] h-[300px] overflow-hidden" aria-hidden>
+            <img src={images.albumCover} alt="" className="h-full w-full scale-110 object-cover blur-[6px]" loading="lazy" />
+            <div className="absolute inset-0 bg-[#9a9a9a]/70" />
+          </div>
           <Reveal variant="right" duration={2} className="absolute right-[21px] top-0 w-[305px]">
             <img src={images.albumCover} alt="" className="aspect-[305/458] w-full rounded-[40px] object-cover" loading="lazy" />
           </Reveal>
-          <div className="absolute inset-x-0 top-[84px] h-[300px] bg-black/25 backdrop-blur-[3px]" aria-hidden />
           <div className="absolute left-[10px] top-[143px]">
             <Reveal variant="left" duration={1.5}>
               <p className="font-script text-[97px] leading-[100px] text-cream drop-shadow">The</p>

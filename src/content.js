@@ -58,8 +58,8 @@ export const content = {
         /** dd. mm. yyyy */
         date: '28. 11. 2026',
         lunar: '( Nhằm Ngày 20 Tháng 10 Năm Bính Ngọ )',
-        /** TODO: chưa có ghim bản đồ — chỉ đường đang tìm theo chữ địa chỉ */
-        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE }],
+        /** Toạ độ ghim khách gửi (issue #34) */
+        places: [{ label: 'Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: '10.576163657718453,105.45796453821536' }],
       },
     ],
   },

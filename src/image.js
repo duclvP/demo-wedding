@@ -2,7 +2,8 @@
  * Đường dẫn ảnh — file trong public/images/
  * Thêm ảnh mới: bỏ file vào public/images/ rồi thêm đường dẫn vào đây.
  */
-/** Ảnh cưới khách gửi qua Drive (issue #30): cuoi-<số>.jpg — số = thứ tự ảnh trên thiệp từ trên xuống; có hai ảnh số 06 nên album 11 ảnh */
+/** Ảnh cưới khách gửi qua Drive (issue #30): cuoi-<số>.jpg — số = thứ tự ảnh trên thiệp từ trên xuống; có hai ảnh số 06 nên album 11 ảnh;
+ * them-<số máy ảnh>.jpg = ảnh khách bổ sung vào album, cuoi-cuoi.jpg = "ảnh cuối cùng" khách chọn cho mục Thank you */
 export const images = {
   /** Ảnh bìa đầu thiệp, dọc 385×613 bo góc dưới phải — tên phủ góc trên phải */
   hero: '/images/cuoi-01.jpg',
@@ -25,11 +26,24 @@ export const images = {
     '/images/cuoi-12.jpg',
     '/images/cuoi-13.jpg',
     '/images/cuoi-14.jpg',
+    '/images/them-0028.jpg',
+    '/images/them-6115.jpg',
+    '/images/them-6352.jpg',
+    '/images/them-6765.jpg',
+    '/images/them-7134.jpg',
+    '/images/them-7672.jpg',
+    '/images/them-7993.jpg',
+    '/images/them-8774.jpg',
+    '/images/them-9171.jpg',
+    '/images/them-9306.jpg',
+    '/images/them-9571.jpg',
+    '/images/them-9617.jpg',
+    '/images/them-9697.jpg',
   ],
   /** Ảnh trong hộp quà mừng cưới */
   gift: '/images/cuoi-06b.jpg',
   /** Ảnh ngang 420×203 cuối thiệp (đã cắt sẵn quanh cặp đôi) — chữ "Thank you!" bên trái */
-  thankYou: '/images/cuoi-15.jpg',
+  thankYou: '/images/cuoi-cuoi.jpg',
 
   /** Ảnh trang trí của mẫu nawngs.com/thanglinh — dùng chung mọi cặp đôi */
   deco: {

@@ -27,9 +27,12 @@ export const content = {
   hero: {
     /** Hai tên in hoa đầu thiệp, dòng tên ở lời mời và ký tên thư cảm ơn — theo đúng thứ tự này */
     names: ['Tuấn Anh', 'Trần Ly'],
-    storyTitle: 'Love Story',
+    /** Viết bằng font Corinthia (có dấu tiếng Việt) — font Hayollan của mẫu không có dấu */
+    storyTitle: 'Ngày Chung Đôi',
     story:
-      'From a chance meeting to a lifetime promise, our love story is written with laughter, trust, and the joy of finding each other.',
+      'Cảm ơn đại gia đình 2 bên đã vun đắp cho chúng con. Cảm ơn các bạn đã luôn đồng hành bên cạnh, sự có mặt của mọi người là niềm vinh dự vô cùng to lớn với gia đình.',
+    /** Ngày xếp dọc cạnh "Ngày Chung Đôi" — luôn là ngày cưới, kể cả link chỉ mời ngày 28 */
+    date: '29. 11. 2026',
   },
 
   families: {
@@ -114,9 +117,10 @@ export const content = {
   letter: {
     title: 'Trân trọng cảm ơn !',
     paragraphs: [
-      'Chúng tôi rất vui khi được mời bạn đến dự lễ cưới của Tuấn Anh và Ly – một dấu mốc ý nghĩa trong hành trình chung đôi.',
-      'Sẽ thật hạnh phúc nếu bạn có thể đến chung vui và cùng lưu giữ những khoảnh khắc đáng nhớ trong ngày đặc biệt này.',
-      'Rất mong bạn có thể thu xếp thời gian đến tham dự và cùng chúc phúc cho chúng tôi.',
+      'Có những khoảnh khắc trong cuộc đời sẽ trở nên ý nghĩa hơn khi được sẻ chia cùng những người thân yêu.',
+      'Ly và Tuấn Anh rất mong được đón bạn đến chung vui trong ngày đặc biệt – ngày chúng mình chính thức bắt đầu hành trình mới, cùng nhau viết tiếp câu chuyện hạnh phúc.',
+      'Sự hiện diện của bạn sẽ là niềm vui, là món quà quý giá và góp phần làm cho ngày vui của chúng mình thêm trọn vẹn.',
+      'Hy vọng bạn sẽ dành chút thời gian đến chung vui, cùng chúng mình lưu giữ những khoảnh khắc thật đẹp và gửi trao những lời chúc phúc yêu thương!',
     ],
     closing: 'Thân,',
     /** Ký tên bằng chữ viết tay Hayollan — font không có dấu tiếng Việt nên viết không dấu (mẫu: 'Thang & Linh') */

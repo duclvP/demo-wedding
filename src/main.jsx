@@ -510,7 +510,7 @@ const TIMELINE_ICONS = {
 /**
  * Hai tên in hoa xếp chéo + nét "and" bay dài (ảnh của mẫu 600×249) nằm ngoài, bên trái tên thứ hai như mẫu:
  * mép phải ảnh cách chữ đầu tên 2 tầm 8px, đáy ảnh cách đáy dòng 18px; tên dài thì ảnh tự thu nhỏ (tối đa 210px).
- * Khách góp ý (issue #30): chữ nhỏ hơn mẫu 20% (55 → 44px), hai dòng cách xa hơn 20%, chữ giãn nhẹ, nét "and" đậm hơn
+ * Khách góp ý (issue #30): chữ nhỏ hơn mẫu 20% (55 → 44px), hai dòng cách xa hơn 20%, chữ giãn nhẹ
  */
 function NamesBlock({ names, andSrc, className = "" }) {
   return (
@@ -518,7 +518,7 @@ function NamesBlock({ names, andSrc, className = "" }) {
       <p className="whitespace-nowrap">{names[0]}</p>
       <div className="-mt-[12px] flex items-end">
         <div className="relative min-w-0 flex-1 self-stretch">
-          <img src={andSrc} alt="" className="and-bold pointer-events-none absolute bottom-[18px] right-[8px] w-full max-w-[210px]" aria-hidden />
+          <img src={andSrc} alt="" className="pointer-events-none absolute bottom-[18px] right-[8px] w-full max-w-[210px]" aria-hidden />
         </div>
         <p className="relative whitespace-nowrap">{names[1]}</p>
       </div>

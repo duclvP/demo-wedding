@@ -509,15 +509,16 @@ const TIMELINE_ICONS = {
 
 /**
  * Hai tên in hoa xếp chéo + nét "and" bay dài (ảnh của mẫu 600×249) nằm ngoài, bên trái tên thứ hai như mẫu:
- * mép phải ảnh chạm chữ đầu tên 2, đáy ảnh cách đáy dòng 22px; tên dài thì ảnh tự thu nhỏ (tối đa 242px)
+ * mép phải ảnh cách chữ đầu tên 2 tầm 8px, đáy ảnh cách đáy dòng 18px; tên dài thì ảnh tự thu nhỏ (tối đa 210px).
+ * Khách góp ý (issue #30): chữ nhỏ hơn mẫu 20% (55 → 44px), hai dòng cách xa hơn 20%, chữ giãn nhẹ, nét "and" đậm hơn
  */
 function NamesBlock({ names, andSrc, className = "" }) {
   return (
-    <div className={`w-full text-right font-serif uppercase text-[55px] leading-[88px] ${className}`}>
+    <div className={`w-full text-right font-serif uppercase text-[44px] leading-[70px] tracking-[0.05em] ${className}`}>
       <p className="whitespace-nowrap">{names[0]}</p>
-      <div className="-mt-[28px] flex items-end">
+      <div className="-mt-[12px] flex items-end">
         <div className="relative min-w-0 flex-1 self-stretch">
-          <img src={andSrc} alt="" className="pointer-events-none absolute bottom-[22px] right-[-4px] w-full max-w-[242px]" aria-hidden />
+          <img src={andSrc} alt="" className="and-bold pointer-events-none absolute bottom-[18px] right-[8px] w-full max-w-[210px]" aria-hidden />
         </div>
         <p className="relative whitespace-nowrap">{names[1]}</p>
       </div>
@@ -878,6 +879,8 @@ function WeddingPage() {
   const events = pickInvitedEvents(allEvents);
   const main = events[0];
   const [d, m, y] = splitDate(main.date);
+  /** Ngày xếp dọc đầu thiệp: ngày cưới cố định (c.hero.date) nếu có, không thì ngày sự kiện đầu tiên đang hiện */
+  const [heroD, heroM, heroY] = c.hero.date ? splitDate(c.hero.date) : [d, m, y];
   const timeline = buildTimeline(c.events.items, allEvents, events);
   /** Lịch tháng của ngày đầu tiên, khoanh mọi ngày tổ chức đang hiện trong tháng đó */
   const calendarDays = [
@@ -923,18 +926,18 @@ function WeddingPage() {
         <section className="grid grid-cols-[1fr_108px] gap-2 pl-[22px] pr-[8px] pt-[2px]">
           <div className="pt-[38px]">
             <Reveal variant="left" duration={1.5}>
-              <p className="font-script text-[51px] leading-[61px] whitespace-nowrap">{c.hero.storyTitle}</p>
+              <p className="font-vibes text-[54px] leading-[61px] whitespace-nowrap">{c.hero.storyTitle}</p>
             </Reveal>
             <Reveal duration={2}>
               <p className="mt-[6px] pl-[10px] font-serif text-[14px] leading-[16.8px] text-[#9e9e9e]">{c.hero.story}</p>
             </Reveal>
           </div>
           <Reveal variant="right" duration={1.5} className="text-center font-slab text-[55px] leading-[66px]">
-            <p>{d}</p>
+            <p>{heroD}</p>
             <span className="mx-auto block h-px w-[61px] bg-moss" aria-hidden />
-            <p>{m}</p>
+            <p>{heroM}</p>
             <span className="mx-auto block h-px w-[61px] bg-moss" aria-hidden />
-            <p>{y.slice(-2)}</p>
+            <p>{heroY.slice(-2)}</p>
           </Reveal>
         </section>
 
@@ -946,7 +949,7 @@ function WeddingPage() {
         {/* Lời mời: tên khách, hai tên, sự kiện, gia đình */}
         <section className="px-[22px] pt-[40px]">
           <Reveal variant="down" duration={1.5}>
-            <p className="ml-auto max-w-[378px] text-right font-serif uppercase text-[13px] leading-[20.8px] text-ink">
+            <p className="mx-auto max-w-[378px] text-center font-serif uppercase text-[13px] leading-[20.8px] text-ink">
               {c.invitation.before} {guest} {c.invitation.after}
             </p>
           </Reveal>
@@ -974,7 +977,7 @@ function WeddingPage() {
         </section>
 
         <div className="pt-[50px] pb-[16px]">
-          <Leaf className="opacity-45" />
+          <Leaf />
         </div>
 
         {/* Lịch */}

@@ -6,13 +6,14 @@
  * them-<số máy ảnh>.jpg = ảnh khách bổ sung vào album, cuoi-cuoi.jpg = "ảnh cuối cùng" khách chọn cho mục Thank you */
 export const images = {
   /** Ảnh bìa đầu thiệp, dọc 385×613 bo góc dưới phải — tên phủ góc trên phải */
-  hero: '/images/cuoi-01.jpg',
+  /** Bản nhà trai: khách chọn ảnh 04 làm ảnh bìa, ảnh 11 làm bìa album (comment issue #30) — ảnh 01 chuyển vào album */
+  hero: '/images/cuoi-04.jpg',
   /** Ảnh ngang 420×210 dưới "Love Story" (đã cắt sẵn 2:1 quanh đôi tay) */
   wide: '/images/cuoi-02.jpg',
   /** Ảnh dọc 420×630 bo góc trên trái, chữ "Destiny" ở đáy */
   destiny: '/images/cuoi-03.jpg',
   /** Ảnh dọc 305×458 mục "The Album" */
-  albumCover: '/images/cuoi-04.jpg',
+  albumCover: '/images/cuoi-11.jpg',
   /** Album trình chiếu (ảnh lớn 420×490 + dải ảnh nhỏ) */
   album: [
     '/images/cuoi-05.jpg',
@@ -22,7 +23,7 @@ export const images = {
     '/images/cuoi-08.jpg',
     '/images/cuoi-09.jpg',
     '/images/cuoi-10.jpg',
-    '/images/cuoi-11.jpg',
+    '/images/cuoi-01.jpg',
     '/images/cuoi-12.jpg',
     '/images/cuoi-13.jpg',
     '/images/cuoi-14.jpg',

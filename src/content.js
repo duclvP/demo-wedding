@@ -1,19 +1,19 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_BRIDE = 'Thôn Giao Thiện, Xã Giao Minh, Tỉnh Ninh Bình';
-const ADDRESS_GROOM = 'Thôn Tiến Thắng, Xã Yên Đồng, Tỉnh Ninh Bình';
+const ADDRESS_BRIDE = 'Thôn Hoàng Tân, Xã Hải Châu, Tỉnh Nghệ An';
+const ADDRESS_GROOM = 'Thôn Vạn Thọ, Xã Hải Châu, Tỉnh Nghệ An';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: 'Đinh Quang Thiều',
-  mother: 'Phạm Thị Quýt',
+  father: 'Vũ Quang Thoại',
+  mother: 'Trần Thị Hoa',
   address: ADDRESS_BRIDE,
 };
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: 'Nguyễn Đình Hy',
-  mother: 'Nguyễn Thị Vừng',
+  father: 'Hoàng Văn Sơn',
+  mother: 'Phan Thị Quý',
   address: ADDRESS_GROOM,
 };
 
@@ -21,21 +21,21 @@ export const content = {
   hero: {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
-    names: ['Đinh Sen', 'Đình Thắng'],
-    dateLine: '08 . 11 . 2026',
+    names: ['Vũ Hòe', 'Hoàng Lâm'],
+    dateLine: '13 . 11 . 2026',
   },
 
   /** Thẻ ảnh chú rể / cô dâu */
   couple: {
-    groom: { role: 'Chú rể', name: 'Đình Thắng' },
-    bride: { role: 'Cô dâu', name: 'Đinh Sen' },
+    groom: { role: 'Chú rể', name: 'Hoàng Lâm' },
+    bride: { role: 'Cô dâu', name: 'Vũ Hòe' },
   },
 
   families: {
     /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
     sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Tên cô dâu & chú rể — dòng ký tên cuối mục Thank You */
-    fullNames: ['Đinh Sen', 'Đình Thắng'],
+    fullNames: ['Vũ Hòe', 'Hoàng Lâm'],
   },
 
   invitation: {
@@ -44,7 +44,7 @@ export const content = {
     defaultGuest: 'Quý khách',
     title: 'Tham Dự Lễ Vu Quy',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['08', '11', '2026'],
+    dateParts: ['13', '11', '2026'],
   },
 
   events: {
@@ -53,21 +53,21 @@ export const content = {
       {
         id: 'tiec-cuoi',
         title: 'Tiệc Mừng Lễ Vu Quy',
-        // TODO: khách chưa gửi giờ + ngày tiệc nhà gái (đang tạm để cùng ngày 08/11) — hỏi lại khách
-        time: '..:.. | Chủ Nhật',
-        /** Đổi giờ / ngày bằng link: ?gio=10:30&ngay=2026-11-07 (xem trang /tao-link) */
+        // TODO: thiệp giấy để trống giờ ("Vào hồi … giờ … phút") — hỏi lại khách rồi điền, và sửa countdown.target
+        time: '..:.. | Thứ Sáu',
+        /** Đổi giờ / ngày bằng link: ?gio=10:30&ngay=2026-11-13 (xem trang /tao-link) */
         editable: true,
-        date: '08. 11. 2026',
-        lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Gái', address: ADDRESS_BRIDE, mapQuery: 'Xuân Bảo, ĐT489, Giao Minh, Ninh Bình', mapLink: 'https://www.google.com/maps?q=7GMQ%2B67P+Xu%C3%A2n+B%E1%BA%A3o,+%C4%90T489,+Giao+Minh,+Ninh+B%C3%ACnh&ftid=0x3149ffb8e5b079cb:0x694f7e0cf8e71152' }],
+        date: '13. 11. 2026',
+        lunar: '( Tức Ngày 05 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tại Nhà Văn Hóa', address: ADDRESS_BRIDE, mapQuery: 'Nhà Văn Hóa Thôn Hoàng Tân, Hải Châu, Nghệ An' }],
       },
       {
         id: 'thanh-hon',
         title: 'Lễ Thành Hôn',
-        time: '13:00 | Chủ Nhật',
-        date: '08. 11. 2026',
-        lunar: '( Tức Ngày 30 Tháng 09 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM, mapQuery: 'Phố Nấp, Yên Đồng, Ý Yên, Nam Định', mapLink: 'https://www.google.com/maps/search/?api=1&query=20.256000518798828,106.0662841796875' }],
+        time: '10:30 | Thứ Bảy',
+        date: '14. 11. 2026',
+        lunar: '( Tức Ngày 06 Tháng 10 Năm Bính Ngọ )',
+        places: [{ label: 'Tại Tư Gia Nhà Trai', address: ADDRESS_GROOM }],
       },
     ],
   },
@@ -75,15 +75,15 @@ export const content = {
   /** Bộ đếm ngược — để null thì ẩn */
   countdown: {
     title: 'Đếm Ngược Ngày Vui',
-    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 13:00 08/11/2026 */
-    target: '2026-11-08T13:00:00+07:00',
+    /** Giờ Việt Nam (+07:00) — tiệc Vu Quy 13/11/2026, chưa có giờ nên tạm đếm đến 00:00 của ngày đó */
+    target: '2026-11-13T00:00:00+07:00',
     labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
   },
 
   calendar: {
     title: 'Save The Date',
     /** Ngày khoanh tim trên lịch tháng ở đầu thiệp — để null thì ẩn lịch */
-    dateIso: '2026-11-08',
+    dateIso: '2026-11-13',
   },
 
   rsvp: {
@@ -92,16 +92,16 @@ export const content = {
      * và gửi email thông báo. Cách lấy link: xem google-apps-script/README.md
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
-    endpoint: 'https://script.google.com/macros/s/AKfycbxGFb49383QZuzEF1D_sx_JSNSCecscN3j2aZShNuCGpbDiKK9bwoPawGo5Y_pKbacu/exec',
+    endpoint: '',
     /**
      * Mã cặp đôi (chữ thường, số, dấu gạch ngang) — script dùng chung tự tạo Google Sheet riêng
      * cho từng mã. Khác cặp thì khác mã; để '' thì không lưu.
      */
-    coupleId: 'dinh-sen-dinh-thang-nha-gai',
+    coupleId: '',
     /** Tên hiển thị đặt cho Sheet, vd 'Minh Hiền & Đức Thành' */
-    coupleName: 'Đinh Sen & Đình Thắng (Nhà gái)',
+    coupleName: '',
     /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
-    show: true,
+    show: false,
     /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
     askAttend: true,
     title: 'Xác Nhận Tham Dự',
@@ -128,11 +128,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'DINH THI SEN',
-        number: '0031000233954',
-        bank: 'Vietcombank',
+        holder: 'VU THI HOE',
+        number: '0120138326666',
+        bank: 'MB Bank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-vietcombank-sen.png',
+        qr: '/images/qr-mbbank.png',
       },
     ],
   },

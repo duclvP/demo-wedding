@@ -22,7 +22,7 @@ export const content = {
     subtitle: 'Save The Date',
     /** Hiển thị theo đúng thứ tự này */
     names: ['Vũ Hòe', 'Hoàng Lâm'],
-    dateLine: '13 . 11 . 2026',
+    dateLine: '14 . 11 . 2026',
   },
 
   /** Thẻ ảnh chú rể / cô dâu */
@@ -42,25 +42,14 @@ export const content = {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Lễ Vu Quy',
+    title: 'Tham Dự Lễ Thành Hôn',
     /** Chữ đè lên 3 ảnh */
-    dateParts: ['13', '11', '2026'],
+    dateParts: ['14', '11', '2026'],
   },
 
   events: {
     mapLabel: 'Xem vị trí',
     items: [
-      {
-        id: 'tiec-cuoi',
-        title: 'Tiệc Mừng Lễ Vu Quy',
-        // TODO: thiệp giấy để trống giờ ("Vào hồi … giờ … phút") — hỏi lại khách rồi điền, và sửa countdown.target
-        time: '..:.. | Thứ Sáu',
-        /** Đổi giờ / ngày bằng link: ?gio=10:30&ngay=2026-11-13 (xem trang /tao-link) */
-        editable: true,
-        date: '13. 11. 2026',
-        lunar: '( Tức Ngày 05 Tháng 10 Năm Bính Ngọ )',
-        places: [{ label: 'Tại Nhà Văn Hóa', address: ADDRESS_BRIDE, mapQuery: 'Nhà Văn Hóa Thôn Hoàng Tân, Hải Châu, Nghệ An' }],
-      },
       {
         id: 'thanh-hon',
         title: 'Lễ Thành Hôn',
@@ -75,15 +64,15 @@ export const content = {
   /** Bộ đếm ngược — để null thì ẩn */
   countdown: {
     title: 'Đếm Ngược Ngày Vui',
-    /** Giờ Việt Nam (+07:00) — tiệc Vu Quy 13/11/2026, chưa có giờ nên tạm đếm đến 00:00 của ngày đó */
-    target: '2026-11-13T00:00:00+07:00',
+    /** Giờ Việt Nam (+07:00) — Lễ Thành Hôn 10:30 14/11/2026 */
+    target: '2026-11-14T10:30:00+07:00',
     labels: ['Ngày', 'Giờ', 'Phút', 'Giây'],
   },
 
   calendar: {
     title: 'Save The Date',
     /** Ngày khoanh tim trên lịch tháng ở đầu thiệp — để null thì ẩn lịch */
-    dateIso: '2026-11-13',
+    dateIso: '2026-11-14',
   },
 
   rsvp: {

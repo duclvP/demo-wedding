@@ -7,8 +7,8 @@ export const images = {
   hero: '/images/studio-1.jpg',
   /** Ảnh ngang bo góc viền xanh dưới "Trân trọng báo tin" (387×285) */
   wide: '/images/ao-dai-ngang.jpg',
-  /** 3 ảnh dọc dưới "Trân trọng kính mời": trái, giữa (to hơn), phải — bản nhà trai: chú rể, ảnh đôi, cô dâu */
-  trio: ['/images/chu-re.jpg', '/images/studio-2.jpg', '/images/co-dau.jpg'],
+  /** 3 ảnh dọc dưới "Trân trọng kính mời": trái, giữa (to hơn), phải — bản nhà gái: cô dâu, ảnh đôi, chú rể */
+  trio: ['/images/co-dau.jpg', '/images/studio-2.jpg', '/images/chu-re.jpg'],
   /** Ảnh polaroid cạnh lịch */
   polaroid: '/images/ao-dai-1.jpg',
   /** Album 2 cột so le — ảnh chẵn cột trái, ảnh lẻ cột phải (ô thứ 5 của mỗi 8 ảnh là khung ngang) */

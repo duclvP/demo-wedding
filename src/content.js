@@ -22,7 +22,7 @@ const BRIDE_SIDE = {
 export const content = {
   hero: {
     /** Hiển thị theo đúng thứ tự này (cũng là dòng tên dưới lời mời và ký tên mục Thank You) */
-    names: ['Hữu Ân', 'Hoài An'],
+    names: ['Hoài An', 'Hữu Ân'],
     /** Hai dòng dưới tên: ngày.tháng / năm */
     dateLines: ['27.11', '2026'],
     hint: 'NHẤP VÀO THIỆP ĐỂ MỞ',
@@ -30,9 +30,9 @@ export const content = {
 
   families: {
     /** Hai khối gia đình, từ trên xuống theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    sides: [BRIDE_SIDE, GROOM_SIDE],
     /** Họ tên đầy đủ — dòng "Trân trọng báo tin lễ thành hôn của" */
-    fullNames: ['Phạm Hữu Ân', 'Nguyễn Hoài An'],
+    fullNames: ['Nguyễn Hoài An', 'Phạm Hữu Ân'],
   },
 
   invitation: {
@@ -48,6 +48,8 @@ export const content = {
     mapLabel: 'Xem trên Google Map',
     items: [
       {
+        // Khách chỉ gửi một sự kiện (tư gia nhà trai) — bản nhà gái mời khách dự cùng tiệc này.
+        // TODO: nếu nhà gái có tiệc Vu Quy riêng thì hỏi giờ / ngày / địa chỉ rồi thay vào đây (issue #25)
         id: 'thanh-hon',
         title: null,
         /** Giờ đón khách dự tiệc — Lễ Thành Hôn cử hành lúc 18h00 cùng ngày (issue #25) */

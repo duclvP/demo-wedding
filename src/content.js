@@ -1,10 +1,11 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Quang Sơn, Thái Nguyên';
-const ADDRESS_BRIDE = 'Đại Phúc, Thái Nguyên';
+const ADDRESS_GROOM = 'Thôn Trung Hoà, xã Quỳnh Phụ, tỉnh Hưng Yên';
+// TODO: ticket #25 chưa có địa chỉ nhà gái — hỏi lại khách
+const ADDRESS_BRIDE = null;
 
 /** father / mother / address: để null nếu không muốn hiển thị */
-// TODO: ticket #14 chưa có tên bố mẹ hai bên — hỏi lại khách
+// Khách không ghi thông tin cha mẹ hai bên (issue #25)
 const GROOM_SIDE = {
   label: 'Nhà Trai',
   father: null,
@@ -21,9 +22,9 @@ const BRIDE_SIDE = {
 export const content = {
   hero: {
     /** Hiển thị theo đúng thứ tự này (cũng là dòng tên dưới lời mời và ký tên mục Thank You) */
-    names: ['Huy Hoàng', 'Huyền Chi'],
+    names: ['Hữu Ân', 'Hoài An'],
     /** Hai dòng dưới tên: ngày.tháng / năm */
-    dateLines: ['17.11', '2026'],
+    dateLines: ['27.11', '2026'],
     hint: 'NHẤP VÀO THIỆP ĐỂ MỞ',
   },
 
@@ -31,7 +32,7 @@ export const content = {
     /** Hai khối gia đình, từ trên xuống theo thứ tự này */
     sides: [GROOM_SIDE, BRIDE_SIDE],
     /** Họ tên đầy đủ — dòng "Trân trọng báo tin lễ thành hôn của" */
-    fullNames: ['Vũ Huy Hoàng', 'Phan Huyền Chi'],
+    fullNames: ['Phạm Hữu Ân', 'Nguyễn Hoài An'],
   },
 
   invitation: {
@@ -39,7 +40,7 @@ export const content = {
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Tiệc Mừng Lễ Cưới',
+    title: 'Tham Dự Tiệc Mừng Lễ Thành Hôn',
   },
 
   events: {
@@ -47,24 +48,25 @@ export const content = {
     mapLabel: 'Xem trên Google Map',
     items: [
       {
-        id: 'tiec-cuoi',
+        id: 'thanh-hon',
         title: null,
-        hour: '16 giờ 00',
-        weekday: 'Thứ 3',
-        day: '17',
+        /** Giờ đón khách dự tiệc — Lễ Thành Hôn cử hành lúc 18h00 cùng ngày (issue #25) */
+        hour: '17 giờ 00',
+        weekday: 'Thứ 6',
+        day: '27',
         monthYear: '11 - 2026',
-        lunar: '( Tức ngày 09 tháng 10 năm Bính Ngọ )',
+        lunar: '( Tức ngày 19 tháng 10 năm Bính Ngọ )',
         place: 'Tư Gia Nhà Trai',
-        address: 'Xóm Làng Giếng, Quang Sơn, Thái Nguyên',
-        /** Toạ độ ghim khách gửi (issue #14) */
-        mapQuery: '21.741261438217474,105.90433847766596',
+        address: ADDRESS_GROOM,
+        /** Toạ độ ghim khách gửi (issue #25) */
+        mapQuery: '20.64821434020996,106.31898498535156',
       },
     ],
   },
 
   calendar: {
     /** Ngày khoanh tim trên lịch — để null thì ẩn lịch */
-    dateIso: '2026-11-17',
+    dateIso: '2026-11-27',
     photoCaption: 'My Love',
   },
 
@@ -114,11 +116,11 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'VU HUY HOANG',
-        number: '8886039774',
-        bank: 'BIDV',
+        holder: 'NGUYEN HOAI AN',
+        number: '0325101587',
+        bank: 'MB Bank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-bidv.png',
+        qr: '/images/qr-mb.png',
       },
     ],
   },

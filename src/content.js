@@ -1,7 +1,6 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
 const ADDRESS_GROOM = 'Thôn Trung Hoà, xã Quỳnh Phụ, tỉnh Hưng Yên';
-// TODO: ticket #25 chưa có địa chỉ nhà gái — hỏi lại khách
 const ADDRESS_BRIDE = null;
 
 /** father / mother / address: để null nếu không muốn hiển thị */
@@ -29,8 +28,8 @@ export const content = {
   },
 
   families: {
-    /** Hai khối gia đình, từ trên xuống theo thứ tự này */
-    sides: [GROOM_SIDE, BRIDE_SIDE],
+    /** Khối gia đình, từ trên xuống theo thứ tự này — chỉ giữ Nhà Trai theo yêu cầu (bỏ khối Nhà Gái, issue #25) */
+    sides: [GROOM_SIDE],
     /** Họ tên đầy đủ — dòng "Trân trọng báo tin lễ thành hôn của" */
     fullNames: ['Phạm Hữu Ân', 'Nguyễn Hoài An'],
   },

@@ -54,8 +54,8 @@ export const content = {
           {
             label: 'Tư Gia Nhà Trai',
             address: ADDRESS_GROOM,
-            /** TODO: ticket chưa có ghim bản đồ — tìm theo tên xóm / xã */
-            mapQuery: 'Xóm Mỹ Quan, Hùng Châu, Nghệ An',
+            /** Toạ độ ghim "Nguyễn Đăng Khoa" khách gửi trong bình luận (issue #36) */
+            mapQuery: '19.0751747,105.6062784',
           },
         ],
       },

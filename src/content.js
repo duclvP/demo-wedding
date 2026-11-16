@@ -1,72 +1,71 @@
 /** Nội dung chữ — chỉnh sửa tại đây, không cần đụng layout */
 
-const ADDRESS_GROOM = 'Thôn Trung Hoà, xã Quỳnh Phụ, tỉnh Hưng Yên';
-const ADDRESS_BRIDE = null;
+const ADDRESS_GROOM = 'Xóm Mỹ Quan, xã Hùng Châu, tỉnh Nghệ An';
+const ADDRESS_BRIDE = 'Xóm Phúc Mỹ, xã Hải Châu, tỉnh Nghệ An';
 
 /** father / mother / address: để null nếu không muốn hiển thị */
-// Khách không ghi thông tin cha mẹ hai bên (issue #25)
 const GROOM_SIDE = {
   label: 'Nhà Trai',
-  father: null,
-  mother: null,
+  father: 'Nguyễn Đăng Khoa',
+  mother: 'Nguyễn Thị Thu',
   address: ADDRESS_GROOM,
 };
 const BRIDE_SIDE = {
   label: 'Nhà Gái',
-  father: null,
-  mother: null,
+  father: 'Đào Lục',
+  mother: 'Phạm Thị Tuyết',
   address: ADDRESS_BRIDE,
 };
 
 export const content = {
   hero: {
-    /** Hiển thị theo đúng thứ tự này (cũng là dòng tên dưới lời mời và ký tên mục Thank You) */
-    names: ['Hữu Ân', 'Hoài An'],
-    /** Hai dòng dưới tên: ngày.tháng / năm */
-    dateLines: ['27.11', '2026'],
-    hint: 'NHẤP VÀO THIỆP ĐỂ MỞ',
+    subtitle: 'Save The Date',
+    /** Hiển thị theo đúng thứ tự này */
+    names: ['Đức Trường', 'Phương Uyên'],
+    dateLine: '28 . 11 . 2026',
   },
 
   families: {
-    /** Khối gia đình, từ trên xuống theo thứ tự này — chỉ giữ Nhà Trai theo yêu cầu (bỏ khối Nhà Gái, issue #25) */
-    sides: [GROOM_SIDE],
-    /** Họ tên đầy đủ — dòng "Trân trọng báo tin lễ thành hôn của" */
-    fullNames: ['Phạm Hữu Ân', 'Nguyễn Hoài An'],
+    /** Hai cột gia đình, hiển thị trái → phải theo thứ tự này */
+    sides: [GROOM_SIDE, BRIDE_SIDE],
+    /** Tên cô dâu & chú rể, hiện dưới phần gia đình */
+    fullNames: ['Đức Trường', 'Phương Uyên'],
   },
 
   invitation: {
-    announce: ['Trân Trọng Báo Tin', 'Lễ Thành Hôn', 'Của'],
     kicker: 'Trân Trọng Kính Mời',
     /** Tên khách mặc định — thay bằng link /hoa (→ Bạn Hoa), /co-lan (→ Cô Lan) hoặc ?khach=Tên%20Khách */
     defaultGuest: 'Quý khách',
-    title: 'Tham Dự Tiệc Mừng Lễ Thành Hôn',
+    title: 'Tham Dự Lễ Thành Hôn',
+    /** Chữ đè lên 3 ảnh */
+    dateParts: ['28', '11', '2026'],
   },
 
   events: {
-    venueTitle: 'Địa điểm tổ chức',
-    mapLabel: 'Xem trên Google Map',
+    mapLabel: 'Xem chỉ đường',
     items: [
       {
-        id: 'thanh-hon',
-        title: null,
-        /** Giờ đón khách dự tiệc — Lễ Thành Hôn cử hành lúc 18h00 cùng ngày (issue #25) */
-        hour: '17 giờ 00',
-        weekday: 'Thứ 6',
-        day: '27',
-        monthYear: '11 - 2026',
-        lunar: '( Tức ngày 19 tháng 10 năm Bính Ngọ )',
-        place: 'Tư Gia Nhà Trai',
-        address: ADDRESS_GROOM,
-        /** Toạ độ ghim khách gửi (issue #25) */
-        mapQuery: '20.64821434020996,106.31898498535156',
+        id: 'nha-trai',
+        title: 'Tiệc Mừng Lễ Thành Hôn',
+        time: '11:00 - Thứ Bảy',
+        date: '28. 11. 2026',
+        lunar: '( Tức Ngày 20 Tháng 10 Năm Bính Ngọ )',
+        places: [
+          {
+            label: 'Tư Gia Nhà Trai',
+            address: ADDRESS_GROOM,
+            /** TODO: ticket chưa có ghim bản đồ — tìm theo tên xóm / xã */
+            mapQuery: 'Xóm Mỹ Quan, Hùng Châu, Nghệ An',
+          },
+        ],
       },
     ],
   },
 
   calendar: {
-    /** Ngày khoanh tim trên lịch — để null thì ẩn lịch */
-    dateIso: '2026-11-27',
-    photoCaption: 'My Love',
+    title: 'Save The Date',
+    /** Ngày được đánh dấu trên lịch (một ngày hoặc mảng nhiều ngày cùng tháng) — để null thì ẩn lịch */
+    dateIso: '2026-11-28',
   },
 
   rsvp: {
@@ -76,31 +75,23 @@ export const content = {
      * Để '' thì form chỉ hiện lời cảm ơn, không lưu gì.
      */
     endpoint: '',
-    /**
-     * Mã cặp đôi (chữ thường, số, dấu gạch ngang) — script dùng chung tự tạo Google Sheet riêng
-     * cho từng mã. Khác cặp thì khác mã; để '' thì không lưu.
-     */
+    /** Slug riêng của thiệp trong script dùng chung — không đổi sau khi đã có lời chúc */
     coupleId: '',
-    /** Tên hiển thị đặt cho Sheet, vd 'Minh Hiền & Đức Thành' */
-    coupleName: '',
-    /** false = tạm ẩn toàn bộ mục "Xác nhận tham dự & Gửi lời chúc" (nút mừng cưới vẫn hiện) */
+    coupleName: 'Đức Trường & Phương Uyên',
+    /** false = tạm ẩn toàn bộ form gửi lời chúc & xác nhận */
     show: false,
-    /** false = tạm ẩn ô xác nhận tham dự, chỉ nhận lời chúc */
+    /** false = tạm ẩn ô xác nhận tham dự & số người, chỉ nhận lời chúc */
     askAttend: true,
-    title: 'Xác nhận tham dự',
-    wishTitle: 'Gửi Lời Chúc',
-    boxTitle: 'Gửi Lời Chúc Mừng',
-    intro: 'Cảm ơn tất cả tình cảm mà mọi người đã dành cho chúng mình',
-    guestOfOptions: ['Khách nhà trai', 'Khách nhà gái'],
+    title: 'Gửi Lời Chúc & Xác Nhận',
     placeholders: {
-      name: 'Họ và Tên',
-      guestOf: 'Bạn là khách mời của ai ?',
-      message: 'Nhập lời chúc của bạn:',
-      attend: 'Xác nhận tham dự',
+      name: 'Tên của bạn là gì ?',
+      message: 'Gửi lời chúc cho cô dâu & chú rể',
+      attend: 'Xác nhận tham dự ?',
+      guestCount: 'Bạn đi bao nhiêu người ?',
     },
-    attendYes: 'Có, tôi sẽ đến',
-    attendNo: 'Tiếc quá, hôm đấy mình không đến được',
-    submit: 'Gửi Lời Chúc',
+    attendYes: 'Có, mình sẽ đến',
+    attendNo: 'Xin lỗi, hôm đấy mình không tới được :(',
+    submit: 'Gửi Xác Nhận',
     sending: 'Đang gửi...',
     error: 'Gửi chưa được, bạn kiểm tra mạng rồi thử lại nhé!',
     thanks: 'Cảm ơn bạn! Lời chúc của bạn đã được ghi nhận.',
@@ -115,27 +106,22 @@ export const content = {
     saveQrLabel: 'Lưu ảnh QR',
     accounts: [
       {
-        holder: 'NGUYEN HOAI AN',
-        number: '0325101587',
-        bank: 'MB Bank',
-        /** Ảnh mã QR trong public/images/ — để null nếu không có */
-        qr: '/images/qr-mb.png',
+        holder: 'NGUYEN VAN TRUONG',
+        number: '5120531802',
+        bank: 'BIDV',
+        qr: '/images/qr-bidv.png',
       },
     ],
   },
 
-  album: {
-    title: 'Album Hình Cưới',
-  },
-
   thanks: {
-    title: 'Thank you',
-    text: 'Sự hiện diện của quý vị là niềm vinh hạnh cho gia đình chúng tôi!',
+    title: 'Thank You',
+    text: 'Từ tận đáy lòng, chúng mình cảm ơn bạn đã dành tình cảm và sự hiện diện cho ngày vui này. Chính bạn đã góp phần làm nên một kỷ niệm hạnh phúc mà chúng mình sẽ luôn trân trọng.',
   },
 
   /** Nhạc nền — file đặt trong public/ (vd: public/music/music.mp3 → /music/music.mp3) */
   music: {
-    src: '/music/vay-cuoi.mp3',
+    src: '/music/music.mp3',
     /** 0–1 */
     volume: 0.45,
   },

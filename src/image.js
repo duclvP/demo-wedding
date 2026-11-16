@@ -6,14 +6,14 @@
  */
 export const images = {
   /** Ảnh dọc lớn đầu thiệp (khung vàng) */
-  hero: '/images/trang-4.jpg',
+  hero: '/images/trang-1.jpg',
   /** Ảnh dưới phần gia đình (khung vàng) */
   couple: '/images/ao-dai-2.jpg',
   /** 3 ảnh dải ngày cưới: chú rể (không có ảnh chú rể riêng → ảnh chú rể nổi bật), ảnh đôi, cô dâu */
   dateStrip: ['/images/den-5.jpg', '/images/trang-3.jpg', '/images/co-dau-1.jpg'],
   /** Lưới ảnh 2 cột — số chẵn */
   album: [
-    '/images/trang-1.jpg',
+    '/images/trang-4.jpg',
     '/images/den-1.jpg',
     '/images/den-8.jpg',
     '/images/trang-2.jpg',

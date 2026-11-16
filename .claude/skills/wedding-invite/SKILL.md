@@ -224,7 +224,7 @@ $V whoami        # phải ra xduclv. Lỗi → chạy NỀN `$V login > ~/.confi
                  # grep link https://vercel.com/oauth/device?user_code=XXXX-XXXX, đưa người dùng (đăng nhập xduclv)
 ```
 
-**Tên project** = `<tencodau>-<tenchure>` (gạch ngang, vd `thuuyen-ngochung`, `truongan-hongngoc`) → domain `https://<tên>.vercel.app`. Tên `.vercel.app` là toàn cầu: nếu đã có người dùng, Vercel gán tên có hậu tố ngẫu nhiên → og:image sai domain. `deploy.sh` tự kiểm tra (`DEPLOYMENT_NOT_FOUND` = còn trống).
+**Tên project** = tên theo **thứ tự của bản đó**, gạch ngang → domain `https://<tên>.vercel.app`: bản nhà gái / thiệp chung `<tencodau>-<tenchure>` (vd `hoaian-huuan`, `thuuyen-ngochung`), bản **nhà trai** `<tenchure>-<tencodau>` (vd `huuan-hoaian`, `xuanbinh-huyentrang`) — khách thấy tên trong link, nhà trai mà cô dâu đứng đầu là sai. (Tên nhánh git thì luôn `<tencodau>_<tenchure>_nha_trai/_nha_gai`.) Tên `.vercel.app` là toàn cầu: nếu đã có người dùng, Vercel gán tên có hậu tố ngẫu nhiên → og:image sai domain. `deploy.sh` tự kiểm tra (`DEPLOYMENT_NOT_FOUND` = còn trống).
 
 **Deploy = một lệnh** (ở gốc repo, đúng nhánh, đã commit hết):
 

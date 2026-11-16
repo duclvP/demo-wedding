@@ -111,6 +111,12 @@ export const content = {
         bank: 'BIDV',
         qr: '/images/qr-bidv.png',
       },
+      {
+        holder: 'DAO PHUONG UYEN',
+        number: '2098152009',
+        bank: 'VPBank',
+        qr: '/images/qr-vpbank.png',
+      },
     ],
   },
 

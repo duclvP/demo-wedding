@@ -166,7 +166,7 @@ export const content = {
     accounts: [
       {
         holder: 'TRAN TUAN ANH',
-        number: '32369999999',
+        number: '323699999999',
         bank: 'Techcombank',
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
         qr: '/images/qr-techcombank.png',

@@ -17,7 +17,7 @@ export const images = {
     '/images/studio-4.jpg',
     '/images/nau-3.jpg',
     '/images/do-2.jpg',
-    '/images/studio-5.jpg',
+    '/images/chu-re-2.jpg',
     '/images/co-dau-3.jpg',
     '/images/studio-1.jpg',
     '/images/studio-2.jpg',

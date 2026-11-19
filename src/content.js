@@ -111,6 +111,12 @@ export const content = {
         /** Ảnh mã QR trong public/images/ — để null nếu không có */
         qr: '/images/qr-mb.png',
       },
+      {
+        holder: 'PHAN THI NGUYET',
+        number: '8853411001',
+        bank: 'BIDV',
+        qr: '/images/qr-bidv.png',
+      },
     ],
   },
 
